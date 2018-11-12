@@ -1,7 +1,7 @@
 import UIKit
 import DataSources
 
-final class ViewController: UIViewController {
+final class ViewController: DataSourceViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
