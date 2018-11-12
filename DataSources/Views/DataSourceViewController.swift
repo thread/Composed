@@ -12,7 +12,7 @@ open class DataSourceViewController: UIViewController {
 
     public init(dataSource: DataSource, layout: UICollectionViewLayout? = nil) {
         self.dataSource = dataSource
-        self.layout = layout ?? DataSourceLayout()
+        self.layout = layout ?? FlowLayout()
         self.collectionView = UICollectionView(frame: .zero, collectionViewLayout: self.layout)
 
         super.init(nibName: nil, bundle: nil)

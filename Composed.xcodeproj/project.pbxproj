@@ -31,8 +31,6 @@
 		54C4915021999703009C7EBA /* DataSourceLayoutAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C4914921999703009C7EBA /* DataSourceLayoutAttributes.swift */; };
 		54C4915121999703009C7EBA /* DataSourceHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C4914A21999703009C7EBA /* DataSourceHeaderView.swift */; };
 		54C4915221999703009C7EBA /* DataSourceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C4914B21999703009C7EBA /* DataSourceViewController.swift */; };
-		54C4915321999703009C7EBA /* DataSourceLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C4914C21999703009C7EBA /* DataSourceLayout.swift */; };
-		54C4915421999703009C7EBA /* UICollectionViewFlowLayout+Metrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C4914D21999703009C7EBA /* UICollectionViewFlowLayout+Metrics.swift */; };
 		54C4915621999714009C7EBA /* UIView+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C4915521999714009C7EBA /* UIView+Helpers.swift */; };
 		54C4915E21999721009C7EBA /* FlowLayoutInvalidationContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C4915821999721009C7EBA /* FlowLayoutInvalidationContext.swift */; };
 		54C4915F21999721009C7EBA /* FlowLayout+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C4915921999721009C7EBA /* FlowLayout+Helpers.swift */; };
@@ -108,8 +106,6 @@
 		54C4914921999703009C7EBA /* DataSourceLayoutAttributes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSourceLayoutAttributes.swift; sourceTree = "<group>"; };
 		54C4914A21999703009C7EBA /* DataSourceHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSourceHeaderView.swift; sourceTree = "<group>"; };
 		54C4914B21999703009C7EBA /* DataSourceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSourceViewController.swift; sourceTree = "<group>"; };
-		54C4914C21999703009C7EBA /* DataSourceLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSourceLayout.swift; sourceTree = "<group>"; };
-		54C4914D21999703009C7EBA /* UICollectionViewFlowLayout+Metrics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UICollectionViewFlowLayout+Metrics.swift"; sourceTree = "<group>"; };
 		54C4915521999714009C7EBA /* UIView+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Helpers.swift"; sourceTree = "<group>"; };
 		54C4915821999721009C7EBA /* FlowLayoutInvalidationContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlowLayoutInvalidationContext.swift; sourceTree = "<group>"; };
 		54C4915921999721009C7EBA /* FlowLayout+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FlowLayout+Helpers.swift"; sourceTree = "<group>"; };
@@ -210,8 +206,6 @@
 				54C4914921999703009C7EBA /* DataSourceLayoutAttributes.swift */,
 				54C4914A21999703009C7EBA /* DataSourceHeaderView.swift */,
 				54C4914B21999703009C7EBA /* DataSourceViewController.swift */,
-				54C4914C21999703009C7EBA /* DataSourceLayout.swift */,
-				54C4914D21999703009C7EBA /* UICollectionViewFlowLayout+Metrics.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -406,7 +400,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				54C4915421999703009C7EBA /* UICollectionViewFlowLayout+Metrics.swift in Sources */,
 				5402215F2195C56400F0E173 /* ComposedDataSource.swift in Sources */,
 				5402216B2195C81800F0E173 /* AnyDataSource.swift in Sources */,
 				54C4914E21999703009C7EBA /* DataSourceCell.swift in Sources */,
@@ -420,7 +413,6 @@
 				540221692195C5FE00F0E173 /* ComposedMappings.swift in Sources */,
 				540221652195C59100F0E173 /* CollectionDataSource.swift in Sources */,
 				54C4916221999721009C7EBA /* FlowLayout+Metrics.swift in Sources */,
-				54C4915321999703009C7EBA /* DataSourceLayout.swift in Sources */,
 				540221632195C58900F0E173 /* AggregateDataSource.swift in Sources */,
 				5402215D2195C55300F0E173 /* SimpleDataSource.swift in Sources */,
 				54C4916321999721009C7EBA /* FlowLayout+Types.swift in Sources */,

@@ -1,5 +1,3 @@
 import UIKit
 
-public final class FlowLayoutInvalidationContext: UICollectionViewFlowLayoutInvalidationContext {
-    
-}
+public final class FlowLayoutInvalidationContext: UICollectionViewFlowLayoutInvalidationContext { }

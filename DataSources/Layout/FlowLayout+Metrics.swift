@@ -1,11 +1,11 @@
 import UIKit
 
-public extension UICollectionViewFlowLayout {
+public extension FlowLayout {
 
-    func columnWidth<LayoutDelegate: UICollectionViewDelegateFlowLayout>(forColumnCount columnCount: Int, inSection section: Int, layoutDelegate: LayoutDelegate) -> CGFloat {
+    func columnWidth<LayoutDelegate: UICollectionViewDelegateFlowLayout>(forColumnCount columnCount: Int, inSection section: Int, delegate: LayoutDelegate) -> CGFloat {
         guard let collectionView = collectionView else { return 0 }
 
-        let metrics = self.metrics(forSection: section, layoutDelegate: layoutDelegate)
+        let metrics = self.metrics(forSection: section, delegate: delegate)
         let interitemSpacing = CGFloat(columnCount - 1) * metrics.itemSpacing
         let availableWiwdth = collectionView.bounds.width - metrics.insets.left - metrics.insets.right - interitemSpacing
 
@@ -14,7 +14,7 @@ public extension UICollectionViewFlowLayout {
 
     func boundaryMetrics(for attributes: UICollectionViewLayoutAttributes) -> (minY: CGFloat, maxY: CGFloat) {
         guard let collectionView = collectionView  else { return (0, 0) }
-        guard let layoutDelegate = collectionView.delegate as? UICollectionViewDelegateFlowLayout else { return (0, 0) }
+        guard let delegate = collectionView.delegate as? UICollectionViewDelegateFlowLayout else { return (0, 0) }
 
         let section = attributes.indexPath.count > 1
             ? attributes.indexPath.section
@@ -32,7 +32,7 @@ public extension UICollectionViewFlowLayout {
         let frame = attributes.frame
 
         // Section Boundaries:
-        let metrics = self.metrics(forSection: section, layoutDelegate: layoutDelegate)
+        let metrics = self.metrics(forSection: section, delegate: delegate)
         //   The section should not be higher than the top of its first cell
         let minY = firstAttributes.frame.minY - frame.height - metrics.insets.top
         //   The section should not be lower than the bottom of its last cell
@@ -41,22 +41,22 @@ public extension UICollectionViewFlowLayout {
         return (minY, maxY)
     }
 
-    func metrics(forSection section: Int, layoutDelegate: UICollectionViewDelegateFlowLayout) -> FlowLayoutSectionMetrics {
+    func metrics(forSection section: Int, delegate: UICollectionViewDelegateFlowLayout) -> FlowLayoutSectionMetrics {
         guard let collectionView = collectionView else { return .zero }
 
-        let headerHeight = layoutDelegate.collectionView?(collectionView, layout: self, referenceSizeForHeaderInSection: section).height
+        let headerHeight = delegate.collectionView?(collectionView, layout: self, referenceSizeForHeaderInSection: section).height
             ?? headerReferenceSize.height
 
-        let footerHeight = layoutDelegate.collectionView?(collectionView, layout: self, referenceSizeForFooterInSection: section).height
+        let footerHeight = delegate.collectionView?(collectionView, layout: self, referenceSizeForFooterInSection: section).height
             ?? footerReferenceSize.height
 
-        let insets = layoutDelegate.collectionView?(collectionView, layout: self, insetForSectionAt: section)
+        let insets = delegate.collectionView?(collectionView, layout: self, insetForSectionAt: section)
             ?? sectionInset
 
-        let itemSpacing = layoutDelegate.collectionView?(collectionView, layout: self, minimumInteritemSpacingForSectionAt: section)
+        let itemSpacing = delegate.collectionView?(collectionView, layout: self, minimumInteritemSpacingForSectionAt: section)
             ?? minimumInteritemSpacing
 
-        let lineSpacing = layoutDelegate.collectionView?(collectionView, layout: self, minimumLineSpacingForSectionAt: section)
+        let lineSpacing = delegate.collectionView?(collectionView, layout: self, minimumLineSpacingForSectionAt: section)
             ?? minimumLineSpacing
 
         var metrics = FlowLayoutSectionMetrics()
@@ -71,7 +71,7 @@ public extension UICollectionViewFlowLayout {
 
     func firstSectionMetrics() -> FlowLayoutSectionMetrics {
         guard let layoutDelegate = collectionView?.delegate as? UICollectionViewDelegateFlowLayout else { return .zero }
-        return metrics(forSection: 0, layoutDelegate: layoutDelegate)
+        return metrics(forSection: 0, delegate: layoutDelegate)
     }
 
 }

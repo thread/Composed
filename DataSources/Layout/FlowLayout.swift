@@ -1,5 +1,10 @@
 import UIKit
 
+public enum FlowLayoutScrollingBehaviour {
+    case alwaysVisible // remains on screen
+    case prefersFollowContent // visible when contentOffset.y <= 0, otherwise follow content off-screen
+}
+
 open class FlowLayout: UICollectionViewFlowLayout {
 
     open override class var layoutAttributesClass: AnyClass {
@@ -13,13 +18,12 @@ open class FlowLayout: UICollectionViewFlowLayout {
     public var globalHeaderPinsToBounds: Bool = true
     public var globalHeaderPinsToContent: Bool = true
     public var globalHeaderMaxHeight: CGFloat = .greatestFiniteMagnitude
+    public var globalHeaderInsetReference: SectionInsetReference = .fromContentInset
+    public var globalHeaderScrollingBehaviour: FlowLayoutScrollingBehaviour = .alwaysVisible
+    public var globalHeaderSpacing: CGFloat = 0
 
     public var globalFooterPinsToBounds: Bool = true
     public var globalFooterPinsToContent: Bool = false
-
-    public override init() {
-        super.init()
-    }
 
     public init(metrics: FlowLayoutSectionMetrics? = nil) {
         super.init()
@@ -46,7 +50,7 @@ open class FlowLayout: UICollectionViewFlowLayout {
     open override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
         let originalAttributes = super.layoutAttributesForItem(at: indexPath)?.copy() as? UICollectionViewLayoutAttributes
         guard requiresLayout else { return originalAttributes }
-        originalAttributes.map { $0.frame = adjustedFrame(for: $0) }
+        originalAttributes.map { ($0.frame, $0.zIndex) = adjustedFrame(for: $0) }
         return originalAttributes
     }
 
@@ -58,17 +62,15 @@ open class FlowLayout: UICollectionViewFlowLayout {
         case UICollectionView.elementKindGlobalHeader:
             let attributes = FlowLayoutAttributes(forSupplementaryViewOfKind: elementKind, with: indexPath)
             attributes.frame = CGRect(origin: .zero, size: sizeForGlobalHeader)
-            attributes.frame = adjustedFrame(for: attributes)
-            attributes.zIndex = 1000
+            (attributes.frame, attributes.zIndex) = adjustedFrame(for: attributes)
             return attributes
         case UICollectionView.elementKindGlobalFooter:
             let attributes = FlowLayoutAttributes(forSupplementaryViewOfKind: elementKind, with: indexPath)
             attributes.frame = CGRect(origin: .zero, size: sizeForGlobalFooter)
-            attributes.frame = adjustedFrame(for: attributes)
-            attributes.zIndex = 999
+            (attributes.frame, attributes.zIndex) = adjustedFrame(for: attributes)
             return attributes
         default:
-            originalAttributes.map { $0.frame = adjustedFrame(for: $0) }
+            originalAttributes.map { ($0.frame, $0.zIndex) = adjustedFrame(for: $0) }
             return originalAttributes
         }
     }
@@ -77,11 +79,11 @@ open class FlowLayout: UICollectionViewFlowLayout {
         var attributes = NSArray(array: super.layoutAttributesForElements(in: rect) ?? [], copyItems: true) as? [UICollectionViewLayoutAttributes]
         guard requiresLayout else { return attributes }
 
-        attributes?
-            .forEach { $0.frame = adjustedFrame(for: $0) }
+        attributes?.forEach { ($0.frame, $0.zIndex) = adjustedFrame(for: $0) }
 
         if sizeForGlobalHeader.height > 0,
-            let header = layoutAttributesForSupplementaryView(ofKind: UICollectionView.elementKindGlobalHeader, at: UICollectionView.globalElementIndexPath) {
+            let header = layoutAttributesForSupplementaryView(ofKind: UICollectionView.elementKindGlobalHeader,
+                                                              at: UICollectionView.globalElementIndexPath) {
             attributes?.append(header)
         }
 
@@ -128,8 +130,8 @@ open class FlowLayout: UICollectionViewFlowLayout {
 
 private extension FlowLayout {
 
-    func adjustedFrame(for attributes: UICollectionViewLayoutAttributes) -> CGRect {
-        guard let collectionView = collectionView else { return attributes.frame }
+    func adjustedFrame(for attributes: UICollectionViewLayoutAttributes) -> (frame: CGRect, zIndex: Int) {
+        guard let collectionView = collectionView else { return (attributes.frame, 0) }
         let globalHeaderSize = sizeForGlobalHeader
 
         switch attributes.representedElementKind {
@@ -137,8 +139,21 @@ private extension FlowLayout {
             var frame = attributes.frame
 
             if globalHeaderPinsToBounds {
-                frame.origin.y += collectionView.contentOffset.y
-                    + collectionView.safeAreaInsets.top
+                switch globalHeaderScrollingBehaviour {
+                case .prefersFollowContent where collectionView.contentOffset.y >= 0:
+                    break // do nothing
+                default:
+                    frame.origin.y += collectionView.contentOffset.y
+                }
+
+                switch globalHeaderInsetReference {
+                case .fromSafeArea:
+                    frame.origin.y += collectionView.safeAreaInsets.top
+                case .fromContentInset:
+                    frame.origin.y += collectionView.adjustedContentInset.top
+                case .fromLayoutMargins:
+                    frame.origin.y += collectionView.layoutMargins.top
+                }
             }
 
             if globalHeaderPinsToContent, collectionView.contentOffset.y < 0 {
@@ -146,12 +161,12 @@ private extension FlowLayout {
                 frame.size.height = min(frame.size.height, globalHeaderMaxHeight)
             }
 
-            return frame
+            return (frame, 1000)
         case UICollectionView.elementKindGlobalFooter:
             let globalFooterSize = sizeForGlobalFooter
             var frame = attributes.frame
 
-            frame.origin.y = collectionViewContentSize.height - globalFooterSize.height
+            frame.origin.y = collectionViewContentSize.height - globalFooterSize.height + globalHeaderSpacing
 
             if globalFooterPinsToBounds, collectionView.bounds.maxY > collectionViewContentSize.height {
                 frame.size.height += collectionView.bounds.maxY - collectionViewContentSize.height
@@ -161,19 +176,20 @@ private extension FlowLayout {
                 frame.origin.y += collectionView.bounds.maxY - collectionViewContentSize.height
             }
 
-            return frame
+            return (frame, 999)
         case UICollectionView.elementKindSectionHeader:
             var frame = attributes.frame
-            frame.origin.y += globalHeaderSize.height
+            frame.origin.y += globalHeaderSize.height + globalHeaderSpacing
 
             if !globalHeaderPinsToBounds {
                 frame.origin.y += collectionView.contentOffset.y - collectionView.safeAreaInsets.top
                 frame.origin.y = max(attributes.frame.minY, globalHeaderSize.height)
             }
 
-            return frame
+            return (frame, 1)
         default:
-            return attributes.frame.offsetBy(dx: 0, dy: globalHeaderSize.height)
+            let frame = attributes.frame.offsetBy(dx: 0, dy: globalHeaderSize.height + globalHeaderSpacing)
+            return (frame, attributes.indexPath.item)
         }
     }
 
