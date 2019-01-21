@@ -1,7 +1,7 @@
 /// Provides a convenient wrapper around a dataSource to provide Hashable/Equatable support.
 /// We don't want to add this support directly to DataSource since it would inhibit our
 /// ability to store them in collections.
-internal struct AnyDataSource: Hashable {
+internal struct DataSourceHashableWrapper: Hashable {
 
     let dataSource: DataSource
 
@@ -9,11 +9,11 @@ internal struct AnyDataSource: Hashable {
         self.dataSource = dataSource
     }
 
-    var hashValue: Int {
-        return ObjectIdentifier(dataSource).hashValue
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(ObjectIdentifier(dataSource))
     }
 
-    static func == (lhs: AnyDataSource, rhs: AnyDataSource) -> Bool {
+    static func == (lhs: DataSourceHashableWrapper, rhs: DataSourceHashableWrapper) -> Bool {
         return lhs.hashValue == rhs.hashValue
     }
 

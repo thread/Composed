@@ -2,12 +2,6 @@ import UIKit
 
 open class DataSourceCell: UICollectionViewCell {
 
-    public private(set) var isEditing: Bool = false
-
-    open func setEditing(_ editing: Bool, animated: Bool) {
-        isEditing = editing
-    }
-
     open override func sizeThatFits(_ size: CGSize) -> CGSize {
         return contentView.sizeThatFits(size)
     }

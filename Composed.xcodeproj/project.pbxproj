@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		540221232195C45000F0E173 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 540221222195C44F00F0E173 /* AppDelegate.swift */; };
-		540221252195C45000F0E173 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 540221242195C45000F0E173 /* ViewController.swift */; };
+		540221252195C45000F0E173 /* PeopleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 540221242195C45000F0E173 /* PeopleViewController.swift */; };
 		540221282195C45000F0E173 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 540221262195C45000F0E173 /* Main.storyboard */; };
 		5402212A2195C45100F0E173 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 540221292195C45100F0E173 /* Assets.xcassets */; };
 		5402212D2195C45100F0E173 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5402212B2195C45100F0E173 /* LaunchScreen.storyboard */; };
@@ -22,10 +22,12 @@
 		5402215F2195C56400F0E173 /* ComposedDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5402215E2195C56400F0E173 /* ComposedDataSource.swift */; };
 		540221632195C58900F0E173 /* AggregateDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 540221622195C58900F0E173 /* AggregateDataSource.swift */; };
 		540221652195C59100F0E173 /* CollectionDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 540221642195C59100F0E173 /* CollectionDataSource.swift */; };
-		540221672195C5C700F0E173 /* EmptyDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 540221662195C5C700F0E173 /* EmptyDataSource.swift */; };
 		540221692195C5FE00F0E173 /* ComposedMappings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 540221682195C5FE00F0E173 /* ComposedMappings.swift */; };
-		5402216B2195C81800F0E173 /* AnyDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5402216A2195C81800F0E173 /* AnyDataSource.swift */; };
+		5402216B2195C81800F0E173 /* DataSourceHashableWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5402216A2195C81800F0E173 /* DataSourceHashableWrapper.swift */; };
 		5402216D2195D48400F0E173 /* DataSourceChangeSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5402216C2195D48400F0E173 /* DataSourceChangeSet.swift */; };
+		542AE03C21C960B9009A5E4C /* DataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 542AE03B21C960B9009A5E4C /* DataView.swift */; };
+		546AA49521D5178900588DE4 /* PersonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 546AA49421D5178900588DE4 /* PersonCell.xib */; };
+		546AA49721D51C8000588DE4 /* NibLoadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546AA49621D51C8000588DE4 /* NibLoadable.swift */; };
 		54C4914E21999703009C7EBA /* DataSourceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C4914721999703009C7EBA /* DataSourceCell.swift */; };
 		54C4914F21999703009C7EBA /* DataSourceLayoutInvalidationContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C4914821999703009C7EBA /* DataSourceLayoutInvalidationContext.swift */; };
 		54C4915021999703009C7EBA /* DataSourceLayoutAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C4914921999703009C7EBA /* DataSourceLayoutAttributes.swift */; };
@@ -38,6 +40,7 @@
 		54C4916121999721009C7EBA /* FlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C4915B21999721009C7EBA /* FlowLayout.swift */; };
 		54C4916221999721009C7EBA /* FlowLayout+Metrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C4915C21999721009C7EBA /* FlowLayout+Metrics.swift */; };
 		54C4916321999721009C7EBA /* FlowLayout+Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C4915D21999721009C7EBA /* FlowLayout+Types.swift */; };
+		54D0A8A521F64AF600C65B72 /* Header.xib in Resources */ = {isa = PBXBuildFile; fileRef = 54D0A8A421F64AF600C65B72 /* Header.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -81,7 +84,7 @@
 /* Begin PBXFileReference section */
 		5402211F2195C44F00F0E173 /* Composed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Composed.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		540221222195C44F00F0E173 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		540221242195C45000F0E173 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		540221242195C45000F0E173 /* PeopleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleViewController.swift; sourceTree = "<group>"; };
 		540221272195C45000F0E173 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		540221292195C45100F0E173 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5402212C2195C45100F0E173 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -97,10 +100,12 @@
 		5402215E2195C56400F0E173 /* ComposedDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposedDataSource.swift; sourceTree = "<group>"; };
 		540221622195C58900F0E173 /* AggregateDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AggregateDataSource.swift; sourceTree = "<group>"; };
 		540221642195C59100F0E173 /* CollectionDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionDataSource.swift; sourceTree = "<group>"; };
-		540221662195C5C700F0E173 /* EmptyDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyDataSource.swift; sourceTree = "<group>"; };
 		540221682195C5FE00F0E173 /* ComposedMappings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposedMappings.swift; sourceTree = "<group>"; };
-		5402216A2195C81800F0E173 /* AnyDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyDataSource.swift; sourceTree = "<group>"; };
+		5402216A2195C81800F0E173 /* DataSourceHashableWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSourceHashableWrapper.swift; sourceTree = "<group>"; };
 		5402216C2195D48400F0E173 /* DataSourceChangeSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSourceChangeSet.swift; sourceTree = "<group>"; };
+		542AE03B21C960B9009A5E4C /* DataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataView.swift; sourceTree = "<group>"; };
+		546AA49421D5178900588DE4 /* PersonCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PersonCell.xib; sourceTree = "<group>"; };
+		546AA49621D51C8000588DE4 /* NibLoadable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NibLoadable.swift; sourceTree = "<group>"; };
 		54C4914721999703009C7EBA /* DataSourceCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSourceCell.swift; sourceTree = "<group>"; };
 		54C4914821999703009C7EBA /* DataSourceLayoutInvalidationContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSourceLayoutInvalidationContext.swift; sourceTree = "<group>"; };
 		54C4914921999703009C7EBA /* DataSourceLayoutAttributes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSourceLayoutAttributes.swift; sourceTree = "<group>"; };
@@ -113,6 +118,7 @@
 		54C4915B21999721009C7EBA /* FlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlowLayout.swift; sourceTree = "<group>"; };
 		54C4915C21999721009C7EBA /* FlowLayout+Metrics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FlowLayout+Metrics.swift"; sourceTree = "<group>"; };
 		54C4915D21999721009C7EBA /* FlowLayout+Types.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FlowLayout+Types.swift"; sourceTree = "<group>"; };
+		54D0A8A421F64AF600C65B72 /* Header.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Header.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -166,7 +172,9 @@
 			isa = PBXGroup;
 			children = (
 				540221222195C44F00F0E173 /* AppDelegate.swift */,
-				540221242195C45000F0E173 /* ViewController.swift */,
+				540221242195C45000F0E173 /* PeopleViewController.swift */,
+				546AA49421D5178900588DE4 /* PersonCell.xib */,
+				54D0A8A421F64AF600C65B72 /* Header.xib */,
 				540221262195C45000F0E173 /* Main.storyboard */,
 				540221292195C45100F0E173 /* Assets.xcassets */,
 				5402212B2195C45100F0E173 /* LaunchScreen.storyboard */,
@@ -178,6 +186,7 @@
 		5402213A2195C4F700F0E173 /* DataSources */ = {
 			isa = PBXGroup;
 			children = (
+				542AE03A21C960AE009A5E4C /* Views */,
 				54C4916421999754009C7EBA /* Sources */,
 				54C4915721999721009C7EBA /* Layout */,
 				54C4914621999703009C7EBA /* Views */,
@@ -195,6 +204,15 @@
 				5402214A2195C4F800F0E173 /* Info.plist */,
 			);
 			path = DataSourcesTests;
+			sourceTree = "<group>";
+		};
+		542AE03A21C960AE009A5E4C /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				542AE03B21C960B9009A5E4C /* DataView.swift */,
+			);
+			name = Views;
+			path = "New Group";
 			sourceTree = "<group>";
 		};
 		54C4914621999703009C7EBA /* Views */ = {
@@ -230,7 +248,6 @@
 				540221622195C58900F0E173 /* AggregateDataSource.swift */,
 				540221642195C59100F0E173 /* CollectionDataSource.swift */,
 				5402215E2195C56400F0E173 /* ComposedDataSource.swift */,
-				540221662195C5C700F0E173 /* EmptyDataSource.swift */,
 				5402215C2195C55300F0E173 /* SimpleDataSource.swift */,
 			);
 			path = Sources;
@@ -239,8 +256,9 @@
 		54C4916521999767009C7EBA /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				546AA49621D51C8000588DE4 /* NibLoadable.swift */,
 				540221682195C5FE00F0E173 /* ComposedMappings.swift */,
-				5402216A2195C81800F0E173 /* AnyDataSource.swift */,
+				5402216A2195C81800F0E173 /* DataSourceHashableWrapper.swift */,
 				5402216C2195D48400F0E173 /* DataSourceChangeSet.swift */,
 			);
 			path = Helpers;
@@ -365,7 +383,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				5402212D2195C45100F0E173 /* LaunchScreen.storyboard in Resources */,
+				54D0A8A521F64AF600C65B72 /* Header.xib in Resources */,
 				5402212A2195C45100F0E173 /* Assets.xcassets in Resources */,
+				546AA49521D5178900588DE4 /* PersonCell.xib in Resources */,
 				540221282195C45000F0E173 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -391,7 +411,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				540221252195C45000F0E173 /* ViewController.swift in Sources */,
+				540221252195C45000F0E173 /* PeopleViewController.swift in Sources */,
 				540221232195C45000F0E173 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -401,13 +421,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				5402215F2195C56400F0E173 /* ComposedDataSource.swift in Sources */,
-				5402216B2195C81800F0E173 /* AnyDataSource.swift in Sources */,
+				5402216B2195C81800F0E173 /* DataSourceHashableWrapper.swift in Sources */,
 				54C4914E21999703009C7EBA /* DataSourceCell.swift in Sources */,
 				54C4915121999703009C7EBA /* DataSourceHeaderView.swift in Sources */,
 				5402215B2195C54C00F0E173 /* DataSource.swift in Sources */,
 				54C4914F21999703009C7EBA /* DataSourceLayoutInvalidationContext.swift in Sources */,
 				5402216D2195D48400F0E173 /* DataSourceChangeSet.swift in Sources */,
 				54C4915021999703009C7EBA /* DataSourceLayoutAttributes.swift in Sources */,
+				546AA49721D51C8000588DE4 /* NibLoadable.swift in Sources */,
+				542AE03C21C960B9009A5E4C /* DataView.swift in Sources */,
 				54C4915621999714009C7EBA /* UIView+Helpers.swift in Sources */,
 				54C4916021999721009C7EBA /* FlowLayoutAttributes.swift in Sources */,
 				540221692195C5FE00F0E173 /* ComposedMappings.swift in Sources */,
@@ -418,7 +440,6 @@
 				54C4916321999721009C7EBA /* FlowLayout+Types.swift in Sources */,
 				54C4915E21999721009C7EBA /* FlowLayoutInvalidationContext.swift in Sources */,
 				54C4915F21999721009C7EBA /* FlowLayout+Helpers.swift in Sources */,
-				540221672195C5C700F0E173 /* EmptyDataSource.swift in Sources */,
 				54C4916121999721009C7EBA /* FlowLayout.swift in Sources */,
 				54C4915221999703009C7EBA /* DataSourceViewController.swift in Sources */,
 			);

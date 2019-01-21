@@ -7,51 +7,49 @@ open class SimpleDataSource<Element>: CollectionDataSource {
         self.elements = elements
     }
 
-    public func setElements(_ elements: [Element], changesets: [DataSourceChangeset] = []) {
-        guard !changesets.isEmpty else {
+    public func setElements(_ elements: [Element], changeset: DataSourceChangeset? = nil) {
+        guard let changeset = changeset else {
             self.elements = elements
             updateDelegate?.dataSourceDidReload(self)
             return
         }
 
-        let updates = changesets.flatMap { $0.updates }
+        let updates = changeset.updates
 
         updateDelegate?.dataSource(self, performBatchUpdates: {
             self.elements = elements
             updateDelegate?.dataSource(self, willPerform: updates)
 
-            for changeset in changesets {
-                if !changeset.deletedSections.isEmpty {
-                    updateDelegate?.dataSource(self, didDeleteSections: IndexSet(changeset.deletedSections))
-                }
+            if !changeset.deletedSections.isEmpty {
+                updateDelegate?.dataSource(self, didDeleteSections: IndexSet(changeset.deletedSections))
+            }
 
-                if !changeset.insertedSections.isEmpty {
-                    updateDelegate?.dataSource(self, didInsertSections: IndexSet(changeset.insertedSections))
-                }
+            if !changeset.insertedSections.isEmpty {
+                updateDelegate?.dataSource(self, didInsertSections: IndexSet(changeset.insertedSections))
+            }
 
-                if !changeset.updatedSections.isEmpty {
-                    updateDelegate?.dataSource(self, didUpdateSections: IndexSet(changeset.updatedSections))
-                }
+            if !changeset.updatedSections.isEmpty {
+                updateDelegate?.dataSource(self, didUpdateSections: IndexSet(changeset.updatedSections))
+            }
 
-                for (source, target) in changeset.movedSections {
-                    updateDelegate?.dataSource(self, didMoveSection: source, to: target)
-                }
+            for (source, target) in changeset.movedSections {
+                updateDelegate?.dataSource(self, didMoveSection: source, to: target)
+            }
 
-                if !changeset.deletedIndexPaths.isEmpty {
-                    updateDelegate?.dataSource(self, didDeleteIndexPaths: changeset.deletedIndexPaths)
-                }
+            if !changeset.deletedIndexPaths.isEmpty {
+                updateDelegate?.dataSource(self, didDeleteIndexPaths: changeset.deletedIndexPaths)
+            }
 
-                if !changeset.insertedIndexPaths.isEmpty {
-                    updateDelegate?.dataSource(self, didInsertIndexPaths: changeset.insertedIndexPaths)
-                }
+            if !changeset.insertedIndexPaths.isEmpty {
+                updateDelegate?.dataSource(self, didInsertIndexPaths: changeset.insertedIndexPaths)
+            }
 
-                if !changeset.updatedIndexPaths.isEmpty {
-                    updateDelegate?.dataSource(self, didUpdateIndexPaths: changeset.updatedIndexPaths)
-                }
+            if !changeset.updatedIndexPaths.isEmpty {
+                updateDelegate?.dataSource(self, didUpdateIndexPaths: changeset.updatedIndexPaths)
+            }
 
-                for (source, target) in changeset.movedIndexPaths {
-                    updateDelegate?.dataSource(self, didMoveFromIndexPath: source, toIndexPath: target)
-                }
+            for (source, target) in changeset.movedIndexPaths {
+                updateDelegate?.dataSource(self, didMoveFromIndexPath: source, toIndexPath: target)
             }
         }, completion: { [unowned self] _ in
             self.updateDelegate?.dataSource(self, didPerform: updates)
@@ -64,6 +62,30 @@ open class SimpleDataSource<Element>: CollectionDataSource {
         }
 
         return nil
+    }
+
+    public func localIndexPath(forGlobal indexPath: IndexPath) -> IndexPath? {
+        return indexPath
+    }
+
+    open func cellType(for indexPath: IndexPath) -> DataReusableView.Type {
+        fatalError("Implement in subclass")
+    }
+
+    open func supplementType(for indexPath: IndexPath, ofKind kind: String) -> DataReusableView.Type {
+        fatalError("Implement in subclass")
+    }
+
+    open func layoutStrategy(for section: Int) -> FlowLayoutStrategy {
+        fatalError("Implement in subclass")
+    }
+
+    open func prepare(cell: DataSourceCell, at indexPath: IndexPath) {
+        fatalError("Implement in subclass")
+    }
+
+    open func prepare(supplementaryView: UICollectionReusableView, at indexPath: IndexPath, of kind: String) {
+        fatalError("Implement in subclass")
     }
 
 }

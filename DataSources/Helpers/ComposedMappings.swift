@@ -9,7 +9,7 @@ public final class ComposedMappings {
     public init(_ dataSource: DataSource, initialSection: Int = 0) {
         self.dataSource = dataSource
         guard initialSection == 0 else { return }
-        invalidate(startAtGlobalSection: initialSection, { _ in })
+        invalidate(startingAt: initialSection, { _ in })
     }
 
     public func localSection(forGlobal section: Int) -> Int {
@@ -62,12 +62,12 @@ public final class ComposedMappings {
         return indexPaths.compactMap(globalIndexPath(forLocal:))
     }
 
-    internal func invalidate(startAtGlobalSection section: Int, _ closure: (Int) -> Void) {
+    internal func invalidate(startingAt globalSection: Int, _ closure: (Int) -> Void) {
         numberOfSections = dataSource.numberOfSections
         globalToLocalSections.removeAll()
         localToGlobalSections.removeAll()
 
-        var globalSection = section
+        var globalSection = globalSection
         for localSection in 0..<numberOfSections {
             addMapping(fromGlobal: globalSection, toLocal: localSection)
             closure(globalSection)
@@ -87,7 +87,7 @@ public final class ComposedMappings {
 extension ComposedMappings: Equatable {
 
     public static func == (lhs: ComposedMappings, rhs: ComposedMappings) -> Bool {
-        return AnyDataSource(lhs.dataSource) == AnyDataSource(rhs.dataSource)
+        return DataSourceHashableWrapper(lhs.dataSource) == DataSourceHashableWrapper(rhs.dataSource)
     }
 
 }

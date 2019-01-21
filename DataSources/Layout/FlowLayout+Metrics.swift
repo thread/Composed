@@ -1,12 +1,12 @@
 import UIKit
 
-public extension FlowLayout {
+public extension UICollectionViewFlowLayout {
 
     func columnWidth<LayoutDelegate: UICollectionViewDelegateFlowLayout>(forColumnCount columnCount: Int, inSection section: Int, delegate: LayoutDelegate) -> CGFloat {
         guard let collectionView = collectionView else { return 0 }
 
         let metrics = self.metrics(forSection: section, delegate: delegate)
-        let interitemSpacing = CGFloat(columnCount - 1) * metrics.itemSpacing
+        let interitemSpacing = CGFloat(columnCount - 1) * metrics.horizontalSpacing
         let availableWiwdth = collectionView.bounds.width - metrics.insets.left - metrics.insets.right - interitemSpacing
 
         return (availableWiwdth / CGFloat(columnCount)).rounded(.down)
@@ -59,14 +59,11 @@ public extension FlowLayout {
         let lineSpacing = delegate.collectionView?(collectionView, layout: self, minimumLineSpacingForSectionAt: section)
             ?? minimumLineSpacing
 
-        var metrics = FlowLayoutSectionMetrics()
-        metrics.headerHeight = headerHeight
-        metrics.footerHeight = footerHeight
-        metrics.insets = insets
-        metrics.itemSpacing = itemSpacing
-        metrics.lineSpacing = lineSpacing
-
-        return metrics
+        return FlowLayoutSectionMetrics(headerHeight: headerHeight,
+                                        footerHeight: footerHeight,
+                                        insets: insets,
+                                        horizontalSpacing: itemSpacing,
+                                        verticalSpacing: lineSpacing)
     }
 
     func firstSectionMetrics() -> FlowLayoutSectionMetrics {

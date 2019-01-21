@@ -2,8 +2,15 @@ import UIKit
 
 open class DataSourceViewController: UIViewController {
 
-    public let collectionView: UICollectionView
-    public let dataSource: DataSource
+    public var collectionView: UICollectionView {
+        return wrapper.collectionView
+    }
+
+    public var dataSource: DataSource {
+        return wrapper.dataSource
+    }
+
+    private let wrapper: CollectionViewWrapper
     public let layout: UICollectionViewLayout
 
     deinit {
@@ -11,9 +18,10 @@ open class DataSourceViewController: UIViewController {
     }
 
     public init(dataSource: DataSource, layout: UICollectionViewLayout? = nil) {
-        self.dataSource = dataSource
-        self.layout = layout ?? FlowLayout()
-        self.collectionView = UICollectionView(frame: .zero, collectionViewLayout: self.layout)
+        let layout = layout ?? FlowLayout()
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        self.wrapper = CollectionViewWrapper(collectionView: collectionView, dataSource: dataSource)
+        self.layout = layout
 
         super.init(nibName: nil, bundle: nil)
 
@@ -24,27 +32,6 @@ open class DataSourceViewController: UIViewController {
 
     public required init?(coder aDecoder: NSCoder) {
         fatalError()
-    }
-
-    open override func setEditing(_ editing: Bool, animated: Bool) {
-        super.setEditing(editing, animated: animated)
-        dataSource.setEditing(editing, animated: animated)
-
-        collectionView
-            .visibleCells
-            .lazy
-            .compactMap { $0 as? DataSourceCell }
-            .forEach {
-                $0.setEditing(editing, animated: animated)
-        }
-
-        collectionView
-            .visibleSupplementaryViews(ofKind: UICollectionView.elementKindSectionHeader)
-            .lazy
-            .compactMap { $0 as? DataSourceHeaderView }
-            .forEach {
-                $0.setEditing(editing, animated: animated)
-        }
     }
 
     open override func viewDidLoad() {
@@ -67,10 +54,9 @@ open class DataSourceViewController: UIViewController {
         collectionView.backgroundColor = .white
         collectionView.alwaysBounceVertical = true
 
-//        dataSource.registerReusableViews(inCollectionView: collectionView)
-//        collectionView.dataSource = dataSource
-//        collectionView.delegate = dataSource
-//        collectionView.prefetchDataSource = dataSource
+        collectionView.dataSource = wrapper
+        collectionView.delegate = wrapper
+//        collectionView.prefetchDataSource = wrapper
     }
 
     open override func viewWillAppear(_ animated: Bool) {
@@ -89,16 +75,8 @@ open class DataSourceViewController: UIViewController {
         dataSource.willResignActive()
     }
 
-    open func dataSource<T>(_ dataSource: DataSource, changesetFor sourceItems: [T], targetItems: [T]) -> [DataSourceChangeset]? where T: Equatable {
-        return nil
-    }
-
-    open func dataSource(_ dataSource: DataSource, didSelectModel model: Any, atIndexPath: IndexPath) { }
-    open func dataSource(_ dataSource: DataSource, didDeselectModel model: Any, atIndexPath: IndexPath) { }
-
     open func dataSource(_ dataSource: DataSource, willPerformOperations operations: [DataSourceUpdate]) { }
     open func dataSource(_ dataSource: DataSource, didPerformOperations operations: [DataSourceUpdate]) { }
-    open func dataSource(_ dataSource: DataSource, didScrollToContentOffset contentOffset: CGPoint) { }
 
 }
 

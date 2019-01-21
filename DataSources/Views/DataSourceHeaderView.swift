@@ -14,12 +14,6 @@ open class DataSourceHeaderView: UICollectionReusableView {
         return FixedZPositionLayer.self
     }
 
-    public private(set) var isEditing: Bool = false
-
-    open func setEditing(_ editing: Bool, animated: Bool) {
-        isEditing = editing
-    }
-
 }
 
 /**
