@@ -16,7 +16,7 @@ public final class ComposedDataSource: AggregateDataSource {
         return _numberOfSections
     }
 
-    public func numberOfElements(inSection section: Int) -> Int {
+    public func numberOfElements(in section: Int) -> Int {
         invalidate()
 
         let mapping = self.mapping(for: section)
@@ -25,7 +25,7 @@ public final class ComposedDataSource: AggregateDataSource {
         let numberOfSections = mapping.dataSource.numberOfSections
         assert(local < numberOfSections, "local section is out of bounds for composed data source")
 
-        return mapping.dataSource.numberOfElements(inSection: local)
+        return mapping.dataSource.numberOfElements(in: local)
     }
 
     public init() { }
@@ -187,19 +187,19 @@ extension ComposedDataSource {
         return (dataSource, local)
     }
 
-    public func cellType(for indexPath: IndexPath) -> DataReusableView.Type {
+    public func cellSource(for indexPath: IndexPath) -> DataSourceViewSource {
         let (dataSource, local) = dataSourceAndLocalIndexPath(for: indexPath)
-        return dataSource.cellType(for: local)
+        return dataSource.cellSource(for: local)
     }
 
-    public func supplementType(for indexPath: IndexPath, ofKind kind: String) -> DataReusableView.Type {
+    public func supplementViewSource(for indexPath: IndexPath, ofKind kind: String) -> DataSourceViewSource {
         let (dataSource, local) = dataSourceAndLocalIndexPath(for: indexPath)
-        return dataSource.supplementType(for: local, ofKind: kind)
+        return dataSource.supplementViewSource(for: local, ofKind: kind)
     }
 
-    public func layoutStrategy(for section: Int) -> FlowLayoutStrategy {
+    public func layoutStrategy(in section: Int) -> FlowLayoutStrategy {
         let (dataSource, local) = localDataSourceAndSection(for: section)
-        return dataSource.layoutStrategy(for: local)
+        return dataSource.layoutStrategy(in: local)
     }
 
     public func prepare(cell: DataSourceCell, at indexPath: IndexPath) {
@@ -225,11 +225,6 @@ public extension ComposedDataSource {
         }
 
         return nil
-    }
-
-    func localIndexPath(forGlobal indexPath: IndexPath) -> IndexPath? {
-        let mapping = self.mapping(for: indexPath.section)
-        return mapping.localIndexPath(forGlobal: indexPath)
     }
     
 }

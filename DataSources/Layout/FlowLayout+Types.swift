@@ -6,7 +6,12 @@ import UIKit
     func insets(in section: Int) -> UIEdgeInsets
     func horizontalSpacing(in section: Int) -> CGFloat
     func verticalSpacing(in section: Int) -> CGFloat
-    func cellSize(for indexPath: IndexPath, in layout: UICollectionViewFlowLayout) -> CGSize
+
+    func prototypeCell(for indexPath: IndexPath) -> DataSourceCell
+    func size(forCell: DataSourceCell, at indexPath: IndexPath, in layout: UICollectionViewFlowLayout) -> CGSize
+
+    func invalidate(indexPath: IndexPath)
+    func invalidateAll()
 }
 
 internal final class FlowLayoutNoStrategy: NSObject, FlowLayoutStrategy {
@@ -16,12 +21,15 @@ internal final class FlowLayoutNoStrategy: NSObject, FlowLayoutStrategy {
     func insets(in section: Int) -> UIEdgeInsets { return .zero }
     func horizontalSpacing(in section: Int) -> CGFloat { return 0 }
     func verticalSpacing(in section: Int) -> CGFloat { return 0 }
-    func cellSize(for indexPath: IndexPath, in layout: UICollectionViewFlowLayout) -> CGSize { return .zero }
+    func prototypeCell(for indexPath: IndexPath) -> DataSourceCell { fatalError("") }
+    func size(forCell: DataSourceCell, at indexPath: IndexPath, in layout: UICollectionViewFlowLayout) -> CGSize { return .zero }
+    func invalidate(indexPath: IndexPath) { }
+    func invalidateAll() { }
 }
 
 open class HeaderLayoutStrategy: NSObject {
 
-    private let prototypeHeader: UICollectionReusableView
+    private let prototypeHeader: DataSourceHeaderView
 
     public init(prototypeHeader: DataSourceHeaderView) {
         self.prototypeHeader = prototypeHeader
@@ -35,7 +43,7 @@ open class HeaderLayoutStrategy: NSObject {
 
 }
 
-open class FlowLayoutColumnsStrategy<CellType>: NSObject, FlowLayoutStrategy where CellType: DataSourceCell & ReusableViewNibLoadable {
+open class FlowLayoutColumnsStrategy<CellType>: NSObject, FlowLayoutStrategy where CellType: DataSourceCell {
 
     public var layout: UICollectionViewLayout?
     public let columns: Int
@@ -43,10 +51,11 @@ open class FlowLayoutColumnsStrategy<CellType>: NSObject, FlowLayoutStrategy whe
 
     public let headerStrategy: HeaderLayoutStrategy?
     private let prototypeCell: CellType
+    private var cachedSizes: [IndexPath: CGSize] = [:]
 
-    public init(columns: Int = 1, metrics: FlowLayoutSectionMetrics, headerStrategy: HeaderLayoutStrategy? = nil) {
+    public init(columns: Int = 1, metrics: FlowLayoutSectionMetrics, prototypeCell: CellType, headerStrategy: HeaderLayoutStrategy? = nil) {
         self.headerStrategy = headerStrategy
-        self.prototypeCell = CellType.fromNib
+        self.prototypeCell = prototypeCell
         self.columns = columns
         self.metrics = metrics
     }
@@ -63,11 +72,29 @@ open class FlowLayoutColumnsStrategy<CellType>: NSObject, FlowLayoutStrategy whe
         return metrics.verticalSpacing
     }
 
-    public func cellSize(for indexPath: IndexPath, in layout: UICollectionViewFlowLayout) -> CGSize {
+    public func prototypeCell(for indexPath: IndexPath) -> DataSourceCell {
+        return prototypeCell
+    }
+
+    public func size(forCell: DataSourceCell, at indexPath: IndexPath, in layout: UICollectionViewFlowLayout) -> CGSize {
+        if let size = cachedSizes[indexPath] { return size }
         guard let delegate = layout.collectionView?.delegate as? UICollectionViewDelegateFlowLayout else { return .zero }
+
         let width = layout.columnWidth(forColumnCount: columns, inSection: indexPath.section, delegate: delegate)
         let target = CGSize(width: width, height: 0)
-        return prototypeCell.systemLayoutSizeFitting(target, withHorizontalFittingPriority: .required, verticalFittingPriority: .fittingSizeLevel)
+        let prototype = prototypeCell(for: indexPath)
+        let size = prototype.systemLayoutSizeFitting(target, withHorizontalFittingPriority: .required, verticalFittingPriority: .fittingSizeLevel)
+        cachedSizes[indexPath] = size
+
+        return size
+    }
+
+    public func invalidate(indexPath: IndexPath) {
+        cachedSizes[indexPath] = nil
+    }
+
+    public func invalidateAll() {
+        cachedSizes.removeAll()
     }
 
 }

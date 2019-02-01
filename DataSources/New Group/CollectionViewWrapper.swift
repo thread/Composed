@@ -29,6 +29,8 @@ internal final class CollectionViewWrapper: NSObject, UICollectionViewDataSource
     internal let collectionView: UICollectionView
     internal let dataSource: DataSource
 
+    private var layoutStrategies: [Int: FlowLayoutStrategy] = [:]
+
     internal init(collectionView: UICollectionView, dataSource: DataSource) {
         self.collectionView = collectionView
         self.dataSource = dataSource
@@ -39,18 +41,34 @@ internal final class CollectionViewWrapper: NSObject, UICollectionViewDataSource
         collectionView.dataSource = self
     }
 
+    private func layoutStrategy(in section: Int) -> FlowLayoutStrategy {
+        if let strategy = layoutStrategies[section] { return strategy }
+        let strategy = dataSource.layoutStrategy(in: section)
+        layoutStrategies[section] = strategy
+        return strategy
+    }
+
+    internal func invalidateAll() {
+        layoutStrategies.removeAll()
+    }
+
     @objc internal func numberOfSections(in collectionView: UICollectionView) -> Int {
         return dataSource.numberOfSections
     }
 
     @objc public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return dataSource.numberOfElements(inSection: section)
+        return dataSource.numberOfElements(in: section)
     }
 
     @objc internal func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cellType = dataSource.cellType(for: indexPath)
-        collectionView.register(nibType: cellType.self)
-        return collectionView.dequeueReusableCell(withReuseIdentifier: cellType.reuseIdentifier, for: indexPath)
+        switch dataSource.cellSource(for: indexPath) {
+        case let .nib(type):
+            collectionView.register(nibType: type)
+            return collectionView.dequeueReusableCell(withReuseIdentifier: type.reuseIdentifier, for: indexPath)
+        case let .class(type):
+            collectionView.register(type, forCellWithReuseIdentifier: type.reuseIdentifier)
+            return collectionView.dequeueReusableCell(withReuseIdentifier: type.reuseIdentifier, for: indexPath)
+        }
     }
 
     @objc internal func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
@@ -59,29 +77,37 @@ internal final class CollectionViewWrapper: NSObject, UICollectionViewDataSource
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         guard let layout = collectionViewLayout as? UICollectionViewFlowLayout else { return .zero }
-        return dataSource.layoutStrategy(for: indexPath.section).cellSize(for: indexPath, in: layout)
+        let strategy = layoutStrategy(in: indexPath.section)
+        let prototype = strategy.prototypeCell(for: indexPath)
+        dataSource.prepare(cell: prototype, at: indexPath)
+        return strategy.size(forCell: prototype, at: indexPath, in: layout)
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return dataSource.layoutStrategy(for: section).insets(in: section)
+        return layoutStrategy(in: section).insets(in: section)
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return dataSource.layoutStrategy(for: section).horizontalSpacing(in: section)
+        return dataSource.layoutStrategy(in: section).horizontalSpacing(in: section)
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return dataSource.layoutStrategy(for: section).verticalSpacing(in: section)
+        return layoutStrategy(in: section).verticalSpacing(in: section)
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return dataSource.layoutStrategy(for: section).headerStrategy?.headerSize(in: section, in: collectionViewLayout) ?? .zero
+        return layoutStrategy(in: section).headerStrategy?.headerSize(in: section, in: collectionViewLayout) ?? .zero
     }
 
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let supplementaryType = dataSource.supplementType(for: indexPath, ofKind: kind)
-        collectionView.register(nibType: supplementaryType.self, kind: kind)
-        return collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: supplementaryType.reuseIdentifier, for: indexPath)
+        switch dataSource.supplementViewSource(for: indexPath, ofKind: kind) {
+        case let .nib(type):
+            collectionView.register(nibType: type.self, kind: kind)
+            return collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: type.reuseIdentifier, for: indexPath)
+        case let .class(type):
+            collectionView.register(type, forSupplementaryViewOfKind: kind, withReuseIdentifier: type.reuseIdentifier)
+            return collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: type.reuseIdentifier, for: indexPath)
+        }
     }
 
     func collectionView(_ collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, at indexPath: IndexPath) {

@@ -64,19 +64,15 @@ open class SimpleDataSource<Element>: CollectionDataSource {
         return nil
     }
 
-    public func localIndexPath(forGlobal indexPath: IndexPath) -> IndexPath? {
-        return indexPath
-    }
-
-    open func cellType(for indexPath: IndexPath) -> DataReusableView.Type {
+    open func cellSource(for indexPath: IndexPath) -> DataSourceViewSource {
         fatalError("Implement in subclass")
     }
 
-    open func supplementType(for indexPath: IndexPath, ofKind kind: String) -> DataReusableView.Type {
+    open func supplementViewSource(for indexPath: IndexPath, ofKind kind: String) -> DataSourceViewSource {
         fatalError("Implement in subclass")
     }
 
-    open func layoutStrategy(for section: Int) -> FlowLayoutStrategy {
+    open func layoutStrategy(in section: Int) -> FlowLayoutStrategy {
         fatalError("Implement in subclass")
     }
 
