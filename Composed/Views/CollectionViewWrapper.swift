@@ -12,8 +12,8 @@ extension UICollectionReusableView: DataReusableView {
     }
 }
 
-extension UICollectionView {
-    public func register(nibType: DataReusableView.Type, kind: String? = nil) {
+private extension UICollectionView {
+    func register(nibType: DataReusableView.Type, kind: String? = nil) {
         let nib = UINib(nibName: String(describing: nibType), bundle: Bundle(for: nibType))
 
         if let kind = kind {

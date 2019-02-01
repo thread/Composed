@@ -1,6 +1,6 @@
 import UIKit
 
-public enum FlowLayoutSectionPinningBehaviour {
+public enum FlowLayoutGlobalPinningBehaviour {
     case alwaysVisible // remains on screen
     case prefersFollowContent // visible when contentOffset.y <= 0, otherwise follow content off-screen
 }
@@ -19,7 +19,7 @@ open class FlowLayout: UICollectionViewFlowLayout {
     public var globalHeaderPinsToContent: Bool = true
     public var globalHeaderMaxHeight: CGFloat = .greatestFiniteMagnitude
     public var globalHeaderInsetReference: SectionInsetReference = .fromContentInset
-    public var globalHeaderScrollingBehaviour: FlowLayoutSectionPinningBehaviour = .alwaysVisible
+    public var globalHeaderScrollingBehaviour: FlowLayoutGlobalPinningBehaviour = .alwaysVisible
     public var globalHeaderSpacing: CGFloat = 0
 
     public var globalFooterPinsToBounds: Bool = true

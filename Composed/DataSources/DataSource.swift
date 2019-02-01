@@ -16,7 +16,7 @@ public protocol DataSourceUpdateDelegate: class {
     func dataSource(_ dataSource: DataSource, performBatchUpdates updates: () -> Void, completion: ((Bool) -> Void)?)
 }
 
-public enum DataSourceViewSource {
+public enum ViewSource {
     case nib(DataReusableView.Type)
     case `class`(DataReusableView.Type)
 }
@@ -54,8 +54,8 @@ public protocol DataSource: class {
     /// - Returns: A layout strategy for the specified section
     func layoutStrategy(in section: Int) -> FlowLayoutStrategy
 
-    func cellSource(for indexPath: IndexPath) -> DataSourceViewSource
-    func supplementViewSource(for indexPath: IndexPath, ofKind kind: String) -> DataSourceViewSource
+    func cellSource(for indexPath: IndexPath) -> ViewSource
+    func supplementViewSource(for indexPath: IndexPath, ofKind kind: String) -> ViewSource
 
 
     /// Called when the cell is about to be displayed, use this method to prepare the cell's contents
@@ -77,8 +77,6 @@ public protocol DataSource: class {
 public extension DataSource {
 
     var isRoot: Bool { return !(updateDelegate is DataSource) }
-    var title: String? { return nil }
-    var image: UIImage? { return nil }
     var numberOfSections: Int { return 1 }
 
     var isEmpty: Bool {

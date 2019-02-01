@@ -22,12 +22,7 @@ open class DataSourceViewController: UIViewController {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         self.wrapper = CollectionViewWrapper(collectionView: collectionView, dataSource: dataSource)
         self.layout = layout
-
         super.init(nibName: nil, bundle: nil)
-
-        self.navigationItem.title = dataSource.title
-        self.tabBarItem.title = dataSource.title
-        self.tabBarItem.image = dataSource.image
     }
 
     public required init?(coder aDecoder: NSCoder) {

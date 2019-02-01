@@ -64,11 +64,11 @@ open class SimpleDataSource<Element>: CollectionDataSource {
         return nil
     }
 
-    open func cellSource(for indexPath: IndexPath) -> DataSourceViewSource {
+    open func cellSource(for indexPath: IndexPath) -> ViewSource {
         fatalError("Implement in subclass")
     }
 
-    open func supplementViewSource(for indexPath: IndexPath, ofKind kind: String) -> DataSourceViewSource {
+    open func supplementViewSource(for indexPath: IndexPath, ofKind kind: String) -> ViewSource {
         fatalError("Implement in subclass")
     }
 

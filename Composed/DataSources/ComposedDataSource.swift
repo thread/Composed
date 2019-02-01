@@ -187,12 +187,12 @@ extension ComposedDataSource {
         return (dataSource, local)
     }
 
-    public func cellSource(for indexPath: IndexPath) -> DataSourceViewSource {
+    public func cellSource(for indexPath: IndexPath) -> ViewSource {
         let (dataSource, local) = dataSourceAndLocalIndexPath(for: indexPath)
         return dataSource.cellSource(for: local)
     }
 
-    public func supplementViewSource(for indexPath: IndexPath, ofKind kind: String) -> DataSourceViewSource {
+    public func supplementViewSource(for indexPath: IndexPath, ofKind kind: String) -> ViewSource {
         let (dataSource, local) = dataSourceAndLocalIndexPath(for: indexPath)
         return dataSource.supplementViewSource(for: local, ofKind: kind)
     }
