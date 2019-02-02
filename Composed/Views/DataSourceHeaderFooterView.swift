@@ -8,7 +8,7 @@ import UIKit
  always return 0 for the `zPosition`. This is to workaround an iOS bug that
  causes headers to render over the scrollbar
  */
-open class DataSourceHeaderView: UICollectionReusableView {
+open class DataSourceHeaderFooterView: UICollectionReusableView {
 
     open override class var layerClass: AnyClass {
         return FixedZPositionLayer.self

@@ -187,29 +187,24 @@ extension ComposedDataSource {
         return (dataSource, local)
     }
 
-    public func cellSource(for indexPath: IndexPath) -> ViewSource {
+    public func metrics(for section: Int) -> DataSourceSectionMetrics {
+        let (dataSouruce, local) = localDataSourceAndSection(for: section)
+        return dataSouruce.metrics(for: local)
+    }
+
+    public func cellConfiguration(for indexPath: IndexPath) -> CellConfiguration {
         let (dataSource, local) = dataSourceAndLocalIndexPath(for: indexPath)
-        return dataSource.cellSource(for: local)
+        return dataSource.cellConfiguration(for: local)
     }
 
-    public func supplementViewSource(for indexPath: IndexPath, ofKind kind: String) -> ViewSource {
-        let (dataSource, local) = dataSourceAndLocalIndexPath(for: indexPath)
-        return dataSource.supplementViewSource(for: local, ofKind: kind)
+    public func headerConfiguration(for section: Int) -> HeaderFooterConfiguration? {
+        let (dataSouruce, local) = localDataSourceAndSection(for: section)
+        return dataSouruce.headerConfiguration(for: local)
     }
 
-    public func layoutStrategy(in section: Int) -> FlowLayoutStrategy {
-        let (dataSource, local) = localDataSourceAndSection(for: section)
-        return dataSource.layoutStrategy(in: local)
-    }
-
-    public func prepare(cell: DataSourceCell, at indexPath: IndexPath) {
-        let (dataSource, local) = dataSourceAndLocalIndexPath(for: indexPath)
-        dataSource.prepare(cell: cell, at: local)
-    }
-
-    public func prepare(supplementaryView: UICollectionReusableView, at indexPath: IndexPath, of kind: String) {
-        let dataSource = self.dataSource(forSection: indexPath.section)
-        dataSource?.prepare(supplementaryView: supplementaryView, at: indexPath, of: kind)
+    public func footerConfiguration(for section: Int) -> HeaderFooterConfiguration? {
+        let (dataSouruce, local) = localDataSourceAndSection(for: section)
+        return dataSouruce.footerConfiguration(for: local)
     }
 
 }

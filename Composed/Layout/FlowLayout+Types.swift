@@ -8,11 +8,6 @@ public extension UICollectionView {
 
 @objc public protocol FlowLayoutDelegate: UICollectionViewDelegateFlowLayout {
 
-    /// Returns the layout strategy for the specified section.
-    @objc optional func collectionView(_ collectionView: UICollectionView,
-                              layout collectionViewLayout: UICollectionViewLayout,
-                              layoutStrategyForSectionAt section: Int) -> FlowLayoutStrategy
-
     /// Returns the height for the global header. Return 0 to hide the global header
     @objc optional func heightForGlobalHeader(in collectionView: UICollectionView,
                                      layout collectionViewLayout: UICollectionViewLayout) -> CGFloat

@@ -16,9 +16,20 @@ public protocol DataSourceUpdateDelegate: class {
     func dataSource(_ dataSource: DataSource, performBatchUpdates updates: () -> Void, completion: ((Bool) -> Void)?)
 }
 
-public enum ViewSource {
-    case nib(DataReusableView.Type)
-    case `class`(DataReusableView.Type)
+public struct DataSourceSectionMetrics {
+
+    public let columnCount: Int
+    public let insets: UIEdgeInsets
+    public let horizontalSpacing: CGFloat
+    public let verticalSpacing: CGFloat
+
+    public init(columnCount: Int, insets: UIEdgeInsets, horizontalSpacing: CGFloat, verticalSpacing: CGFloat) {
+        self.columnCount = columnCount
+        self.insets = insets
+        self.horizontalSpacing = horizontalSpacing
+        self.verticalSpacing = verticalSpacing
+    }
+
 }
 
 /// Represents a definition of a DataSource for representing a single source of data and its associated visual representations
@@ -48,29 +59,10 @@ public protocol DataSource: class {
     /// - Returns: An `IndexPath` if the specified predicate can be satisfied, nil otherwise
     func indexPath(where predicate: (Any) -> Bool) -> IndexPath?
 
-    /// The `LayoutStrategy` for the specified section
-    ///
-    /// - Parameter section: The section index
-    /// - Returns: A layout strategy for the specified section
-    func layoutStrategy(in section: Int) -> FlowLayoutStrategy
-
-    func cellSource(for indexPath: IndexPath) -> ViewSource
-    func supplementViewSource(for indexPath: IndexPath, ofKind kind: String) -> ViewSource
-
-
-    /// Called when the cell is about to be displayed, use this method to prepare the cell's contents
-    ///
-    /// - Parameters:
-    ///   - cell: The cell to prepare
-    ///   - indexPath: The indexPath of the cell
-    func prepare(cell: DataSourceCell, at indexPath: IndexPath)
-
-    /// Called when the supplementaryView is about to be displayed, use this method to prepare the view's contents
-    ///
-    /// - Parameters:
-    ///   - cell: The supplementaryView to prepare
-    ///   - indexPath: The indexPath of the cell
-    func prepare(supplementaryView: UICollectionReusableView, at indexPath: IndexPath, of kind: String)
+    func metrics(for section: Int) -> DataSourceSectionMetrics
+    func cellConfiguration(for indexPath: IndexPath) -> CellConfiguration
+    func headerConfiguration(for section: Int) -> HeaderFooterConfiguration?
+    func footerConfiguration(for section: Int) -> HeaderFooterConfiguration?
 
 }
 

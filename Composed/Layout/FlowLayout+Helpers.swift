@@ -2,14 +2,6 @@ import UIKit
 
 internal extension FlowLayout {
 
-    func layoutStrategy(inSection section: Int) -> FlowLayoutStrategy {
-        guard let collectionView = collectionView else { return FlowLayoutNoStrategy() }
-
-        return (collectionView.delegate as? FlowLayoutDelegate)?
-            .collectionView?(collectionView, layout: self, layoutStrategyForSectionAt: section)
-            ?? FlowLayoutNoStrategy()
-    }
-
     var sizeForGlobalHeader: CGSize {
         guard let collectionView = collectionView else { return .zero }
         let height = (collectionView.delegate as? FlowLayoutDelegate)?

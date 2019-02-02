@@ -12,7 +12,7 @@ public extension UICollectionViewFlowLayout {
         return (availableWiwdth / CGFloat(columnCount)).rounded(.down)
     }
 
-    func boundaryMetrics(for attributes: UICollectionViewLayoutAttributes) -> (minY: CGFloat, maxY: CGFloat) {
+    internal func boundaryMetrics(for attributes: UICollectionViewLayoutAttributes) -> (minY: CGFloat, maxY: CGFloat) {
         guard let collectionView = collectionView  else { return (0, 0) }
         guard let delegate = collectionView.delegate as? UICollectionViewDelegateFlowLayout else { return (0, 0) }
 
@@ -41,7 +41,7 @@ public extension UICollectionViewFlowLayout {
         return (minY, maxY)
     }
 
-    func metrics(forSection section: Int, delegate: UICollectionViewDelegateFlowLayout) -> FlowLayoutSectionMetrics {
+    internal func metrics(forSection section: Int, delegate: UICollectionViewDelegateFlowLayout) -> FlowLayoutSectionMetrics {
         guard let collectionView = collectionView else { return .zero }
 
         let headerHeight = delegate.collectionView?(collectionView, layout: self, referenceSizeForHeaderInSection: section).height
@@ -66,7 +66,7 @@ public extension UICollectionViewFlowLayout {
                                         verticalSpacing: lineSpacing)
     }
 
-    func firstSectionMetrics() -> FlowLayoutSectionMetrics {
+    internal func firstSectionMetrics() -> FlowLayoutSectionMetrics {
         guard let layoutDelegate = collectionView?.delegate as? UICollectionViewDelegateFlowLayout else { return .zero }
         return metrics(forSection: 0, delegate: layoutDelegate)
     }

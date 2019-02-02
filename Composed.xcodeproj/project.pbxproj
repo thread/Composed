@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		540221232195C45000F0E173 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 540221222195C44F00F0E173 /* AppDelegate.swift */; };
-		540221252195C45000F0E173 /* PeopleDataSouruce.swift in Sources */ = {isa = PBXBuildFile; fileRef = 540221242195C45000F0E173 /* PeopleDataSouruce.swift */; };
+		540221252195C45000F0E173 /* PeopleDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 540221242195C45000F0E173 /* PeopleDataSource.swift */; };
 		540221282195C45000F0E173 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 540221262195C45000F0E173 /* Main.storyboard */; };
 		5402212A2195C45100F0E173 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 540221292195C45100F0E173 /* Assets.xcassets */; };
 		5402212D2195C45100F0E173 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5402212B2195C45100F0E173 /* LaunchScreen.storyboard */; };
@@ -27,12 +27,11 @@
 		5402216D2195D48400F0E173 /* DataSourceChangeSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5402216C2195D48400F0E173 /* DataSourceChangeSet.swift */; };
 		546865222204DDB500E79B56 /* CollectionViewWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546865212204DDB500E79B56 /* CollectionViewWrapper.swift */; };
 		546865272204EAFD00E79B56 /* UIEdgeInsets+All.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546865262204EAFD00E79B56 /* UIEdgeInsets+All.swift */; };
-		546865292204EC1B00E79B56 /* FlowLayoutStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546865282204EC1B00E79B56 /* FlowLayoutStrategy.swift */; };
-		5468652B2204EC4B00E79B56 /* FlowLayoutColumnLayoutStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5468652A2204EC4B00E79B56 /* FlowLayoutColumnLayoutStrategy.swift */; };
+		546865312205233E00E79B56 /* DataSourceConfigurations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546865302205233E00E79B56 /* DataSourceConfigurations.swift */; };
 		546AA49521D5178900588DE4 /* PersonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 546AA49421D5178900588DE4 /* PersonCell.xib */; };
 		546AA49721D51C8000588DE4 /* NibLoadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546AA49621D51C8000588DE4 /* NibLoadable.swift */; };
 		54C4914E21999703009C7EBA /* DataSourceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C4914721999703009C7EBA /* DataSourceCell.swift */; };
-		54C4915121999703009C7EBA /* DataSourceHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C4914A21999703009C7EBA /* DataSourceHeaderView.swift */; };
+		54C4915121999703009C7EBA /* DataSourceHeaderFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C4914A21999703009C7EBA /* DataSourceHeaderFooterView.swift */; };
 		54C4915221999703009C7EBA /* DataSourceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C4914B21999703009C7EBA /* DataSourceViewController.swift */; };
 		54C4915E21999721009C7EBA /* FlowLayoutInvalidationContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C4915821999721009C7EBA /* FlowLayoutInvalidationContext.swift */; };
 		54C4915F21999721009C7EBA /* FlowLayout+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C4915921999721009C7EBA /* FlowLayout+Helpers.swift */; };
@@ -84,7 +83,7 @@
 /* Begin PBXFileReference section */
 		5402211F2195C44F00F0E173 /* Playground.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Playground.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		540221222195C44F00F0E173 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		540221242195C45000F0E173 /* PeopleDataSouruce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleDataSouruce.swift; sourceTree = "<group>"; };
+		540221242195C45000F0E173 /* PeopleDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleDataSource.swift; sourceTree = "<group>"; };
 		540221272195C45000F0E173 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		540221292195C45100F0E173 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5402212C2195C45100F0E173 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -106,12 +105,11 @@
 		546865212204DDB500E79B56 /* CollectionViewWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewWrapper.swift; sourceTree = "<group>"; };
 		546865242204E3CA00E79B56 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		546865262204EAFD00E79B56 /* UIEdgeInsets+All.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIEdgeInsets+All.swift"; sourceTree = "<group>"; };
-		546865282204EC1B00E79B56 /* FlowLayoutStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowLayoutStrategy.swift; sourceTree = "<group>"; };
-		5468652A2204EC4B00E79B56 /* FlowLayoutColumnLayoutStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowLayoutColumnLayoutStrategy.swift; sourceTree = "<group>"; };
+		546865302205233E00E79B56 /* DataSourceConfigurations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSourceConfigurations.swift; sourceTree = "<group>"; };
 		546AA49421D5178900588DE4 /* PersonCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PersonCell.xib; sourceTree = "<group>"; };
 		546AA49621D51C8000588DE4 /* NibLoadable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NibLoadable.swift; sourceTree = "<group>"; };
 		54C4914721999703009C7EBA /* DataSourceCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSourceCell.swift; sourceTree = "<group>"; };
-		54C4914A21999703009C7EBA /* DataSourceHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSourceHeaderView.swift; sourceTree = "<group>"; };
+		54C4914A21999703009C7EBA /* DataSourceHeaderFooterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSourceHeaderFooterView.swift; sourceTree = "<group>"; };
 		54C4914B21999703009C7EBA /* DataSourceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSourceViewController.swift; sourceTree = "<group>"; };
 		54C4915821999721009C7EBA /* FlowLayoutInvalidationContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlowLayoutInvalidationContext.swift; sourceTree = "<group>"; };
 		54C4915921999721009C7EBA /* FlowLayout+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FlowLayout+Helpers.swift"; sourceTree = "<group>"; };
@@ -174,7 +172,7 @@
 			isa = PBXGroup;
 			children = (
 				540221222195C44F00F0E173 /* AppDelegate.swift */,
-				540221242195C45000F0E173 /* PeopleDataSouruce.swift */,
+				540221242195C45000F0E173 /* PeopleDataSource.swift */,
 				546AA49421D5178900588DE4 /* PersonCell.xib */,
 				54D0A8A421F64AF600C65B72 /* HeaderView.xib */,
 				540221262195C45000F0E173 /* Main.storyboard */,
@@ -219,7 +217,8 @@
 			isa = PBXGroup;
 			children = (
 				54C4914721999703009C7EBA /* DataSourceCell.swift */,
-				54C4914A21999703009C7EBA /* DataSourceHeaderView.swift */,
+				54C4914A21999703009C7EBA /* DataSourceHeaderFooterView.swift */,
+				546865302205233E00E79B56 /* DataSourceConfigurations.swift */,
 				546865212204DDB500E79B56 /* CollectionViewWrapper.swift */,
 				54C4914B21999703009C7EBA /* DataSourceViewController.swift */,
 			);
@@ -235,8 +234,6 @@
 				54C4915C21999721009C7EBA /* FlowLayout+Metrics.swift */,
 				54C4915821999721009C7EBA /* FlowLayoutInvalidationContext.swift */,
 				54C4915A21999721009C7EBA /* FlowLayoutAttributes.swift */,
-				546865282204EC1B00E79B56 /* FlowLayoutStrategy.swift */,
-				5468652A2204EC4B00E79B56 /* FlowLayoutColumnLayoutStrategy.swift */,
 			);
 			path = Layout;
 			sourceTree = "<group>";
@@ -412,7 +409,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				540221252195C45000F0E173 /* PeopleDataSouruce.swift in Sources */,
+				540221252195C45000F0E173 /* PeopleDataSource.swift in Sources */,
 				540221232195C45000F0E173 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -424,7 +421,7 @@
 				5402215F2195C56400F0E173 /* ComposedDataSource.swift in Sources */,
 				5402216B2195C81800F0E173 /* DataSourceHashableWrapper.swift in Sources */,
 				54C4914E21999703009C7EBA /* DataSourceCell.swift in Sources */,
-				54C4915121999703009C7EBA /* DataSourceHeaderView.swift in Sources */,
+				54C4915121999703009C7EBA /* DataSourceHeaderFooterView.swift in Sources */,
 				5402215B2195C54C00F0E173 /* DataSource.swift in Sources */,
 				5402216D2195D48400F0E173 /* DataSourceChangeSet.swift in Sources */,
 				546AA49721D51C8000588DE4 /* NibLoadable.swift in Sources */,
@@ -432,9 +429,8 @@
 				540221692195C5FE00F0E173 /* ComposedMappings.swift in Sources */,
 				540221652195C59100F0E173 /* CollectionDataSource.swift in Sources */,
 				54C4916221999721009C7EBA /* FlowLayout+Metrics.swift in Sources */,
+				546865312205233E00E79B56 /* DataSourceConfigurations.swift in Sources */,
 				540221632195C58900F0E173 /* AggregateDataSource.swift in Sources */,
-				5468652B2204EC4B00E79B56 /* FlowLayoutColumnLayoutStrategy.swift in Sources */,
-				546865292204EC1B00E79B56 /* FlowLayoutStrategy.swift in Sources */,
 				5402215D2195C55300F0E173 /* SimpleDataSource.swift in Sources */,
 				54C4916321999721009C7EBA /* FlowLayout+Types.swift in Sources */,
 				546865272204EAFD00E79B56 /* UIEdgeInsets+All.swift in Sources */,

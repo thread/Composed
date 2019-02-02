@@ -29,11 +29,6 @@ open class DataSourceViewController: UIViewController {
         fatalError()
     }
 
-    open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        wrapper.invalidateAll()
-    }
-
     open override func viewDidLoad() {
         super.viewDidLoad()
 

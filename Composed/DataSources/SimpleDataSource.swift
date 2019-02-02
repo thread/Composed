@@ -64,24 +64,20 @@ open class SimpleDataSource<Element>: CollectionDataSource {
         return nil
     }
 
-    open func cellSource(for indexPath: IndexPath) -> ViewSource {
+    open func metrics(for section: Int) -> DataSourceSectionMetrics {
+        return DataSourceSectionMetrics(columnCount: 1, insets: .zero, horizontalSpacing: 0, verticalSpacing: 0)
+    }
+
+    open func cellConfiguration(for indexPath: IndexPath) -> CellConfiguration {
         fatalError("Implement in subclass")
     }
 
-    open func supplementViewSource(for indexPath: IndexPath, ofKind kind: String) -> ViewSource {
-        fatalError("Implement in subclass")
+    open func headerConfiguration(for section: Int) -> HeaderFooterConfiguration? {
+        return nil
     }
 
-    open func layoutStrategy(in section: Int) -> FlowLayoutStrategy {
-        fatalError("Implement in subclass")
-    }
-
-    open func prepare(cell: DataSourceCell, at indexPath: IndexPath) {
-        fatalError("Implement in subclass")
-    }
-
-    open func prepare(supplementaryView: UICollectionReusableView, at indexPath: IndexPath, of kind: String) {
-        fatalError("Implement in subclass")
+    open func footerConfiguration(for section: Int) -> HeaderFooterConfiguration? {
+        return nil
     }
 
 }

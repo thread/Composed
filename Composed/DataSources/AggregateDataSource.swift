@@ -14,7 +14,7 @@ public extension AggregateDataSource {
         return children.lazy.allSatisfy { $0.isEmpty }
     }
 
-    func didBecbomeActive() {
+    func didBecomeActive() {
         children.forEach { $0.didBecomeActive() }
     }
 

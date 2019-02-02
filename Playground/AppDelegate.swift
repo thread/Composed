@@ -11,14 +11,14 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
             Person(name: "Shaps Benkau", age: 38),
             Person(name: "Uwe", age: 60),
             Person(name: "Anne", age: 35)
-            ])
+        ])
 
         family.title = "Family"
 
         let friends = PeopleDataSource(elements: [
             Person(name: "Stewart", age: 39),
             Person(name: "Joseph Duffy", age: 24)
-            ])
+        ])
 
         friends.title = "Friends"
 
@@ -26,12 +26,6 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 
         composed.append(family)
         composed.append(friends)
-//        composed.append(family)
-//        composed.append(friends)
-//        composed.append(family)
-//        composed.append(friends)
-//        composed.append(family)
-//        composed.append(friends)
 
         let controller = DataSourceViewController(dataSource: composed)
 
