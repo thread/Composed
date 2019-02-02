@@ -29,7 +29,7 @@
                 <constraint firstItem="HNj-Dt-zbn" firstAttribute="top" secondItem="GZS-lS-8MN" secondAttribute="top" constant="16" id="dRQ-7U-TWU"/>
                 <constraint firstItem="HNj-Dt-zbn" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="GZS-lS-8MN" secondAttribute="leading" constant="16" id="i1c-L8-nRL"/>
                 <constraint firstItem="HNj-Dt-zbn" firstAttribute="leading" secondItem="GZS-lS-8MN" secondAttribute="leading" constant="16" id="oYP-Ih-2Bl"/>
-                <constraint firstItem="GZS-lS-8MN" firstAttribute="bottom" secondItem="HNj-Dt-zbn" secondAttribute="bottom" priority="999" constant="16" id="ysd-Yu-eQn"/>
+                <constraint firstItem="GZS-lS-8MN" firstAttribute="bottom" secondItem="HNj-Dt-zbn" secondAttribute="bottom" priority="999" id="ysd-Yu-eQn"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="GZS-lS-8MN"/>
             <connections>
