@@ -36,7 +36,7 @@ final class PeopleDataSource: SimpleDataSource<Person> {
     private let prototypeHeader = HeaderView.fromNib
 
     override func metrics(for section: Int) -> DataSourceSectionMetrics {
-        return DataSourceSectionMetrics(columnCount: 2, insets: UIEdgeInsets(all: 16), horizontalSpacing: 4, verticalSpacing: 4)
+        return DataSourceSectionMetrics(columnCount: 2, insets: UIEdgeInsets(horizontal: 16, vertical: 2), horizontalSpacing: 4, verticalSpacing: 4)
     }
 
     override func cellConfiguration(for indexPath: IndexPath) -> CellConfiguration {
@@ -45,7 +45,7 @@ final class PeopleDataSource: SimpleDataSource<Person> {
         }
     }
 
-    override func headerConfiguration(for section: Int) -> HeaderFooterConfiguration {
+    override func headerConfiguration(for section: Int) -> HeaderFooterConfiguration? {
         return HeaderFooterConfiguration(prototype: prototypeHeader, dequeueSource: .nib) { view, indexPath in
             (view as? HeaderView)?.prepare(title: self.title)
         }
