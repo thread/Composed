@@ -188,8 +188,8 @@ extension ComposedDataSource {
     }
 
     public func metrics(for section: Int) -> DataSourceSectionMetrics {
-        let (dataSouruce, local) = localDataSourceAndSection(for: section)
-        return dataSouruce.metrics(for: local)
+        let (dataSource, local) = localDataSourceAndSection(for: section)
+        return dataSource.metrics(for: local)
     }
 
     public func cellConfiguration(for indexPath: IndexPath) -> CellConfiguration {
