@@ -1,83 +1,42 @@
-open class SimpleDataSource<Element>: CollectionDataSource {
+open class BasicDataSource<Store>: CollectionDataSource where Store: DataStore {
 
+    private let store: Store
     public weak var updateDelegate: DataSourceUpdateDelegate?
-    public private(set) var elements: [Element] = []
 
-    public init(elements: [Element] = []) {
-        self.elements = elements
+    public var isEmpty: Bool {
+        return store.isEmpty
     }
 
-    public func setElements(_ elements: [Element], changeset: DataSourceChangeset? = nil) {
-        guard let changeset = changeset else {
-            self.elements = elements
-            updateDelegate?.dataSourceDidReload(self)
-            return
-        }
-
-        let updates = changeset.updates
-
-        updateDelegate?.dataSource(self, performBatchUpdates: {
-            self.elements = elements
-            updateDelegate?.dataSource(self, willPerform: updates)
-
-            if !changeset.deletedSections.isEmpty {
-                updateDelegate?.dataSource(self, didDeleteSections: IndexSet(changeset.deletedSections))
-            }
-
-            if !changeset.insertedSections.isEmpty {
-                updateDelegate?.dataSource(self, didInsertSections: IndexSet(changeset.insertedSections))
-            }
-
-            if !changeset.updatedSections.isEmpty {
-                updateDelegate?.dataSource(self, didUpdateSections: IndexSet(changeset.updatedSections))
-            }
-
-            for (source, target) in changeset.movedSections {
-                updateDelegate?.dataSource(self, didMoveSection: source, to: target)
-            }
-
-            if !changeset.deletedIndexPaths.isEmpty {
-                updateDelegate?.dataSource(self, didDeleteIndexPaths: changeset.deletedIndexPaths)
-            }
-
-            if !changeset.insertedIndexPaths.isEmpty {
-                updateDelegate?.dataSource(self, didInsertIndexPaths: changeset.insertedIndexPaths)
-            }
-
-            if !changeset.updatedIndexPaths.isEmpty {
-                updateDelegate?.dataSource(self, didUpdateIndexPaths: changeset.updatedIndexPaths)
-            }
-
-            for (source, target) in changeset.movedIndexPaths {
-                updateDelegate?.dataSource(self, didMoveFromIndexPath: source, toIndexPath: target)
-            }
-        }, completion: { [unowned self] _ in
-            self.updateDelegate?.dataSource(self, didPerform: updates)
-        })
+    public init(store: Store) {
+        self.store = store
     }
 
-    public func indexPath(where predicate: (Any) -> Bool) -> IndexPath? {
-        for (index, element) in elements.enumerated() {
-            if predicate(element) { return IndexPath(item: index, section: 0) }
-        }
-
-        return nil
+    public var numberOfSections: Int {
+        return store.numberOfSections
     }
 
-    open func metrics(for section: Int) -> DataSourceSectionMetrics {
-        return DataSourceSectionMetrics(columnCount: 1, insets: .zero, horizontalSpacing: 0, verticalSpacing: 0)
+    public func numberOfElements(in section: Int) -> Int {
+        return store.numberOfElements(in: section)
     }
 
-    open func cellConfiguration(for indexPath: IndexPath) -> CellConfiguration {
-        fatalError("Implement in subclass")
+    public func indexPath(where predicate: @escaping (Any) -> Bool) -> IndexPath? {
+        return store.indexPath(where: predicate)
     }
 
-    open func headerConfiguration(for section: Int) -> HeaderFooterConfiguration? {
-        return nil
+    public func element(at indexPath: IndexPath) -> Store.Element {
+        return store.element(at: indexPath)
     }
 
-    open func footerConfiguration(for section: Int) -> HeaderFooterConfiguration? {
-        return nil
+    public func dataSourceFor(global section: Int) -> (dataSource: DataSource, localSection: Int) {
+        return (self, section)
     }
+
+    public func dataSourceFor(global indexPath: IndexPath) -> (dataSource: DataSource, localIndexPath: IndexPath) {
+        return (self, indexPath)
+    }
+
+    open func didBecomeActive() { /* do nothing by default */ }
+    open func willResignActive() { /* do nothing by default */ }
+    open func invalidate() { /* do nothing by default */ }
 
 }

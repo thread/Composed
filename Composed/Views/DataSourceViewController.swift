@@ -12,13 +12,15 @@ open class DataSourceViewController: UIViewController {
 
     private let wrapper: CollectionViewWrapper
     public let layout: UICollectionViewLayout
+    public weak var delegate: DataSourceViewDelegate? {
+        didSet { wrapper.delegate = delegate }
+    }
 
     deinit {
         dataSource.willResignActive()
     }
 
-    public init(dataSource: DataSource, layout: UICollectionViewLayout? = nil) {
-        let layout = layout ?? FlowLayout()
+    public init(dataSource: DataSource, layout: UICollectionViewLayout = FlowLayout()) {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         self.wrapper = CollectionViewWrapper(collectionView: collectionView, dataSource: dataSource)
         self.layout = layout
@@ -52,6 +54,8 @@ open class DataSourceViewController: UIViewController {
         collectionView.dataSource = wrapper
         collectionView.delegate = wrapper
 //        collectionView.prefetchDataSource = wrapper
+
+        collectionView.isPrefetchingEnabled = false
     }
 
     open override func viewWillAppear(_ animated: Bool) {
@@ -70,15 +74,17 @@ open class DataSourceViewController: UIViewController {
         dataSource.willResignActive()
     }
 
-    open func dataSource(_ dataSource: DataSource, willPerformOperations operations: [DataSourceUpdate]) { }
-    open func dataSource(_ dataSource: DataSource, didPerformOperations operations: [DataSourceUpdate]) { }
+    open override func setEditing(_ editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated: animated)
+        wrapper.setEditing(editing, animated: animated)
+    }
+
+    open func dataSource(_ dataSource: DataSource, willPerform updates: [DataSourceUpdate]) { }
+    open func dataSource(_ dataSource: DataSource, didPerform updates: [DataSourceUpdate]) { }
 
 }
 
 extension DataSourceViewController: DataSourceUpdateDelegate {
-
-    open func dataSource(_ dataSource: DataSource, willPerform updates: [DataSourceUpdate]) { }
-    open func dataSource(_ dataSource: DataSource, didPerform updates: [DataSourceUpdate]) { }
 
     public func dataSourceDidReload(_ dataSource: DataSource) {
         collectionView.reloadData()

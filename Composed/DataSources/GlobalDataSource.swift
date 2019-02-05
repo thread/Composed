@@ -1,18 +1,8 @@
-public final class GlobalDataSource<T> {
-
-    let data: T
-
-    public init(data: T) {
-        self.data = data
-    }
-
-}
-
-public final class RootDataSource<Header, Footer>: DataSource {
+public final class GlobalDataSource: DataSource {
 
     public let child: DataSource
-    public var globalHeaderDataSource: GlobalDataSource<Header>?
-    public var globalFooterDataSource: GlobalDataSource<Footer>?
+    public var globalHeaderConfiguration: HeaderFooterConfiguration?
+    public var globalFooterConfiguration: HeaderFooterConfiguration?
 
     public init(child: DataSource) {
         self.child = child
@@ -22,32 +12,40 @@ public final class RootDataSource<Header, Footer>: DataSource {
         didSet { child.updateDelegate = updateDelegate }
     }
 
+    public var numberOfSections: Int {
+        return child.numberOfSections
+    }
+
     public func numberOfElements(in section: Int) -> Int {
         return child.numberOfElements(in: section)
     }
 
-    public func indexPath(where predicate: (Any) -> Bool) -> IndexPath? {
+    public func indexPath(where predicate: @escaping (Any) -> Bool) -> IndexPath? {
         return child.indexPath(where: predicate)
     }
 
-    public func layoutStrategy(in section: Int) -> FlowLayoutStrategy {
-        return child.layoutStrategy(in: section)
+    public func dataSourceFor(global section: Int) -> (dataSource: DataSource, localSection: Int) {
+        return (child, section)
     }
 
-    public func cellSource(for indexPath: IndexPath) -> DataSourceViewSource {
-        return child.cellSource(for: indexPath)
+    public func dataSourceFor(global indexPath: IndexPath) -> (dataSource: DataSource, localIndexPath: IndexPath) {
+        return (child, indexPath)
     }
 
-    public func supplementViewSource(for indexPath: IndexPath, ofKind kind: String) -> DataSourceViewSource {
-        return child.supplementViewSource(for: indexPath, ofKind: kind)
+    public var isEmpty: Bool {
+        return child.isEmpty
     }
 
-    public func prepare(cell: DataSourceCell, at indexPath: IndexPath) {
-        child.prepare(cell: cell, at: indexPath)
+    public func didBecomeActive() {
+        child.didBecomeActive()
     }
 
-    public func prepare(supplementaryView: UICollectionReusableView, at indexPath: IndexPath, of kind: String) {
-        child.prepare(supplementaryView: supplementaryView, at: indexPath, of: kind)
+    public func willResignActive() {
+        child.willResignActive()
+    }
+
+    public func invalidate() {
+        child.invalidate()
     }
 
 }

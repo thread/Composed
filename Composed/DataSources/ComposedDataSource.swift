@@ -12,12 +12,12 @@ public final class ComposedDataSource: AggregateDataSource {
 
     private var _numberOfSections: Int = 0
     public var numberOfSections: Int {
-        invalidate()
+        _invalidate()
         return _numberOfSections
     }
 
     public func numberOfElements(in section: Int) -> Int {
-        invalidate()
+        _invalidate()
 
         let mapping = self.mapping(for: section)
         let local = mapping.localSection(forGlobal: section)
@@ -30,57 +30,17 @@ public final class ComposedDataSource: AggregateDataSource {
 
     public init() { }
 
-    public func setDataSources(_ dataSources: [DataSource], changeset: DataSourceChangeset? = nil) {
-        guard let changeset = changeset else {
-            // todo: update children
-            updateDelegate?.dataSourceDidReload(self)
-            return
-        }
-
-        let updates = changeset.updates
-
+    public func setDataSources(_ dataSources: [DataSource], animated: Bool) {
+        updateDelegate?.dataSource(self, willPerform: [])
         updateDelegate?.dataSource(self, performBatchUpdates: {
             removeAll()
-            dataSources.forEach {
-                let wrapper = DataSourceHashableWrapper($0)
-                _ = insert(wrapper: wrapper, at: mappings.count)
+            dataSources.forEach { append($0) }
+        }, completion: { [unowned self, updateDelegate] _ in
+            if !animated {
+                updateDelegate?.dataSourceDidReload(self)
             }
 
-            updateDelegate?.dataSource(self, willPerform: updates)
-
-            if !changeset.deletedSections.isEmpty {
-                updateDelegate?.dataSource(self, didDeleteSections: IndexSet(changeset.deletedSections))
-            }
-
-            if !changeset.insertedSections.isEmpty {
-                updateDelegate?.dataSource(self, didInsertSections: IndexSet(changeset.insertedSections))
-            }
-
-            if !changeset.updatedSections.isEmpty {
-                updateDelegate?.dataSource(self, didUpdateSections: IndexSet(changeset.updatedSections))
-            }
-
-            for (source, target) in changeset.movedSections {
-                updateDelegate?.dataSource(self, didMoveSection: source, to: target)
-            }
-
-            if !changeset.deletedIndexPaths.isEmpty {
-                updateDelegate?.dataSource(self, didDeleteIndexPaths: changeset.deletedIndexPaths)
-            }
-
-            if !changeset.insertedIndexPaths.isEmpty {
-                updateDelegate?.dataSource(self, didInsertIndexPaths: changeset.insertedIndexPaths)
-            }
-
-            if !changeset.updatedIndexPaths.isEmpty {
-                updateDelegate?.dataSource(self, didUpdateIndexPaths: changeset.updatedIndexPaths)
-            }
-
-            for (source, target) in changeset.movedIndexPaths {
-                updateDelegate?.dataSource(self, didMoveFromIndexPath: source, toIndexPath: target)
-            }
-        }, completion: { [unowned self] _ in
-            self.updateDelegate?.dataSource(self, didPerform: updates)
+            updateDelegate?.dataSource(self, didPerform: [])
         })
     }
 
@@ -89,12 +49,13 @@ public final class ComposedDataSource: AggregateDataSource {
     }
 
     public func insert(dataSource: DataSource, at index: Int) {
-        let wrapper = DataSourceHashableWrapper(dataSource)
-        let indexes = insert(wrapper: wrapper, at: index)
+        let indexes = _insert(dataSource: dataSource, at: index)
         updateDelegate?.dataSource(self, didInsertSections: IndexSet(indexes))
     }
 
-    private func insert(wrapper: DataSourceHashableWrapper, at index: Int) -> [Int] {
+    private func _insert(dataSource: DataSource, at index: Int) -> [Int] {
+        let wrapper = DataSourceHashableWrapper(dataSource)
+
         guard !dataSourceToMappings.keys.contains(wrapper) else {
             assertionFailure("\(wrapper.dataSource) has already been inserted")
             return []
@@ -111,17 +72,18 @@ public final class ComposedDataSource: AggregateDataSource {
         mappings.insert(mapping, at: index)
         dataSourceToMappings[wrapper] = mapping
 
-        invalidate()
+        _invalidate()
         return (0..<wrapper.dataSource.numberOfSections).map(mapping.globalSection(forLocal:))
     }
 
     public func remove(dataSource: DataSource) {
-        let wrapper = DataSourceHashableWrapper(dataSource)
-        let indexes = remove(wrapper: wrapper)
+        let indexes = _remove(dataSource: dataSource)
         updateDelegate?.dataSource(self, didDeleteSections: IndexSet(indexes))
     }
 
-    private func remove(wrapper: DataSourceHashableWrapper) -> [Int] {
+    private func _remove(dataSource: DataSource) -> [Int] {
+        let wrapper = DataSourceHashableWrapper(dataSource)
+
         guard let mapping = dataSourceToMappings[wrapper] else {
             fatalError("\(wrapper.dataSource) isn't a child of this dataSource")
         }
@@ -136,7 +98,7 @@ public final class ComposedDataSource: AggregateDataSource {
 
         wrapper.dataSource.updateDelegate = nil
 
-        invalidate()
+        _invalidate()
         return removedSections
     }
 
@@ -148,7 +110,7 @@ public final class ComposedDataSource: AggregateDataSource {
                     $0.key.dataSource.updateDelegate = nil
                 }
 
-                let indexes = remove(wrapper: $0.key)
+                let indexes = _remove(dataSource: $0.key.dataSource)
                 updateDelegate?.dataSource(self, didDeleteSections: IndexSet(indexes))
             }
         }, completion: { [unowned self] _ in
@@ -156,7 +118,7 @@ public final class ComposedDataSource: AggregateDataSource {
         })
     }
 
-    func invalidate() {
+    private func _invalidate() {
         _numberOfSections = 0
         globalSectionToMapping.removeAll()
 
@@ -173,45 +135,37 @@ public final class ComposedDataSource: AggregateDataSource {
 
 extension ComposedDataSource {
 
-    private func dataSourceAndLocalIndexPath(for indexPath: IndexPath) -> (DataSource, IndexPath) {
-        let dataSource = self.dataSource(forSection: indexPath.section)!
+    private func localDataSourceAndIndexPath(for indexPath: IndexPath) -> (DataSource, IndexPath) {
+        let dataSource = self.dataSource(forSection: indexPath.section)
         let mapping = self.mapping(for: indexPath.section)
         let local = mapping.localIndexPath(forGlobal: indexPath)
         return (dataSource, local)
     }
 
     private func localDataSourceAndSection(for section: Int) -> (DataSource, Int) {
-        let dataSource = self.dataSource(forSection: section)!
+        let dataSource = self.dataSource(forSection: section)
         let mapping = self.mapping(for: section)
         let local = mapping.localSection(forGlobal: section)
         return (dataSource, local)
     }
 
-    public func metrics(for section: Int) -> DataSourceSectionMetrics {
-        let (dataSource, local) = localDataSourceAndSection(for: section)
-        return dataSource.metrics(for: local)
+    public func dataSourceFor(global section: Int) -> (dataSource: DataSource, localSection: Int) {
+        let mapping = self.mapping(for: section)
+        let local = mapping.localSection(forGlobal: section)
+        return (mapping.dataSource, local)
     }
 
-    public func cellConfiguration(for indexPath: IndexPath) -> CellConfiguration {
-        let (dataSource, local) = dataSourceAndLocalIndexPath(for: indexPath)
-        return dataSource.cellConfiguration(for: local)
-    }
-
-    public func headerConfiguration(for section: Int) -> HeaderFooterConfiguration? {
-        let (dataSouruce, local) = localDataSourceAndSection(for: section)
-        return dataSouruce.headerConfiguration(for: local)
-    }
-
-    public func footerConfiguration(for section: Int) -> HeaderFooterConfiguration? {
-        let (dataSouruce, local) = localDataSourceAndSection(for: section)
-        return dataSouruce.footerConfiguration(for: local)
+    public func dataSourceFor(global indexPath: IndexPath) -> (dataSource: DataSource, localIndexPath: IndexPath) {
+        let mapping = self.mapping(for: indexPath.section)
+        let local = mapping.localIndexPath(forGlobal: indexPath)
+        return (mapping.dataSource, local)
     }
 
 }
 
 public extension ComposedDataSource {
 
-    public func indexPath(where predicate: (Any) -> Bool) -> IndexPath? {
+    public func indexPath(where predicate: @escaping (Any) -> Bool) -> IndexPath? {
         for child in children {
             if let indexPath = child.indexPath(where: predicate) {
                 let mapping = self.mapping(for: child)
@@ -226,12 +180,8 @@ public extension ComposedDataSource {
 
 private extension ComposedDataSource {
 
-    func section(forDataSource dataSource: DataSource) -> Int? {
-        return mapping(for: dataSource).globalSection(forLocal: 0)
-    }
-
-    func dataSource(forSection section: Int) -> DataSource? {
-        return globalSectionToMapping[section]?.dataSource
+    func dataSource(forSection section: Int) -> DataSource {
+        return mapping(for: section).dataSource
     }
 
     func mapping(for section: Int) -> ComposedMappings {
@@ -259,14 +209,14 @@ extension ComposedDataSource: DataSourceUpdateDelegate {
     public func dataSource(_ dataSource: DataSource, didInsertSections sections: IndexSet) {
         let mapping = self.mapping(for: dataSource)
         let global = sections.map(mapping.globalSection(forLocal:))
-        invalidate()
+        _invalidate()
         updateDelegate?.dataSource(self, didInsertSections: IndexSet(global))
     }
 
     public func dataSource(_ dataSource: DataSource, didDeleteSections sections: IndexSet) {
         let mapping = self.mapping(for: dataSource)
         let global = sections.map(mapping.globalSection(forLocal:))
-        invalidate()
+        _invalidate()
         updateDelegate?.dataSource(self, didDeleteSections: IndexSet(global))
     }
 
@@ -274,14 +224,14 @@ extension ComposedDataSource: DataSourceUpdateDelegate {
         let mapping = self.mapping(for: dataSource)
         let global = sections.map(mapping.globalSection(forLocal:))
         updateDelegate?.dataSource(self, didUpdateSections: IndexSet(global))
-        invalidate()
+        _invalidate()
     }
 
     public func dataSource(_ dataSource: DataSource, didMoveSection from: Int, to: Int) {
         let mapping = self.mapping(for: dataSource)
         let source = mapping.globalSection(forLocal: from)
         let target = mapping.globalSection(forLocal: to)
-        invalidate()
+        _invalidate()
         updateDelegate?.dataSource(self, didMoveSection: source, to: target)
     }
 

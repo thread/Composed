@@ -3,7 +3,7 @@ import UIKit
 public extension UICollectionView {
     static let elementKindGlobalHeader = "DataSourceGlobalHeader"
     static let elementKindGlobalFooter = "DataSourceGlobalFooter"
-    static let globalElementIndexPath = IndexPath(index: -1)
+    static let globalElementIndexPath = IndexPath(item: 0, section: -1)
 }
 
 @objc public protocol FlowLayoutDelegate: UICollectionViewDelegateFlowLayout {

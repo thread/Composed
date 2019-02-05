@@ -1,3 +1,5 @@
+// MARK: Changes to this delegate require careful consideration
+// MARK: -
 public protocol DataSourceUpdateDelegate: class {
     func dataSource(_ dataSource: DataSource, willPerform updates: [DataSourceUpdate])
     func dataSource(_ dataSource: DataSource, didPerform updates: [DataSourceUpdate])
@@ -15,6 +17,7 @@ public protocol DataSourceUpdateDelegate: class {
     func dataSourceDidReload(_ dataSource: DataSource)
     func dataSource(_ dataSource: DataSource, performBatchUpdates updates: () -> Void, completion: ((Bool) -> Void)?)
 }
+// MARK: -
 
 public struct DataSourceSectionMetrics {
 
@@ -32,6 +35,44 @@ public struct DataSourceSectionMetrics {
 
 }
 
+public protocol DataSourceCellEditing {
+    var isEditing: Bool { get }
+    func setEditing(_ editing: Bool, animated: Bool)
+}
+
+public protocol DataSourceEditing {
+    var isEditing: Bool { get }
+    func setEditing(_ editing: Bool, animated: Bool)
+    func supportsEditing(for indexPath: IndexPath) -> Bool
+}
+
+public protocol DataSourceSelecting {
+    func supportsSelection(for indexPath: IndexPath) -> Bool
+    func selectElement(for indexPath: IndexPath)
+    func deselectElement(for indexPath: IndexPath)
+}
+
+public extension DataSourceSelecting {
+    func supportsSelection(for indexPath: IndexPath) -> Bool { return true }
+    func deselectElement(for indexPath: IndexPath) { }
+}
+
+public protocol DataSourceUIProviding {
+    func metrics(for section: Int) -> DataSourceSectionMetrics
+    func cellConfiguration(for indexPath: IndexPath) -> CellConfiguration
+    func headerConfiguration(for section: Int) -> HeaderFooterConfiguration?
+    func footerConfiguration(for section: Int) -> HeaderFooterConfiguration?
+}
+
+public extension DataSourceUIProviding {
+    func headerConfiguration(for section: Int) -> HeaderFooterConfiguration? { return nil }
+    func footerConfiguration(for section: Int) -> HeaderFooterConfiguration? { return nil }
+}
+
+public protocol DataSourceSelectable {
+    func didSelect(indexPath: IndexPath)
+}
+
 /// Represents a definition of a DataSource for representing a single source of data and its associated visual representations
 public protocol DataSource: class {
 
@@ -43,6 +84,8 @@ public protocol DataSource: class {
 
     /// Called when the DataSource is no longer active
     func willResignActive()
+
+    func invalidate()
 
     /// The number of sections this DataSource contains
     var numberOfSections: Int { get }
@@ -57,27 +100,24 @@ public protocol DataSource: class {
     ///
     /// - Parameter predicate: The predicate to use
     /// - Returns: An `IndexPath` if the specified predicate can be satisfied, nil otherwise
-    func indexPath(where predicate: (Any) -> Bool) -> IndexPath?
+    func indexPath(where predicate: @escaping (Any) -> Bool) -> IndexPath?
 
-    func metrics(for section: Int) -> DataSourceSectionMetrics
-    func cellConfiguration(for indexPath: IndexPath) -> CellConfiguration
-    func headerConfiguration(for section: Int) -> HeaderFooterConfiguration?
-    func footerConfiguration(for section: Int) -> HeaderFooterConfiguration?
+    func dataSourceFor(global section: Int) -> (dataSource: DataSource, localSection: Int)
+    func dataSourceFor(global indexPath: IndexPath) -> (dataSource: DataSource, localIndexPath: IndexPath)
 
 }
 
 public extension DataSource {
 
-    var isRoot: Bool { return !(updateDelegate is DataSource) }
-    var numberOfSections: Int { return 1 }
+    var isRoot: Bool {
+        return !(updateDelegate is DataSource)
+            || self is GlobalDataSource
+    }
 
     var isEmpty: Bool {
         return (0..<numberOfSections)
             .lazy
-            .allSatisfy { numberOfElements(in: $0) > 0 }
+            .allSatisfy { numberOfElements(in: $0) == 0 }
     }
-
-    func didBecomeActive() { /* do nothing by default */ }
-    func willResignActive() { /* do nothing by default */ }
 
 }
