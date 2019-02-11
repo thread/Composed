@@ -1,8 +1,8 @@
 public final class GlobalDataSource: DataSource {
 
     public let child: DataSource
-    public var globalHeaderConfiguration: HeaderFooterConfiguration?
-    public var globalFooterConfiguration: HeaderFooterConfiguration?
+    public var globalHeaderConfiguration: DataSourceUIViewConfiguration?
+    public var globalFooterConfiguration: DataSourceUIViewConfiguration?
 
     public init(child: DataSource) {
         self.child = child

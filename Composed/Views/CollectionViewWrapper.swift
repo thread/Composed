@@ -74,7 +74,7 @@ internal final class CollectionViewWrapper: NSObject, UICollectionViewDataSource
             .lazy
             .compactMap { $0 }, headers, footers]
             .flatMap { $0 }
-            .compactMap { $0 as? DataSourceCellEditing }
+            .compactMap { $0 as? DataSourceUIEditingCell }
             .forEach { $0.setEditing(editing, animated: animated) }
 
         let itemIndexPaths = collectionView.indexPathsForVisibleItems
@@ -82,12 +82,12 @@ internal final class CollectionViewWrapper: NSObject, UICollectionViewDataSource
         for global in itemIndexPaths {
             let (localDataSource, local) = self.dataSource.dataSourceFor(global: global)
 
-            guard let dataSource = localDataSource as? DataSourceEditing,
+            guard let dataSource = localDataSource as? DataSourceUIEditing,
                 dataSource.supportsEditing(for: local) else { continue }
 
             dataSource.setEditing(editing, animated: animated)
 
-            let cell = collectionView.cellForItem(at: global) as? DataSourceCellEditing
+            let cell = collectionView.cellForItem(at: global) as? DataSourceUIEditingCell
             cell?.setEditing(editing, animated: animated)
         }
     }
@@ -174,7 +174,7 @@ extension CollectionViewWrapper {
             fatalError("The dataSource: (\(String(describing: localDataSource))), must conform to \(String(describing: DataSourceUIProviding.self))")
         }
 
-        let configuration: HeaderFooterConfiguration?
+        let configuration: DataSourceUIViewConfiguration?
 
         switch kind {
         case UICollectionView.elementKindGlobalHeader:
@@ -270,7 +270,7 @@ extension CollectionViewWrapper {
         let metrics = dataSource.metrics(for: localIndexPath.section)
 
         let size = CGSize(width: collectionView.bounds.width, height: CGFloat.greatestFiniteMagnitude)
-        let context = DataSourceSizingContext(prototype: config.prototype, indexPath: localIndexPath, layoutSize: size, metrics: metrics)
+        let context = DataSourceUIInvalidationContext(prototype: config.prototype, indexPath: localIndexPath, layoutSize: size, metrics: metrics)
 
         config.configure(config.prototype, localIndexPath)
         return dataSource.sizingStrategy.size(forElementAt: localIndexPath, context: context)
@@ -303,18 +303,16 @@ extension CollectionViewWrapper {
             fatalError("The dataSource: (\(String(describing: localDataSource))), must conform to \(String(describing: DataSourceUIProviding.self))")
         }
 
-        guard let cell = cell as? DataSourceCell else { return }
-
         let config = dataSource.cellConfiguration(for: localIndexPath)
         config.configure(cell, localIndexPath)
 
-        guard let editable = dataSource as? DataSourceEditing, editable.supportsEditing(for: localIndexPath) else { return }
-        (cell as? DataSourceCellEditing)?.setEditing(editable.isEditing, animated: false)
+        guard let editable = dataSource as? DataSourceUIEditing, editable.supportsEditing(for: localIndexPath) else { return }
+        (cell as? DataSourceUIEditingCell)?.setEditing(editable.isEditing, animated: false)
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let (localDataSource, localIndexPath) = self.dataSource.dataSourceFor(global: indexPath)
-        guard let dataSource = localDataSource as? DataSourceSelecting,
+        guard let dataSource = localDataSource as? DataSourceUISelecting,
             dataSource.supportsSelection(for: localIndexPath) else { return }
         dataSource.selectElement(for: localIndexPath)
         delegate?.collectionView(collectionView, didSelectItem: indexPath)
@@ -322,7 +320,7 @@ extension CollectionViewWrapper {
 
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         let (localDataSource, localIndexPath) = self.dataSource.dataSourceFor(global: indexPath)
-        guard let dataSource = localDataSource as? DataSourceSelecting,
+        guard let dataSource = localDataSource as? DataSourceUISelecting,
             dataSource.supportsSelection(for: localIndexPath) else { return }
         delegate?.collectionView(collectionView, didDeselectItem: indexPath)
     }

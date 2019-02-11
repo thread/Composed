@@ -1,6 +1,6 @@
 import UIKit
 
-public struct CellConfiguration {
+public struct DataSourceUICellConfiguration {
 
     public enum Source {
         case nib
@@ -9,10 +9,10 @@ public struct CellConfiguration {
 
     public let dequeueSource: Source
     public let reuseIdentifier: String
-    public let prototype: DataSourceCell
-    public let configure: (DataSourceCell, IndexPath) -> Void
+    public let prototype: UICollectionViewCell
+    public let configure: (UICollectionViewCell, IndexPath) -> Void
 
-    public init<Cell>(prototype: Cell, dequeueSource: Source, reuseIdentifier: String? = nil, _ configure: @escaping (Cell, IndexPath) -> Void) where Cell: DataSourceCell {
+    public init<Cell>(prototype: Cell, dequeueSource: Source, reuseIdentifier: String? = nil, _ configure: @escaping (Cell, IndexPath) -> Void) where Cell: UICollectionViewCell {
         self.reuseIdentifier = reuseIdentifier ?? prototype.reuseIdentifier ?? type(of: prototype).reuseIdentifier
         self.prototype = prototype
         self.dequeueSource = dequeueSource
@@ -24,7 +24,7 @@ public struct CellConfiguration {
 
 }
 
-public struct HeaderFooterConfiguration {
+public struct DataSourceUIViewConfiguration {
 
     public enum Source {
         case nib

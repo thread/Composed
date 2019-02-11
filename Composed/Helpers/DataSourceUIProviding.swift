@@ -1,33 +1,33 @@
-public typealias ElementSizingClosure = (DataSourceSizingContext) -> CGSize
+public typealias DataSourceUISizingClosure = (DataSourceUIInvalidationContext) -> CGSize
 
-public struct DataSourceSizingContext {
+public struct DataSourceUIInvalidationContext {
     public let prototype: UICollectionReusableView
     public let indexPath: IndexPath
     public let layoutSize: CGSize
-    public let metrics: DataSourceSectionMetrics
+    public let metrics: DataSourceUISectionMetrics
 }
 
-public protocol DataSourceSizingStrategy {
-    func size(forElementAt indexPath: IndexPath, context: DataSourceSizingContext) -> CGSize
+public protocol DataSourceUISizingStrategy {
+    func size(forElementAt indexPath: IndexPath, context: DataSourceUIInvalidationContext) -> CGSize
     func invalidate(elementsAt indexPaths: [IndexPath])
 }
 
 public protocol DataSourceUIProviding {
-    var sizingStrategy: DataSourceSizingStrategy { get }
+    var sizingStrategy: DataSourceUISizingStrategy { get }
 
-    func metrics(for section: Int) -> DataSourceSectionMetrics
-    func cellConfiguration(for indexPath: IndexPath) -> CellConfiguration
-    func headerConfiguration(for section: Int) -> HeaderFooterConfiguration?
-    func footerConfiguration(for section: Int) -> HeaderFooterConfiguration?
+    func metrics(for section: Int) -> DataSourceUISectionMetrics
+    func cellConfiguration(for indexPath: IndexPath) -> DataSourceUICellConfiguration
+    func headerConfiguration(for section: Int) -> DataSourceUIViewConfiguration?
+    func footerConfiguration(for section: Int) -> DataSourceUIViewConfiguration?
 }
 
 public extension DataSourceUIProviding {
-    var sizingStrategy: DataSourceSizingStrategy { return ColumnSizingStrategy(columnCount: 1, sizingMode: .automatic(isUniform: true)) }
-    func headerConfiguration(for section: Int) -> HeaderFooterConfiguration? { return nil }
-    func footerConfiguration(for section: Int) -> HeaderFooterConfiguration? { return nil }
+    var sizingStrategy: DataSourceUISizingStrategy { return ColumnSizingStrategy(columnCount: 1, sizingMode: .automatic(isUniform: true)) }
+    func headerConfiguration(for section: Int) -> DataSourceUIViewConfiguration? { return nil }
+    func footerConfiguration(for section: Int) -> DataSourceUIViewConfiguration? { return nil }
 }
 
-public final class ColumnSizingStrategy: DataSourceSizingStrategy {
+public final class ColumnSizingStrategy: DataSourceUISizingStrategy {
 
     public enum SizingMode {
         case fixed(height: CGFloat)
@@ -44,7 +44,7 @@ public final class ColumnSizingStrategy: DataSourceSizingStrategy {
         self.sizingMode = sizingMode
     }
 
-    public func size(forElementAt indexPath: IndexPath, context: DataSourceSizingContext) -> CGSize {
+    public func size(forElementAt indexPath: IndexPath, context: DataSourceUIInvalidationContext) -> CGSize {
         if let size = cachedSizes[indexPath] { return size }
 
         let interitemSpacing = CGFloat(columnCount - 1) * context.metrics.horizontalSpacing
@@ -59,9 +59,11 @@ public final class ColumnSizingStrategy: DataSourceSizingStrategy {
             if isUniform, let size = cachedSizes.values.first { return size }
 
             let targetSize = CGSize(width: width, height: 0)
-            let size = context.prototype.systemLayoutSizeFitting(targetSize,
-                                                                 withHorizontalFittingPriority: .required,
-                                                                 verticalFittingPriority: .fittingSizeLevel)
+            let cell = context.prototype as! UICollectionViewCell
+            let size = cell.contentView.systemLayoutSizeFitting(
+                targetSize,
+                withHorizontalFittingPriority: .required,
+                verticalFittingPriority: .fittingSizeLevel)
             cachedSizes[indexPath] = size
             return size
         }

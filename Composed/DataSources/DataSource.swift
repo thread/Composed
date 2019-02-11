@@ -19,46 +19,6 @@ public protocol DataSourceUpdateDelegate: class {
 }
 // MARK: -
 
-public struct DataSourceSectionMetrics {
-
-    public let insets: UIEdgeInsets
-    public let horizontalSpacing: CGFloat
-    public let verticalSpacing: CGFloat
-
-    public init(insets: UIEdgeInsets, horizontalSpacing: CGFloat, verticalSpacing: CGFloat) {
-        self.insets = insets
-        self.horizontalSpacing = horizontalSpacing
-        self.verticalSpacing = verticalSpacing
-    }
-
-}
-
-public protocol DataSourceCellEditing {
-    var isEditing: Bool { get }
-    func setEditing(_ editing: Bool, animated: Bool)
-}
-
-public protocol DataSourceEditing {
-    var isEditing: Bool { get }
-    func setEditing(_ editing: Bool, animated: Bool)
-    func supportsEditing(for indexPath: IndexPath) -> Bool
-}
-
-public protocol DataSourceSelecting {
-    func supportsSelection(for indexPath: IndexPath) -> Bool
-    func selectElement(for indexPath: IndexPath)
-    func deselectElement(for indexPath: IndexPath)
-}
-
-public extension DataSourceSelecting {
-    func supportsSelection(for indexPath: IndexPath) -> Bool { return true }
-    func deselectElement(for indexPath: IndexPath) { }
-}
-
-public protocol DataSourceSelectable {
-    func didSelect(indexPath: IndexPath)
-}
-
 /// Represents a definition of a DataSource for representing a single source of data and its associated visual representations
 public protocol DataSource: class {
 

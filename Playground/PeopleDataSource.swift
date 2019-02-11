@@ -10,23 +10,23 @@ final class PeopleDataSource: ArrayDataSource<Person>, DataSourceUIProviding {
 
     var title: String?
 
-    lazy var sizingStrategy: DataSourceSizingStrategy = {
-        return ColumnSizingStrategy(columnCount: 2, sizingMode: .automatic(isUniform: false))
+    lazy var sizingStrategy: DataSourceUISizingStrategy = {
+        return ColumnSizingStrategy(columnCount: 2, sizingMode: .automatic(isUniform: true))
     }()
 
-    func metrics(for section: Int) -> DataSourceSectionMetrics {
-        return DataSourceSectionMetrics(insets: UIEdgeInsets(horizontal: 16, vertical: 0), horizontalSpacing: 4, verticalSpacing: 4)
+    func metrics(for section: Int) -> DataSourceUISectionMetrics {
+        return DataSourceUISectionMetrics(insets: UIEdgeInsets(horizontal: 16, vertical: 0), horizontalSpacing: 4, verticalSpacing: 4)
     }
 
-    func cellConfiguration(for indexPath: IndexPath) -> CellConfiguration {
-        return CellConfiguration(prototype: PersonCell.fromNib, dequeueSource: .nib) { cell, indexPath in
+    func cellConfiguration(for indexPath: IndexPath) -> DataSourceUICellConfiguration {
+        return DataSourceUICellConfiguration(prototype: PersonCell.fromNib, dequeueSource: .nib) { cell, indexPath in
             cell.prepare(person: self.element(at: indexPath))
         }
     }
 
-    func headerConfiguration(for section: Int) -> HeaderFooterConfiguration? {
+    func headerConfiguration(for section: Int) -> DataSourceUIViewConfiguration? {
         return title.map { title in
-            HeaderFooterConfiguration(prototype: HeaderView.fromNib, dequeueSource: .nib) { view, indexPath in
+            DataSourceUIViewConfiguration(prototype: HeaderView.fromNib, dequeueSource: .nib) { view, indexPath in
                 view.prepare(title: title)
             }
         }
@@ -34,7 +34,7 @@ final class PeopleDataSource: ArrayDataSource<Person>, DataSourceUIProviding {
 
 }
 
-final class PersonCell: DataSourceCell, ReusableViewNibLoadable {
+final class PersonCell: UICollectionViewCell, ReusableViewNibLoadable {
 
     @IBOutlet private weak var nameLabel: UILabel!
     @IBOutlet private weak var ageLabel: UILabel!

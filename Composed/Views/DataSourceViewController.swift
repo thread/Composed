@@ -53,9 +53,6 @@ open class DataSourceViewController: UIViewController {
 
         collectionView.dataSource = wrapper
         collectionView.delegate = wrapper
-//        collectionView.prefetchDataSource = wrapper
-
-        collectionView.isPrefetchingEnabled = false
     }
 
     open override func viewWillAppear(_ animated: Bool) {
