@@ -24,10 +24,10 @@
 		543433B0220A2BEA00E403DB /* DataSourceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54343395220A2BEA00E403DB /* DataSourceViewController.swift */; };
 		543433B1220A2BEA00E403DB /* CollectionViewWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54343396220A2BEA00E403DB /* CollectionViewWrapper.swift */; };
 		543433B2220A2BEA00E403DB /* AggregateDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54343398220A2BEA00E403DB /* AggregateDataSource.swift */; };
-		543433B3220A2BEA00E403DB /* ManagedDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54343399220A2BEA00E403DB /* ManagedDataSource.swift */; };
+		543433B3220A2BEA00E403DB /* ManagedDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54343399220A2BEA00E403DB /* ManagedDataStore.swift */; };
 		543433B4220A2BEA00E403DB /* CollectionDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5434339A220A2BEA00E403DB /* CollectionDataSource.swift */; };
 		543433B5220A2BEA00E403DB /* GlobalDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5434339B220A2BEA00E403DB /* GlobalDataSource.swift */; };
-		543433B6220A2BEA00E403DB /* SimpleDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5434339C220A2BEA00E403DB /* SimpleDataSource.swift */; };
+		543433B6220A2BEA00E403DB /* BasicDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5434339C220A2BEA00E403DB /* BasicDataSource.swift */; };
 		543433B7220A2BEA00E403DB /* ComposedDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5434339D220A2BEA00E403DB /* ComposedDataSource.swift */; };
 		543433B8220A2BEA00E403DB /* DataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5434339E220A2BEA00E403DB /* DataSource.swift */; };
 		543433B9220A2BEA00E403DB /* DataSourceChangeSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 543433A0220A2BEA00E403DB /* DataSourceChangeSet.swift */; };
@@ -42,6 +42,7 @@
 		543433C2220A2BEA00E403DB /* FlowLayout+Metrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 543433AA220A2BEA00E403DB /* FlowLayout+Metrics.swift */; };
 		543433C3220A2BEA00E403DB /* FlowLayout+Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = 543433AB220A2BEA00E403DB /* FlowLayout+Types.swift */; };
 		546AA49521D5178900588DE4 /* PersonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 546AA49421D5178900588DE4 /* PersonCell.xib */; };
+		549930D32211E4590007CAA4 /* ArrayDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 549930D22211E4590007CAA4 /* ArrayDataStore.swift */; };
 		54D0A8A521F64AF600C65B72 /* HeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 54D0A8A421F64AF600C65B72 /* HeaderView.xib */; };
 /* End PBXBuildFile section */
 
@@ -104,10 +105,10 @@
 		54343395220A2BEA00E403DB /* DataSourceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSourceViewController.swift; sourceTree = "<group>"; };
 		54343396220A2BEA00E403DB /* CollectionViewWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewWrapper.swift; sourceTree = "<group>"; };
 		54343398220A2BEA00E403DB /* AggregateDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AggregateDataSource.swift; sourceTree = "<group>"; };
-		54343399220A2BEA00E403DB /* ManagedDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedDataSource.swift; sourceTree = "<group>"; };
+		54343399220A2BEA00E403DB /* ManagedDataStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedDataStore.swift; sourceTree = "<group>"; };
 		5434339A220A2BEA00E403DB /* CollectionDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionDataSource.swift; sourceTree = "<group>"; };
 		5434339B220A2BEA00E403DB /* GlobalDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlobalDataSource.swift; sourceTree = "<group>"; };
-		5434339C220A2BEA00E403DB /* SimpleDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleDataSource.swift; sourceTree = "<group>"; };
+		5434339C220A2BEA00E403DB /* BasicDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicDataSource.swift; sourceTree = "<group>"; };
 		5434339D220A2BEA00E403DB /* ComposedDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposedDataSource.swift; sourceTree = "<group>"; };
 		5434339E220A2BEA00E403DB /* DataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSource.swift; sourceTree = "<group>"; };
 		543433A0220A2BEA00E403DB /* DataSourceChangeSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSourceChangeSet.swift; sourceTree = "<group>"; };
@@ -123,6 +124,7 @@
 		543433AB220A2BEA00E403DB /* FlowLayout+Types.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FlowLayout+Types.swift"; sourceTree = "<group>"; };
 		546865242204E3CA00E79B56 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		546AA49421D5178900588DE4 /* PersonCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PersonCell.xib; sourceTree = "<group>"; };
+		549930D22211E4590007CAA4 /* ArrayDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayDataStore.swift; sourceTree = "<group>"; };
 		54D0A8A421F64AF600C65B72 /* HeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HeaderView.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -192,10 +194,10 @@
 		5402213A2195C4F700F0E173 /* Composed */ = {
 			isa = PBXGroup;
 			children = (
+				549930D12211E23E0007CAA4 /* DataStores */,
 				54343397220A2BEA00E403DB /* DataSources */,
 				5434339F220A2BEA00E403DB /* Helpers */,
 				543433A5220A2BEA00E403DB /* Layout */,
-				5434338F220A2BEA00E403DB /* Stores */,
 				54343391220A2BEA00E403DB /* Views */,
 				5402213B2195C4F700F0E173 /* Composed.h */,
 				5402213C2195C4F700F0E173 /* Info.plist */,
@@ -210,14 +212,6 @@
 				5402214A2195C4F800F0E173 /* Info.plist */,
 			);
 			path = ComposedTests;
-			sourceTree = "<group>";
-		};
-		5434338F220A2BEA00E403DB /* Stores */ = {
-			isa = PBXGroup;
-			children = (
-				54343390220A2BEA00E403DB /* DataStore.swift */,
-			);
-			path = Stores;
 			sourceTree = "<group>";
 		};
 		54343391220A2BEA00E403DB /* Views */ = {
@@ -235,13 +229,12 @@
 		54343397220A2BEA00E403DB /* DataSources */ = {
 			isa = PBXGroup;
 			children = (
-				54343398220A2BEA00E403DB /* AggregateDataSource.swift */,
-				54343399220A2BEA00E403DB /* ManagedDataSource.swift */,
-				5434339A220A2BEA00E403DB /* CollectionDataSource.swift */,
-				5434339B220A2BEA00E403DB /* GlobalDataSource.swift */,
-				5434339C220A2BEA00E403DB /* SimpleDataSource.swift */,
-				5434339D220A2BEA00E403DB /* ComposedDataSource.swift */,
 				5434339E220A2BEA00E403DB /* DataSource.swift */,
+				5434339C220A2BEA00E403DB /* BasicDataSource.swift */,
+				54343398220A2BEA00E403DB /* AggregateDataSource.swift */,
+				5434339A220A2BEA00E403DB /* CollectionDataSource.swift */,
+				5434339D220A2BEA00E403DB /* ComposedDataSource.swift */,
+				5434339B220A2BEA00E403DB /* GlobalDataSource.swift */,
 			);
 			path = DataSources;
 			sourceTree = "<group>";
@@ -277,6 +270,16 @@
 				546865242204E3CA00E79B56 /* UIKit.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		549930D12211E23E0007CAA4 /* DataStores */ = {
+			isa = PBXGroup;
+			children = (
+				54343390220A2BEA00E403DB /* DataStore.swift */,
+				549930D22211E4590007CAA4 /* ArrayDataStore.swift */,
+				54343399220A2BEA00E403DB /* ManagedDataStore.swift */,
+			);
+			path = DataStores;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -444,8 +447,8 @@
 				543433B8220A2BEA00E403DB /* DataSource.swift in Sources */,
 				543433B4220A2BEA00E403DB /* CollectionDataSource.swift in Sources */,
 				543433BF220A2BEA00E403DB /* FlowLayout+Helpers.swift in Sources */,
-				543433B3220A2BEA00E403DB /* ManagedDataSource.swift in Sources */,
-				543433B6220A2BEA00E403DB /* SimpleDataSource.swift in Sources */,
+				543433B3220A2BEA00E403DB /* ManagedDataStore.swift in Sources */,
+				543433B6220A2BEA00E403DB /* BasicDataSource.swift in Sources */,
 				543433C1220A2BEA00E403DB /* FlowLayout.swift in Sources */,
 				543433AD220A2BEA00E403DB /* DataSourceConfigurations.swift in Sources */,
 				543433B0220A2BEA00E403DB /* DataSourceViewController.swift in Sources */,
@@ -458,6 +461,7 @@
 				543433B9220A2BEA00E403DB /* DataSourceChangeSet.swift in Sources */,
 				543433AE220A2BEA00E403DB /* DataSourceCell.swift in Sources */,
 				543433B2220A2BEA00E403DB /* AggregateDataSource.swift in Sources */,
+				549930D32211E4590007CAA4 /* ArrayDataStore.swift in Sources */,
 				543433C2220A2BEA00E403DB /* FlowLayout+Metrics.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

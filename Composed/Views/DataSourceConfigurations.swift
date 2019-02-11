@@ -8,10 +8,12 @@ public struct CellConfiguration {
     }
 
     public let dequeueSource: Source
+    public let reuseIdentifier: String
     public let prototype: DataSourceCell
     public let configure: (DataSourceCell, IndexPath) -> Void
 
-    public init<Cell>(prototype: Cell, dequeueSource: Source, _ configure: @escaping (Cell, IndexPath) -> Void) where Cell: DataSourceCell {
+    public init<Cell>(prototype: Cell, dequeueSource: Source, reuseIdentifier: String? = nil, _ configure: @escaping (Cell, IndexPath) -> Void) where Cell: DataSourceCell {
+        self.reuseIdentifier = reuseIdentifier ?? type(of: prototype).reuseIdentifier
         self.prototype = prototype
         self.dequeueSource = dequeueSource
         self.configure = { cell, indexPath in
@@ -30,10 +32,12 @@ public struct HeaderFooterConfiguration {
     }
 
     public let dequeueSource: Source
+    public let reuseIdentifier: String
     public let prototype: UICollectionReusableView
     public let configure: (UICollectionReusableView, Int) -> Void
 
-    public init<View>(prototype: View, dequeueSource: Source, _ configure: @escaping (View, Int) -> Void) where View: UICollectionReusableView {
+    public init<View>(prototype: View, dequeueSource: Source, reuseIdentifier: String? = nil, _ configure: @escaping (View, Int) -> Void) where View: UICollectionReusableView {
+        self.reuseIdentifier = reuseIdentifier ?? type(of: prototype).reuseIdentifier
         self.prototype = prototype
         self.dequeueSource = dequeueSource
         self.configure = { view, section in

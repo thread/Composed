@@ -6,29 +6,31 @@ struct Person {
     var age: Int
 }
 
-final class PeopleDataSource: SimpleDataSource<Person> {
+final class PeopleDataSource: ArrayDataSource<Person>, DataSourceUIProviding {
 
     var title: String?
 
-    private let prototypeCell = PersonCell.fromNib
-    private let prototypeHeader = HeaderView.fromNib
+//    var cachingStrategy: CachingStrategy {
+//        let strategy = CachingStrategy()
+//        strategy.invalidateEverything()
+//        return strategy
+//    }
 
-    override func metrics(for section: Int) -> DataSourceSectionMetrics {
+    func metrics(for section: Int) -> DataSourceSectionMetrics {
         return DataSourceSectionMetrics(columnCount: 2, insets: UIEdgeInsets(horizontal: 16, vertical: 0), horizontalSpacing: 4, verticalSpacing: 4)
     }
 
-    override func cellConfiguration(for indexPath: IndexPath) -> CellConfiguration {
-        return CellConfiguration(prototype: prototypeCell, dequeueSource: .nib) { cell, indexPath in
-            (cell as? PersonCell)?.prepare(person: self.element(at: indexPath))
+    func cellConfiguration(for indexPath: IndexPath) -> CellConfiguration {
+        return CellConfiguration(prototype: PersonCell.fromNib, dequeueSource: .nib, reuseIdentifier: "PersonCellType") { cell, indexPath in
+            cell.prepare(person: self.element(at: indexPath))
         }
     }
 
-    override func headerConfiguration(for section: Int) -> HeaderFooterConfiguration? {
-        return HeaderFooterConfiguration(prototype: prototypeHeader, dequeueSource: .nib) { view, indexPath in
-            (view as? HeaderView)?.prepare(title: self.title)
+    func headerConfiguration(for section: Int) -> HeaderFooterConfiguration? {
+        return HeaderFooterConfiguration(prototype: HeaderView.fromNib, dequeueSource: .nib) { view, indexPath in
+            view.prepare(title: self.title)
         }
     }
-
 
 }
 

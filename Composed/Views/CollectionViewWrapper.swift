@@ -9,21 +9,21 @@ public extension DataReusableView {
 extension UICollectionReusableView: DataReusableView { }
 
 private extension UICollectionView {
-    func register(nibType: DataReusableView.Type, kind: String? = nil) {
+    func register(nibType: DataReusableView.Type, reuseIdentifier: String, kind: String? = nil) {
         let nib = UINib(nibName: String(describing: nibType), bundle: Bundle(for: nibType))
 
         if let kind = kind {
-            register(nib, forSupplementaryViewOfKind: kind, withReuseIdentifier: nibType.reuseIdentifier)
+            register(nib, forSupplementaryViewOfKind: kind, withReuseIdentifier: reuseIdentifier)
         } else {
-            register(nib, forCellWithReuseIdentifier: nibType.reuseIdentifier)
+            register(nib, forCellWithReuseIdentifier: reuseIdentifier)
         }
     }
 
-    func register(classType: DataReusableView.Type, kind: String? = nil) {
+    func register(classType: DataReusableView.Type, reuseIdentifier: String, kind: String? = nil) {
         if let kind = kind {
-            register(classType, forSupplementaryViewOfKind: kind, withReuseIdentifier: classType.reuseIdentifier)
+            register(classType, forSupplementaryViewOfKind: kind, withReuseIdentifier: reuseIdentifier)
         } else {
-            register(classType, forCellWithReuseIdentifier: classType.reuseIdentifier)
+            register(classType, forCellWithReuseIdentifier: reuseIdentifier)
         }
     }
 }
@@ -193,12 +193,12 @@ extension CollectionViewWrapper {
         let type = Swift.type(of: config.prototype)
         switch config.dequeueSource {
         case .nib:
-            collectionView.register(nibType: type, kind: kind)
+            collectionView.register(nibType: type, reuseIdentifier: config.reuseIdentifier, kind: kind)
         case .class:
-            collectionView.register(classType: type, kind: kind)
+            collectionView.register(classType: type, reuseIdentifier: config.reuseIdentifier, kind: kind)
         }
 
-        return collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: type.reuseIdentifier, for: indexPath)
+        return collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: config.reuseIdentifier, for: indexPath)
     }
 
     func collectionView(_ collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, at indexPath: IndexPath) {
@@ -290,12 +290,12 @@ extension CollectionViewWrapper {
 
         switch config.dequeueSource {
         case .nib:
-            collectionView.register(nibType: type)
+            collectionView.register(nibType: type, reuseIdentifier: config.reuseIdentifier)
         case .class:
-            collectionView.register(classType: type)
+            collectionView.register(classType: type, reuseIdentifier: config.reuseIdentifier)
         }
 
-        return collectionView.dequeueReusableCell(withReuseIdentifier: type.reuseIdentifier, for: indexPath)
+        return collectionView.dequeueReusableCell(withReuseIdentifier: config.reuseIdentifier, for: indexPath)
     }
 
     internal func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {

@@ -7,7 +7,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
 
-        let family = PeopleDataSource(elements: [
+        let family = PeopleDataSource(array: [
             Person(name: "Shaps Benkau", age: 38),
             Person(name: "Uwe", age: 60),
             Person(name: "Anne", age: 35)
@@ -15,7 +15,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 
         family.title = "Family"
 
-        let friends = PeopleDataSource(elements: [
+        let friends = PeopleDataSource(array: [
             Person(name: "Stewart", age: 39),
             Person(name: "Joseph Duffy", age: 24)
         ])
