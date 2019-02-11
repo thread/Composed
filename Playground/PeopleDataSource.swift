@@ -10,14 +10,12 @@ final class PeopleDataSource: ArrayDataSource<Person>, DataSourceUIProviding {
 
     var title: String?
 
-//    var cachingStrategy: CachingStrategy {
-//        let strategy = CachingStrategy()
-//        strategy.invalidateEverything()
-//        return strategy
-//    }
+    lazy var sizingStrategy: DataSourceSizingStrategy = {
+        return ColumnSizingStrategy(columnCount: 2, sizingMode: .automatic(isUniform: false))
+    }()
 
     func metrics(for section: Int) -> DataSourceSectionMetrics {
-        return DataSourceSectionMetrics(columnCount: 2, insets: UIEdgeInsets(horizontal: 16, vertical: 0), horizontalSpacing: 4, verticalSpacing: 4)
+        return DataSourceSectionMetrics(insets: UIEdgeInsets(horizontal: 16, vertical: 0), horizontalSpacing: 4, verticalSpacing: 4)
     }
 
     func cellConfiguration(for indexPath: IndexPath) -> CellConfiguration {

@@ -1,22 +1,20 @@
-public typealias ElementSizingClosure = (ElementSizingContext) -> CGSize
+public typealias ElementSizingClosure = (DataSourceSizingContext) -> CGSize
 
-public struct ElementSizingContext {
+public struct DataSourceSizingContext {
     public let prototype: UICollectionReusableView
     public let indexPath: IndexPath
-    public let targetSize: CGSize
+    public let layoutSize: CGSize
+    public let metrics: DataSourceSectionMetrics
 }
 
-public enum ElementSizingStrategy {
-    case hide
-    case fixed(CGSize)
-    case automatic(ElementSizingClosure)
-}
-
-public protocol DataSourceSizing {
-    func sizingStrategy(forItemAt indexPath: IndexPath) -> ElementSizingStrategy
+public protocol DataSourceSizingStrategy {
+    func size(forElementAt indexPath: IndexPath, context: DataSourceSizingContext) -> CGSize
+    func invalidate(elementsAt indexPaths: [IndexPath])
 }
 
 public protocol DataSourceUIProviding {
+    var sizingStrategy: DataSourceSizingStrategy { get }
+
     func metrics(for section: Int) -> DataSourceSectionMetrics
     func cellConfiguration(for indexPath: IndexPath) -> CellConfiguration
     func headerConfiguration(for section: Int) -> HeaderFooterConfiguration?
@@ -24,29 +22,53 @@ public protocol DataSourceUIProviding {
 }
 
 public extension DataSourceUIProviding {
+    var sizingStrategy: DataSourceSizingStrategy { return ColumnSizingStrategy(columnCount: 1, sizingMode: .automatic(isUniform: true)) }
     func headerConfiguration(for section: Int) -> HeaderFooterConfiguration? { return nil }
     func footerConfiguration(for section: Int) -> HeaderFooterConfiguration? { return nil }
 }
 
-//public struct UniformSizingStrategy: ElementSizingStrategy {
-//
-//    private var calculatedSize: CGSize?
-//
-//    func cachingStrategy(forItemAt indexPath: IndexPath) -> ElementSizingStrategy {
-//        if let size = calculatedSize {
-//            return .useSize(size)
-//        } else {
-//            return .requestSizing { layout, cell, indexPath in
-//                guard let layout = layout as? UICollectionViewFlowLayout else { return }
-//                let targetWdith = layout.collectionView!.bounds.width
-//
-//                let metrics = dataSource.metrics(for: localIndexPath.section)
-//                let interitemSpacing = CGFloat(metrics.columnCount - 1) * metrics.horizontalSpacing
-//                let availableWidth = collectionView.bounds.width - metrics.insets.left - metrics.insets.right - interitemSpacing
-//                let width = (availableWidth / CGFloat(metrics.columnCount)).rounded(.down)
-//                let target = CGSize(width: width, height: 0)
-//            }
-//        }
-//    }
-//
-//}
+public final class ColumnSizingStrategy: DataSourceSizingStrategy {
+
+    public enum SizingMode {
+        case fixed(height: CGFloat)
+        case automatic(isUniform: Bool)
+    }
+
+    public let columnCount: Int
+    public let sizingMode: SizingMode
+
+    private var cachedSizes: [IndexPath: CGSize] = [:]
+
+    public init(columnCount: Int, sizingMode: SizingMode) {
+        self.columnCount = columnCount
+        self.sizingMode = sizingMode
+    }
+
+    public func size(forElementAt indexPath: IndexPath, context: DataSourceSizingContext) -> CGSize {
+        if let size = cachedSizes[indexPath] { return size }
+
+        let interitemSpacing = CGFloat(columnCount - 1) * context.metrics.horizontalSpacing
+        let availableWidth = context.layoutSize.width - context.metrics.insets.left - context.metrics.insets.right - interitemSpacing
+        let width = (availableWidth / CGFloat(columnCount)).rounded(.down)
+
+        switch sizingMode {
+        case let .fixed(height):
+            return CGSize(width: width, height: height)
+        case let .automatic(isUniform):
+            if let size = cachedSizes[indexPath] { return size }
+            if isUniform, let size = cachedSizes.values.first { return size }
+
+            let targetSize = CGSize(width: width, height: 0)
+            let size = context.prototype.systemLayoutSizeFitting(targetSize,
+                                                                 withHorizontalFittingPriority: .required,
+                                                                 verticalFittingPriority: .fittingSizeLevel)
+            cachedSizes[indexPath] = size
+            return size
+        }
+    }
+
+    public func invalidate(elementsAt indexPaths: [IndexPath]) {
+        indexPaths.forEach { cachedSizes[$0] = nil }
+    }
+
+}

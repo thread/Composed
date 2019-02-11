@@ -266,16 +266,14 @@ extension CollectionViewWrapper {
             fatalError("The dataSource: (\(String(describing: localDataSource))), must conform to \(String(describing: DataSourceUIProviding.self))")
         }
 
-        let metrics = dataSource.metrics(for: localIndexPath.section)
-        let interitemSpacing = CGFloat(metrics.columnCount - 1) * metrics.horizontalSpacing
-        let availableWidth = collectionView.bounds.width - metrics.insets.left - metrics.insets.right - interitemSpacing
-        let width = (availableWidth / CGFloat(metrics.columnCount)).rounded(.down)
-        let target = CGSize(width: width, height: 0)
         let config = dataSource.cellConfiguration(for: localIndexPath)
+        let metrics = dataSource.metrics(for: localIndexPath.section)
+
+        let size = CGSize(width: collectionView.bounds.width, height: CGFloat.greatestFiniteMagnitude)
+        let context = DataSourceSizingContext(prototype: config.prototype, indexPath: localIndexPath, layoutSize: size, metrics: metrics)
+
         config.configure(config.prototype, localIndexPath)
-        return config.prototype.systemLayoutSizeFitting(
-            target, withHorizontalFittingPriority: .required,
-            verticalFittingPriority: .fittingSizeLevel)
+        return dataSource.sizingStrategy.size(forElementAt: localIndexPath, context: context)
     }
 
     internal func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

@@ -21,13 +21,11 @@ public protocol DataSourceUpdateDelegate: class {
 
 public struct DataSourceSectionMetrics {
 
-    public let columnCount: Int
     public let insets: UIEdgeInsets
     public let horizontalSpacing: CGFloat
     public let verticalSpacing: CGFloat
 
-    public init(columnCount: Int, insets: UIEdgeInsets, horizontalSpacing: CGFloat, verticalSpacing: CGFloat) {
-        self.columnCount = columnCount
+    public init(insets: UIEdgeInsets, horizontalSpacing: CGFloat, verticalSpacing: CGFloat) {
         self.insets = insets
         self.horizontalSpacing = horizontalSpacing
         self.verticalSpacing = verticalSpacing
