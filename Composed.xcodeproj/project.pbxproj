@@ -17,6 +17,7 @@
 		5402214B2195C4F800F0E173 /* Composed.h in Headers */ = {isa = PBXBuildFile; fileRef = 5402213B2195C4F700F0E173 /* Composed.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5402214E2195C4F800F0E173 /* Composed.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 540221392195C4F700F0E173 /* Composed.framework */; };
 		5402214F2195C4F800F0E173 /* Composed.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 540221392195C4F700F0E173 /* Composed.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		542D76CF2211FE670072271F /* DataSourceCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 542D76CE2211FE670072271F /* DataSourceCache.swift */; };
 		543433AC220A2BEA00E403DB /* DataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54343390220A2BEA00E403DB /* DataStore.swift */; };
 		543433AD220A2BEA00E403DB /* DataSourceConfigurations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54343392220A2BEA00E403DB /* DataSourceConfigurations.swift */; };
 		543433AE220A2BEA00E403DB /* DataSourceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54343393220A2BEA00E403DB /* DataSourceCell.swift */; };
@@ -98,6 +99,7 @@
 		540221412195C4F700F0E173 /* ComposedTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ComposedTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		540221482195C4F800F0E173 /* ComposedTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposedTests.swift; sourceTree = "<group>"; };
 		5402214A2195C4F800F0E173 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		542D76CE2211FE670072271F /* DataSourceCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSourceCache.swift; sourceTree = "<group>"; };
 		54343390220A2BEA00E403DB /* DataStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataStore.swift; sourceTree = "<group>"; };
 		54343392220A2BEA00E403DB /* DataSourceConfigurations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSourceConfigurations.swift; sourceTree = "<group>"; };
 		54343393220A2BEA00E403DB /* DataSourceCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSourceCell.swift; sourceTree = "<group>"; };
@@ -201,6 +203,7 @@
 				54343391220A2BEA00E403DB /* Views */,
 				5402213B2195C4F700F0E173 /* Composed.h */,
 				5402213C2195C4F700F0E173 /* Info.plist */,
+				542D76CE2211FE670072271F /* DataSourceCache.swift */,
 			);
 			path = Composed;
 			sourceTree = "<group>";
@@ -439,6 +442,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				543433BC220A2BEA00E403DB /* UIEdgeInsets+All.swift in Sources */,
+				542D76CF2211FE670072271F /* DataSourceCache.swift in Sources */,
 				543433B7220A2BEA00E403DB /* ComposedDataSource.swift in Sources */,
 				543433B1220A2BEA00E403DB /* CollectionViewWrapper.swift in Sources */,
 				543433BD220A2BEA00E403DB /* NibLoadable.swift in Sources */,

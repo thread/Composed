@@ -49,4 +49,8 @@ public extension BasicDataSource {
         self.init(store: ArrayDataStore(elements: elements))
     }
 
+    convenience init<Element>(array elements: Element...) where Store == ArrayDataStore<Element> {
+        self.init(store: ArrayDataStore(elements: elements))
+    }
+
 }

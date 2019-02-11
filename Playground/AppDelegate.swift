@@ -22,10 +22,14 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 
         friends.title = "Friends"
 
+        let countries = PeopleDataSource(array: countryNames)
+        countries.title = "Countries"
+        
         let composed = ComposedDataSource()
 
         composed.append(family)
         composed.append(friends)
+        composed.append(countries)
 
         let controller = DataSourceViewController(dataSource: composed)
 
@@ -34,5 +38,17 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 
         return true
     }
+
+    private var countryNames: [Person] {
+        var countries: [String] = []
+
+        for code in NSLocale.isoCountryCodes as [String] {
+            let id = NSLocale.localeIdentifier(fromComponents: [NSLocale.Key.countryCode.rawValue: code])
+            let name = NSLocale(localeIdentifier: "en_UK").displayName(forKey: NSLocale.Key.identifier, value: id) ?? "Country not found for code: \(code)"
+            countries.append(name)
+        }
+        return countries.map { Person(name: $0, age: 18) }
+    }
+
 }
 

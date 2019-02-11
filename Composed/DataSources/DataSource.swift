@@ -57,18 +57,6 @@ public extension DataSourceSelecting {
     func deselectElement(for indexPath: IndexPath) { }
 }
 
-public protocol DataSourceUIProviding {
-    func metrics(for section: Int) -> DataSourceSectionMetrics
-    func cellConfiguration(for indexPath: IndexPath) -> CellConfiguration
-    func headerConfiguration(for section: Int) -> HeaderFooterConfiguration?
-    func footerConfiguration(for section: Int) -> HeaderFooterConfiguration?
-}
-
-public extension DataSourceUIProviding {
-    func headerConfiguration(for section: Int) -> HeaderFooterConfiguration? { return nil }
-    func footerConfiguration(for section: Int) -> HeaderFooterConfiguration? { return nil }
-}
-
 public protocol DataSourceSelectable {
     func didSelect(indexPath: IndexPath)
 }

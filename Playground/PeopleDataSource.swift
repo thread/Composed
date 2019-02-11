@@ -21,14 +21,16 @@ final class PeopleDataSource: ArrayDataSource<Person>, DataSourceUIProviding {
     }
 
     func cellConfiguration(for indexPath: IndexPath) -> CellConfiguration {
-        return CellConfiguration(prototype: PersonCell.fromNib, dequeueSource: .nib, reuseIdentifier: "PersonCellType") { cell, indexPath in
+        return CellConfiguration(prototype: PersonCell.fromNib, dequeueSource: .nib) { cell, indexPath in
             cell.prepare(person: self.element(at: indexPath))
         }
     }
 
     func headerConfiguration(for section: Int) -> HeaderFooterConfiguration? {
-        return HeaderFooterConfiguration(prototype: HeaderView.fromNib, dequeueSource: .nib) { view, indexPath in
-            view.prepare(title: self.title)
+        return title.map { title in
+            HeaderFooterConfiguration(prototype: HeaderView.fromNib, dequeueSource: .nib) { view, indexPath in
+                view.prepare(title: title)
+            }
         }
     }
 
