@@ -13,7 +13,7 @@ public struct CellConfiguration {
     public let configure: (DataSourceCell, IndexPath) -> Void
 
     public init<Cell>(prototype: Cell, dequeueSource: Source, reuseIdentifier: String? = nil, _ configure: @escaping (Cell, IndexPath) -> Void) where Cell: DataSourceCell {
-        self.reuseIdentifier = reuseIdentifier ?? type(of: prototype).reuseIdentifier
+        self.reuseIdentifier = reuseIdentifier ?? prototype.reuseIdentifier ?? type(of: prototype).reuseIdentifier
         self.prototype = prototype
         self.dequeueSource = dequeueSource
         self.configure = { cell, indexPath in
@@ -37,7 +37,7 @@ public struct HeaderFooterConfiguration {
     public let configure: (UICollectionReusableView, Int) -> Void
 
     public init<View>(prototype: View, dequeueSource: Source, reuseIdentifier: String? = nil, _ configure: @escaping (View, Int) -> Void) where View: UICollectionReusableView {
-        self.reuseIdentifier = reuseIdentifier ?? type(of: prototype).reuseIdentifier
+        self.reuseIdentifier = reuseIdentifier ?? prototype.reuseIdentifier ?? type(of: prototype).reuseIdentifier
         self.prototype = prototype
         self.dequeueSource = dequeueSource
         self.configure = { view, section in
