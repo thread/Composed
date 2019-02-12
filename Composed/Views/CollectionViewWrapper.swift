@@ -92,6 +92,31 @@ internal final class CollectionViewWrapper: NSObject, UICollectionViewDataSource
         }
     }
 
+    internal func invalidate(with context: DataSourceUIInvalidationContext) {
+        let layoutContext = FlowLayoutInvalidationContext()
+        layoutContext.invalidateItems(at: Array(context.invalidatedElementIndexPaths))
+
+        let headerIndexPaths = context.invalidatedHeaderIndexes.map { IndexPath(item: 0, section: $0) }
+        if !headerIndexPaths.isEmpty {
+            layoutContext.invalidateSupplementaryElements(ofKind: UICollectionView.elementKindSectionHeader, at: headerIndexPaths)
+        }
+
+        let footerIndexPaths = context.invalidatedFooterIndexes.map { IndexPath(item: 0, section: $0) }
+        if !footerIndexPaths.isEmpty {
+            layoutContext.invalidateSupplementaryElements(ofKind: UICollectionView.elementKindSectionFooter, at: footerIndexPaths)
+        }
+
+        if context.invalidateGlobalHeader {
+            layoutContext.invalidateSupplementaryElements(ofKind: UICollectionView.elementKindGlobalHeader, at: [UICollectionView.globalElementIndexPath])
+        }
+
+        if context.invalidateGlobalHeader {
+            layoutContext.invalidateSupplementaryElements(ofKind: UICollectionView.elementKindGlobalFooter, at: [UICollectionView.globalElementIndexPath])
+        }
+
+        collectionView.collectionViewLayout.invalidateLayout(with: layoutContext)
+    }
+
 }
 
 extension CollectionViewWrapper {
@@ -270,7 +295,7 @@ extension CollectionViewWrapper {
         let metrics = dataSource.metrics(for: localIndexPath.section)
 
         let size = CGSize(width: collectionView.bounds.width, height: CGFloat.greatestFiniteMagnitude)
-        let context = DataSourceUIInvalidationContext(prototype: config.prototype, indexPath: localIndexPath, layoutSize: size, metrics: metrics)
+        let context = DataSourceUISizingContext(prototype: config.prototype, indexPath: localIndexPath, layoutSize: size, metrics: metrics)
 
         config.configure(config.prototype, localIndexPath)
         return dataSource.sizingStrategy.size(forElementAt: localIndexPath, context: context)

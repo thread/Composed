@@ -123,4 +123,8 @@ extension DataSourceViewController: DataSourceUpdateDelegate {
         collectionView.moveItem(at: from, to: to)
     }
 
+    public func dataSource(_ dataSource: DataSource, invalidateWith context: DataSourceUIInvalidationContext) {
+        wrapper.invalidate(with: context)
+    }
+
 }

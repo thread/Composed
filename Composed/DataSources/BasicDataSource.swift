@@ -37,7 +37,6 @@ open class BasicDataSource<Store>: CollectionDataSource where Store: DataStore {
 
     open func didBecomeActive() { /* do nothing by default */ }
     open func willResignActive() { /* do nothing by default */ }
-    open func invalidate() { /* do nothing by default */ }
 
 }
 

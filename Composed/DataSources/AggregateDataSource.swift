@@ -20,10 +20,6 @@ public extension AggregateDataSource {
     func willResignActive() {
         children.forEach { $0.willResignActive() }
     }
-
-    public func invalidate() {
-        children.forEach { $0.invalidate() }
-    }
     
 }
 

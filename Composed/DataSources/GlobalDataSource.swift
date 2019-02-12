@@ -44,8 +44,4 @@ public final class GlobalDataSource: DataSource {
         child.willResignActive()
     }
 
-    public func invalidate() {
-        child.invalidate()
-    }
-
 }

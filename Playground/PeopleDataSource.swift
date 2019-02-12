@@ -6,7 +6,7 @@ struct Person {
     var age: Int
 }
 
-final class PeopleDataSource: ArrayDataSource<Person>, DataSourceUIProviding {
+final class PeopleDataSource: ArrayDataSource<Person>, DataSourceUIProviding, DataSourceUISelecting {
 
     var title: String?
 
@@ -30,6 +30,13 @@ final class PeopleDataSource: ArrayDataSource<Person>, DataSourceUIProviding {
                 view.prepare(title: title)
             }
         }
+    }
+
+    func selectElement(for indexPath: IndexPath) {
+//        var context = DataSourceUIInvalidationContext()
+//        context.invalidateHeaders(in: IndexSet(integer: indexPath.section))
+//        updateDelegate?.dataSource(self, invalidateWith: context)
+//        sizingStrategy.invalidate(elementsAt: [indexPath])
     }
 
 }

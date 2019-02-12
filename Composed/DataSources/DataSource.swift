@@ -16,6 +16,7 @@ public protocol DataSourceUpdateDelegate: class {
 
     func dataSourceDidReload(_ dataSource: DataSource)
     func dataSource(_ dataSource: DataSource, performBatchUpdates updates: () -> Void, completion: ((Bool) -> Void)?)
+    func dataSource(_ dataSource: DataSource, invalidateWith context: DataSourceUIInvalidationContext)
 }
 // MARK: -
 
@@ -30,8 +31,6 @@ public protocol DataSource: class {
 
     /// Called when the DataSource is no longer active
     func willResignActive()
-
-    func invalidate()
 
     /// The number of sections this DataSource contains
     var numberOfSections: Int { get }

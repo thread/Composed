@@ -27,7 +27,6 @@
 		543433B3220A2BEA00E403DB /* ManagedDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54343399220A2BEA00E403DB /* ManagedDataStore.swift */; };
 		543433B4220A2BEA00E403DB /* CollectionDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5434339A220A2BEA00E403DB /* CollectionDataSource.swift */; };
 		543433B5220A2BEA00E403DB /* GlobalDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5434339B220A2BEA00E403DB /* GlobalDataSource.swift */; };
-		543433B6220A2BEA00E403DB /* BasicDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5434339C220A2BEA00E403DB /* BasicDataSource.swift */; };
 		543433B7220A2BEA00E403DB /* ComposedDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5434339D220A2BEA00E403DB /* ComposedDataSource.swift */; };
 		543433B8220A2BEA00E403DB /* DataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5434339E220A2BEA00E403DB /* DataSource.swift */; };
 		543433B9220A2BEA00E403DB /* DataSourceChangeSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 543433A0220A2BEA00E403DB /* DataSourceChangeSet.swift */; };
@@ -44,6 +43,7 @@
 		546AA49521D5178900588DE4 /* PersonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 546AA49421D5178900588DE4 /* PersonCell.xib */; };
 		549930D32211E4590007CAA4 /* ArrayDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 549930D22211E4590007CAA4 /* ArrayDataStore.swift */; };
 		54BAB158221235470064CE51 /* DataSourceUI+Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54BAB157221235470064CE51 /* DataSourceUI+Protocols.swift */; };
+		54BAB15C2212451B0064CE51 /* BasicDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54BAB15B2212451B0064CE51 /* BasicDataSource.swift */; };
 		54D0A8A521F64AF600C65B72 /* HeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 54D0A8A421F64AF600C65B72 /* HeaderView.xib */; };
 /* End PBXBuildFile section */
 
@@ -109,7 +109,6 @@
 		54343399220A2BEA00E403DB /* ManagedDataStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedDataStore.swift; sourceTree = "<group>"; };
 		5434339A220A2BEA00E403DB /* CollectionDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionDataSource.swift; sourceTree = "<group>"; };
 		5434339B220A2BEA00E403DB /* GlobalDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlobalDataSource.swift; sourceTree = "<group>"; };
-		5434339C220A2BEA00E403DB /* BasicDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicDataSource.swift; sourceTree = "<group>"; };
 		5434339D220A2BEA00E403DB /* ComposedDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposedDataSource.swift; sourceTree = "<group>"; };
 		5434339E220A2BEA00E403DB /* DataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSource.swift; sourceTree = "<group>"; };
 		543433A0220A2BEA00E403DB /* DataSourceChangeSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSourceChangeSet.swift; sourceTree = "<group>"; };
@@ -127,6 +126,7 @@
 		546AA49421D5178900588DE4 /* PersonCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PersonCell.xib; sourceTree = "<group>"; };
 		549930D22211E4590007CAA4 /* ArrayDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayDataStore.swift; sourceTree = "<group>"; };
 		54BAB157221235470064CE51 /* DataSourceUI+Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DataSourceUI+Protocols.swift"; sourceTree = "<group>"; };
+		54BAB15B2212451B0064CE51 /* BasicDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicDataSource.swift; sourceTree = "<group>"; };
 		54D0A8A421F64AF600C65B72 /* HeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HeaderView.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -231,7 +231,7 @@
 			isa = PBXGroup;
 			children = (
 				5434339E220A2BEA00E403DB /* DataSource.swift */,
-				5434339C220A2BEA00E403DB /* BasicDataSource.swift */,
+				54BAB15B2212451B0064CE51 /* BasicDataSource.swift */,
 				54343398220A2BEA00E403DB /* AggregateDataSource.swift */,
 				5434339A220A2BEA00E403DB /* CollectionDataSource.swift */,
 				5434339D220A2BEA00E403DB /* ComposedDataSource.swift */,
@@ -452,7 +452,7 @@
 				543433B4220A2BEA00E403DB /* CollectionDataSource.swift in Sources */,
 				543433BF220A2BEA00E403DB /* FlowLayout+Helpers.swift in Sources */,
 				543433B3220A2BEA00E403DB /* ManagedDataStore.swift in Sources */,
-				543433B6220A2BEA00E403DB /* BasicDataSource.swift in Sources */,
+				54BAB15C2212451B0064CE51 /* BasicDataSource.swift in Sources */,
 				543433C1220A2BEA00E403DB /* FlowLayout.swift in Sources */,
 				543433AD220A2BEA00E403DB /* DataSourceUI+Configurations.swift in Sources */,
 				543433B0220A2BEA00E403DB /* DataSourceViewController.swift in Sources */,

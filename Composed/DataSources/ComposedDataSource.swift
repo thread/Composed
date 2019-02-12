@@ -276,6 +276,23 @@ extension ComposedDataSource: DataSourceUpdateDelegate {
         updateDelegate?.dataSource(self, didPerform: globalUpdates(fromLocal: updates, in: dataSource))
     }
 
+    public func dataSource(_ dataSource: DataSource, invalidateWith context: DataSourceUIInvalidationContext) {
+        var globalContext = DataSourceUIInvalidationContext()
+        globalContext.invalidateGlobalHeader = context.invalidateGlobalHeader
+        globalContext.invalidateGlobalFooter = context.invalidateGlobalFooter
+
+        let elementIndexPaths = globalIndexPaths(forLocalIndexPaths: Array(context.invalidatedElementIndexPaths), inDataSource: dataSource)
+        globalContext.invalidateElements(at: elementIndexPaths)
+
+        let headerIndexes = globalSections(forLocalSections: context.invalidatedHeaderIndexes, inDataSource: dataSource)
+        globalContext.invalidateHeaders(in: headerIndexes)
+
+        let footerIndexes = globalSections(forLocalSections: context.invalidatedFooterIndexes, inDataSource: dataSource)
+        globalContext.invalidateHeaders(in: footerIndexes)
+
+        updateDelegate?.dataSource(self, invalidateWith: globalContext)
+    }
+
 }
 
 extension ComposedDataSource {
