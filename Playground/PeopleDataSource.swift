@@ -11,7 +11,7 @@ final class PeopleDataSource: ArrayDataSource<Person>, DataSourceUIProviding, Da
     var title: String?
 
     lazy var sizingStrategy: DataSourceUISizingStrategy = {
-        return ColumnSizingStrategy(columnCount: 2, sizingMode: .automatic(isUniform: false))
+        return ColumnSizingStrategy(columnCount: 2, sizingMode: .automatic(isUniform: true))
     }()
 
     func metrics(for section: Int) -> DataSourceUISectionMetrics {
