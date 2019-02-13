@@ -1,8 +1,6 @@
-public final class GlobalDataSource: DataSource {
+open class GlobalDataSource: DataSource {
 
     public let child: DataSource
-    public var globalHeaderConfiguration: DataSourceUIConfiguration?
-    public var globalFooterConfiguration: DataSourceUIConfiguration?
 
     public init(child: DataSource) {
         self.child = child
@@ -43,5 +41,8 @@ public final class GlobalDataSource: DataSource {
     public func willResignActive() {
         child.willResignActive()
     }
+
+    open func globalHeaderConfiguration() -> DataSourceUIConfiguration? { return nil }
+    open func globalFooterConfiguration() -> DataSourceUIConfiguration? { return nil }
 
 }

@@ -162,7 +162,11 @@ extension CollectionViewWrapper {
             fatalError("The dataSource: (\(String(describing: localDataSource))), must conform to \(String(describing: DataSourceUIProviding.self))")
         }
 
-        guard let config = dataSource.headerConfiguration(for: localSection) else { return .zero }
+        guard let config = dataSource.headerConfiguration(for: localSection) else {
+            headerConfigurations[section] = nil
+            return .zero
+        }
+
         headerConfigurations[section] = config
 
         let width = collectionView.bounds.width
@@ -181,7 +185,11 @@ extension CollectionViewWrapper {
             fatalError("The dataSource: (\(String(describing: localDataSource))), must conform to \(String(describing: DataSourceUIProviding.self))")
         }
 
-        guard let config = dataSource.footerConfiguration(for: localSection) else { return .zero }
+        guard let config = dataSource.footerConfiguration(for: localSection) else {
+            footerConfigurations[section] = nil
+            return .zero
+        }
+
         footerConfigurations[section] = config
 
         let width = collectionView.bounds.width
@@ -206,10 +214,10 @@ extension CollectionViewWrapper {
         switch kind {
         case UICollectionView.elementKindGlobalHeader:
             configuration = globalConfigurations[kind]
-                ?? global?.globalHeaderConfiguration
+                ?? global?.globalHeaderConfiguration()
         case UICollectionView.elementKindGlobalFooter:
             configuration = globalConfigurations[kind]
-                ?? global?.globalFooterConfiguration
+                ?? global?.globalFooterConfiguration()
         case UICollectionView.elementKindSectionHeader:
             configuration = headerConfigurations[indexPath.section] 
                 ?? dataSource.headerConfiguration(for: localIndexPath.section)
@@ -242,10 +250,12 @@ extension CollectionViewWrapper {
 
         switch elementKind {
         case UICollectionView.elementKindGlobalHeader:
-            let config = global?.globalHeaderConfiguration
+            let config = globalConfigurations[elementKind]
+                ?? global?.globalHeaderConfiguration()
             config?.configure(view, UICollectionView.globalElementIndexPath)
         case UICollectionView.elementKindGlobalFooter:
-            let config = global?.globalFooterConfiguration
+            let config = globalConfigurations[elementKind]
+                ?? global?.globalFooterConfiguration()
             config?.configure(view, UICollectionView.globalElementIndexPath)
         case UICollectionView.elementKindSectionHeader:
             let config = dataSource.headerConfiguration(for: localIndexPath.section)
@@ -263,7 +273,11 @@ extension CollectionViewWrapper {
 extension CollectionViewWrapper {
 
     func heightForGlobalHeader(in collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout) -> CGFloat {
-        guard let config = (dataSource as? GlobalDataSource)?.globalHeaderConfiguration else { return 0 }
+        guard let config = (dataSource as? GlobalDataSource)?.globalHeaderConfiguration() else {
+            globalConfigurations[UICollectionView.elementKindGlobalHeader] = nil
+            return 0
+        }
+
         globalConfigurations[UICollectionView.elementKindGlobalHeader] = config
 
         let width = collectionView.bounds.width
@@ -276,7 +290,11 @@ extension CollectionViewWrapper {
     }
 
     func heightForGlobalFooter(in collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout) -> CGFloat {
-        guard let config = (dataSource as? GlobalDataSource)?.globalFooterConfiguration else { return 0 }
+        guard let config = (dataSource as? GlobalDataSource)?.globalFooterConfiguration() else {
+            globalConfigurations[UICollectionView.elementKindGlobalFooter] = nil
+            return 0
+        }
+
         globalConfigurations[UICollectionView.elementKindGlobalFooter] = config
 
         let width = collectionView.bounds.width
