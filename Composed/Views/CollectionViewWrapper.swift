@@ -85,7 +85,7 @@ internal final class CollectionViewWrapper: NSObject, UICollectionViewDataSource
         let itemIndexPaths = collectionView.indexPathsForVisibleItems
 
         for global in itemIndexPaths {
-            let (localDataSource, local) = self.dataSource.dataSourceFor(global: global)
+            let (localDataSource, local) = dataSource.dataSourceFor(global: global)
 
             guard let dataSource = localDataSource as? DataSourceUIEditing,
                 dataSource.supportsEditing(for: local) else { continue }
@@ -122,7 +122,7 @@ internal final class CollectionViewWrapper: NSObject, UICollectionViewDataSource
 extension CollectionViewWrapper {
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        let (localDataSource, localSection) = self.dataSource.dataSourceFor(global: section)
+        let (localDataSource, localSection) = dataSource.dataSourceFor(global: section)
 
         guard let dataSource = localDataSource as? DataSource & DataSourceUIProviding else {
             fatalError("The dataSource: (\(String(describing: localDataSource))), must conform to \(String(describing: DataSourceUIProviding.self))")
@@ -132,7 +132,7 @@ extension CollectionViewWrapper {
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        let (localDataSource, localSection) = self.dataSource.dataSourceFor(global: section)
+        let (localDataSource, localSection) = dataSource.dataSourceFor(global: section)
 
         guard let dataSource = localDataSource as? DataSource & DataSourceUIProviding else {
             fatalError("The dataSource: (\(String(describing: localDataSource))), must conform to \(String(describing: DataSourceUIProviding.self))")
@@ -142,7 +142,7 @@ extension CollectionViewWrapper {
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        let (localDataSource, localSection) = self.dataSource.dataSourceFor(global: section)
+        let (localDataSource, localSection) = dataSource.dataSourceFor(global: section)
 
         guard let dataSource = localDataSource as? DataSource & DataSourceUIProviding else {
             fatalError("The dataSource: (\(String(describing: localDataSource))), must conform to \(String(describing: DataSourceUIProviding.self))")
@@ -179,7 +179,7 @@ extension CollectionViewWrapper {
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
-        let (localDataSource, localSection) = self.dataSource.dataSourceFor(global: section)
+        let (localDataSource, localSection) = dataSource.dataSourceFor(global: section)
 
         guard let dataSource = localDataSource as? DataSource & DataSourceUIProviding else {
             fatalError("The dataSource: (\(String(describing: localDataSource))), must conform to \(String(describing: DataSourceUIProviding.self))")
@@ -202,29 +202,35 @@ extension CollectionViewWrapper {
     }
 
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let global = self.dataSource as? GlobalDataSource
-        let (localDataSource, localIndexPath) = self.dataSource.dataSourceFor(global: indexPath)
-
-        guard let dataSource = localDataSource as? DataSource & DataSourceUIProviding else {
-            fatalError("The dataSource: (\(String(describing: localDataSource))), must conform to \(String(describing: DataSourceUIProviding.self))")
-        }
-
         let configuration: DataSourceUIConfiguration?
 
-        switch kind {
-        case UICollectionView.elementKindGlobalHeader:
-            configuration = globalConfigurations[kind]
-                ?? global?.globalHeaderConfiguration()
-        case UICollectionView.elementKindGlobalFooter:
-            configuration = globalConfigurations[kind]
-                ?? global?.globalFooterConfiguration()
-        case UICollectionView.elementKindSectionHeader:
-            configuration = headerConfigurations[indexPath.section] 
-                ?? dataSource.headerConfiguration(for: localIndexPath.section)
-        case UICollectionView.elementKindSectionFooter:
-            configuration = footerConfigurations[indexPath.section]
-                ?? dataSource.footerConfiguration(for: localIndexPath.section)
-        default: fatalError("Unsupported")
+        if let global = dataSource as? GlobalDataSource, indexPath == UICollectionView.globalElementIndexPath {
+            switch kind {
+            case UICollectionView.elementKindGlobalHeader:
+                configuration = globalConfigurations[kind]
+                    ?? global.globalHeaderConfiguration()
+            case UICollectionView.elementKindGlobalFooter:
+                configuration = globalConfigurations[kind]
+                    ?? global.globalFooterConfiguration()
+            default:
+                fatalError("Unsupported global element: \(kind)")
+            }
+        } else {
+            let (localDataSource, localIndexPath) = dataSource.dataSourceFor(global: indexPath)
+
+            guard let dataSource = localDataSource as? DataSource & DataSourceUIProviding else {
+                fatalError("The dataSource: (\(String(describing: localDataSource))), must conform to \(String(describing: DataSourceUIProviding.self))")
+            }
+
+            switch kind {
+            case UICollectionView.elementKindSectionHeader:
+                configuration = headerConfigurations[indexPath.section]
+                    ?? dataSource.headerConfiguration(for: localIndexPath.section)
+            case UICollectionView.elementKindSectionFooter:
+                configuration = footerConfigurations[indexPath.section]
+                    ?? dataSource.footerConfiguration(for: localIndexPath.section)
+            default: fatalError("Unsupported. Currently Composed only supports global and section header/footer views")
+            }
         }
 
         guard let config = configuration else { fatalError() }
@@ -241,31 +247,38 @@ extension CollectionViewWrapper {
     }
 
     func collectionView(_ collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, at indexPath: IndexPath) {
-        let global = dataSource as? GlobalDataSource
-        let (localDataSource, localIndexPath) = self.dataSource.dataSourceFor(global: indexPath)
+        let configuration: DataSourceUIConfiguration?
 
-        guard let dataSource = localDataSource as? DataSource & DataSourceUIProviding else {
-            fatalError("The dataSource: (\(String(describing: localDataSource))), must conform to \(String(describing: DataSourceUIProviding.self))")
+        if let global = dataSource as? GlobalDataSource, indexPath == UICollectionView.globalElementIndexPath {
+            switch elementKind {
+            case UICollectionView.elementKindGlobalHeader:
+                configuration = globalConfigurations[elementKind]
+                    ?? global.globalHeaderConfiguration()
+            case UICollectionView.elementKindGlobalFooter:
+                configuration = globalConfigurations[elementKind]
+                    ?? global.globalFooterConfiguration()
+            default:
+                fatalError("Unsupported global element: \(elementKind)")
+            }
+        } else {
+            let (localDataSource, localIndexPath) = dataSource.dataSourceFor(global: indexPath)
+
+            guard let dataSource = localDataSource as? DataSource & DataSourceUIProviding else {
+                fatalError("The dataSource: (\(String(describing: localDataSource))), must conform to \(String(describing: DataSourceUIProviding.self))")
+            }
+
+            switch elementKind {
+            case UICollectionView.elementKindSectionHeader:
+                configuration = headerConfigurations[indexPath.section]
+                    ?? dataSource.headerConfiguration(for: localIndexPath.section)
+            case UICollectionView.elementKindSectionFooter:
+                configuration = footerConfigurations[indexPath.section]
+                    ?? dataSource.footerConfiguration(for: localIndexPath.section)
+            default: fatalError("Unsupported. Currently Composed only supports global and section header/footer views")
+            }
         }
 
-        switch elementKind {
-        case UICollectionView.elementKindGlobalHeader:
-            let config = globalConfigurations[elementKind]
-                ?? global?.globalHeaderConfiguration()
-            config?.configure(view, UICollectionView.globalElementIndexPath)
-        case UICollectionView.elementKindGlobalFooter:
-            let config = globalConfigurations[elementKind]
-                ?? global?.globalFooterConfiguration()
-            config?.configure(view, UICollectionView.globalElementIndexPath)
-        case UICollectionView.elementKindSectionHeader:
-            let config = dataSource.headerConfiguration(for: localIndexPath.section)
-            config?.configure(view, localIndexPath)
-        case UICollectionView.elementKindSectionFooter:
-            let config = dataSource.footerConfiguration(for: localIndexPath.section)
-            config?.configure(view, localIndexPath)
-        default:
-            break
-        }
+        configuration?.configure(view, indexPath)
     }
 
 }
@@ -311,7 +324,7 @@ extension CollectionViewWrapper {
 extension CollectionViewWrapper {
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let (localDataSource, localIndexPath) = self.dataSource.dataSourceFor(global: indexPath)
+        let (localDataSource, localIndexPath) = dataSource.dataSourceFor(global: indexPath)
 
         guard let dataSource = localDataSource as? DataSource & DataSourceUIProviding else {
             fatalError("The dataSource: (\(String(describing: localDataSource))), must conform to \(String(describing: DataSourceUIProviding.self))")
@@ -329,7 +342,7 @@ extension CollectionViewWrapper {
     }
 
     internal func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let (localDataSource, localIndexPath) = self.dataSource.dataSourceFor(global: indexPath)
+        let (localDataSource, localIndexPath) = dataSource.dataSourceFor(global: indexPath)
 
         guard let dataSource = localDataSource as? DataSource & DataSourceUIProviding else {
             fatalError("The dataSource: (\(String(describing: localDataSource))), must conform to \(String(describing: DataSourceUIProviding.self))")
@@ -349,7 +362,7 @@ extension CollectionViewWrapper {
     }
 
     internal func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        let (localDataSource, localIndexPath) = self.dataSource.dataSourceFor(global: indexPath)
+        let (localDataSource, localIndexPath) = dataSource.dataSourceFor(global: indexPath)
 
         guard let dataSource = localDataSource as? DataSource & DataSourceUIProviding else {
             fatalError("The dataSource: (\(String(describing: localDataSource))), must conform to \(String(describing: DataSourceUIProviding.self))")
@@ -363,7 +376,7 @@ extension CollectionViewWrapper {
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let (localDataSource, localIndexPath) = self.dataSource.dataSourceFor(global: indexPath)
+        let (localDataSource, localIndexPath) = dataSource.dataSourceFor(global: indexPath)
         guard let dataSource = localDataSource as? DataSourceUISelecting,
             dataSource.supportsSelection(for: localIndexPath) else { return }
         dataSource.selectElement(for: localIndexPath)
@@ -371,7 +384,7 @@ extension CollectionViewWrapper {
     }
 
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        let (localDataSource, localIndexPath) = self.dataSource.dataSourceFor(global: indexPath)
+        let (localDataSource, localIndexPath) = dataSource.dataSourceFor(global: indexPath)
         guard let dataSource = localDataSource as? DataSourceUISelecting,
             dataSource.supportsSelection(for: localIndexPath) else { return }
         delegate?.collectionView(collectionView, didDeselectItem: indexPath)
