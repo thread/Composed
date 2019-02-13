@@ -46,6 +46,10 @@ internal final class CollectionViewWrapper: NSObject, UICollectionViewDataSource
     internal let dataSource: DataSource
     internal weak var delegate: DataSourceViewDelegate?
 
+    private var headerConfigurations: [Int: DataSourceUIViewConfiguration] = [:]
+    private var footerConfigurations: [Int: DataSourceUIViewConfiguration] = [:]
+    private var cellConfigurations: [IndexPath: DataSourceUICellConfiguration] = [:]
+
     internal init(collectionView: UICollectionView, dataSource: DataSource) {
         self.collectionView = collectionView
         self.dataSource = dataSource
@@ -163,6 +167,7 @@ extension CollectionViewWrapper {
         }
 
         guard let config = dataSource.headerConfiguration(for: localSection) else { return .zero }
+        headerConfigurations[section] = config
 
         let width = collectionView.bounds.width
         let target = CGSize(width: width, height: 0)
@@ -181,6 +186,7 @@ extension CollectionViewWrapper {
         }
 
         guard let config = dataSource.footerConfiguration(for: localSection) else { return .zero }
+        footerConfigurations[section] = config
 
         let width = collectionView.bounds.width
         let target = CGSize(width: width, height: 0)
@@ -207,9 +213,11 @@ extension CollectionViewWrapper {
         case UICollectionView.elementKindGlobalFooter:
             configuration = global?.globalFooterConfiguration
         case UICollectionView.elementKindSectionHeader:
-            configuration = dataSource.headerConfiguration(for: localIndexPath.section)
+            configuration = headerConfigurations[indexPath.section] 
+                ?? dataSource.headerConfiguration(for: localIndexPath.section)
         case UICollectionView.elementKindSectionFooter:
-            configuration = dataSource.footerConfiguration(for: localIndexPath.section)
+            configuration = footerConfigurations[indexPath.section]
+                ?? dataSource.footerConfiguration(for: localIndexPath.section)
         default: fatalError("Unsupported")
         }
 
@@ -292,8 +300,9 @@ extension CollectionViewWrapper {
         }
 
         let config = dataSource.cellConfiguration(for: localIndexPath)
-        let metrics = dataSource.metrics(for: localIndexPath.section)
+        cellConfigurations[indexPath] = config
 
+        let metrics = dataSource.metrics(for: localIndexPath.section)
         let size = CGSize(width: collectionView.bounds.width, height: CGFloat.greatestFiniteMagnitude)
         let context = DataSourceUISizingContext(prototype: config.prototype, indexPath: localIndexPath, layoutSize: size, metrics: metrics)
 
@@ -308,7 +317,7 @@ extension CollectionViewWrapper {
             fatalError("The dataSource: (\(String(describing: localDataSource))), must conform to \(String(describing: DataSourceUIProviding.self))")
         }
 
-        let config = dataSource.cellConfiguration(for: localIndexPath)
+        let config = cellConfigurations[indexPath] ?? dataSource.cellConfiguration(for: localIndexPath)
         let type = Swift.type(of: config.prototype)
 
         switch config.dequeueSource {
@@ -328,7 +337,7 @@ extension CollectionViewWrapper {
             fatalError("The dataSource: (\(String(describing: localDataSource))), must conform to \(String(describing: DataSourceUIProviding.self))")
         }
 
-        let config = dataSource.cellConfiguration(for: localIndexPath)
+        let config = cellConfigurations[indexPath] ?? dataSource.cellConfiguration(for: localIndexPath)
         config.configure(cell, localIndexPath)
 
         guard let editable = dataSource as? DataSourceUIEditing, editable.supportsEditing(for: localIndexPath) else { return }
