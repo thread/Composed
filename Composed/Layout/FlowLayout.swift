@@ -1,8 +1,23 @@
 import UIKit
 
-public enum FlowLayoutGlobalPinningBehaviour {
-    case alwaysVisible // remains on screen
-    case prefersFollowContent // visible when contentOffset.y <= 0, otherwise follow content off-screen
+public struct GlobalAttributes {
+
+    public enum PinningBehaviour {
+        case alwaysVisible // remains on screen
+        case prefersFollowContent // visible when contentOffset.y <= 0, otherwise follow content off-screen
+    }
+
+    public var pinsToBounds: Bool = true
+    public var pinsToContent: Bool = true
+
+    public var inset: CGFloat = 0
+    public var maxHeight: CGFloat = .greatestFiniteMagnitude
+
+    public var insetReference: UICollectionViewFlowLayout.SectionInsetReference = .fromContentInset
+    public var pinningBehaviour: PinningBehaviour = .alwaysVisible
+
+    internal init() { }
+
 }
 
 open class FlowLayout: UICollectionViewFlowLayout {
@@ -15,15 +30,8 @@ open class FlowLayout: UICollectionViewFlowLayout {
         return FlowLayoutInvalidationContext.self
     }
 
-    public var globalHeaderPinsToBounds: Bool = true
-    public var globalHeaderPinsToContent: Bool = true
-    public var globalHeaderMaxHeight: CGFloat = .greatestFiniteMagnitude
-    public var globalHeaderInsetReference: SectionInsetReference = .fromContentInset
-    public var globalHeaderScrollingBehaviour: FlowLayoutGlobalPinningBehaviour = .alwaysVisible
-    public var globalHeaderSpacing: CGFloat = 0
-
-    public var globalFooterPinsToBounds: Bool = true
-    public var globalFooterPinsToContent: Bool = false
+    public var globalHeader = GlobalAttributes()
+    public var globalFooter = GlobalAttributes()
 
     public init(metrics: FlowLayoutSectionMetrics? = nil) {
         super.init()
@@ -38,6 +46,7 @@ open class FlowLayout: UICollectionViewFlowLayout {
 
     public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        globalFooter.pinsToContent = false
     }
 
     open override var collectionViewContentSize: CGSize {
@@ -138,15 +147,15 @@ private extension FlowLayout {
         case UICollectionView.elementKindGlobalHeader:
             var frame = attributes.frame
 
-            if globalHeaderPinsToBounds {
-                switch globalHeaderScrollingBehaviour {
+            if globalHeader.pinsToBounds {
+                switch globalHeader.pinningBehaviour {
                 case .prefersFollowContent where collectionView.contentOffset.y >= 0:
                     break // do nothing
                 default:
                     frame.origin.y += collectionView.contentOffset.y
                 }
 
-                switch globalHeaderInsetReference {
+                switch globalHeader.insetReference {
                 case .fromSafeArea:
                     frame.origin.y += collectionView.safeAreaInsets.top
                 case .fromContentInset:
@@ -156,9 +165,9 @@ private extension FlowLayout {
                 }
             }
 
-            if globalHeaderPinsToContent, collectionView.contentOffset.y < 0 {
+            if globalHeader.pinsToContent, collectionView.contentOffset.y < 0 {
                 frame.size.height = max(globalHeaderSize.height, globalHeaderSize.height - frame.minY)
-                frame.size.height = min(frame.size.height, globalHeaderMaxHeight)
+                frame.size.height = min(frame.size.height, globalHeader.maxHeight)
             }
 
             return (frame, 1000)
@@ -166,29 +175,29 @@ private extension FlowLayout {
             let globalFooterSize = sizeForGlobalFooter
             var frame = attributes.frame
 
-            frame.origin.y = collectionViewContentSize.height - globalFooterSize.height + globalHeaderSpacing
+            frame.origin.y = collectionViewContentSize.height - globalFooterSize.height + globalFooter.inset
 
-            if globalFooterPinsToBounds, collectionView.bounds.maxY > collectionViewContentSize.height {
+            if globalFooter.pinsToBounds, collectionView.bounds.maxY > collectionViewContentSize.height {
                 frame.size.height += collectionView.bounds.maxY - collectionViewContentSize.height
             }
 
-            if !globalFooterPinsToContent, globalFooterPinsToBounds, collectionView.bounds.maxY > collectionViewContentSize.height {
+            if !globalFooter.pinsToContent, globalFooter.pinsToBounds, collectionView.bounds.maxY > collectionViewContentSize.height {
                 frame.origin.y += collectionView.bounds.maxY - collectionViewContentSize.height
             }
 
             return (frame, 999)
         case UICollectionView.elementKindSectionHeader:
             var frame = attributes.frame
-            frame.origin.y += globalHeaderSize.height + globalHeaderSpacing
+            frame.origin.y += globalHeaderSize.height + globalHeader.inset
 
-            if !globalHeaderPinsToBounds {
+            if !globalHeader.pinsToBounds {
                 frame.origin.y += collectionView.contentOffset.y - collectionView.safeAreaInsets.top
                 frame.origin.y = max(attributes.frame.minY, globalHeaderSize.height)
             }
 
             return (frame, 1)
         default:
-            let frame = attributes.frame.offsetBy(dx: 0, dy: globalHeaderSize.height + globalHeaderSpacing)
+            let frame = attributes.frame.offsetBy(dx: 0, dy: globalHeaderSize.height + globalHeader.inset)
             return (frame, attributes.indexPath.item)
         }
     }
