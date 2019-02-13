@@ -46,10 +46,10 @@ internal final class CollectionViewWrapper: NSObject, UICollectionViewDataSource
     internal let dataSource: DataSource
     internal weak var delegate: DataSourceViewDelegate?
 
-    private var globalConfigurations: [String: DataSourceUIViewConfiguration] = [:]
-    private var headerConfigurations: [Int: DataSourceUIViewConfiguration] = [:]
-    private var footerConfigurations: [Int: DataSourceUIViewConfiguration] = [:]
-    private var cellConfigurations: [IndexPath: DataSourceUICellConfiguration] = [:]
+    private var globalConfigurations: [String: DataSourceUIConfiguration] = [:]
+    private var headerConfigurations: [Int: DataSourceUIConfiguration] = [:]
+    private var footerConfigurations: [Int: DataSourceUIConfiguration] = [:]
+    private var cellConfigurations: [IndexPath: DataSourceUIConfiguration] = [:]
 
     internal init(collectionView: UICollectionView, dataSource: DataSource) {
         self.collectionView = collectionView
@@ -168,7 +168,7 @@ extension CollectionViewWrapper {
         let width = collectionView.bounds.width
         let target = CGSize(width: width, height: 0)
 
-        config.configure(config.prototype, localSection)
+        config.configure(config.prototype, IndexPath(item: 0, section: localSection))
         return config.prototype.systemLayoutSizeFitting(
             target, withHorizontalFittingPriority: .required,
             verticalFittingPriority: .fittingSizeLevel)
@@ -187,7 +187,7 @@ extension CollectionViewWrapper {
         let width = collectionView.bounds.width
         let target = CGSize(width: width, height: 0)
 
-        config.configure(config.prototype, localSection)
+        config.configure(config.prototype, IndexPath(item: 0, section: localSection))
         return config.prototype.systemLayoutSizeFitting(
             target, withHorizontalFittingPriority: .required,
             verticalFittingPriority: .fittingSizeLevel)
@@ -201,7 +201,7 @@ extension CollectionViewWrapper {
             fatalError("The dataSource: (\(String(describing: localDataSource))), must conform to \(String(describing: DataSourceUIProviding.self))")
         }
 
-        let configuration: DataSourceUIViewConfiguration?
+        let configuration: DataSourceUIConfiguration?
 
         switch kind {
         case UICollectionView.elementKindGlobalHeader:
@@ -243,16 +243,16 @@ extension CollectionViewWrapper {
         switch elementKind {
         case UICollectionView.elementKindGlobalHeader:
             let config = global?.globalHeaderConfiguration
-            config?.configure(view, localIndexPath.section)
+            config?.configure(view, UICollectionView.globalElementIndexPath)
         case UICollectionView.elementKindGlobalFooter:
             let config = global?.globalFooterConfiguration
-            config?.configure(view, localIndexPath.section)
+            config?.configure(view, UICollectionView.globalElementIndexPath)
         case UICollectionView.elementKindSectionHeader:
             let config = dataSource.headerConfiguration(for: localIndexPath.section)
-            config?.configure(view, localIndexPath.section)
+            config?.configure(view, localIndexPath)
         case UICollectionView.elementKindSectionFooter:
             let config = dataSource.footerConfiguration(for: localIndexPath.section)
-            config?.configure(view, localIndexPath.section)
+            config?.configure(view, localIndexPath)
         default:
             break
         }
@@ -269,7 +269,7 @@ extension CollectionViewWrapper {
         let width = collectionView.bounds.width
         let target = CGSize(width: width, height: 0)
 
-        config.configure(config.prototype, UICollectionView.globalElementIndexPath.section)
+        config.configure(config.prototype, UICollectionView.globalElementIndexPath)
         return config.prototype.systemLayoutSizeFitting(
             target, withHorizontalFittingPriority: .required,
             verticalFittingPriority: .fittingSizeLevel).height
@@ -282,7 +282,7 @@ extension CollectionViewWrapper {
         let width = collectionView.bounds.width
         let target = CGSize(width: width, height: 0)
 
-        config.configure(config.prototype, UICollectionView.globalElementIndexPath.section)
+        config.configure(config.prototype, UICollectionView.globalElementIndexPath)
         return config.prototype.systemLayoutSizeFitting(
             target, withHorizontalFittingPriority: .required,
             verticalFittingPriority: .fittingSizeLevel).height

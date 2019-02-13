@@ -1,8 +1,8 @@
 public final class GlobalDataSource: DataSource {
 
     public let child: DataSource
-    public var globalHeaderConfiguration: DataSourceUIViewConfiguration?
-    public var globalFooterConfiguration: DataSourceUIViewConfiguration?
+    public var globalHeaderConfiguration: DataSourceUIConfiguration?
+    public var globalFooterConfiguration: DataSourceUIConfiguration?
 
     public init(child: DataSource) {
         self.child = child
@@ -25,11 +25,11 @@ public final class GlobalDataSource: DataSource {
     }
 
     public func dataSourceFor(global section: Int) -> (dataSource: DataSource, localSection: Int) {
-        return (child, section)
+        return child.dataSourceFor(global: section)
     }
 
     public func dataSourceFor(global indexPath: IndexPath) -> (dataSource: DataSource, localIndexPath: IndexPath) {
-        return (child, indexPath)
+        return child.dataSourceFor(global: indexPath)
     }
 
     public var isEmpty: Bool {

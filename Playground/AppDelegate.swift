@@ -31,7 +31,12 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         composed.append(friends)
         composed.append(countries)
 
-        let controller = DataSourceViewController(dataSource: composed)
+        let global = GlobalDataSource(child: composed)
+        let controller = DataSourceViewController(dataSource: global)
+
+//        global.globalHeaderConfiguration = DataSourceUIGlobalConfiguration(prototype: GlobalHeaderView.fromNib, dequeueSource: .nib) { view in
+//
+//        }
 
         (window?.rootViewController as? UINavigationController)?
             .pushViewController(controller, animated: false)

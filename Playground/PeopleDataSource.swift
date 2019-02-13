@@ -18,15 +18,15 @@ final class PeopleDataSource: ArrayDataSource<Person>, DataSourceUIProviding, Da
         return DataSourceUISectionMetrics(insets: UIEdgeInsets(horizontal: 16, vertical: 0), horizontalSpacing: 4, verticalSpacing: 4)
     }
 
-    func cellConfiguration(for indexPath: IndexPath) -> DataSourceUICellConfiguration {
-        return DataSourceUICellConfiguration(prototype: PersonCell.fromNib, dequeueSource: .nib) { cell, indexPath in
+    func cellConfiguration(for indexPath: IndexPath) -> DataSourceUIConfiguration {
+        return DataSourceUIConfiguration(prototype: PersonCell.fromNib, dequeueSource: .nib) { cell, indexPath in
             cell.prepare(person: self.element(at: indexPath))
         }
     }
 
-    func headerConfiguration(for section: Int) -> DataSourceUIViewConfiguration? {
+    func headerConfiguration(for section: Int) -> DataSourceUIConfiguration? {
         return title.map { title in
-            DataSourceUIViewConfiguration(prototype: HeaderView.fromNib, dequeueSource: .nib) { view, indexPath in
+            DataSourceUIConfiguration(prototype: HeaderView.fromNib, dequeueSource: .nib) { view, indexPath in
                 view.prepare(title: title)
             }
         }

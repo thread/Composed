@@ -15,15 +15,15 @@ public protocol DataSourceUIProviding {
     var sizingStrategy: DataSourceUISizingStrategy { get }
 
     func metrics(for section: Int) -> DataSourceUISectionMetrics
-    func cellConfiguration(for indexPath: IndexPath) -> DataSourceUICellConfiguration
-    func headerConfiguration(for section: Int) -> DataSourceUIViewConfiguration?
-    func footerConfiguration(for section: Int) -> DataSourceUIViewConfiguration?
+    func cellConfiguration(for indexPath: IndexPath) -> DataSourceUIConfiguration
+    func headerConfiguration(for section: Int) -> DataSourceUIConfiguration?
+    func footerConfiguration(for section: Int) -> DataSourceUIConfiguration?
 }
 
 public extension DataSourceUIProviding {
     var sizingStrategy: DataSourceUISizingStrategy { return ColumnSizingStrategy(columnCount: 1, sizingMode: .automatic(isUniform: true)) }
-    func headerConfiguration(for section: Int) -> DataSourceUIViewConfiguration? { return nil }
-    func footerConfiguration(for section: Int) -> DataSourceUIViewConfiguration? { return nil }
+    func headerConfiguration(for section: Int) -> DataSourceUIConfiguration? { return nil }
+    func footerConfiguration(for section: Int) -> DataSourceUIConfiguration? { return nil }
 }
 
 public final class ColumnSizingStrategy: DataSourceUISizingStrategy {
