@@ -47,6 +47,8 @@
 		54BAB15E221497FA0064CE51 /* GlobalHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54BAB15D221497FA0064CE51 /* GlobalHeaderView.swift */; };
 		54BAB160221498000064CE51 /* GlobalHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 54BAB15F221498000064CE51 /* GlobalHeaderView.xib */; };
 		54BAB1622214A0550064CE51 /* RootDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54BAB1612214A0550064CE51 /* RootDataSource.swift */; };
+		54BAB1642214D05C0064CE51 /* GlobalFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54BAB1632214D05C0064CE51 /* GlobalFooterView.swift */; };
+		54BAB1662214D0630064CE51 /* GlobalFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 54BAB1652214D0630064CE51 /* GlobalFooterView.xib */; };
 		54D0A8A521F64AF600C65B72 /* HeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 54D0A8A421F64AF600C65B72 /* HeaderView.xib */; };
 /* End PBXBuildFile section */
 
@@ -133,6 +135,8 @@
 		54BAB15D221497FA0064CE51 /* GlobalHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalHeaderView.swift; sourceTree = "<group>"; };
 		54BAB15F221498000064CE51 /* GlobalHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GlobalHeaderView.xib; sourceTree = "<group>"; };
 		54BAB1612214A0550064CE51 /* RootDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootDataSource.swift; sourceTree = "<group>"; };
+		54BAB1632214D05C0064CE51 /* GlobalFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalFooterView.swift; sourceTree = "<group>"; };
+		54BAB1652214D0630064CE51 /* GlobalFooterView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GlobalFooterView.xib; sourceTree = "<group>"; };
 		54D0A8A421F64AF600C65B72 /* HeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HeaderView.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -190,6 +194,8 @@
 				540221222195C44F00F0E173 /* AppDelegate.swift */,
 				54BAB15D221497FA0064CE51 /* GlobalHeaderView.swift */,
 				54BAB15F221498000064CE51 /* GlobalHeaderView.xib */,
+				54BAB1632214D05C0064CE51 /* GlobalFooterView.swift */,
+				54BAB1652214D0630064CE51 /* GlobalFooterView.xib */,
 				54BAB1612214A0550064CE51 /* RootDataSource.swift */,
 				540221242195C45000F0E173 /* PeopleDataSource.swift */,
 				546AA49421D5178900588DE4 /* PersonCell.xib */,
@@ -416,6 +422,7 @@
 				54D0A8A521F64AF600C65B72 /* HeaderView.xib in Resources */,
 				5402212A2195C45100F0E173 /* Assets.xcassets in Resources */,
 				546AA49521D5178900588DE4 /* PersonCell.xib in Resources */,
+				54BAB1662214D0630064CE51 /* GlobalFooterView.xib in Resources */,
 				54BAB160221498000064CE51 /* GlobalHeaderView.xib in Resources */,
 				540221282195C45000F0E173 /* Main.storyboard in Resources */,
 			);
@@ -444,6 +451,7 @@
 			files = (
 				540221252195C45000F0E173 /* PeopleDataSource.swift in Sources */,
 				54BAB15E221497FA0064CE51 /* GlobalHeaderView.swift in Sources */,
+				54BAB1642214D05C0064CE51 /* GlobalFooterView.swift in Sources */,
 				54BAB1622214A0550064CE51 /* RootDataSource.swift in Sources */,
 				540221232195C45000F0E173 /* AppDelegate.swift in Sources */,
 			);

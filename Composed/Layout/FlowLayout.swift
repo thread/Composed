@@ -2,19 +2,18 @@ import UIKit
 
 public struct GlobalAttributes {
 
-    public enum PinningBehaviour {
-        case alwaysVisible // remains on screen
-        case prefersFollowContent // visible when contentOffset.y <= 0, otherwise follow content off-screen
+    public enum Reference {
+        case none
+        case fromSafeArea
     }
 
     public var pinsToBounds: Bool = true
-    public var pinsToContent: Bool = true
+    public var pinsToContent: Bool = false
+    public var prefersFollowContent: Bool = true
 
     public var inset: CGFloat = 0
-    public var maxHeight: CGFloat = .greatestFiniteMagnitude
-
-    public var insetReference: UICollectionViewFlowLayout.SectionInsetReference = .fromContentInset
-    public var pinningBehaviour: PinningBehaviour = .alwaysVisible
+    public var respectSafeAreaForPosition: Bool = true
+    public var respectSafeAreaForSize: Bool = true
 
     internal init() { }
 
@@ -49,18 +48,30 @@ open class FlowLayout: UICollectionViewFlowLayout {
 
     public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        globalFooter.pinsToContent = false
     }
 
     open override func prepare() {
         super.prepare()
+        guard let collectionView = collectionView else { return }
 
         if cachedGlobalHeaderSize == .zero {
             cachedGlobalHeaderSize = sizeForGlobalHeader
+
+            if cachedGlobalHeaderSize != .zero,
+                isNavigationBarHidden,
+                globalHeader.respectSafeAreaForSize {
+                cachedGlobalHeaderSize.height += collectionView.safeAreaInsets.top
+            }
         }
 
         if cachedGlobalFooterSize == .zero {
             cachedGlobalFooterSize = sizeForGlobalFooter
+
+            if cachedGlobalFooterSize != .zero,
+                isTabBarHidden,
+                globalFooter.respectSafeAreaForSize {
+                cachedGlobalFooterSize.height += collectionView.safeAreaInsets.bottom
+            }
         }
     }
 
@@ -79,8 +90,9 @@ open class FlowLayout: UICollectionViewFlowLayout {
 
     open override var collectionViewContentSize: CGSize {
         var size = super.collectionViewContentSize
-        size.height += cachedGlobalHeaderSize.height
-        size.height += cachedGlobalFooterSize.height
+        size.height += adjustedOrigin
+        size.height += cachedGlobalHeaderSize.height + globalHeader.inset
+        size.height += cachedGlobalFooterSize.height + globalFooter.inset
         return size
     }
 
@@ -113,6 +125,8 @@ open class FlowLayout: UICollectionViewFlowLayout {
     }
 
     open override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
+        let rect = rect.insetBy(dx: 0, dy: -cachedGlobalHeaderSize.height)
+
         var attributes = NSArray(array: super.layoutAttributesForElements(in: rect) ?? [], copyItems: true) as? [UICollectionViewLayoutAttributes]
         guard requiresLayout else { return attributes }
 
@@ -167,67 +181,89 @@ open class FlowLayout: UICollectionViewFlowLayout {
 
 private extension FlowLayout {
 
+    var adjustedOrigin: CGFloat {
+        return cachedGlobalHeaderSize != .zero
+            && isNavigationBarHidden
+            && globalHeader.respectSafeAreaForPosition
+            ? -collectionView!.safeAreaInsets.top
+            : 0
+    }
+
     func adjustedFrame(for attributes: UICollectionViewLayoutAttributes) -> (frame: CGRect, zIndex: Int) {
         guard let collectionView = collectionView else { return (attributes.frame, 0) }
-        let globalHeaderSize = cachedGlobalHeaderSize
 
         switch attributes.representedElementKind {
         case UICollectionView.elementKindGlobalHeader:
             var frame = attributes.frame
 
             if globalHeader.pinsToBounds {
-                switch globalHeader.pinningBehaviour {
-                case .prefersFollowContent where collectionView.contentOffset.y >= 0:
-                    break // do nothing
-                default:
-                    frame.origin.y += collectionView.contentOffset.y
-                }
-
-                switch globalHeader.insetReference {
-                case .fromSafeArea:
-                    frame.origin.y += collectionView.safeAreaInsets.top
-                case .fromContentInset:
-                    frame.origin.y += collectionView.adjustedContentInset.top
-                case .fromLayoutMargins:
-                    frame.origin.y += collectionView.layoutMargins.top
+                if globalHeader.prefersFollowContent, collectionView.contentOffset.y + collectionView.adjustedContentInset.top >= 0 {
+                    frame.origin.y = adjustedOrigin
+                } else {
+                    frame.origin.y = adjustedOrigin + collectionView.contentOffset.y + collectionView.adjustedContentInset.top
                 }
             }
 
-            if globalHeader.pinsToContent, collectionView.contentOffset.y < 0 {
-                frame.size.height = max(globalHeaderSize.height, globalHeaderSize.height - frame.minY)
-                frame.size.height = min(frame.size.height, globalHeader.maxHeight)
+            if globalHeader.pinsToBounds
+                && globalHeader.pinsToContent
+                && collectionView.contentOffset.y < -collectionView.adjustedContentInset.top {
+                frame.size.height = max(cachedGlobalHeaderSize.height, cachedGlobalHeaderSize.height - frame.minY + adjustedOrigin)
             }
 
-            return (frame, 1000)
+            return (frame, 400)
         case UICollectionView.elementKindGlobalFooter:
-            let globalFooterSize = sizeForGlobalFooter
             var frame = attributes.frame
 
-            frame.origin.y = collectionViewContentSize.height - globalFooterSize.height + globalFooter.inset
+            frame.origin.y = collectionViewContentSize.height - cachedGlobalFooterSize.height
 
-            if globalFooter.pinsToBounds, collectionView.bounds.maxY > collectionViewContentSize.height {
-                frame.size.height += collectionView.bounds.maxY - collectionViewContentSize.height
-            }
+//            if globalFooter.pinsToBounds, collectionView.bounds.maxY > collectionViewContentSize.height {
+//                frame.size.height += collectionView.bounds.maxY - collectionViewContentSize.height
+//            }
+//
+//            if !globalFooter.pinsToContent, globalFooter.pinsToBounds, collectionView.bounds.maxY > collectionViewContentSize.height {
+//                frame.origin.y += collectionView.bounds.maxY - collectionViewContentSize.height
+//            }
 
-            if !globalFooter.pinsToContent, globalFooter.pinsToBounds, collectionView.bounds.maxY > collectionViewContentSize.height {
-                frame.origin.y += collectionView.bounds.maxY - collectionViewContentSize.height
-            }
-
-            return (frame, 999)
+            return (frame, 300)
         case UICollectionView.elementKindSectionHeader:
             var frame = attributes.frame
-            frame.origin.y += globalHeaderSize.height + globalHeader.inset
-
-            if !globalHeader.pinsToBounds {
-                frame.origin.y += collectionView.contentOffset.y - collectionView.safeAreaInsets.top
-                frame.origin.y = max(attributes.frame.minY, globalHeaderSize.height)
-            }
-
-            return (frame, 1)
+            frame.origin.y += adjustedOrigin + cachedGlobalHeaderSize.height + globalHeader.inset
+            return (frame, 200)
+        case UICollectionView.elementKindSectionFooter:
+            let frame = attributes.frame.offsetBy(dx: 0, dy: adjustedOrigin + cachedGlobalHeaderSize.height + globalHeader.inset)
+            return (frame, 100)
         default:
-            let frame = attributes.frame.offsetBy(dx: 0, dy: globalHeaderSize.height + globalHeader.inset)
-            return (frame, attributes.indexPath.item)
+            let frame = attributes.frame.offsetBy(dx: 0, dy: adjustedOrigin + cachedGlobalHeaderSize.height + globalHeader.inset)
+            return (frame, attributes.zIndex)
         }
+    }
+
+}
+
+private extension FlowLayout {
+
+    private var isNavigationBarHidden: Bool {
+         return collectionView?.owningViewController?.navigationController?.navigationBar.isHidden == true
+    }
+
+    private var isTabBarHidden: Bool {
+        return collectionView?.owningViewController?.tabBarController?.tabBar.isHidden == true
+    }
+
+}
+
+private extension UIView {
+
+    @objc var owningViewController: UIViewController? {
+        var responder: UIResponder? = self
+
+        while !(responder is UIViewController) && superview != nil {
+            if let next = responder?.next {
+                responder = next
+            }
+        }
+
+        return responder as? UIViewController
     }
 
 }

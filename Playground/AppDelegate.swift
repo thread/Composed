@@ -7,35 +7,57 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
 
-        let family = PeopleDataSource(array: [
-            Person(name: "Shaps Benkau", age: 38),
-            Person(name: "Uwe", age: 60),
-            Person(name: "Anne", age: 35)
-        ])
-
-        family.title = "Family"
-
-        let friends = PeopleDataSource(array: [
-            Person(name: "Stewart", age: 39),
-            Person(name: "Joseph Duffy", age: 24)
-        ])
-
-        friends.title = "Friends"
+//        let family = PeopleDataSource(array: [
+//            Person(name: "Shaps Benkau", age: 38),
+//            Person(name: "Uwe", age: 60),
+//            Person(name: "Anne", age: 35)
+//        ])
+//
+//        family.title = "Family"
+//
+//        let friends = PeopleDataSource(array: [
+//            Person(name: "Stewart", age: 39),
+//            Person(name: "Joseph Duffy", age: 24)
+//        ])
+//
+//        friends.title = "Friends"
 
         let countries = PeopleDataSource(array: countryNames)
         countries.title = "Countries"
         
         let composed = ComposedDataSource()
 
-        composed.append(family)
-        composed.append(friends)
+//        composed.append(family)
+//        composed.append(friends)
         composed.append(countries)
 
-        let global = RootDataSource(child: composed)
-        let controller = DataSourceViewController(dataSource: global)
+        let layout = FlowLayout()
 
-        (window?.rootViewController as? UINavigationController)?
-            .pushViewController(controller, animated: false)
+        layout.globalHeader.pinsToContent = true
+        layout.globalHeader.pinsToBounds = true
+        layout.globalHeader.prefersFollowContent = false
+        layout.globalHeader.respectSafeAreaForPosition = true
+        layout.globalHeader.respectSafeAreaForSize = true
+//        layout.globalHeader.inset = 20
+
+        layout.globalFooter.pinsToContent = false
+        layout.globalFooter.pinsToBounds = true
+        layout.globalFooter.prefersFollowContent = false
+        layout.globalFooter.respectSafeAreaForPosition = true
+        layout.globalFooter.respectSafeAreaForSize = true
+//        layout.globalFooter.inset = 20
+
+//        let layout = UICollectionViewFlowLayout()
+//        layout.sectionInset = UIEdgeInsets(all: 0)
+//        layout.minimumLineSpacing = 4
+//        layout.minimumInteritemSpacing = 4
+
+        let global = RootDataSource(child: composed)
+        let controller = DataSourceViewController(dataSource: global, layout: layout)
+
+        let nav = (window?.rootViewController as? UINavigationController)
+        nav?.navigationBar.isHidden = true
+        nav?.pushViewController(controller, animated: false)
 
         return true
     }

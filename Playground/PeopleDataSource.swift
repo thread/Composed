@@ -15,7 +15,7 @@ final class PeopleDataSource: ArrayDataSource<Person>, DataSourceUIProviding, Da
     }()
 
     func metrics(for section: Int) -> DataSourceUISectionMetrics {
-        return DataSourceUISectionMetrics(insets: UIEdgeInsets(horizontal: 16, vertical: 0), horizontalSpacing: 4, verticalSpacing: 4)
+        return DataSourceUISectionMetrics(insets: UIEdgeInsets(all: 0), horizontalSpacing: 4, verticalSpacing: 4)
     }
 
     func cellConfiguration(for indexPath: IndexPath) -> DataSourceUIConfiguration {
@@ -24,13 +24,21 @@ final class PeopleDataSource: ArrayDataSource<Person>, DataSourceUIProviding, Da
         }
     }
 
-    func headerConfiguration(for section: Int) -> DataSourceUIConfiguration? {
+    func footerConfiguration(for section: Int) -> DataSourceUIConfiguration? {
         return title.map { title in
             DataSourceUIConfiguration(prototype: HeaderView.fromNib, dequeueSource: .nib) { view, indexPath in
                 view.prepare(title: title)
             }
         }
     }
+
+//    func headerConfiguration(for section: Int) -> DataSourceUIConfiguration? {
+//        return title.map { title in
+//            DataSourceUIConfiguration(prototype: HeaderView.fromNib, dequeueSource: .nib) { view, indexPath in
+//                view.prepare(title: title)
+//            }
+//        }
+//    }
 
     func selectElement(for indexPath: IndexPath) {
 //        var context = DataSourceUIInvalidationContext()
@@ -82,6 +90,11 @@ final class PersonCell: UICollectionViewCell, ReusableViewNibLoadable {
 final class HeaderView: DataSourceHeaderFooterView, ReusableViewNibLoadable {
 
     @IBOutlet private weak var titleLabel: UILabel!
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        backgroundColor = .red
+    }
 
     public func prepare(title: String?) {
         titleLabel.text = title
