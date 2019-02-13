@@ -46,6 +46,7 @@ internal final class CollectionViewWrapper: NSObject, UICollectionViewDataSource
     internal let dataSource: DataSource
     internal weak var delegate: DataSourceViewDelegate?
 
+    private var globalConfigurations: [String: DataSourceUIViewConfiguration] = [:]
     private var headerConfigurations: [Int: DataSourceUIViewConfiguration] = [:]
     private var footerConfigurations: [Int: DataSourceUIViewConfiguration] = [:]
     private var cellConfigurations: [IndexPath: DataSourceUICellConfiguration] = [:]
@@ -110,13 +111,8 @@ internal final class CollectionViewWrapper: NSObject, UICollectionViewDataSource
             layoutContext.invalidateSupplementaryElements(ofKind: UICollectionView.elementKindSectionFooter, at: footerIndexPaths)
         }
 
-        if context.invalidateGlobalHeader {
-            layoutContext.invalidateSupplementaryElements(ofKind: UICollectionView.elementKindGlobalHeader, at: [UICollectionView.globalElementIndexPath])
-        }
-
-        if context.invalidateGlobalHeader {
-            layoutContext.invalidateSupplementaryElements(ofKind: UICollectionView.elementKindGlobalFooter, at: [UICollectionView.globalElementIndexPath])
-        }
+        layoutContext.invalidateGlobalHeader = context.invalidateGlobalHeader
+        layoutContext.invalidateGlobalFooter = context.invalidateGlobalFooter
 
         collectionView.collectionViewLayout.invalidateLayout(with: layoutContext)
     }
@@ -209,9 +205,11 @@ extension CollectionViewWrapper {
 
         switch kind {
         case UICollectionView.elementKindGlobalHeader:
-            configuration = global?.globalHeaderConfiguration
+            configuration = globalConfigurations[kind]
+                ?? global?.globalHeaderConfiguration
         case UICollectionView.elementKindGlobalFooter:
-            configuration = global?.globalFooterConfiguration
+            configuration = globalConfigurations[kind]
+                ?? global?.globalFooterConfiguration
         case UICollectionView.elementKindSectionHeader:
             configuration = headerConfigurations[indexPath.section] 
                 ?? dataSource.headerConfiguration(for: localIndexPath.section)
@@ -266,6 +264,7 @@ extension CollectionViewWrapper {
 
     func heightForGlobalHeader(in collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout) -> CGFloat {
         guard let config = (dataSource as? GlobalDataSource)?.globalHeaderConfiguration else { return 0 }
+        globalConfigurations[UICollectionView.elementKindGlobalHeader] = config
 
         let width = collectionView.bounds.width
         let target = CGSize(width: width, height: 0)
@@ -278,6 +277,7 @@ extension CollectionViewWrapper {
 
     func heightForGlobalFooter(in collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout) -> CGFloat {
         guard let config = (dataSource as? GlobalDataSource)?.globalFooterConfiguration else { return 0 }
+        globalConfigurations[UICollectionView.elementKindGlobalFooter] = config
 
         let width = collectionView.bounds.width
         let target = CGSize(width: width, height: 0)

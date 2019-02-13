@@ -21,7 +21,7 @@ internal extension FlowLayout {
 internal extension FlowLayout {
 
     var requiresLayout: Bool {
-        return sizeForGlobalHeader.height != 0 || sizeForGlobalFooter.height != 0
+        return cachedGlobalHeaderSize.height != 0 || cachedGlobalFooterSize.height != 0
     }
 
 }

@@ -33,6 +33,9 @@ open class FlowLayout: UICollectionViewFlowLayout {
     public var globalHeader = GlobalAttributes()
     public var globalFooter = GlobalAttributes()
 
+    internal private(set) var cachedGlobalHeaderSize: CGSize = .zero
+    internal private(set) var cachedGlobalFooterSize: CGSize = .zero
+
     public init(metrics: FlowLayoutSectionMetrics? = nil) {
         super.init()
 
@@ -49,10 +52,35 @@ open class FlowLayout: UICollectionViewFlowLayout {
         globalFooter.pinsToContent = false
     }
 
+    open override func prepare() {
+        super.prepare()
+
+        if cachedGlobalHeaderSize == .zero {
+            cachedGlobalHeaderSize = sizeForGlobalHeader
+        }
+
+        if cachedGlobalFooterSize == .zero {
+            cachedGlobalFooterSize = sizeForGlobalFooter
+        }
+    }
+
+    open override func invalidateLayout(with context: UICollectionViewLayoutInvalidationContext) {
+        super.invalidateLayout(with: context)
+        guard let context = context as? FlowLayoutInvalidationContext else { return }
+
+        if context.invalidateGlobalHeader {
+            cachedGlobalHeaderSize = .zero
+        }
+
+        if context.invalidateGlobalFooter {
+            cachedGlobalFooterSize = .zero
+        }
+    }
+
     open override var collectionViewContentSize: CGSize {
         var size = super.collectionViewContentSize
-        size.height += sizeForGlobalHeader.height
-        size.height += sizeForGlobalFooter.height
+        size.height += cachedGlobalHeaderSize.height
+        size.height += cachedGlobalFooterSize.height
         return size
     }
 
@@ -70,12 +98,12 @@ open class FlowLayout: UICollectionViewFlowLayout {
         switch elementKind {
         case UICollectionView.elementKindGlobalHeader:
             let attributes = FlowLayoutAttributes(forSupplementaryViewOfKind: elementKind, with: indexPath)
-            attributes.frame = CGRect(origin: .zero, size: sizeForGlobalHeader)
+            attributes.frame = CGRect(origin: .zero, size: cachedGlobalHeaderSize)
             (attributes.frame, attributes.zIndex) = adjustedFrame(for: attributes)
             return attributes
         case UICollectionView.elementKindGlobalFooter:
             let attributes = FlowLayoutAttributes(forSupplementaryViewOfKind: elementKind, with: indexPath)
-            attributes.frame = CGRect(origin: .zero, size: sizeForGlobalFooter)
+            attributes.frame = CGRect(origin: .zero, size: cachedGlobalFooterSize)
             (attributes.frame, attributes.zIndex) = adjustedFrame(for: attributes)
             return attributes
         default:
@@ -90,13 +118,13 @@ open class FlowLayout: UICollectionViewFlowLayout {
 
         attributes?.forEach { ($0.frame, $0.zIndex) = adjustedFrame(for: $0) }
 
-        if sizeForGlobalHeader.height > 0,
+        if cachedGlobalHeaderSize.height > 0,
             let header = layoutAttributesForSupplementaryView(ofKind: UICollectionView.elementKindGlobalHeader,
                                                               at: UICollectionView.globalElementIndexPath) {
             attributes?.append(header)
         }
 
-        if sizeForGlobalFooter.height > 0,
+        if cachedGlobalFooterSize.height > 0,
             let footer = layoutAttributesForSupplementaryView(ofKind: UICollectionView.elementKindGlobalFooter,
                                                                   at: UICollectionView.globalElementIndexPath) {
             attributes?.append(footer)
@@ -123,11 +151,11 @@ open class FlowLayout: UICollectionViewFlowLayout {
         }
 
         if oldBounds.origin != newBounds.origin {
-            if sizeForGlobalHeader.height > 0 {
+            if cachedGlobalHeaderSize.height > 0 {
                 context.invalidateSupplementaryElements(ofKind: UICollectionView.elementKindGlobalHeader, at: [UICollectionView.globalElementIndexPath])
             }
 
-            if sizeForGlobalFooter.height > 0 {
+            if cachedGlobalFooterSize.height > 0 {
                 context.invalidateSupplementaryElements(ofKind: UICollectionView.elementKindGlobalFooter, at: [UICollectionView.globalElementIndexPath])
             }
         }
@@ -141,7 +169,7 @@ private extension FlowLayout {
 
     func adjustedFrame(for attributes: UICollectionViewLayoutAttributes) -> (frame: CGRect, zIndex: Int) {
         guard let collectionView = collectionView else { return (attributes.frame, 0) }
-        let globalHeaderSize = sizeForGlobalHeader
+        let globalHeaderSize = cachedGlobalHeaderSize
 
         switch attributes.representedElementKind {
         case UICollectionView.elementKindGlobalHeader:
