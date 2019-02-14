@@ -29,7 +29,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 
         composed.append(family)
         composed.append(friends)
-        composed.append(countries)
+//        composed.append(countries)
 
         let layout = FlowLayout()
 
