@@ -94,7 +94,12 @@ open class FlowLayout: UICollectionViewFlowLayout {
     }
 
     open override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
-        let originalAttributes = super.layoutAttributesForItem(at: indexPath)?.copy() as? UICollectionViewLayoutAttributes
+        let originalAttributes = super.layoutAttributesForItem(at: indexPath)?.copy() as? FlowLayoutAttributes
+
+        let count = collectionView!.numberOfItems(inSection: indexPath.section)
+        originalAttributes?.isFirstInSection = indexPath.item == 0
+        originalAttributes?.isLastInSection = indexPath.item == count - 1
+
         guard requiresLayout else { return originalAttributes }
         originalAttributes.map { ($0.frame, $0.zIndex) = adjustedFrame(for: $0) }
         return originalAttributes
@@ -123,8 +128,18 @@ open class FlowLayout: UICollectionViewFlowLayout {
 
     open override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
         let rect = rect.insetBy(dx: 0, dy: -(cachedGlobalHeaderSize.height + cachedGlobalFooterSize.height))
+        let originalAttributes = super.layoutAttributesForElements(in: rect) ?? []
 
-        var attributes = NSArray(array: super.layoutAttributesForElements(in: rect) ?? [], copyItems: true) as? [UICollectionViewLayoutAttributes]
+        originalAttributes.lazy
+            .filter { $0.representedElementCategory == .cell }
+            .compactMap { $0 as? FlowLayoutAttributes }
+            .forEach {
+                let count = collectionView!.numberOfItems(inSection: $0.indexPath.section)
+                $0.isFirstInSection = $0.indexPath.item == 0
+                $0.isLastInSection = $0.indexPath.item == count - 1
+        }
+
+        var attributes = NSArray(array: originalAttributes, copyItems: true) as? [UICollectionViewLayoutAttributes]
         guard requiresLayout else { return attributes }
 
         attributes?.forEach { ($0.frame, $0.zIndex) = adjustedFrame(for: $0) }
