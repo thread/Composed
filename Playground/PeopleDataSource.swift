@@ -38,6 +38,10 @@ final class PeopleDataSource: ArrayDataSource<Person>, DataSourceUIProviding {
         }
     }
 
+    func backgroundViewClass(for section: Int) -> UICollectionReusableView.Type? {
+        return BackgroundView.self
+    }
+
 }
 
 final class PersonCell: UICollectionViewCell, ReusableViewNibLoadable {
@@ -45,29 +49,8 @@ final class PersonCell: UICollectionViewCell, ReusableViewNibLoadable {
     @IBOutlet private weak var nameLabel: UILabel!
     @IBOutlet private weak var ageLabel: UILabel!
 
-    override var isHighlighted: Bool {
-        didSet { layer.add(CATransition(), forKey: nil) }
-    }
-
-    override var isSelected: Bool {
-        didSet { layer.add(CATransition(), forKey: nil) }
-    }
-
     override func awakeFromNib() {
         super.awakeFromNib()
-
-        backgroundView = UIView(frame: .zero)
-        backgroundView?.layer.cornerRadius = 6
-        backgroundView?.layer.borderWidth = 1
-        backgroundView?.layer.borderColor = UIColor.lightGray.cgColor
-        backgroundView?.backgroundColor = UIColor(white: 0.98, alpha: 1)
-
-        selectedBackgroundView = UIView(frame: .zero)
-        selectedBackgroundView?.layer.cornerRadius = 6
-        selectedBackgroundView?.layer.borderWidth = 1
-        selectedBackgroundView?.layer.borderColor = UIColor.lightGray.cgColor
-        selectedBackgroundView?.backgroundColor = UIColor(white: 0.88, alpha: 1)
-
         backgroundColor = .clear
     }
 

@@ -16,6 +16,10 @@ public extension UICollectionView {
     @objc optional func heightForGlobalFooter(in collectionView: UICollectionView,
                                      layout collectionViewLayout: UICollectionViewLayout) -> CGFloat
 
+    /// Returns the class to use for providing a 'grouped' backgroundView behind the items for the specified section
+    @objc optional func backgroundViewClass(in collectionView: UICollectionView,
+                                            forSectionAt section: Int) -> UICollectionReusableView.Type?
+
 }
 
 public struct FlowLayoutSectionMetrics {

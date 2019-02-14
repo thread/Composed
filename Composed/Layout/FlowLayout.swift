@@ -32,8 +32,9 @@ open class FlowLayout: UICollectionViewFlowLayout {
     public var globalHeader = GlobalAttributes()
     public var globalFooter = GlobalAttributes()
 
-    internal private(set) var cachedGlobalHeaderSize: CGSize = .zero
-    internal private(set) var cachedGlobalFooterSize: CGSize = .zero
+    private var cachedGlobalHeaderSize: CGSize = .zero
+    private var cachedGlobalFooterSize: CGSize = .zero
+    private var backgroundViewClasses: [Int: UICollectionReusableView.Type] = [:]
 
     public init(metrics: FlowLayoutSectionMetrics? = nil) {
         super.init()
@@ -53,6 +54,12 @@ open class FlowLayout: UICollectionViewFlowLayout {
     open override func prepare() {
         super.prepare()
         guard let collectionView = collectionView else { return }
+
+        for section in 0..<collectionView.numberOfSections {
+            guard let backgroundViewClass = (collectionView.delegate as? FlowLayoutDelegate)?
+                .backgroundViewClass?(in: collectionView, forSectionAt: section) else { continue }
+            register(backgroundViewClass, forDecorationViewOfKind: String(describing: backgroundViewClass))
+        }
 
         if cachedGlobalHeaderSize == .zero {
             cachedGlobalHeaderSize = sizeForGlobalHeader
@@ -126,7 +133,31 @@ open class FlowLayout: UICollectionViewFlowLayout {
         }
     }
 
+    open override func layoutAttributesForDecorationView(ofKind elementKind: String, at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
+        let firstIndex = 0
+        let lastIndex = collectionView!.numberOfItems(inSection: indexPath.section) - 1
+        guard lastIndex >= 0 else { return nil }
+
+        guard let firstAttributes = layoutAttributesForItem(at: IndexPath(item: firstIndex, section: indexPath.section)),
+            let lastAttributes = layoutAttributesForItem(at: IndexPath(item: lastIndex, section: indexPath.section)) else {
+                return nil
+        }
+
+        let bgAttributes = FlowLayoutAttributes(forDecorationViewOfKind: elementKind, with: indexPath)
+        let x = firstAttributes.frame.minX
+        let y = firstAttributes.frame.minY
+        let w = lastAttributes.frame.maxX - firstAttributes.frame.minX
+        let h = lastAttributes.frame.maxY - firstAttributes.frame.minY
+
+        bgAttributes.frame = CGRect(x: x, y: y, width: w, height: h)
+        bgAttributes.zIndex = -100
+
+        return bgAttributes
+    }
+
     open override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
+        guard let collectionView = collectionView else { return nil }
+
         let rect = rect.insetBy(dx: 0, dy: -(cachedGlobalHeaderSize.height + cachedGlobalFooterSize.height))
         let originalAttributes = super.layoutAttributesForElements(in: rect) ?? []
 
@@ -134,26 +165,49 @@ open class FlowLayout: UICollectionViewFlowLayout {
             .filter { $0.representedElementCategory == .cell }
             .compactMap { $0 as? FlowLayoutAttributes }
             .forEach {
-                let count = collectionView!.numberOfItems(inSection: $0.indexPath.section)
+                let count = collectionView.numberOfItems(inSection: $0.indexPath.section)
                 $0.isFirstInSection = $0.indexPath.item == 0
                 $0.isLastInSection = $0.indexPath.item == count - 1
         }
 
         var attributes = NSArray(array: originalAttributes, copyItems: true) as? [UICollectionViewLayoutAttributes]
-        guard requiresLayout else { return attributes }
 
-        attributes?.forEach { ($0.frame, $0.zIndex) = adjustedFrame(for: $0) }
+        func appendBackgroundViews() {
+            for section in 0..<collectionView.numberOfSections {
+                guard let backgroundViewClass = (collectionView.delegate as? FlowLayoutDelegate)?
+                    .backgroundViewClass?(in: collectionView, forSectionAt: section) else { continue }
 
-        if cachedGlobalHeaderSize.height > 0,
-            let header = layoutAttributesForSupplementaryView(ofKind: UICollectionView.elementKindGlobalHeader,
-                                                              at: UICollectionView.globalElementIndexPath) {
-            attributes?.append(header)
+                let indexPath = IndexPath(item: 0, section: section)
+
+                guard let attr = layoutAttributesForDecorationView(ofKind: String(describing: backgroundViewClass), at: indexPath),
+                    rect.intersects(attr.frame) else {
+                        continue
+                }
+
+                attributes?.append(attr)
+            }
         }
 
-        if cachedGlobalFooterSize.height > 0,
-            let footer = layoutAttributesForSupplementaryView(ofKind: UICollectionView.elementKindGlobalFooter,
+        if !requiresLayout {
+            // if we don't have any global elements we can just add the background views now
+            appendBackgroundViews()
+            return attributes
+        } else {
+            // otherwise we need to adjust the frames first
+            attributes?.forEach { ($0.frame, $0.zIndex) = adjustedFrame(for: $0) }
+            appendBackgroundViews()
+
+            if cachedGlobalHeaderSize.height > 0,
+                let header = layoutAttributesForSupplementaryView(ofKind: UICollectionView.elementKindGlobalHeader,
                                                                   at: UICollectionView.globalElementIndexPath) {
-            attributes?.append(footer)
+                attributes?.append(header)
+            }
+
+            if cachedGlobalFooterSize.height > 0,
+                let footer = layoutAttributesForSupplementaryView(ofKind: UICollectionView.elementKindGlobalFooter,
+                                                                  at: UICollectionView.globalElementIndexPath) {
+                attributes?.append(footer)
+            }
         }
 
         return attributes
@@ -183,6 +237,12 @@ open class FlowLayout: UICollectionViewFlowLayout {
 
             if cachedGlobalFooterSize.height > 0 {
                 context.invalidateSupplementaryElements(ofKind: UICollectionView.elementKindGlobalFooter, at: [UICollectionView.globalElementIndexPath])
+            }
+
+            backgroundViewClasses.enumerated().forEach {
+                let kind = String(describing: $0.element.value)
+                let indexPath = IndexPath(item: 0, section: $0.offset)
+                context.invalidateDecorationElements(ofKind: kind, at: [indexPath])
             }
         }
 
@@ -268,6 +328,14 @@ private extension FlowLayout {
             let frame = attributes.frame.offsetBy(dx: 0, dy: adjustedHeaderOrigin + cachedGlobalHeaderSize.height + globalHeader.inset)
             return (frame, attributes.zIndex)
         }
+    }
+
+}
+
+private extension FlowLayout {
+
+    var requiresLayout: Bool {
+        return cachedGlobalHeaderSize.height != 0 || cachedGlobalFooterSize.height != 0
     }
 
 }

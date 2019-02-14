@@ -18,12 +18,14 @@ public protocol DataSourceUIProviding {
     func cellConfiguration(for indexPath: IndexPath) -> DataSourceUIConfiguration
     func headerConfiguration(for section: Int) -> DataSourceUIConfiguration?
     func footerConfiguration(for section: Int) -> DataSourceUIConfiguration?
+    func backgroundViewClass(for section: Int) -> UICollectionReusableView.Type?
 }
 
 public extension DataSourceUIProviding {
     var sizingStrategy: DataSourceUISizingStrategy { return ColumnSizingStrategy(columnCount: 1, sizingMode: .automatic(isUniform: true)) }
     func headerConfiguration(for section: Int) -> DataSourceUIConfiguration? { return nil }
     func footerConfiguration(for section: Int) -> DataSourceUIConfiguration? { return nil }
+    func backgroundViewClass(for section: Int) -> UICollectionReusableView.Type? { return nil }
 }
 
 public final class ColumnSizingStrategy: DataSourceUISizingStrategy {

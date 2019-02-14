@@ -42,6 +42,7 @@
 		543433C3220A2BEA00E403DB /* FlowLayout+Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = 543433AB220A2BEA00E403DB /* FlowLayout+Types.swift */; };
 		546AA49521D5178900588DE4 /* PersonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 546AA49421D5178900588DE4 /* PersonCell.xib */; };
 		548A8B6E2214EEBE00C0A276 /* FooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 548A8B6D2214EEBE00C0A276 /* FooterView.xib */; };
+		548A8B702214FA2800C0A276 /* BackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 548A8B6F2214FA2800C0A276 /* BackgroundView.swift */; };
 		549930D32211E4590007CAA4 /* ArrayDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 549930D22211E4590007CAA4 /* ArrayDataStore.swift */; };
 		54BAB158221235470064CE51 /* DataSourceUI+Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54BAB157221235470064CE51 /* DataSourceUI+Protocols.swift */; };
 		54BAB15C2212451B0064CE51 /* BasicDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54BAB15B2212451B0064CE51 /* BasicDataSource.swift */; };
@@ -131,6 +132,7 @@
 		546865242204E3CA00E79B56 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		546AA49421D5178900588DE4 /* PersonCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PersonCell.xib; sourceTree = "<group>"; };
 		548A8B6D2214EEBE00C0A276 /* FooterView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FooterView.xib; sourceTree = "<group>"; };
+		548A8B6F2214FA2800C0A276 /* BackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundView.swift; sourceTree = "<group>"; };
 		549930D22211E4590007CAA4 /* ArrayDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayDataStore.swift; sourceTree = "<group>"; };
 		54BAB157221235470064CE51 /* DataSourceUI+Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DataSourceUI+Protocols.swift"; sourceTree = "<group>"; };
 		54BAB15B2212451B0064CE51 /* BasicDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicDataSource.swift; sourceTree = "<group>"; };
@@ -203,6 +205,7 @@
 				546AA49421D5178900588DE4 /* PersonCell.xib */,
 				54D0A8A421F64AF600C65B72 /* HeaderView.xib */,
 				548A8B6D2214EEBE00C0A276 /* FooterView.xib */,
+				548A8B6F2214FA2800C0A276 /* BackgroundView.swift */,
 				540221262195C45000F0E173 /* Main.storyboard */,
 				540221292195C45100F0E173 /* Assets.xcassets */,
 				5402212B2195C45100F0E173 /* LaunchScreen.storyboard */,
@@ -457,6 +460,7 @@
 				54BAB15E221497FA0064CE51 /* GlobalHeaderView.swift in Sources */,
 				54BAB1642214D05C0064CE51 /* GlobalFooterView.swift in Sources */,
 				54BAB1622214A0550064CE51 /* RootDataSource.swift in Sources */,
+				548A8B702214FA2800C0A276 /* BackgroundView.swift in Sources */,
 				540221232195C45000F0E173 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -155,6 +155,16 @@ extension CollectionViewWrapper {
 
 extension CollectionViewWrapper {
 
+    func backgroundViewClass(in collectionView: UICollectionView, forSectionAt section: Int) -> UICollectionReusableView.Type? {
+        let (localDataSource, localSection) = dataSource.dataSourceFor(global: section)
+
+        guard let dataSource = localDataSource as? DataSource & DataSourceUIProviding else {
+            fatalError("The dataSource: (\(String(describing: localDataSource))), must conform to \(String(describing: DataSourceUIProviding.self))")
+        }
+
+        return dataSource.backgroundViewClass(for: localSection)
+    }
+
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         let (localDataSource, localSection) = dataSource.dataSourceFor(global: section)
 
@@ -274,7 +284,7 @@ extension CollectionViewWrapper {
             case UICollectionView.elementKindSectionFooter:
                 configuration = footerConfigurations[indexPath.section]
                     ?? dataSource.footerConfiguration(for: localIndexPath.section)
-            default: fatalError("Unsupported. Currently Composed only supports global and section header/footer views")
+            default: return
             }
         }
 
