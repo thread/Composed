@@ -300,7 +300,8 @@ private extension FlowLayout {
             if globalFooter.respectSafeAreaForPosition {
                 frame.origin.y = collectionViewContentSize.height - cachedGlobalFooterSize.height
             } else {
-                frame.origin.y = collectionViewContentSize.height - cachedGlobalFooterSize.height + adjustedFooterOrigin
+                frame.origin.y = max(collectionViewContentSize.height, collectionView.bounds.maxY - adjustedFooterOrigin)
+                    - cachedGlobalFooterSize.height + adjustedFooterOrigin
             }
 
             if globalFooter.pinsToBounds {

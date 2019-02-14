@@ -37,6 +37,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         layout.globalHeader.prefersFollowContent = false
 
         layout.globalFooter.pinsToBounds = true
+        layout.globalFooter.pinsToContent = true
         layout.globalFooter.prefersFollowContent = true
         layout.globalFooter.inset = 20
 
