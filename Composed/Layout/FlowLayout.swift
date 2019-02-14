@@ -143,10 +143,12 @@ open class FlowLayout: UICollectionViewFlowLayout {
                 return nil
         }
 
+        let metrics = self.metrics(forSection: indexPath.section, delegate: collectionView!.delegate as! FlowLayoutDelegate)
         let bgAttributes = FlowLayoutAttributes(forDecorationViewOfKind: elementKind, with: indexPath)
-        let x = firstAttributes.frame.minX
+
+        let x = metrics.insets.left
         let y = firstAttributes.frame.minY
-        let w = lastAttributes.frame.maxX - firstAttributes.frame.minX
+        let w = collectionView!.bounds.width - (metrics.insets.left + metrics.insets.right)
         let h = lastAttributes.frame.maxY - firstAttributes.frame.minY
 
         bgAttributes.frame = CGRect(x: x, y: y, width: w, height: h)

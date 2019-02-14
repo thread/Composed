@@ -51,6 +51,13 @@ final class PersonCell: UICollectionViewCell, ReusableViewNibLoadable {
 
     override func awakeFromNib() {
         super.awakeFromNib()
+
+        selectedBackgroundView = UIView(frame: .zero)
+        selectedBackgroundView?.layer.cornerRadius = 6
+        selectedBackgroundView?.layer.borderWidth = 1
+        selectedBackgroundView?.layer.borderColor = UIColor.lightGray.cgColor
+        selectedBackgroundView?.backgroundColor = UIColor(white: 0.88, alpha: 1)
+
         backgroundColor = .clear
     }
 
