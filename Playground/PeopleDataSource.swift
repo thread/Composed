@@ -6,7 +6,7 @@ struct Person {
     var age: Int
 }
 
-final class PeopleDataSource: ArrayDataSource<Person>, DataSourceUIProviding, DataSourceUISelecting {
+final class PeopleDataSource: ArrayDataSource<Person>, DataSourceUIProviding {
 
     var title: String?
 
@@ -15,7 +15,7 @@ final class PeopleDataSource: ArrayDataSource<Person>, DataSourceUIProviding, Da
     }()
 
     func metrics(for section: Int) -> DataSourceUISectionMetrics {
-        return DataSourceUISectionMetrics(insets: UIEdgeInsets(all: 0), horizontalSpacing: 4, verticalSpacing: 4)
+        return DataSourceUISectionMetrics(insets: UIEdgeInsets(all: 16), horizontalSpacing: 4, verticalSpacing: 4)
     }
 
     func cellConfiguration(for indexPath: IndexPath) -> DataSourceUIConfiguration {
@@ -25,26 +25,17 @@ final class PeopleDataSource: ArrayDataSource<Person>, DataSourceUIProviding, Da
     }
 
     func footerConfiguration(for section: Int) -> DataSourceUIConfiguration? {
+        return DataSourceUIConfiguration(prototype: FooterView.fromNib, dequeueSource: .nib) { view, indexPath in
+            view.prepare(title: "\(self.numberOfElements(in: section)) items")
+        }
+    }
+
+    func headerConfiguration(for section: Int) -> DataSourceUIConfiguration? {
         return title.map { title in
             DataSourceUIConfiguration(prototype: HeaderView.fromNib, dequeueSource: .nib) { view, indexPath in
                 view.prepare(title: title)
             }
         }
-    }
-
-//    func headerConfiguration(for section: Int) -> DataSourceUIConfiguration? {
-//        return title.map { title in
-//            DataSourceUIConfiguration(prototype: HeaderView.fromNib, dequeueSource: .nib) { view, indexPath in
-//                view.prepare(title: title)
-//            }
-//        }
-//    }
-
-    func selectElement(for indexPath: IndexPath) {
-//        var context = DataSourceUIInvalidationContext()
-//        context.invalidateHeaders(in: IndexSet(integer: indexPath.section))
-//        updateDelegate?.dataSource(self, invalidateWith: context)
-//        sizingStrategy.invalidate(elementsAt: [indexPath])
     }
 
 }
@@ -91,10 +82,15 @@ final class HeaderView: DataSourceHeaderFooterView, ReusableViewNibLoadable {
 
     @IBOutlet private weak var titleLabel: UILabel!
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        backgroundColor = .red
+    public func prepare(title: String?) {
+        titleLabel.text = title
     }
+
+}
+
+final class FooterView: DataSourceHeaderFooterView, ReusableViewNibLoadable {
+
+    @IBOutlet private weak var titleLabel: UILabel!
 
     public func prepare(title: String?) {
         titleLabel.text = title

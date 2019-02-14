@@ -16,16 +16,18 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="59"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9aQ-lz-wuf">
-                    <rect key="frame" x="124.5" y="16" width="126" height="30"/>
+                <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9aQ-lz-wuf">
+                    <rect key="frame" x="32" y="4" width="311" height="30"/>
                     <state key="normal" title="Create an account"/>
                 </button>
             </subviews>
             <color key="backgroundColor" white="0.92115977110000002" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
-                <constraint firstItem="9aQ-lz-wuf" firstAttribute="top" secondItem="vSe-p4-owm" secondAttribute="top" constant="16" id="3Ap-LM-o1u"/>
-                <constraint firstItem="vSe-p4-owm" firstAttribute="bottom" secondItem="9aQ-lz-wuf" secondAttribute="bottom" priority="999" constant="16" id="3fq-Ba-l0W"/>
+                <constraint firstItem="9aQ-lz-wuf" firstAttribute="top" secondItem="vSe-p4-owm" secondAttribute="top" constant="4" id="3Ap-LM-o1u"/>
+                <constraint firstItem="vSe-p4-owm" firstAttribute="bottom" secondItem="9aQ-lz-wuf" secondAttribute="bottom" priority="999" constant="4" id="3fq-Ba-l0W"/>
+                <constraint firstItem="vSe-p4-owm" firstAttribute="trailing" secondItem="9aQ-lz-wuf" secondAttribute="trailing" constant="32" id="a96-jH-TFu"/>
                 <constraint firstItem="9aQ-lz-wuf" firstAttribute="centerX" secondItem="03M-e8-IyB" secondAttribute="centerX" id="hnT-2E-NMK"/>
+                <constraint firstItem="9aQ-lz-wuf" firstAttribute="leading" secondItem="vSe-p4-owm" secondAttribute="leading" constant="32" id="qHA-Bp-tLJ"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="vSe-p4-owm"/>
             <point key="canvasLocation" x="-138.40000000000001" y="-46.326836581709152"/>
