@@ -36,14 +36,14 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         layout.globalHeader.pinsToBounds = true
         layout.globalHeader.pinsToContent = true
         layout.globalHeader.prefersFollowContent = false
+        layout.globalHeader.inset = 20
 
-        layout.globalHeader.respectSafeAreaForPosition = true
-        layout.globalHeader.respectSafeAreaForSize = false
+        layout.globalHeader.layoutFromSafeArea = false
 
 //        layout.globalFooter.pinsToBounds = true
 //        layout.globalFooter.pinsToContent = true
 //        layout.globalFooter.prefersFollowContent = true
-//        layout.globalFooter.respectSafeAreaForPosition = true
+//        layout.globalFooter.respectsSafeArea = true
 //        layout.globalFooter.respectSafeAreaForSize = false
 
         let global = RootDataSource(child: composed)
@@ -52,14 +52,14 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 
         controller.edgesForExtendedLayout = [.top, .bottom]
         controller.extendedLayoutIncludesOpaqueBars = true
-        controller.navigationItem.largeTitleDisplayMode = .never
+        controller.navigationItem.largeTitleDisplayMode = .always
         controller.navigationItem.title = "Composed"
 
         controller.collectionView.contentInsetAdjustmentBehavior = .always
-        nav?.navigationBar.isHidden = true
+        nav?.navigationBar.isHidden = false
 
-        nav?.navigationBar.isTranslucent = true
-        nav?.navigationBar.isOpaque = false
+        nav?.navigationBar.isTranslucent = false
+        nav?.navigationBar.isOpaque = true
         nav?.navigationBar.prefersLargeTitles = true
         nav?.pushViewController(controller, animated: false)
 

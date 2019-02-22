@@ -15,7 +15,7 @@ final class PeopleDataSource: ArrayDataSource<Person>, DataSourceUIProviding {
     }()
 
     func metrics(for section: Int) -> DataSourceUISectionMetrics {
-        return DataSourceUISectionMetrics(insets: UIEdgeInsets(all: 16), horizontalSpacing: 4, verticalSpacing: 4)
+        return DataSourceUISectionMetrics(insets: UIEdgeInsets(all: 20), horizontalSpacing: 8, verticalSpacing: 8)
     }
 
     func cellConfiguration(for indexPath: IndexPath) -> DataSourceUIConfiguration {

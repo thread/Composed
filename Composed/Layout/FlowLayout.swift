@@ -7,8 +7,7 @@ public struct GlobalAttributes {
     public var prefersFollowContent: Bool = true
 
     public var inset: CGFloat = 0
-    public var respectSafeAreaForPosition: Bool = true
-    public var respectSafeAreaForSize: Bool = false
+    public var layoutFromSafeArea: Bool = true
 
     internal init() { }
 
@@ -77,7 +76,13 @@ open class FlowLayout: UICollectionViewFlowLayout {
         originalAttributes?.isLastInSection = indexPath.item == count - 1
 
         guard requiresLayout else { return originalAttributes }
-        originalAttributes.map { ($0.frame, $0.zIndex) = adjustedFrame(for: $0) }
+
+        originalAttributes.map {
+            ($0.frame, $0.zIndex) = adjusted(frame: $0.frame,
+                                             zIndex: $0.zIndex,
+                                             for: $0.representedElementKind)
+        }
+
         return originalAttributes
     }
 
@@ -89,16 +94,21 @@ open class FlowLayout: UICollectionViewFlowLayout {
         case UICollectionView.elementKindGlobalHeader:
             let attributes = FlowLayoutAttributes(forSupplementaryViewOfKind: elementKind, with: indexPath)
             attributes.frame = CGRect(origin: .zero, size: cachedGlobalHeaderSize)
-            (attributes.frame, attributes.zIndex) = adjustedFrame(for: attributes)
+            (attributes.frame, attributes.zIndex) = adjusted(frame: attributes.frame, zIndex: attributes.zIndex, for: attributes.representedElementKind)
             attributes.zIndex = 300
             return attributes
         case UICollectionView.elementKindGlobalFooter:
             let attributes = FlowLayoutAttributes(forSupplementaryViewOfKind: elementKind, with: indexPath)
             attributes.frame = CGRect(origin: .zero, size: cachedGlobalFooterSize)
-            (attributes.frame, attributes.zIndex) = adjustedFrame(for: attributes)
+            (attributes.frame, attributes.zIndex) = adjusted(frame: attributes.frame, zIndex: attributes.zIndex, for: attributes.representedElementKind)
             return attributes
         default:
-            originalAttributes.map { ($0.frame, $0.zIndex) = adjustedFrame(for: $0) }
+            originalAttributes.map {
+                ($0.frame, $0.zIndex) = adjusted(frame: $0.frame,
+                                                 zIndex: $0.zIndex,
+                                                 for: $0.representedElementKind)
+            }
+
             return originalAttributes
         }
     }
@@ -166,7 +176,13 @@ open class FlowLayout: UICollectionViewFlowLayout {
             return attributes
         } else {
             // otherwise we need to adjust the frames first
-            attributes?.forEach { ($0.frame, $0.zIndex) = adjustedFrame(for: $0) }
+            attributes?.forEach {
+                ($0.frame, $0.zIndex) = adjusted(frame: $0.frame,
+                                                 zIndex: $0.zIndex,
+                                                 for: $0.representedElementKind)
+
+            }
+
             appendBackgroundViews()
 
             if cachedGlobalHeaderSize.height > 0,
@@ -227,6 +243,7 @@ private extension FlowLayout {
 
     var additionalContentInset: CGFloat {
         guard cachedGlobalHeaderSize != .zero, let collectionView = collectionView else { return 0 }
+        guard globalHeader.layoutFromSafeArea else { return 0 }
         let safeAreaAdjustment = collectionView.adjustedContentInset.top - collectionView.contentInset.top
 
         switch collectionView.contentInsetAdjustmentBehavior {
@@ -239,13 +256,7 @@ private extension FlowLayout {
                 return collectionView.adjustedContentInset.top
             }
         default:
-            let isTopBarHidden = safeAreaAdjustment == collectionView.safeAreaInsets.top
-
-            if isTopBarHidden {
-                return collectionView.adjustedContentInset.top
-            } else {
-                return collectionView.safeAreaInsets.top
-            }
+            return safeAreaAdjustment
         }
     }
 
@@ -260,7 +271,7 @@ private extension FlowLayout {
     var adjustedGlobalHeaderSize: CGSize {
         guard cachedGlobalHeaderSize != .zero, let collectionView = collectionView else { return .zero }
         var adjustedSize = cachedGlobalHeaderSize
-        adjustedSize.height += globalHeader.respectSafeAreaForSize ? collectionView.safeAreaInsets.top : 0
+        adjustedSize.height += globalHeader.layoutFromSafeArea ? 0 : collectionView.safeAreaInsets.top
         return adjustedSize
     }
 
@@ -278,31 +289,27 @@ private extension FlowLayout {
         return contentOffset
     }
 
-    func adjustedFrame(for attributes: UICollectionViewLayoutAttributes) -> (frame: CGRect, zIndex: Int) {
-        guard let collectionView = collectionView else { return (attributes.frame, attributes.zIndex) }
+    func adjusted(frame: CGRect, zIndex: Int, for kind: String?) -> (frame: CGRect, zIndex: Int) {
+//        guard let collectionView = collectionView else { return (frame, zIndex) }
 
-        switch attributes.representedElementKind {
+        switch kind {
         case UICollectionView.elementKindGlobalHeader:
-            var frame = attributes.frame
+            var frame = frame
             frame.origin = adjustedGlobalHeaderOrigin
             frame.size = adjustedGlobalHeaderSize
 
             if globalHeader.pinsToBounds {
                 let offset = adjustedContentOffset
 
-                if globalHeader.prefersFollowContent, offset.y < 0 {
+                if globalHeader.prefersFollowContent, offset.y > 0 {
                     // do nothing
                 } else {
                     frame.origin.y += offset.y
                 }
 
-//                if globalHeader.pinsToContent, offset.y < 0 {
-//                    frame.size.height -= offset.y
-//                }
-
-//                if globalHeader.pinsToContent, collectionView.contentOffset.y < -collectionView.safeAreaInsets.top {
-//                    frame.size.height = max(cachedGlobalHeaderSize.height, cachedGlobalHeaderSize.height - frame.minY + adjustedHeaderOrigin)
-//                }
+                if globalHeader.pinsToContent, offset.y < 0 {
+                    frame.size.height -= offset.y
+                }
             }
 
             return (frame, UICollectionView.globalHeaderZIndex)
@@ -310,7 +317,7 @@ private extension FlowLayout {
 //            var frame = attributes.frame
 //            let offset = collectionView.bounds.maxY - collectionView.safeAreaInsets.bottom - collectionViewContentSize.height
 //
-//            if globalFooter.respectSafeAreaForPosition {
+//            if globalFooter.respectsSafeArea {
 //                frame.origin.y = collectionViewContentSize.height - cachedGlobalFooterSize.height
 //            } else {
 //                frame.origin.y = max(collectionViewContentSize.height, collectionView.bounds.maxY - adjustedFooterOrigin)
@@ -344,8 +351,7 @@ private extension FlowLayout {
 //            let frame = attributes.frame.offsetBy(dx: 0, dy: adjustedHeaderOrigin + cachedGlobalHeaderSize.height + globalHeader.inset)
 //            return (frame, UICollectionView.sectionFooterZIndex)
         default:
-            let frame = attributes.frame.offsetBy(dx: 0, dy: adjustedOrigin.y)
-            return (frame, attributes.zIndex)
+            return (frame.offsetBy(dx: 0, dy: adjustedOrigin.y), zIndex)
         }
     }
 
