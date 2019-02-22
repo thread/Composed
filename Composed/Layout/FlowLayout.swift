@@ -343,13 +343,10 @@ private extension FlowLayout {
 //            }
 //
 //            return (frame, UICollectionView.globalFooterZIndex)
-//        case UICollectionView.elementKindSectionHeader:
-//            var frame = attributes.frame
-//            frame.origin.y += adjustedHeaderOrigin
-//            return (frame, UICollectionView.sectionHeaderZIndex)
-//        case UICollectionView.elementKindSectionFooter:
-//            let frame = attributes.frame.offsetBy(dx: 0, dy: adjustedHeaderOrigin + cachedGlobalHeaderSize.height + globalHeader.inset)
-//            return (frame, UICollectionView.sectionFooterZIndex)
+        case UICollectionView.elementKindSectionHeader:
+            return (frame.offsetBy(dx: 0, dy: adjustedOrigin.y), UICollectionView.sectionHeaderZIndex)
+        case UICollectionView.elementKindSectionFooter:
+            return (frame.offsetBy(dx: 0, dy: adjustedOrigin.y), UICollectionView.sectionFooterZIndex)
         default:
             return (frame.offsetBy(dx: 0, dy: adjustedOrigin.y), zIndex)
         }
