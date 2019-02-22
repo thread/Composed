@@ -73,6 +73,7 @@ final class HeaderView: DataSourceHeaderFooterView, ReusableViewNibLoadable {
     @IBOutlet private weak var titleLabel: UILabel!
 
     public func prepare(title: String?) {
+        backgroundColor = .lightGray
         titleLabel.text = title
     }
 
@@ -83,6 +84,7 @@ final class FooterView: DataSourceHeaderFooterView, ReusableViewNibLoadable {
     @IBOutlet private weak var titleLabel: UILabel!
 
     public func prepare(title: String?) {
+        backgroundColor = .darkGray
         titleLabel.text = title
     }
 
