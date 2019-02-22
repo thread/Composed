@@ -7,7 +7,7 @@ public struct GlobalAttributes {
     public var prefersFollowContent: Bool = true
 
     public var inset: CGFloat = 0
-    public var layoutFromSafeArea: Bool = true
+    public var layoutFromSafeArea: Bool = false
 
     internal init() { }
 

@@ -38,8 +38,6 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         layout.globalHeader.prefersFollowContent = false
         layout.globalHeader.inset = 20
 
-        layout.globalHeader.layoutFromSafeArea = false
-
 //        layout.globalFooter.pinsToBounds = true
 //        layout.globalFooter.pinsToContent = true
 //        layout.globalFooter.prefersFollowContent = true
@@ -50,16 +48,17 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         let controller = DataSourceViewController(dataSource: global, layout: layout)
         let nav = window?.rootViewController as? UINavigationController
 
-        controller.edgesForExtendedLayout = [.top, .bottom]
-        controller.extendedLayoutIncludesOpaqueBars = true
+//        controller.edgesForExtendedLayout = [.top, .bottom]
+//        controller.extendedLayoutIncludesOpaqueBars = true
+
         controller.navigationItem.largeTitleDisplayMode = .always
         controller.navigationItem.title = "Composed"
 
-        controller.collectionView.contentInsetAdjustmentBehavior = .always
+//        controller.collectionView.contentInsetAdjustmentBehavior = .always
         nav?.navigationBar.isHidden = false
 
-        nav?.navigationBar.isTranslucent = false
-        nav?.navigationBar.isOpaque = true
+//        nav?.navigationBar.isTranslucent = true
+//        nav?.navigationBar.isOpaque = false
         nav?.navigationBar.prefersLargeTitles = true
         nav?.pushViewController(controller, animated: false)
 
