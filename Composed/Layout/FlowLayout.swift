@@ -7,7 +7,7 @@ public struct GlobalAttributes {
     public var prefersFollowContent: Bool = true
 
     public var inset: CGFloat = 0
-    public var layoutFromSafeArea: Bool = false
+    public var layoutFromSafeArea: Bool = true
 
     internal init() { }
 
@@ -276,11 +276,18 @@ private extension FlowLayout {
         return adjustedSize
     }
 
+    var adjustedGlobalFooterOrigin: CGPoint {
+        guard cachedGlobalHeaderSize != .zero else { return .zero }
+        var adjustedOrigin = CGPoint.zero
+        adjustedOrigin.y += collectionViewContentSize.height - adjustedGlobalFooterSize.height
+        return adjustedOrigin
+    }
+
     var adjustedGlobalFooterSize: CGSize {
         guard cachedGlobalFooterSize != .zero, let collectionView = collectionView else { return .zero }
         var adjustedSize = cachedGlobalFooterSize
         adjustedSize.height += globalFooter.layoutFromSafeArea ? 0 : collectionView.safeAreaInsets.bottom
-        return adjustedSize
+        return cachedGlobalFooterSize
     }
 
     var adjustedOrigin: CGPoint {
@@ -290,10 +297,17 @@ private extension FlowLayout {
         return origin
     }
 
-    var adjustedContentOffset: CGPoint {
+    var adjustedHeaderContentOffset: CGPoint {
         guard let collectionView = collectionView else { return .zero }
         var contentOffset = collectionView.contentOffset
         contentOffset.y += collectionView.adjustedContentInset.top
+        return contentOffset
+    }
+
+    var adjustedFooterContentOffset: CGPoint {
+        guard let collectionView = collectionView else { return .zero }
+        var contentOffset = CGPoint(x: 0, y: collectionView.bounds.maxY - collectionViewContentSize.height)
+        contentOffset.y -= collectionView.adjustedContentInset.bottom
         return contentOffset
     }
 
@@ -305,7 +319,7 @@ private extension FlowLayout {
             frame.size = adjustedGlobalHeaderSize
 
             if globalHeader.pinsToBounds {
-                let offset = adjustedContentOffset
+                let offset = adjustedHeaderContentOffset
 
                 if globalHeader.prefersFollowContent, offset.y > 0 {
                     // do nothing
@@ -323,47 +337,25 @@ private extension FlowLayout {
             guard let collectionView = collectionView else { return (frame, zIndex) }
 
             var frame = frame
-            frame.origin.y = collectionViewContentSize.height - adjustedGlobalFooterSize.height
+            frame.origin = adjustedGlobalFooterOrigin
+            frame.size = adjustedGlobalFooterSize
 
             if globalFooter.pinsToBounds {
-                let offset = collectionView.bounds.maxY - collectionViewContentSize.height
+                let offset = adjustedFooterContentOffset
 
-                if globalFooter.prefersFollowContent, offset < 0 {
+                if globalFooter.prefersFollowContent, offset.y < 0 {
                     // do nothing
                 } else {
-                    frame.origin.y += offset
+                    frame.origin.y += offset.y
                 }
 
-                if globalFooter.pinsToContent, offset > 0 {
-                    frame.origin.y -= offset
-                    frame.size.height += offset
+                if globalFooter.pinsToContent, offset.y > 0 {
+                    frame.origin.y -= offset.y
+                    frame.size.height += offset.y
                 }
             }
 
-//            if globalFooter.respectsSafeArea {
-//                frame.origin.y = collectionViewContentSize.height - cachedGlobalFooterSize.height
-//            } else {
-//                frame.origin.y = max(collectionViewContentSize.height, collectionView.bounds.maxY - adjustedFooterOrigin)
-//                    - cachedGlobalFooterSize.height + adjustedFooterOrigin
-//            }
-
-//            if globalFooter.pinsToBounds {
-//                if globalFooter.prefersFollowContent, offset < 0 {
-//                    // do nothing
-//                } else {
-//                    frame.origin.y += offset
-//                }
-//            }
-//
-//            if globalFooter.pinsToBounds
-//                && globalFooter.pinsToContent
-//                && offset > 0 {
-//                if collectionViewContentSize.height > collectionView.bounds.height {
-//                    frame.origin.y -= offset
-//                }
-//
-//                frame.size.height += offset
-//            }
+            frame.size.height += globalFooter.layoutFromSafeArea ? 0 : collectionView.safeAreaInsets.bottom
 
             return (frame, UICollectionView.globalFooterZIndex)
         case UICollectionView.elementKindSectionHeader:

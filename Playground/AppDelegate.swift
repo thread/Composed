@@ -22,7 +22,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 
         friends.title = "Friends"
 
-        let names = Array(countryNames.prefix(upTo: 10))
+        let names = Array(countryNames.prefix(upTo: 20))
         let countries = PeopleDataSource(array: names)
         countries.title = "Countries"
         
@@ -30,22 +30,24 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 
         composed.append(family)
         composed.append(friends)
-//        composed.append(countries)
+        composed.append(countries)
 
         let layout = FlowLayout()
 
         layout.globalHeader.pinsToContent = true
         layout.globalHeader.prefersFollowContent = false
+        layout.globalHeader.layoutFromSafeArea = false
 
         layout.globalFooter.pinsToBounds = true
-        layout.globalFooter.pinsToContent = true
-        layout.globalFooter.prefersFollowContent = false
+        layout.globalFooter.pinsToContent = false
+        layout.globalFooter.prefersFollowContent = true
+        layout.globalFooter.layoutFromSafeArea = false
 
         let global = RootDataSource(child: composed)
         let controller = DataSourceViewController(dataSource: global, layout: layout)
 
-        let tab = window?.rootViewController as? UITabBarController
-        let nav = tab?.viewControllers?.first as? UINavigationController
+        let nav = window?.rootViewController as? UINavigationController
+//        let nav = tab?.viewControllers?.first as? UINavigationController
 
         nav?.navigationBar.isHidden = true
         nav?.pushViewController(controller, animated: false)
