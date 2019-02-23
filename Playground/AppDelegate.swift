@@ -34,22 +34,16 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 
         let layout = FlowLayout()
 
-        layout.globalHeader.pinsToContent = true
-        layout.globalHeader.prefersFollowContent = false
         layout.globalHeader.layoutFromSafeArea = false
-
-        layout.globalFooter.pinsToBounds = true
-        layout.globalFooter.pinsToContent = false
-        layout.globalFooter.prefersFollowContent = true
         layout.globalFooter.layoutFromSafeArea = false
 
         let global = RootDataSource(child: composed)
         let controller = DataSourceViewController(dataSource: global, layout: layout)
 
-        let nav = window?.rootViewController as? UINavigationController
-//        let nav = tab?.viewControllers?.first as? UINavigationController
+        let tab = window?.rootViewController as? UITabBarController
+        let nav = tab?.viewControllers?.first as? UINavigationController
 
-        nav?.navigationBar.isHidden = true
+        nav?.navigationBar.isHidden = false
         nav?.pushViewController(controller, animated: false)
 
         return true
