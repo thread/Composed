@@ -65,6 +65,7 @@ open class FlowLayout: UICollectionViewFlowLayout {
     open override var collectionViewContentSize: CGSize {
         var size = super.collectionViewContentSize
         size.height += adjustedOrigin.y
+        size.height += adjustedGlobalFooterSize.height + globalFooter.inset
         return size
     }
 
@@ -275,6 +276,13 @@ private extension FlowLayout {
         return adjustedSize
     }
 
+    var adjustedGlobalFooterSize: CGSize {
+        guard cachedGlobalFooterSize != .zero, let collectionView = collectionView else { return .zero }
+        var adjustedSize = cachedGlobalFooterSize
+        adjustedSize.height += globalFooter.layoutFromSafeArea ? 0 : collectionView.safeAreaInsets.bottom
+        return adjustedSize
+    }
+
     var adjustedOrigin: CGPoint {
         guard cachedGlobalHeaderSize != .zero else { return .zero }
         var origin = adjustedGlobalHeaderOrigin
@@ -290,8 +298,6 @@ private extension FlowLayout {
     }
 
     func adjusted(frame: CGRect, zIndex: Int, for kind: String?) -> (frame: CGRect, zIndex: Int) {
-//        guard let collectionView = collectionView else { return (frame, zIndex) }
-
         switch kind {
         case UICollectionView.elementKindGlobalHeader:
             var frame = frame
@@ -313,17 +319,34 @@ private extension FlowLayout {
             }
 
             return (frame, UICollectionView.globalHeaderZIndex)
-//        case UICollectionView.elementKindGlobalFooter:
-//            var frame = attributes.frame
-//            let offset = collectionView.bounds.maxY - collectionView.safeAreaInsets.bottom - collectionViewContentSize.height
-//
+        case UICollectionView.elementKindGlobalFooter:
+            guard let collectionView = collectionView else { return (frame, zIndex) }
+
+            var frame = frame
+            frame.origin.y = collectionViewContentSize.height - adjustedGlobalFooterSize.height
+
+            if globalFooter.pinsToBounds {
+                let offset = collectionView.bounds.maxY - collectionViewContentSize.height
+
+                if globalFooter.prefersFollowContent, offset < 0 {
+                    // do nothing
+                } else {
+                    frame.origin.y += offset
+                }
+
+                if globalFooter.pinsToContent, offset > 0 {
+                    frame.origin.y -= offset
+                    frame.size.height += offset
+                }
+            }
+
 //            if globalFooter.respectsSafeArea {
 //                frame.origin.y = collectionViewContentSize.height - cachedGlobalFooterSize.height
 //            } else {
 //                frame.origin.y = max(collectionViewContentSize.height, collectionView.bounds.maxY - adjustedFooterOrigin)
 //                    - cachedGlobalFooterSize.height + adjustedFooterOrigin
 //            }
-//
+
 //            if globalFooter.pinsToBounds {
 //                if globalFooter.prefersFollowContent, offset < 0 {
 //                    // do nothing
@@ -341,8 +364,8 @@ private extension FlowLayout {
 //
 //                frame.size.height += offset
 //            }
-//
-//            return (frame, UICollectionView.globalFooterZIndex)
+
+            return (frame, UICollectionView.globalFooterZIndex)
         case UICollectionView.elementKindSectionHeader:
             return (frame.offsetBy(dx: 0, dy: adjustedOrigin.y), UICollectionView.sectionHeaderZIndex)
         case UICollectionView.elementKindSectionFooter:

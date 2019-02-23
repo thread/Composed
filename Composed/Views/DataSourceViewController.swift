@@ -34,6 +34,9 @@ open class DataSourceViewController: UIViewController {
     open override func viewDidLoad() {
         super.viewDidLoad()
 
+        edgesForExtendedLayout = .top
+        extendedLayoutIncludesOpaqueBars = true
+
         view.addSubview(collectionView)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         

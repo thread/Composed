@@ -22,40 +22,32 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 
         friends.title = "Friends"
 
-        let countries = PeopleDataSource(array: countryNames)
+        let names = Array(countryNames.prefix(upTo: 10))
+        let countries = PeopleDataSource(array: names)
         countries.title = "Countries"
         
         let composed = ComposedDataSource()
 
         composed.append(family)
         composed.append(friends)
-        composed.append(countries)
+//        composed.append(countries)
 
         let layout = FlowLayout()
 
-        layout.globalHeader.pinsToBounds = true
         layout.globalHeader.pinsToContent = true
         layout.globalHeader.prefersFollowContent = false
-        layout.globalHeader.inset = 20
 
-//        layout.globalFooter.pinsToBounds = true
-//        layout.globalFooter.pinsToContent = true
-//        layout.globalFooter.prefersFollowContent = true
-//        layout.globalFooter.respectsSafeArea = true
-//        layout.globalFooter.respectSafeAreaForSize = false
+        layout.globalFooter.pinsToBounds = true
+        layout.globalFooter.pinsToContent = true
+        layout.globalFooter.prefersFollowContent = false
 
         let global = RootDataSource(child: composed)
         let controller = DataSourceViewController(dataSource: global, layout: layout)
-        let nav = window?.rootViewController as? UINavigationController
 
-        controller.edgesForExtendedLayout = [.top]
-        controller.extendedLayoutIncludesOpaqueBars = true
+        let tab = window?.rootViewController as? UITabBarController
+        let nav = tab?.viewControllers?.first as? UINavigationController
 
-        controller.navigationItem.title = "Composed"
-
-        nav?.navigationBar.isHidden = false
-        nav?.navigationBar.isTranslucent = false
-        nav?.navigationBar.prefersLargeTitles = true
+        nav?.navigationBar.isHidden = true
         nav?.pushViewController(controller, animated: false)
 
         return true
