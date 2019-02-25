@@ -9,6 +9,24 @@ open class SectionedDataSource<Element>: CollectionDataSource {
         self.stores = stores
     }
 
+    public init(elements: [Element]) {
+        if elements.isEmpty { return }
+        stores = [ArrayDataStore(elements: elements)]
+    }
+
+    public convenience init(elements: Element...) {
+        self.init(elements: elements)
+    }
+
+    public init(contentsOf elements: [[Element]]) {
+        if elements.isEmpty { return }
+
+        stores = elements
+            .lazy
+            .filter { !$0.isEmpty }
+            .map { ArrayDataStore(elements: $0) }
+    }
+
     public var numberOfSections: Int {
         return stores.count
     }
@@ -67,19 +85,6 @@ public extension SectionedDataSource {
 }
 
 public extension SectionedDataSource {
-
-    convenience init(elements: [Element]) {
-        if elements.isEmpty {
-            self.init(stores: [])
-            return
-        }
-
-        self.init(stores: [ArrayDataStore(elements: elements)])
-    }
-
-    convenience init(elements: Element...) {
-        self.init(elements: elements)
-    }
 
     func append(elements: [Element]) {
         guard !elements.isEmpty else { return }
