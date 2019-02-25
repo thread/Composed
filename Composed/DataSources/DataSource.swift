@@ -26,12 +26,6 @@ public protocol DataSource: class {
     /// The delegate responsible for responding to update events. This is generally used for update propogation. The 'root' DataSource's delegate will generally be a `UIViewController`
     var updateDelegate: DataSourceUpdateDelegate? { get set }
 
-    /// Called when the DataSource becomes active
-    func didBecomeActive()
-
-    /// Called when the DataSource is no longer active
-    func willResignActive()
-
     /// The number of sections this DataSource contains
     var numberOfSections: Int { get }
 
@@ -54,15 +48,18 @@ public protocol DataSource: class {
 
 public extension DataSource {
 
-    var isRoot: Bool {
-        return !(updateDelegate is DataSource)
-            || self is GlobalDataSource
-    }
-
     var isEmpty: Bool {
         return (0..<numberOfSections)
             .lazy
             .allSatisfy { numberOfElements(in: $0) == 0 }
     }
 
+}
+
+public protocol DataSourceSelecting: DataSource {
+    func shouldSelectElement(at indexPath: IndexPath) -> Bool
+    func shouldDeselectElement(at indexPath: IndexPath) -> Bool
+
+    func selectElement(at indexPath: IndexPath)
+    func deselectElement(at indexPath: IndexPath)
 }

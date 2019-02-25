@@ -1,4 +1,4 @@
-public struct ArrayDataStore<Element>: DataStore {
+public final class ArrayDataStore<Element>: DataStore {
 
     public weak var delegate: DataStoreDelegate?
     public private(set) var elements: [Element] = []
@@ -31,7 +31,7 @@ public struct ArrayDataStore<Element>: DataStore {
         }
     }
 
-    public mutating func setElements(_ elements: [Element], changeset: DataSourceChangeset? = nil) {
+    public func setElements(_ elements: [Element], changeset: DataSourceChangeset? = nil) {
         guard let changeset = changeset else {
             self.elements = elements
             delegate?.dataStoreDidReload()

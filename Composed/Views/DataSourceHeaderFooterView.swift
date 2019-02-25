@@ -21,7 +21,7 @@ open class DataSourceHeaderFooterView: UICollectionReusableView {
  */
 private final class FixedZPositionLayer: CALayer {
 
-    private var _zPosition: CGFloat = 200
+    private var _zPosition: CGFloat = 0
     override var zPosition: CGFloat {
         get { return _zPosition }
         set { _zPosition = newValue }

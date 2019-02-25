@@ -4,7 +4,7 @@ public struct GlobalAttributes {
 
     public var pinsToBounds: Bool = true
     public var pinsToContent: Bool = false
-    public var prefersFollowContent: Bool = true
+    public var prefersFollowContent: Bool = false
 
     public var inset: CGFloat = 0
     public var layoutFromSafeArea: Bool = true
@@ -29,6 +29,14 @@ open class FlowLayout: UICollectionViewFlowLayout {
     private var cachedGlobalHeaderSize: CGSize = .zero
     private var cachedGlobalFooterSize: CGSize = .zero
     private var backgroundViewClasses: [Int: UICollectionReusableView.Type] = [:]
+
+    public override init() {
+        super.init()
+    }
+
+    public required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
 
     open override func prepare() {
         super.prepare()
@@ -141,7 +149,7 @@ open class FlowLayout: UICollectionViewFlowLayout {
     open override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
         guard let collectionView = collectionView else { return nil }
 
-        let rect = rect.insetBy(dx: 0, dy: -(cachedGlobalHeaderSize.height + cachedGlobalFooterSize.height))
+        let rect = rect.insetBy(dx: 0, dy: -(adjustedGlobalHeaderSize.height + adjustedGlobalFooterSize.height))
         let originalAttributes = super.layoutAttributesForElements(in: rect) ?? []
 
         originalAttributes.lazy

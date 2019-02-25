@@ -7,38 +7,36 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
 
-        let family = PeopleDataSource(array: [
+        let family = [
             Person(name: "Shaps Benkau", age: 38),
             Person(name: "Uwe", age: 60),
             Person(name: "Anne", age: 35)
-        ])
+        ]
 
-        family.title = "Family"
-
-        let friends = PeopleDataSource(array: [
+        let friends = [
             Person(name: "Stewart", age: 39),
             Person(name: "Joseph Duffy", age: 24)
-        ])
+        ]
 
-        friends.title = "Friends"
+        let people = PeopleDataSource(elements: [])
+        people.title = "People"
+        people.append(elements: family)
+        people.append(elements: friends)
 
         let names = Array(countryNames.prefix(upTo: 20))
-        let countries = PeopleDataSource(array: names)
+        let countries = PeopleDataSource(elements: names)
         countries.title = "Countries"
-        
-        let composed = ComposedDataSource()
 
-        composed.append(family)
-        composed.append(friends)
-        composed.append(countries)
+        let list = ListDataSource()
+        list.append(people)
+        list.append(countries)
 
         let layout = FlowLayout()
 
         layout.globalHeader.layoutFromSafeArea = false
         layout.globalFooter.layoutFromSafeArea = false
 
-        let global = RootDataSource(child: composed)
-        let controller = DataSourceViewController(dataSource: global, layout: layout)
+        let controller = DataSourceViewController(dataSource: list, layout: layout)
 
         let tab = window?.rootViewController as? UITabBarController
         let nav = tab?.viewControllers?.first as? UINavigationController

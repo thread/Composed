@@ -2,8 +2,69 @@ import UIKit
 
 public struct DataSourceUIInvalidationContext {
 
-    public var invalidateGlobalHeader: Bool = false
-    public var invalidateGlobalFooter: Bool = false
+    private var _invalidateGlobalHeader: Bool = false
+    public var invalidateGlobalHeader: Bool {
+        get { return _invalidateGlobalHeader }
+        set {
+            // we don't want to enable setting this to false once its true
+            guard newValue else { return }
+            _invalidateGlobalHeader = newValue
+            _invalidateGlobalHeaderData = newValue
+            _invalidateGlobalHeaderMetrics = newValue
+        }
+    }
+
+    private var _invalidateGlobalFooter: Bool = false
+    public var invalidateGlobalFooter: Bool {
+        get { return _invalidateGlobalFooter }
+        set {
+            // we don't want to enable setting this to false once its true
+            guard newValue else { return }
+            _invalidateGlobalFooter = newValue
+            _invalidateGlobalFooterData = newValue
+            _invalidateGlobalFooterMetrics = newValue
+        }
+    }
+
+    private var _invalidateGlobalHeaderData: Bool = false
+    public var invalidateGlobalHeaderData: Bool {
+        get { return _invalidateGlobalHeaderData }
+        set {
+            // we don't want to enable setting this to false once its true
+            guard newValue else { return }
+            _invalidateGlobalHeaderData = newValue
+        }
+    }
+
+    private var _invalidateGlobalFooterData: Bool = false
+    public var invalidateGlobalFooterData: Bool {
+        get { return _invalidateGlobalFooterData }
+        set {
+            // we don't want to enable setting this to false once its true
+            guard newValue else { return }
+            _invalidateGlobalFooterData = newValue
+        }
+    }
+
+    private var _invalidateGlobalHeaderMetrics: Bool = false
+    public var invalidateGlobalHeaderMetrics: Bool {
+        get { return _invalidateGlobalHeaderMetrics }
+        set {
+            // we don't want to enable setting this to false once its true
+            guard newValue else { return }
+            _invalidateGlobalHeaderMetrics = newValue
+        }
+    }
+
+    private var _invalidateGlobalFooterMetrics: Bool = false
+    public var invalidateGlobalFooterMetrics: Bool {
+        get { return _invalidateGlobalFooterMetrics }
+        set {
+            // we don't want to enable setting this to false once its true
+            guard newValue else { return }
+            _invalidateGlobalFooterMetrics = newValue
+        }
+    }
 
     public private(set) var invalidatedElementIndexPaths: Set<IndexPath> = []
     public private(set) var invalidatedHeaderIndexes = IndexSet()
@@ -48,3 +109,15 @@ public struct DataSourceUIConfiguration {
     }
 
 }
+
+//public struct DataSourceUISelectionHandler {
+//
+//    public let handler: (UICollectionReusableView, IndexPath) -> Void
+//
+//    public init<View>(view: View, indexPath: IndexPath) where View: UICollectionReusableView {
+//        self.handler = { view, indexPath in
+//            handler(view as! View, indexPath)
+//        }
+//    }
+//
+//}

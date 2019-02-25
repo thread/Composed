@@ -1,5 +1,7 @@
 import CoreData
 
+public typealias ManagedDataSource<Element> = BasicDataSource<ManagedDataStore<Element>> where Element: NSManagedObject
+
 public final class ManagedDataStore<Element>: NSObject, NSFetchedResultsControllerDelegate, DataStore where Element: NSManagedObject {
 
     public weak var delegate: DataStoreDelegate?
@@ -9,13 +11,8 @@ public final class ManagedDataStore<Element>: NSObject, NSFetchedResultsControll
     private var fetchedResultsController: NSFetchedResultsController<Element>?
     private let managedObjectContext: NSManagedObjectContext
 
-    public var request: NSFetchRequest<Element>? {
-        didSet { invalidate() }
-    }
-
-    public var sectionNameKeyPath: String? {
-        didSet { invalidate() }
-    }
+    public private(set) var request: NSFetchRequest<Element>?
+    public private(set) var sectionNameKeyPath: String?
 
     public init(managedObjectContext: NSManagedObjectContext) {
         self.managedObjectContext = managedObjectContext
@@ -49,13 +46,15 @@ public final class ManagedDataStore<Element>: NSObject, NSFetchedResultsControll
         return nil
     }
 
-    public func invalidate() {
-        guard let request = request else { return }
-        request.returnsObjectsAsFaults = false
+    public func prepare(request: NSFetchRequest<Element>, sectionNameKeyPath: String? = nil) {
+        self.sectionNameKeyPath = sectionNameKeyPath
+        self.request = request
 
         fetchedResultsController = NSFetchedResultsController(fetchRequest: request, managedObjectContext: managedObjectContext, sectionNameKeyPath: sectionNameKeyPath, cacheName: nil)
         fetchedResultsController?.delegate = self
+    }
 
+    public func reload() {
         do {
             try fetchedResultsController?.performFetch()
         } catch {
@@ -134,10 +133,9 @@ public final class ManagedDataStore<Element>: NSObject, NSFetchedResultsControll
 
     public func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         defer {
-            // need to keep this after the call to performBatchUpdates to at least ensure the models are up to date
             delegate?.dataStore(willPerform: operations)
         }
-
+        
         delegate?.dataStore(performBatchUpdates: {
             updates?()
         }, completion: { [unowned self] _ in

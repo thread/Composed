@@ -1,6 +1,12 @@
 open class BasicDataSource<Store>: CollectionDataSource where Store: DataStore {
 
-    private let store: Store
+    public private(set) var store: Store {
+        didSet {
+            store.delegate = self
+            updateDelegate?.dataSourceDidReload(self)
+        }
+    }
+
     public weak var updateDelegate: DataSourceUpdateDelegate?
 
     public var isEmpty: Bool {
@@ -9,6 +15,7 @@ open class BasicDataSource<Store>: CollectionDataSource where Store: DataStore {
 
     public init(store: Store) {
         self.store = store
+        self.store.delegate = self
     }
 
     public var numberOfSections: Int {
@@ -35,20 +42,17 @@ open class BasicDataSource<Store>: CollectionDataSource where Store: DataStore {
         return (self, indexPath)
     }
 
-    open func didBecomeActive() { /* do nothing by default */ }
-    open func willResignActive() { /* do nothing by default */ }
-
 }
 
 public typealias ArrayDataSource<Element> = BasicDataSource<ArrayDataStore<Element>>
 
 public extension BasicDataSource {
 
-    convenience init<Element>(array elements: [Element]) where Store == ArrayDataStore<Element> {
+    convenience init<Element>(elements: [Element]) where Store == ArrayDataStore<Element> {
         self.init(store: ArrayDataStore(elements: elements))
     }
 
-    convenience init<Element>(array elements: Element...) where Store == ArrayDataStore<Element> {
+    convenience init<Element>(elements: Element...) where Store == ArrayDataStore<Element> {
         self.init(store: ArrayDataStore(elements: elements))
     }
 

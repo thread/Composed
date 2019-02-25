@@ -6,7 +6,7 @@ struct Person {
     var age: Int
 }
 
-final class PeopleDataSource: ArrayDataSource<Person>, DataSourceUIProviding {
+final class PeopleDataSource: SectionedDataSource<Person>, DataSourceUIProviding {
 
     var title: String?
 
@@ -40,6 +40,18 @@ final class PeopleDataSource: ArrayDataSource<Person>, DataSourceUIProviding {
 
     func backgroundViewClass(for section: Int) -> UICollectionReusableView.Type? {
         return BackgroundView.self
+    }
+
+}
+
+final class ListDataSource: ComposedDataSource, DataSourceUIGlobalProvider {
+
+    func globalHeaderConfiguration() -> DataSourceUIConfiguration? {
+        return DataSourceUIConfiguration(prototype: GlobalHeaderView.fromNib, dequeueSource: .nib) { _, _ in }
+    }
+
+    func globalFooterConfiguration() -> DataSourceUIConfiguration? {
+        return DataSourceUIConfiguration(prototype: GlobalFooterView.fromNib, dequeueSource: .nib) { _, _ in }
     }
 
 }

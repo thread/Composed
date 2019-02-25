@@ -16,7 +16,7 @@ public protocol DataStoreDelegate: class {
     func dataStore(performBatchUpdates updates: () -> Void, completion: ((Bool) -> Void)?)
 }
 
-public protocol DataStore {
+public protocol DataStore: class {
     associatedtype Element
 
     var delegate: DataStoreDelegate? { get set }

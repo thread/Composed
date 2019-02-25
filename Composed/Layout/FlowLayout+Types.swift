@@ -3,7 +3,7 @@ import UIKit
 public extension UICollectionView {
     static let elementKindGlobalHeader = "DataSourceGlobalHeader"
     static let elementKindGlobalFooter = "DataSourceGlobalFooter"
-    static let globalElementIndexPath = IndexPath(item: 0, section: -1)
+    static let globalElementIndexPath = IndexPath(item: 0, section: 0)
 
     static let globalHeaderZIndex: Int = 400
     static let globalFooterZIndex: Int = 300
@@ -27,17 +27,17 @@ public extension UICollectionView {
 
 }
 
-internal struct FlowLayoutSectionMetrics {
+public struct FlowLayoutSectionMetrics {
 
-    internal var headerHeight: CGFloat
-    internal var footerHeight: CGFloat
-    internal var insets: UIEdgeInsets = .zero
-    internal var horizontalSpacing: CGFloat = 0
-    internal var verticalSpacing: CGFloat = 0
+    public var headerHeight: CGFloat
+    public var footerHeight: CGFloat
+    public var insets: UIEdgeInsets = .zero
+    public var horizontalSpacing: CGFloat = 0
+    public var verticalSpacing: CGFloat = 0
 
-    internal static let zero = FlowLayoutSectionMetrics(headerHeight: 0, footerHeight: 0, insets: .zero, horizontalSpacing: 0, verticalSpacing: 0)
+    public static let zero = FlowLayoutSectionMetrics(headerHeight: 0, footerHeight: 0, insets: .zero, horizontalSpacing: 0, verticalSpacing: 0)
 
-    internal init(headerHeight: CGFloat, footerHeight: CGFloat, insets: UIEdgeInsets, horizontalSpacing: CGFloat, verticalSpacing: CGFloat) {
+    public init(headerHeight: CGFloat, footerHeight: CGFloat, insets: UIEdgeInsets, horizontalSpacing: CGFloat, verticalSpacing: CGFloat) {
         self.headerHeight = headerHeight
         self.footerHeight = footerHeight
         self.insets = insets

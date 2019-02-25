@@ -1,30 +1,30 @@
-public final class ComposedMappings {
+internal final class ComposedMappings {
 
-    public private(set) unowned var dataSource: DataSource
+    internal private(set) unowned var dataSource: DataSource
 
     internal private(set) var numberOfSections: Int = 0
     private var globalToLocalSections: [Int: Int] = [:]
     private var localToGlobalSections: [Int: Int] = [:]
 
-    public init(_ dataSource: DataSource, initialSection: Int = 0) {
+    internal init(_ dataSource: DataSource, initialSection: Int = 0) {
         self.dataSource = dataSource
         guard initialSection == 0 else { return }
         invalidate(startingAt: initialSection, { _ in })
     }
 
-    public func localSection(forGlobal section: Int) -> Int {
+    internal func localSection(forGlobal section: Int) -> Int {
         let localIndex = globalToLocalSections[section]
         assert(localIndex != nil, "global section \(section) not found in local sections")
         return globalToLocalSections[section]!
     }
 
-    public func globalSection(forLocal section: Int) -> Int {
+    internal func globalSection(forLocal section: Int) -> Int {
         let globalIndex = localToGlobalSections[section]
         assert(globalIndex != nil, "local section \(section) not found in global sections")
         return localToGlobalSections[section]!
     }
 
-    public func localSections(forGlobal sections: IndexSet) -> IndexSet {
+    internal func localSections(forGlobal sections: IndexSet) -> IndexSet {
         var localIndexes = IndexSet()
 
         for section in sections {
@@ -34,7 +34,7 @@ public final class ComposedMappings {
         return localIndexes
     }
 
-    public func globalSections(forLocal sections: IndexSet) -> IndexSet {
+    internal func globalSections(forLocal sections: IndexSet) -> IndexSet {
         var globalIndexes = IndexSet()
 
         for section in sections {
@@ -44,21 +44,21 @@ public final class ComposedMappings {
         return globalIndexes
     }
 
-    public func localIndexPath(forGlobal indexPath: IndexPath) -> IndexPath {
+    internal func localIndexPath(forGlobal indexPath: IndexPath) -> IndexPath {
         let section = localSection(forGlobal: indexPath.section)
         return IndexPath(item: indexPath.item, section: section)
     }
 
-    public func globalIndexPath(forLocal indexPath: IndexPath) -> IndexPath {
+    internal func globalIndexPath(forLocal indexPath: IndexPath) -> IndexPath {
         let section = globalSection(forLocal: indexPath.section)
         return IndexPath(item: indexPath.item, section: section)
     }
 
-    public func localIndexPaths(forGlobal indexPaths: [IndexPath]) -> [IndexPath] {
+    internal func localIndexPaths(forGlobal indexPaths: [IndexPath]) -> [IndexPath] {
         return indexPaths.compactMap(localIndexPath(forGlobal:))
     }
 
-    public func globalIndexPaths(forLocal indexPaths: [IndexPath]) -> [IndexPath] {
+    internal func globalIndexPaths(forLocal indexPaths: [IndexPath]) -> [IndexPath] {
         return indexPaths.compactMap(globalIndexPath(forLocal:))
     }
 
@@ -86,7 +86,7 @@ public final class ComposedMappings {
 
 extension ComposedMappings: Equatable {
 
-    public static func == (lhs: ComposedMappings, rhs: ComposedMappings) -> Bool {
+    internal static func == (lhs: ComposedMappings, rhs: ComposedMappings) -> Bool {
         return DataSourceHashableWrapper(lhs.dataSource) == DataSourceHashableWrapper(rhs.dataSource)
     }
 
