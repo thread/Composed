@@ -31,12 +31,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         list.append(people)
         list.append(countries)
 
-        let layout = FlowLayout()
-
-        layout.globalHeader.layoutFromSafeArea = false
-        layout.globalFooter.layoutFromSafeArea = false
-
-        let controller = DataSourceViewController(dataSource: list, layout: layout)
+        let controller = DataSourceViewController(dataSource: list)
 
         let tab = window?.rootViewController as? UITabBarController
         let nav = tab?.viewControllers?.first as? UINavigationController
