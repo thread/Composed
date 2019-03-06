@@ -32,7 +32,6 @@
 		5430E3F9222473630017A450 /* DataSourceChangeSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5430E3DB222473620017A450 /* DataSourceChangeSet.swift */; };
 		5430E3FA222473630017A450 /* DataSourceHashableWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5430E3DC222473620017A450 /* DataSourceHashableWrapper.swift */; };
 		5430E3FB222473630017A450 /* ComposedMappings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5430E3DD222473620017A450 /* ComposedMappings.swift */; };
-		5430E3FC222473630017A450 /* UIEdgeInsets+All.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5430E3DE222473620017A450 /* UIEdgeInsets+All.swift */; };
 		5430E3FD222473630017A450 /* DataSourceUIProviding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5430E3DF222473620017A450 /* DataSourceUIProviding.swift */; };
 		5430E3FE222473630017A450 /* DataSourceUI+Behaviours.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5430E3E0222473620017A450 /* DataSourceUI+Behaviours.swift */; };
 		5430E3FF222473630017A450 /* NibLoadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5430E3E1222473620017A450 /* NibLoadable.swift */; };
@@ -122,7 +121,6 @@
 		5430E3DB222473620017A450 /* DataSourceChangeSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSourceChangeSet.swift; sourceTree = "<group>"; };
 		5430E3DC222473620017A450 /* DataSourceHashableWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSourceHashableWrapper.swift; sourceTree = "<group>"; };
 		5430E3DD222473620017A450 /* ComposedMappings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposedMappings.swift; sourceTree = "<group>"; };
-		5430E3DE222473620017A450 /* UIEdgeInsets+All.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIEdgeInsets+All.swift"; sourceTree = "<group>"; };
 		5430E3DF222473620017A450 /* DataSourceUIProviding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSourceUIProviding.swift; sourceTree = "<group>"; };
 		5430E3E0222473620017A450 /* DataSourceUI+Behaviours.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DataSourceUI+Behaviours.swift"; sourceTree = "<group>"; };
 		5430E3E1222473620017A450 /* NibLoadable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NibLoadable.swift; sourceTree = "<group>"; };
@@ -270,7 +268,6 @@
 				5430E3DB222473620017A450 /* DataSourceChangeSet.swift */,
 				5430E3DC222473620017A450 /* DataSourceHashableWrapper.swift */,
 				5430E3DD222473620017A450 /* ComposedMappings.swift */,
-				5430E3DE222473620017A450 /* UIEdgeInsets+All.swift */,
 				5430E3DF222473620017A450 /* DataSourceUIProviding.swift */,
 				5430E3E0222473620017A450 /* DataSourceUI+Behaviours.swift */,
 				5430E3E1222473620017A450 /* NibLoadable.swift */,
@@ -494,7 +491,6 @@
 				5430E3F4222473630017A450 /* DataSource.swift in Sources */,
 				5430E406222473630017A450 /* FlowLayout.swift in Sources */,
 				5430E3FB222473630017A450 /* ComposedMappings.swift in Sources */,
-				5430E3FC222473630017A450 /* UIEdgeInsets+All.swift in Sources */,
 				5430E3F3222473630017A450 /* ComposedDataSource.swift in Sources */,
 				5430E407222473630017A450 /* FlowLayout+Metrics.swift in Sources */,
 				5430E404222473630017A450 /* FlowLayout+Helpers.swift in Sources */,

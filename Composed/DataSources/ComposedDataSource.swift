@@ -42,7 +42,9 @@ open class ComposedDataSource: AggregateDataSource {
         return mapping.dataSource.numberOfElements(in: local)
     }
 
-    public init() { }
+    public init(children: [DataSource] = []) {
+        children.reversed().forEach { _insert(dataSource: $0, at: 0) }
+    }
 
     public final func setDataSources(_ dataSources: [DataSource], animated: Bool) {
         updateDelegate?.dataSource(self, willPerform: [])
@@ -67,6 +69,7 @@ open class ComposedDataSource: AggregateDataSource {
         updateDelegate?.dataSource(self, didInsertSections: IndexSet(indexes))
     }
 
+    @discardableResult
     private final func _insert(dataSource: DataSource, at index: Int) -> [Int] {
         let wrapper = DataSourceHashableWrapper(dataSource)
 
@@ -95,6 +98,7 @@ open class ComposedDataSource: AggregateDataSource {
         updateDelegate?.dataSource(self, didDeleteSections: IndexSet(indexes))
     }
 
+    @discardableResult
     private func _remove(dataSource: DataSource) -> [Int] {
         let wrapper = DataSourceHashableWrapper(dataSource)
 

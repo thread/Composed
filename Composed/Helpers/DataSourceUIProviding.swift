@@ -52,10 +52,6 @@ public protocol DataSourceUIProviding {
 }
 
 public extension DataSourceUIProviding {
-    func sizingStrategy() -> DataSourceUISizingStrategy {
-        return ColumnSizingStrategy(columnCount: 1, sizingMode: .automatic(isUniform: true))
-    }
-
     func headerConfiguration(for section: Int) -> DataSourceUIConfiguration? { return nil }
     func footerConfiguration(for section: Int) -> DataSourceUIConfiguration? { return nil }
     func backgroundViewClass(for section: Int) -> UICollectionReusableView.Type? { return nil }

@@ -48,7 +48,7 @@ public typealias ArrayDataSource<Element> = BasicDataSource<ArrayDataStore<Eleme
 
 public extension BasicDataSource {
 
-    convenience init<Element>(elements: [Element]) where Store == ArrayDataStore<Element> {
+    convenience init<Element>(elements: [Element] = []) where Store == ArrayDataStore<Element> {
         self.init(store: ArrayDataStore(elements: elements))
     }
 
