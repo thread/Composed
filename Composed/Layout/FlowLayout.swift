@@ -285,7 +285,7 @@ private extension FlowLayout {
     }
 
     var adjustedGlobalFooterOrigin: CGPoint {
-        guard cachedGlobalHeaderSize != .zero else { return .zero }
+        guard cachedGlobalFooterSize != .zero else { return .zero }
         var adjustedOrigin = CGPoint.zero
         adjustedOrigin.y += collectionViewContentSize.height - adjustedGlobalFooterSize.height
         return adjustedOrigin

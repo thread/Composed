@@ -10,12 +10,12 @@ final class PeopleDataSource: SectionedDataSource<Person>, DataSourceUIProviding
 
     var title: String?
 
-    lazy var sizingStrategy: DataSourceUISizingStrategy = {
+    func sizingStrategy() -> DataSourceUISizingStrategy {
         return ColumnSizingStrategy(columnCount: 2, sizingMode: .automatic(isUniform: true))
-    }()
+    }
 
     func metrics(for section: Int) -> DataSourceUISectionMetrics {
-        return DataSourceUISectionMetrics(insets: UIEdgeInsets(all: 20), horizontalSpacing: 8, verticalSpacing: 8)
+        return DataSourceUISectionMetrics(insets: UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20), horizontalSpacing: 8, verticalSpacing: 8)
     }
 
     func cellConfiguration(for indexPath: IndexPath) -> DataSourceUIConfiguration {

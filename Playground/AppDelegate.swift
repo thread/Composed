@@ -10,7 +10,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         let family = [
             Person(name: "Shaps Benkau", age: 38),
             Person(name: "Uwe", age: 60),
-            Person(name: "Anne", age: 35)
+//            Person(name: "Anne", age: 35)
         ]
 
         let friends = [
@@ -21,7 +21,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         let people = PeopleDataSource(elements: [])
         people.title = "People"
         people.append(elements: family)
-        people.append(elements: friends)
+//        people.append(elements: friends)
 
         let names = Array(countryNames.prefix(upTo: 20))
         let countries = PeopleDataSource(elements: names)
@@ -29,15 +29,16 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 
         let list = ListDataSource()
         list.append(people)
-        list.append(countries)
+//        list.append(countries)
 
         let layout = FlowLayout()
-        layout.globalFooter.inset = -20
-        layout.globalFooter.pinsToBounds = false
+        layout.globalFooter.prefersFollowContent = true
         let controller = DataSourceViewController(dataSource: list, layout: layout)
+        controller.navigationItem.largeTitleDisplayMode = .always
 
         let tab = window?.rootViewController as? UITabBarController
         let nav = tab?.viewControllers?.first as? UINavigationController
+        nav?.navigationBar.prefersLargeTitles = true
 
         nav?.navigationBar.isHidden = false
         nav?.pushViewController(controller, animated: false)
