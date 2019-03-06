@@ -288,10 +288,10 @@
 		5430E3E6222473630017A450 /* Layout */ = {
 			isa = PBXGroup;
 			children = (
+				5430E3EA222473630017A450 /* FlowLayout.swift */,
+				5430E3E9222473630017A450 /* FlowLayoutAttributes.swift */,
 				5430E3E7222473630017A450 /* FlowLayoutInvalidationContext.swift */,
 				5430E3E8222473630017A450 /* FlowLayout+Helpers.swift */,
-				5430E3E9222473630017A450 /* FlowLayoutAttributes.swift */,
-				5430E3EA222473630017A450 /* FlowLayout.swift */,
 				5430E3EB222473630017A450 /* FlowLayout+Metrics.swift */,
 				5430E3EC222473630017A450 /* FlowLayout+Types.swift */,
 			);
