@@ -104,20 +104,9 @@ public struct DataSourceUIConfiguration {
         self.prototype = prototype
         self.dequeueSource = dequeueSource
         self.configure = { view, indexPath in
+            // swiftlint:disable force_cast
             configure(view as! View, indexPath)
         }
     }
 
 }
-
-//public struct DataSourceUISelectionHandler {
-//
-//    public let handler: (UICollectionReusableView, IndexPath) -> Void
-//
-//    public init<View>(view: View, indexPath: IndexPath) where View: UICollectionReusableView {
-//        self.handler = { view, indexPath in
-//            handler(view as! View, indexPath)
-//        }
-//    }
-//
-//}

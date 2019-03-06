@@ -31,7 +31,10 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         list.append(people)
         list.append(countries)
 
-        let controller = DataSourceViewController(dataSource: list)
+        let layout = FlowLayout()
+        layout.globalFooter.inset = -20
+        layout.globalFooter.pinsToBounds = false
+        let controller = DataSourceViewController(dataSource: list, layout: layout)
 
         let tab = window?.rootViewController as? UITabBarController
         let nav = tab?.viewControllers?.first as? UINavigationController
