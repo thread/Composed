@@ -56,10 +56,127 @@ public extension DataSource {
 
 }
 
+public extension DataSource {
+
+    public var isRoot: Bool {
+        return !(updateDelegate is DataSource)
+    }
+
+    /// Returns true if the rootDataSource's updateDelegate is non-nil
+    var isActive: Bool {
+        var dataSource: DataSource = self
+
+        while !dataSource.isRoot, let parent = dataSource.updateDelegate as? DataSource {
+            dataSource = parent
+        }
+
+        return dataSource.updateDelegate != nil
+    }
+
+}
+
+public protocol DataSourceLifecycleObserving {
+
+    /// Called when the dataSource is initially prepared, or after an invalidation.
+    func prepare()
+
+    /// Called when the dataSource has been invalidated, generally when the dataSource has been removed
+    func invalidate()
+
+    /// Called whenever the dataSource becomes active, after being inactive
+    func didBecomeActive()
+
+    /// Called whenever the dataSource resigns active, after being active
+    func willResignActive()
+
+}
+
 public protocol DataSourceSelecting: DataSource {
     func shouldSelectElement(at indexPath: IndexPath) -> Bool
     func shouldDeselectElement(at indexPath: IndexPath) -> Bool
 
     func selectElement(at indexPath: IndexPath)
     func deselectElement(at indexPath: IndexPath)
+}
+
+final class EmbeddedDataSourceCell: UICollectionViewCell {
+
+    private static var scrollOffsets: [IndexPath: CGPoint] = [:]
+
+    private var indexPath: IndexPath?
+
+    private lazy var wrapper: CollectionViewWrapper = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        let wrapper = CollectionViewWrapper(collectionView: collectionView, dataSource: nil)
+
+        contentView.backgroundColor = .clear
+        contentView.addSubview(collectionView)
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            contentView.leadingAnchor.constraint(equalTo: collectionView.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: collectionView.trailingAnchor),
+            contentView.topAnchor.constraint(equalTo: collectionView.topAnchor),
+            contentView.bottomAnchor.constraint(equalTo: collectionView.bottomAnchor)
+        ])
+
+        NSLayoutConstraint.activate([
+            contentView.leadingAnchor.constraint(equalTo: collectionView.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: collectionView.trailingAnchor),
+        ])
+
+        return wrapper
+    }()
+
+    func prepare(dataSource: CollectionViewDataSource) {
+        wrapper.prepare(dataSource: dataSource)
+    }
+
+    override func apply(_ layoutAttributes: UICollectionViewLayoutAttributes) {
+        super.apply(layoutAttributes)
+
+        guard let offset = type(of: self).scrollOffsets[layoutAttributes.indexPath] else { return }
+
+        wrapper.collectionView.setContentOffset(offset, animated: false)
+        indexPath = layoutAttributes.indexPath
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        guard let indexPath = indexPath else { return }
+
+        _ = type(of: self).scrollOffsets[indexPath]
+        type(of: self).scrollOffsets[indexPath] = wrapper.collectionView.contentOffset
+    }
+
+}
+
+public final class EmbeddedContentDataSource<Element>: SectionedDataSource<Element>, DataSourceUIProviding where Element: CollectionViewDataSource {
+
+    public let metrics: DataSourceUISectionMetrics
+    private let dataSources: [Element]
+
+    public init(dataSources: [Element], metrics: DataSourceUISectionMetrics) {
+        self.dataSources = dataSources
+        self.metrics = metrics
+        super.init(elements: dataSources)
+    }
+
+    public func metrics(for section: Int) -> DataSourceUISectionMetrics {
+        return metrics
+    }
+
+    public func sizingStrategy() -> DataSourceUISizingStrategy {
+        return ColumnSizingStrategy(columnCount: 1, sizingMode: .automatic(isUniform: true))
+    }
+
+    public func cellConfiguration(for indexPath: IndexPath) -> DataSourceUIConfiguration {
+        return DataSourceUIConfiguration(prototype: EmbeddedDataSourceCell(), dequeueSource: .class) { [unowned self] cell, indexPath in
+            cell.prepare(dataSource: EmbeddedContentDataSource(dataSources: self.dataSources, metrics: self.metrics))
+        }
+    }
+
 }

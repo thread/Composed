@@ -12,25 +12,6 @@ public struct DataSourceUISectionMetrics {
 
 }
 
-public protocol DataSourceUILifecycleObserving {
-
-    /// Called when the dataSource is initially prepared. Its generally only called once per lifecycle
-    func prepare()
-
-    /// Called whenever the dataSource becomes active, after being inactive
-    func didBecomeActive()
-
-    /// Called whenever the dataSource resigns active, after being active
-    func willResignActive()
-
-}
-
-extension DataSourceUILifecycleObserving {
-    public func prepare() { }
-    public func didBecomeActive() { }
-    public func willResignActive() { }
-}
-
 public struct DataSourceUISizingContext {
     public let prototype: UICollectionReusableView
     public let indexPath: IndexPath
@@ -49,12 +30,18 @@ public protocol DataSourceUIProviding {
     func headerConfiguration(for section: Int) -> DataSourceUIConfiguration?
     func footerConfiguration(for section: Int) -> DataSourceUIConfiguration?
     func backgroundViewClass(for section: Int) -> UICollectionReusableView.Type?
+
+    func willBeginDisplay()
+    func didEndDisplay()
 }
 
 public extension DataSourceUIProviding {
     func headerConfiguration(for section: Int) -> DataSourceUIConfiguration? { return nil }
     func footerConfiguration(for section: Int) -> DataSourceUIConfiguration? { return nil }
     func backgroundViewClass(for section: Int) -> UICollectionReusableView.Type? { return nil }
+
+    func willBeginDisplay() { }
+    func didEndDisplay() { }
 }
 
 open class ColumnSizingStrategy: DataSourceUISizingStrategy {

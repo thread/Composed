@@ -3,7 +3,7 @@ open class ComposedDataSource: AggregateDataSource {
     public var descendants: [DataSource] {
         var descendants: [DataSource] = []
 
-        for child in activeChildren {
+        for child in children {
             if let aggregate = child as? AggregateDataSource {
                 descendants.append(contentsOf: [child] + aggregate.descendants)
             } else {
@@ -14,9 +14,17 @@ open class ComposedDataSource: AggregateDataSource {
         return descendants
     }
 
-    public weak var updateDelegate: DataSourceUpdateDelegate?
+    public weak var updateDelegate: DataSourceUpdateDelegate? {
+        didSet {
+            if updateDelegate == nil {
+                willResignActive()
+            } else {
+                if isActive { didBecomeActive() }
+            }
+        }
+    }
 
-    public var activeChildren: [DataSource] {
+    public var children: [DataSource] {
         return mappings.map { $0.dataSource }
     }
 
@@ -50,7 +58,7 @@ open class ComposedDataSource: AggregateDataSource {
         updateDelegate?.dataSource(self, willPerform: [])
         updateDelegate?.dataSource(self, performBatchUpdates: {
             removeAll()
-            dataSources.forEach { append($0) }
+            dataSources.reversed().forEach { _insert(dataSource: $0, at: 0) }
         }, completion: { [unowned self, updateDelegate] _ in
             if !animated {
                 updateDelegate?.dataSourceDidReload(self)
@@ -78,7 +86,7 @@ open class ComposedDataSource: AggregateDataSource {
             return []
         }
 
-        guard (0...activeChildren.count).contains(index) else {
+        guard (0...children.count).contains(index) else {
             assertionFailure("Index out of bounds for \(wrapper.dataSource)")
             return []
         }
@@ -90,6 +98,12 @@ open class ComposedDataSource: AggregateDataSource {
         dataSourceToMappings[wrapper] = mapping
 
         _invalidate()
+
+        if isActive {
+            children.compactMap { $0 as? DataSourceLifecycleObserving }.forEach { $0.prepare() }
+            children.compactMap { $0 as? DataSourceLifecycleObserving }.forEach { $0.didBecomeActive() }
+        }
+
         return (0..<wrapper.dataSource.numberOfSections).map(mapping.globalSection(forLocal:))
     }
 
@@ -117,6 +131,10 @@ open class ComposedDataSource: AggregateDataSource {
         wrapper.dataSource.updateDelegate = nil
 
         _invalidate()
+
+        children.compactMap { $0 as? DataSourceLifecycleObserving }.forEach { $0.willResignActive() }
+        children.compactMap { $0 as? DataSourceLifecycleObserving }.forEach { $0.invalidate() }
+
         return removedSections
     }
 
@@ -147,6 +165,30 @@ open class ComposedDataSource: AggregateDataSource {
 
             _numberOfSections += mapping.numberOfSections
         }
+    }
+
+    open func prepare() {
+        children
+            .compactMap { $0 as? DataSourceLifecycleObserving }
+            .forEach { $0.prepare() }
+    }
+
+    open func invalidate() {
+        children
+            .compactMap { $0 as? DataSourceLifecycleObserving }
+            .forEach { $0.invalidate() }
+    }
+
+    open func didBecomeActive() {
+        children
+            .compactMap { $0 as? DataSourceLifecycleObserving }
+            .forEach { $0.didBecomeActive() }
+    }
+
+    open func willResignActive() {
+        children
+            .compactMap { $0 as? DataSourceLifecycleObserving }
+            .forEach { $0.willResignActive() }
     }
 
 }
@@ -184,7 +226,7 @@ extension ComposedDataSource {
 public extension ComposedDataSource {
 
     public func indexPath(where predicate: @escaping (Any) -> Bool) -> IndexPath? {
-        for child in activeChildren {
+        for child in children {
             if let indexPath = child.indexPath(where: predicate) {
                 let mapping = self.mapping(for: child)
                 return mapping.globalIndexPath(forLocal: indexPath)

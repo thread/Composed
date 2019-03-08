@@ -3,6 +3,13 @@ public protocol CollectionDataSource: DataSource, DataStoreDelegate {
     func element(at indexPath: IndexPath) -> Store.Element
 }
 
+extension DataSourceLifecycleObserving where Self: CollectionDataSource {
+    public func prepare() { }
+    public func invalidate() { }
+    public func didBecomeActive() { }
+    public func willResignActive() { }
+}
+
 public extension CollectionDataSource {
 
     subscript(indexPath: IndexPath) -> Store.Element {

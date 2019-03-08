@@ -107,3 +107,23 @@ public extension SectionedDataSource {
     }
 
 }
+
+extension SectionedDataSource: DataSourceLifecycleObserving where Element: DataSourceLifecycleObserving {
+
+    public func prepare() {
+        stores.flatMap { $0.elements }.forEach { $0.prepare() }
+    }
+
+    public func invalidate() {
+        stores.flatMap { $0.elements }.forEach { $0.invalidate() }
+    }
+
+    public func didBecomeActive() {
+        stores.flatMap { $0.elements }.forEach { $0.didBecomeActive() }
+    }
+
+    public func willResignActive() {
+        stores.flatMap { $0.elements }.forEach { $0.willResignActive() }
+    }
+
+}

@@ -31,49 +31,51 @@ public final class ArrayDataStore<Element>: DataStore {
         }
     }
 
-    public func setElements(_ elements: [Element], changeset: DataSourceChangeset? = nil) {
-        guard let changeset = changeset else {
+    public func setElements(_ elements: [Element], changesets: [DataSourceChangeset]? = nil) {
+        guard let changesets = changesets else {
             self.elements = elements
             delegate?.dataStoreDidReload()
             return
         }
 
-        let updates = changeset.updates
+        let updates = changesets.flatMap { $0.updates }
 
         delegate?.dataStore(performBatchUpdates: {
             self.elements = elements
             delegate?.dataStore(willPerform: updates)
 
-            if !changeset.deletedSections.isEmpty {
-                delegate?.dataStore(didDeleteSections: IndexSet(changeset.deletedSections))
-            }
+            for changeset in changesets {
+                if !changeset.deletedSections.isEmpty {
+                    delegate?.dataStore(didDeleteSections: IndexSet(changeset.deletedSections))
+                }
 
-            if !changeset.insertedSections.isEmpty {
-                delegate?.dataStore(didInsertSections: IndexSet(changeset.insertedSections))
-            }
+                if !changeset.insertedSections.isEmpty {
+                    delegate?.dataStore(didInsertSections: IndexSet(changeset.insertedSections))
+                }
 
-            if !changeset.updatedSections.isEmpty {
-                delegate?.dataStore(didUpdateSections: IndexSet(changeset.updatedSections))
-            }
+                if !changeset.updatedSections.isEmpty {
+                    delegate?.dataStore(didUpdateSections: IndexSet(changeset.updatedSections))
+                }
 
-            for (source, target) in changeset.movedSections {
-                delegate?.dataStore(didMoveSection: source, to: target)
-            }
+                for (source, target) in changeset.movedSections {
+                    delegate?.dataStore(didMoveSection: source, to: target)
+                }
 
-            if !changeset.deletedIndexPaths.isEmpty {
-                delegate?.dataStore(didDeleteIndexPaths: changeset.deletedIndexPaths)
-            }
+                if !changeset.deletedIndexPaths.isEmpty {
+                    delegate?.dataStore(didDeleteIndexPaths: changeset.deletedIndexPaths)
+                }
 
-            if !changeset.insertedIndexPaths.isEmpty {
-                delegate?.dataStore(didInsertIndexPaths: changeset.insertedIndexPaths)
-            }
+                if !changeset.insertedIndexPaths.isEmpty {
+                    delegate?.dataStore(didInsertIndexPaths: changeset.insertedIndexPaths)
+                }
 
-            if !changeset.updatedIndexPaths.isEmpty {
-                delegate?.dataStore(didUpdateIndexPaths: changeset.updatedIndexPaths)
-            }
+                if !changeset.updatedIndexPaths.isEmpty {
+                    delegate?.dataStore(didUpdateIndexPaths: changeset.updatedIndexPaths)
+                }
 
-            for (source, target) in changeset.movedIndexPaths {
-                delegate?.dataStore(didMoveFromIndexPath: source, toIndexPath: target)
+                for (source, target) in changeset.movedIndexPaths {
+                    delegate?.dataStore(didMoveFromIndexPath: source, toIndexPath: target)
+                }
             }
         }, completion: { [weak delegate] _ in
             delegate?.dataStore(didPerform: updates)
