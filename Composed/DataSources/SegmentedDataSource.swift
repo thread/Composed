@@ -13,7 +13,7 @@ open class SegmentedDataSource: AggregateDataSource {
         }
     }
 
-    public var activeChildren: [DataSource] {
+    public var children: [DataSource] {
         guard let child = selectedChild else {
             return []
         }
@@ -21,7 +21,7 @@ open class SegmentedDataSource: AggregateDataSource {
         return [child]
     }
 
-    private var children: [DataSource] = []
+    private var _children: [DataSource] = []
 
     public var numberOfSections: Int {
         return selectedChild?.numberOfSections ?? 0
@@ -32,7 +32,7 @@ open class SegmentedDataSource: AggregateDataSource {
 
     public var selectedIndex: Int {
         guard let child = selectedChild,
-            let index = children.firstIndex(where: { $0 === child }) else {
+            let index = _children.firstIndex(where: { $0 === child }) else {
                 return -1
         }
 
@@ -43,16 +43,16 @@ open class SegmentedDataSource: AggregateDataSource {
 
     public final func setSelected(index: Int, animated: Bool) {
         guard index != selectedIndex,
-            children.indices.contains(index) else {
-            assertionFailure("Index out of bounds: \(index). Should be in the range: \(0..<children.count)")
+            _children.indices.contains(index) else {
+            assertionFailure("Index out of bounds: \(index). Should be in the range: \(0..<_children.count)")
             return
         }
 
         let hadChild = selectedChild != nil
-        selectedChild = children[index]
+        selectedChild = _children[index]
 
         (updateDelegate as? DataSourceUpdateDelegateSegmented)?
-            .dataSource(self, didSelect: children[index], atIndex: index)
+            .dataSource(self, didSelect: _children[index], atIndex: index)
 
         if animated {
             if hadChild {
@@ -66,11 +66,11 @@ open class SegmentedDataSource: AggregateDataSource {
     }
 
     public final func append(dataSource: DataSource) {
-        insert(dataSource: dataSource, at: children.count)
+        insert(dataSource: dataSource, at: _children.count)
     }
 
     public final func insert(dataSource: DataSource, at index: Int) {
-        children.insert(dataSource, at: index)
+        _children.insert(dataSource, at: index)
 
         if selectedChild == nil {
             setSelected(index: index, animated: false)
@@ -80,24 +80,24 @@ open class SegmentedDataSource: AggregateDataSource {
     }
 
     public final func remove(dataSource: DataSource) {
-        guard let index = children.firstIndex(where: { $0 === dataSource }) else {
+        guard let index = _children.firstIndex(where: { $0 === dataSource }) else {
             fatalError("DataSource is not a child of this DataSource")
         }
 
-        children.remove(at: index)
+        _children.remove(at: index)
         dataSource.updateDelegate = nil
 
-        if children.isEmpty {
+        if _children.isEmpty {
             selectedChild = nil
             updateDelegate?.dataSource(self, didDeleteSections: IndexSet(integer: 0))
         } else {
-            setSelected(index: children.index(before: index), animated: false)
+            setSelected(index: _children.index(before: index), animated: false)
         }
     }
 
     public final func removeAll() {
-        children.forEach { $0.updateDelegate = nil }
-        children.removeAll()
+        _children.forEach { $0.updateDelegate = nil }
+        _children.removeAll()
         selectedChild = nil
         updateDelegate?.dataSource(self, didDeleteSections: IndexSet(integer: 0))
     }
@@ -118,6 +118,26 @@ open class SegmentedDataSource: AggregateDataSource {
     public final func dataSourceFor(global indexPath: IndexPath) -> (dataSource: DataSource, localIndexPath: IndexPath) {
         guard let child = selectedChild else { fatalError("SegmentedDataSource has no selectedChild") }
         return child.dataSourceFor(global: indexPath)
+    }
+
+    open func prepare() {
+        children
+            .compactMap { $0 as? DataSourceLifecycleObserving }
+            .forEach { $0.prepare() }
+    }
+
+    open func invalidate() {
+        children
+            .compactMap { $0 as? DataSourceLifecycleObserving }
+            .forEach { $0.invalidate() }
+    }
+
+    open func didBecomeActive() {
+        (selectedChild as? DataSourceLifecycleObserving)?.didBecomeActive()
+    }
+
+    open func willResignActive() {
+        (selectedChild as? DataSourceLifecycleObserving)?.willResignActive()
     }
 
 }

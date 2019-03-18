@@ -1,7 +1,26 @@
+public typealias CollectionViewDataSource = DataSource & DataSourceUIProviding
+
 internal final class CollectionViewWrapper: NSObject, UICollectionViewDataSource, FlowLayoutDelegate {
 
     internal let collectionView: UICollectionView
-    internal let dataSource: DataSource
+
+    #warning("Make this optional and update code throughout to deal with that")
+    private(set) var dataSource: DataSource! {
+        willSet {
+            if newValue !== dataSource, let ds = dataSource as? DataSourceLifecycleObserving {
+                ds.willResignActive()
+            }
+        }
+        didSet {
+            if let ds = dataSource as? DataSourceLifecycleObserving {
+                ds.prepare()
+            }
+
+            dataSource?.updateDelegate = self
+            collectionView.delegate = self
+            collectionView.dataSource = self
+        }
+    }
 
     private var globalConfigurations: [String: DataSourceUIConfiguration] = [:]
     private var headerConfigurations: [Int: DataSourceUIConfiguration] = [:]
@@ -12,43 +31,26 @@ internal final class CollectionViewWrapper: NSObject, UICollectionViewDataSource
 
     private var isEditing: Bool = false
 
-    internal init(collectionView: UICollectionView, dataSource: DataSource) {
+    internal init(collectionView: UICollectionView, dataSource: DataSource?) {
         self.collectionView = collectionView
         self.dataSource = dataSource
 
         super.init()
-
-        collectionView.delegate = self
-        collectionView.dataSource = self
     }
 
-    internal func viewWillLoad() {
-        let dataSources = (dataSource as? AggregateDataSource)?.descendants ?? [dataSource]
-        (dataSources + [dataSource])
-            .lazy
-            .compactMap { $0 as? DataSourceUILifecycleObserving }
-            .forEach { $0.prepare() }
+    internal func prepare(dataSource: DataSource) {
+        if self.dataSource != nil { resignActive() }
+
+        self.dataSource = dataSource
 
         NotificationCenter.default.addObserver(self, selector: #selector(endEditingIfNecessary), name: UIApplication.didEnterBackgroundNotification, object: nil)
     }
 
-    internal func viewWillShow() {
-        let dataSources = (dataSource as? AggregateDataSource)?.descendants ?? [dataSource]
-        (dataSources + [dataSource])
-            .lazy
-            .compactMap { $0 as? DataSourceUILifecycleObserving }
-            .forEach { $0.didBecomeActive() }
-
+    internal func becomeActive() {
         collectionView.flashScrollIndicators()
     }
 
-    internal func viewWillHide() {
-        let dataSources = (dataSource as? AggregateDataSource)?.descendants ?? [dataSource]
-        (dataSources + [dataSource])
-            .lazy
-            .compactMap { $0 as? DataSourceUILifecycleObserving }
-            .forEach { $0.willResignActive() }
-        
+    internal func resignActive() {
         endEditingIfNecessary()
     }
 
@@ -130,6 +132,9 @@ internal final class CollectionViewWrapper: NSObject, UICollectionViewDataSource
 
         collectionView.collectionViewLayout.invalidateLayout(with: layoutContext)
     }
+
+    internal func dataSource(_ dataSource: DataSource, willPerform updates: [DataSourceUpdate]) { }
+    internal func dataSource(_ dataSource: DataSource, didPerform updates: [DataSourceUpdate]) { }
 
 }
 
@@ -348,14 +353,24 @@ extension CollectionViewWrapper {
         return collectionView.dequeueReusableCell(withReuseIdentifier: config.reuseIdentifier, for: indexPath)
     }
 
-    internal func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        let (localDataSource, localIndexPath) = dataSource.dataSourceFor(global: indexPath)
+    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        let (localDataSource, localIndexPath) = localDataSourceAndIndexPath(for: indexPath)
 
-        guard let dataSource = localDataSource as? DataSource & DataSourceUIProviding else {
-            fatalError("The dataSource: (\(String(describing: localDataSource))), must conform to \(String(describing: DataSourceUIProviding.self))")
+        // Check if the first or last item in this section is about to disappear
+        if localIndexPath.item == 0 || localIndexPath.item - 1 == localDataSource.numberOfElements(in: localIndexPath.section) {
+            localDataSource.didEndDisplay()
+        }
+    }
+
+    internal func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        let (localDataSource, localIndexPath) = localDataSourceAndIndexPath(for: indexPath)
+
+        // Check if an first or last item in this section is about to appear
+        if localIndexPath.item == 0 || localIndexPath.item - 1 == localDataSource.numberOfElements(in: localIndexPath.section) {
+            localDataSource.willBeginDisplay()
         }
 
-        let config = cellConfigurations[indexPath] ?? dataSource.cellConfiguration(for: localIndexPath)
+        let config = cellConfigurations[indexPath] ?? localDataSource.cellConfiguration(for: localIndexPath)
         config.configure(cell, localIndexPath)
 
         guard let editable = dataSource as? DataSourceUIEditing, editable.supportsEditing(for: localIndexPath) else { return }
@@ -450,4 +465,86 @@ private extension UICollectionView {
             register(classType, forCellWithReuseIdentifier: reuseIdentifier)
         }
     }
+    
+}
+
+extension CollectionViewWrapper: DataSourceUpdateDelegate {
+
+    ///    This is a little difficult to read and to see where the scopes exist.
+    ///    But its highly efficient, so worthy of inclusion.
+    ///
+    ///    1. Grab all the local dataSources for each section inserted
+    ///    2. Hash them to remove duplicates (since DS's can contain multiple sections)
+    ///    3. Map them to DataSourceUILifecycleObserving
+    ///    4. Call didBecomeActive
+    private func lifecycleObservers(for sections: IndexSet, in dataSource: DataSource) -> [DataSourceLifecycleObserving] {
+        return sections
+            .lazy
+            .map { dataSource.dataSourceFor(global: $0) }
+            .compactMap { $0.dataSource as? DataSourceLifecycleObserving }
+    }
+
+    public func dataSourceDidReload(_ dataSource: DataSource) {
+        // Update
+        collectionView.reloadData()
+    }
+
+    public func dataSource(_ dataSource: DataSource, performBatchUpdates updates: () -> Void, completion: ((Bool) -> Void)?) {
+        collectionView.performBatchUpdates(updates, completion: completion)
+    }
+
+    public func dataSource(_ dataSource: DataSource, didInsertSections sections: IndexSet) {
+        collectionView.insertSections(sections)
+        // if we have a new section, we just need to call prepare, didBecomeActive will be called by willDisplayCell at the appropriate time
+        lifecycleObservers(for: sections, in: dataSource).forEach { $0.prepare() }
+    }
+
+    public func dataSource(_ dataSource: DataSource, didDeleteSections sections: IndexSet) {
+        var hiddenSections = sections
+
+        let attributes = collectionView.collectionViewLayout.layoutAttributesForElements(in: collectionView.bounds)
+        attributes?.map { $0.indexPath }.forEach { hiddenSections.remove($0.section) }
+
+        collectionView.deleteSections(sections)
+
+        // The cell might not be visible, so we need to ask the dataSource to resign. If the cell was visible, this will trigger a 2nd call to willResignActive :(
+        lifecycleObservers(for: hiddenSections, in: dataSource).forEach { $0.willResignActive() }
+    }
+
+    public func dataSource(_ dataSource: DataSource, didUpdateSections sections: IndexSet) {
+        collectionView.reloadSections(sections)
+    }
+
+    public func dataSource(_ dataSource: DataSource, didMoveSection from: Int, to: Int) {
+        collectionView.moveSection(from, toSection: to)
+    }
+
+    public func dataSource(_ dataSource: DataSource, didInsertIndexPaths indexPaths: [IndexPath]) {
+        collectionView.insertItems(at: indexPaths)
+    }
+
+    public func dataSource(_ dataSource: DataSource, didDeleteIndexPaths indexPaths: [IndexPath]) {
+        collectionView.deleteItems(at: indexPaths)
+    }
+
+    public func dataSource(_ dataSource: DataSource, didUpdateIndexPaths indexPaths: [IndexPath]) {
+        collectionView.reloadItems(at: indexPaths)
+    }
+
+    public func dataSource(_ dataSource: DataSource, didMoveFromIndexPath from: IndexPath, toIndexPath to: IndexPath) {
+        collectionView.moveItem(at: from, to: to)
+    }
+
+    public func dataSource(_ dataSource: DataSource, invalidateWith context: DataSourceUIInvalidationContext) {
+        invalidate(with: context)
+    }
+
+    public func dataSource(_ dataSource: DataSource, globalFor local: IndexPath) -> (dataSource: DataSource, globalIndexPath: IndexPath) {
+        return (self.dataSource, local)
+    }
+
+    public func dataSource(_ dataSource: DataSource, globalFor local: Int) -> (dataSource: DataSource, globalSection: Int) {
+        return (self.dataSource, local)
+    }
+
 }

@@ -1,5 +1,5 @@
-public protocol AggregateDataSource: DataSource {
-    var activeChildren: [DataSource] { get }
+public protocol AggregateDataSource: DataSource, DataSourceLifecycleObserving {
+    var children: [DataSource] { get }
     var descendants: [DataSource] { get }
 
     func insert(dataSource: DataSource, at index: Int)
@@ -10,7 +10,7 @@ public protocol AggregateDataSource: DataSource {
 public extension AggregateDataSource {
 
     var isEmpty: Bool {
-        return activeChildren.lazy.allSatisfy { $0.isEmpty }
+        return children.lazy.allSatisfy { $0.isEmpty }
     }
     
 }
