@@ -109,6 +109,10 @@ open class ColumnSizingStrategy: DataSourceUISizingStrategy {
 extension DataSource where Self: DataSourceUIProviding {
 
     public var collectionView: UICollectionView? {
+        if let wrapper = updateDelegate as? CollectionViewWrapper {
+            return wrapper.collectionView
+        }
+
         var parent: DataSource? = self
 
         while let p = parent, !p.isRoot {
@@ -117,18 +121,6 @@ extension DataSource where Self: DataSourceUIProviding {
 
         if let wrapper = parent?.updateDelegate as? CollectionViewWrapper {
             return wrapper.collectionView
-        }
-
-        if let controller = parent?.updateDelegate as? DataSourceViewController {
-            return controller.collectionView
-        }
-
-        if let controller = parent?.updateDelegate as? UICollectionViewController {
-            return controller.collectionView
-        }
-
-        if let collectionView = parent?.updateDelegate as? UICollectionView {
-            return collectionView
         }
 
         return nil
