@@ -115,12 +115,12 @@ extension DataSource where Self: DataSourceUIProviding {
             parent = p.updateDelegate as? DataSource
         }
 
-        if let controller = parent?.updateDelegate as? DataSourceViewController {
-            return controller.collectionView
-        }
-
         if let wrapper = parent?.updateDelegate as? CollectionViewWrapper {
             return wrapper.collectionView
+        }
+
+        if let controller = parent?.updateDelegate as? DataSourceViewController {
+            return controller.collectionView
         }
 
         if let controller = parent?.updateDelegate as? UICollectionViewController {

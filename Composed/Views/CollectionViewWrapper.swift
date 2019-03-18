@@ -7,15 +7,13 @@ internal final class CollectionViewWrapper: NSObject, UICollectionViewDataSource
     #warning("Make this optional and update code throughout to deal with that")
     private(set) var dataSource: DataSource! {
         willSet {
+            resignActive()
+
             if newValue !== dataSource, let ds = dataSource as? DataSourceLifecycleObserving {
                 ds.willResignActive()
             }
         }
         didSet {
-            if let ds = dataSource as? DataSourceLifecycleObserving {
-                ds.prepare()
-            }
-
             dataSource?.updateDelegate = self
             collectionView.delegate = self
             collectionView.dataSource = self
@@ -39,10 +37,7 @@ internal final class CollectionViewWrapper: NSObject, UICollectionViewDataSource
     }
 
     internal func prepare(dataSource: DataSource) {
-        if self.dataSource != nil { resignActive() }
-
         self.dataSource = dataSource
-
         NotificationCenter.default.addObserver(self, selector: #selector(endEditingIfNecessary), name: UIApplication.didEnterBackgroundNotification, object: nil)
     }
 
