@@ -17,6 +17,10 @@ public protocol DataSourceUpdateDelegate: class {
     func dataSourceDidReload(_ dataSource: DataSource)
     func dataSource(_ dataSource: DataSource, performBatchUpdates updates: () -> Void, completion: ((Bool) -> Void)?)
     func dataSource(_ dataSource: DataSource, invalidateWith context: DataSourceUIInvalidationContext)
+
+    func dataSource(_ dataSource: DataSource, globalFor local: IndexPath) -> (dataSource: DataSource, globalIndexPath: IndexPath)
+    func dataSource(_ dataSource: DataSource, globalFor local: Int) -> (dataSource: DataSource, globalSection: Int)
+    
 }
 // MARK: -
 

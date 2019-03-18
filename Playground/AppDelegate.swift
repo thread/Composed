@@ -21,19 +21,19 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         let people = PeopleDataSource(elements: [])
         people.title = "People"
         people.append(elements: family)
-//        people.append(elements: friends)
+        people.append(elements: friends)
 
         let names = Array(countryNames.prefix(upTo: 20))
         let countries = PeopleDataSource(elements: names)
         countries.title = "Countries"
 
-        let list = ListDataSource()
-        list.append(people)
+//        let list = ListDataSource()
+//        list.append(people)
 //        list.append(countries)
 
         let layout = FlowLayout()
         layout.globalFooter.prefersFollowContent = true
-        let controller = DataSourceViewController(dataSource: list, layout: layout)
+        let controller = DataSourceViewController(dataSource: people, layout: layout)
         controller.navigationItem.largeTitleDisplayMode = .always
 
         let tab = window?.rootViewController as? UITabBarController

@@ -44,6 +44,15 @@ final class PeopleDataSource: SectionedDataSource<Person>, DataSourceUIProviding
 
 }
 
+extension PeopleDataSource: DataSourceSelecting {
+
+    func selectElement(at indexPath: IndexPath) {
+        let global = updateDelegate?.dataSource(self, globalFor: indexPath)
+        print(global!.dataSource)
+    }
+
+}
+
 final class ListDataSource: ComposedDataSource, DataSourceUIGlobalProvider {
 
     func globalHeaderConfiguration() -> DataSourceUIConfiguration? {

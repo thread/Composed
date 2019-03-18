@@ -118,3 +118,33 @@ open class ColumnSizingStrategy: DataSourceUISizingStrategy {
     }
 
 }
+
+private extension DataSource {
+    var isRoot: Bool { return !(updateDelegate is DataSource) }
+}
+
+extension DataSource where Self: DataSourceUIProviding {
+
+    public var collectionView: UICollectionView? {
+        var parent: DataSource? = self
+
+        while let p = parent, !p.isRoot {
+            parent = p.updateDelegate as? DataSource
+        }
+
+        if let controller = parent?.updateDelegate as? DataSourceViewController {
+            return controller.collectionView
+        }
+
+        if let controller = parent?.updateDelegate as? UICollectionViewController {
+            return controller.collectionView
+        }
+
+        if let collectionView = parent?.updateDelegate as? UICollectionView {
+            return collectionView
+        }
+
+        return nil
+    }
+
+}

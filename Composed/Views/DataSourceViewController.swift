@@ -171,4 +171,12 @@ extension DataSourceViewController: DataSourceUpdateDelegate {
         wrapper.invalidate(with: context)
     }
 
+    public func dataSource(_ dataSource: DataSource, globalFor local: IndexPath) -> (dataSource: DataSource, globalIndexPath: IndexPath) {
+        return (dataSource, local)
+    }
+
+    public func dataSource(_ dataSource: DataSource, globalFor local: Int) -> (dataSource: DataSource, globalSection: Int) {
+        return (dataSource, local)
+    }
+
 }
