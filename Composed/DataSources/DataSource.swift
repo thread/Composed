@@ -114,7 +114,7 @@ final class EmbeddedDataSourceCell: UICollectionViewCell {
         layout.scrollDirection = .horizontal
 
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        let wrapper = CollectionViewWrapper(collectionView: collectionView, dataSource: nil)
+        let wrapper = CollectionViewWrapper(collectionView: collectionView)
 
         contentView.backgroundColor = .clear
         contentView.addSubview(collectionView)

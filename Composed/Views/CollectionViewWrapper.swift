@@ -11,6 +11,7 @@ internal final class CollectionViewWrapper: NSObject, UICollectionViewDataSource
 
             if newValue !== dataSource, let ds = dataSource as? DataSourceLifecycleObserving {
                 ds.willResignActive()
+                ds.invalidate()
             }
         }
         didSet {
@@ -29,10 +30,8 @@ internal final class CollectionViewWrapper: NSObject, UICollectionViewDataSource
 
     private var isEditing: Bool = false
 
-    internal init(collectionView: UICollectionView, dataSource: DataSource?) {
+    internal init(collectionView: UICollectionView) {
         self.collectionView = collectionView
-        self.dataSource = dataSource
-
         super.init()
     }
 

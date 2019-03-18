@@ -19,9 +19,10 @@ open class DataSourceViewController: UIViewController {
 
     public init(dataSource: DataSource, layout: UICollectionViewLayout = FlowLayout()) {
         let collectionView = type(of: self).collectionViewClass.init(frame: .zero, collectionViewLayout: layout)
-        self.wrapper = CollectionViewWrapper(collectionView: collectionView, dataSource: dataSource)
+        self.wrapper = CollectionViewWrapper(collectionView: collectionView)
         self.layout = layout
         super.init(nibName: nil, bundle: nil)
+        self.wrapper.prepare(dataSource: dataSource)
     }
 
     public required init?(coder aDecoder: NSCoder) {
@@ -45,8 +46,6 @@ open class DataSourceViewController: UIViewController {
             view.topAnchor.constraint(equalTo: collectionView.topAnchor),
             view.bottomAnchor.constraint(equalTo: collectionView.bottomAnchor)
         ])
-
-        wrapper.prepare(dataSource: dataSource)
     }
 
     open override func viewWillAppear(_ animated: Bool) {
