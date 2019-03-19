@@ -10,7 +10,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         let family = [
             Person(name: "Shaps Benkau", age: 38),
             Person(name: "Uwe", age: 60),
-//            Person(name: "Anne", age: 35)
+            Person(name: "Anne", age: 35)
         ]
 
         let friends = [
@@ -23,7 +23,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         people.append(elements: family)
         people.append(elements: friends)
 
-        let names = Array(countryNames.prefix(upTo: 20))
+        let names = countryNames
         let countries = PeopleDataSource(elements: names)
         countries.title = "Countries"
 

@@ -331,9 +331,9 @@ extension CollectionViewWrapper {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let (localDataSource, localIndexPath) = localDataSourceAndIndexPath(for: indexPath)
         let strategy = sizingStrategy(for: localIndexPath.section, globalSection: indexPath.section, in: localDataSource)
-        if let cached = strategy.cachedSize(forElementAt: indexPath) { return cached }
-
         let config = cellConfiguration(for: localIndexPath, globalIndexPath: indexPath, dataSource: localDataSource)
+
+        if let cached = strategy.cachedSize(forElementAt: indexPath) { return cached }
 
         let metrics = self.metrics(for: localIndexPath.section, globalSection: indexPath.section, in: localDataSource)
         let size = CGSize(width: collectionView.bounds.width, height: CGFloat.greatestFiniteMagnitude)
@@ -345,7 +345,7 @@ extension CollectionViewWrapper {
 
     internal func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let (localDataSource, localIndexPath) = localDataSourceAndIndexPath(for: indexPath)
-        let config = cellConfigurations[indexPath] ?? localDataSource.cellConfiguration(for: localIndexPath)
+        let config = cellConfiguration(for: localIndexPath, globalIndexPath: indexPath, dataSource: localDataSource)
         let type = Swift.type(of: config.prototype)
 
         switch config.dequeueSource {
@@ -375,7 +375,7 @@ extension CollectionViewWrapper {
             localDataSource.willBeginDisplay()
         }
 
-        let config = cellConfigurations[indexPath] ?? localDataSource.cellConfiguration(for: localIndexPath)
+        let config = cellConfiguration(for: localIndexPath, globalIndexPath: indexPath, dataSource: localDataSource)
         config.configure(cell, localIndexPath, .presentation)
 
         guard let editable = dataSource as? DataSourceUIEditing, editable.supportsEditing(for: localIndexPath) else { return }
