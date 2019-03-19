@@ -26,7 +26,7 @@ public final class ArrayDataStore<Element>: DataStore {
     }
 
     public func indexPath(where predicate: @escaping (Any) -> Bool) -> IndexPath? {
-        if let index = elements.index(where: predicate) {
+        if let index = elements.firstIndex(where: predicate) {
             return IndexPath(item: index, section: 0)
         } else {
             return nil

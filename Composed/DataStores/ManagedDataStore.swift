@@ -112,6 +112,8 @@ public final class ManagedDataStore<Element>: NSObject, NSFetchedResultsControll
             operations.append(.updateIndexPaths([indexPath!]))
         case .move:
             operations.append(.moveIndexPaths([(source: indexPath!, target: newIndexPath!)]))
+        @unknown default:
+            break
         }
 
         updates = { [delegate] in
@@ -127,6 +129,8 @@ public final class ManagedDataStore<Element>: NSObject, NSFetchedResultsControll
                 delegate?.dataStore(didUpdateIndexPaths: [indexPath!])
             case .move:
                 delegate?.dataStore(didMoveFromIndexPath: indexPath!, toIndexPath: newIndexPath!)
+            @unknown default:
+                break
             }
         }
     }

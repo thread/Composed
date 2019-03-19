@@ -133,7 +133,7 @@ open class ComposedDataSource: AggregateDataSource {
             .map(mapping.globalSection(forLocal:))
         dataSourceToMappings[DataSourceHashableWrapper(wrapper.dataSource)] = nil
 
-        if let index = mappings.index(where: { DataSourceHashableWrapper($0.dataSource) == wrapper }) {
+        if let index = mappings.firstIndex(where: { DataSourceHashableWrapper($0.dataSource) == wrapper }) {
             mappings.remove(at: index)
         }
 
