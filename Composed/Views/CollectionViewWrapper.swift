@@ -331,11 +331,9 @@ extension CollectionViewWrapper {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let (localDataSource, localIndexPath) = localDataSourceAndIndexPath(for: indexPath)
         let strategy = sizingStrategy(for: localIndexPath.section, globalSection: indexPath.section, in: localDataSource)
-
-        let config = localDataSource.cellConfiguration(for: localIndexPath)
-        cellConfigurations[indexPath] = config
-        
         if let cached = strategy.cachedSize(forElementAt: indexPath) { return cached }
+
+        let config = cellConfiguration(for: localIndexPath, globalIndexPath: indexPath, dataSource: localDataSource)
 
         let metrics = self.metrics(for: localIndexPath.section, globalSection: indexPath.section, in: localDataSource)
         let size = CGSize(width: collectionView.bounds.width, height: CGFloat.greatestFiniteMagnitude)
@@ -440,6 +438,13 @@ private extension CollectionViewWrapper {
         let strategy = dataSource.sizingStrategy()
         sizingStrategies[globalSection] = strategy
         return strategy
+    }
+
+    func cellConfiguration(for localIndexPath: IndexPath, globalIndexPath: IndexPath, dataSource: DataSourceUIProviding) -> DataSourceUIConfiguration {
+        if let configuration = cellConfigurations[globalIndexPath] { return configuration }
+        let configuration = dataSource.cellConfiguration(for: localIndexPath)
+        cellConfigurations[globalIndexPath] = configuration
+        return configuration
     }
 
 }
