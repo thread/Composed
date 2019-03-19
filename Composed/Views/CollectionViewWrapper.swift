@@ -331,10 +331,11 @@ extension CollectionViewWrapper {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let (localDataSource, localIndexPath) = localDataSourceAndIndexPath(for: indexPath)
         let strategy = sizingStrategy(for: localIndexPath.section, globalSection: indexPath.section, in: localDataSource)
-        if let cached = strategy.cachedSize(forElementAt: indexPath) { return cached }
 
         let config = localDataSource.cellConfiguration(for: localIndexPath)
         cellConfigurations[indexPath] = config
+        
+        if let cached = strategy.cachedSize(forElementAt: indexPath) { return cached }
 
         let metrics = self.metrics(for: localIndexPath.section, globalSection: indexPath.section, in: localDataSource)
         let size = CGSize(width: collectionView.bounds.width, height: CGFloat.greatestFiniteMagnitude)
