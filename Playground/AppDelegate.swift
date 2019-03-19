@@ -27,13 +27,13 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         let countries = PeopleDataSource(elements: names)
         countries.title = "Countries"
 
-//        let list = ListDataSource()
-//        list.append(people)
-//        list.append(countries)
+        let list = ListDataSource()
+        list.append(people)
+        list.append(countries)
 
         let layout = FlowLayout()
         layout.globalFooter.prefersFollowContent = true
-        let controller = DataSourceViewController(dataSource: people, layout: layout)
+        let controller = DataSourceViewController(dataSource: list, layout: layout)
         controller.navigationItem.largeTitleDisplayMode = .always
 
         let tab = window?.rootViewController as? UITabBarController

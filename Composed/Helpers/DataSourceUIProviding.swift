@@ -1,3 +1,5 @@
+import UIKit
+
 public struct DataSourceUISectionMetrics {
 
     public let insets: UIEdgeInsets
@@ -20,6 +22,7 @@ public struct DataSourceUISizingContext {
 }
 
 public protocol DataSourceUISizingStrategy {
+    func cachedSize(forElementAt indexPath: IndexPath) -> CGSize?
     func size(forElementAt indexPath: IndexPath, context: DataSourceUISizingContext, dataSource: DataSource) -> CGSize
 }
 
@@ -59,6 +62,15 @@ open class ColumnSizingStrategy: DataSourceUISizingStrategy {
     public init(columnCount: Int, sizingMode: SizingMode) {
         self.columnCount = columnCount
         self.sizingMode = sizingMode
+    }
+
+    public func cachedSize(forElementAt indexPath: IndexPath) -> CGSize? {
+        switch sizingMode {
+        case .fixed:
+            return cachedSizes.values.first
+        case let .automatic(isUniform):
+            return isUniform ? cachedSizes.values.first : cachedSizes[indexPath]
+        }
     }
 
     open func size(forElementAt indexPath: IndexPath, context: DataSourceUISizingContext, dataSource: DataSource) -> CGSize {

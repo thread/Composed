@@ -1,3 +1,5 @@
+import Foundation
+
 open class SectionedDataSource<Element>: CollectionDataSource {
 
     public typealias Store = ArrayDataStore<Element>
@@ -69,7 +71,7 @@ public extension SectionedDataSource {
         updateDelegate?.dataSource(self, didInsertSections: IndexSet(integer: stores.count))
     }
 
-    public func insert(store: Store, at index: Int) {
+    func insert(store: Store, at index: Int) {
         store.delegate = self
         stores.insert(store, at: index)
         updateDelegate?.dataSource(self, didInsertSections: IndexSet(integer: index))

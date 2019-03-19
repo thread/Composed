@@ -132,7 +132,9 @@ open class FlowLayout: UICollectionViewFlowLayout {
                 return nil
         }
 
-        let metrics = self.metrics(forSection: indexPath.section, delegate: collectionView!.delegate as! FlowLayoutDelegate)
+        guard let delegate = collectionView?.delegate as? FlowLayoutDelegate else { return nil }
+
+        let metrics = self.metrics(forSection: indexPath.section, delegate: delegate)
         let bgAttributes = FlowLayoutAttributes(forDecorationViewOfKind: elementKind, with: indexPath)
 
         let x = metrics.insets.left

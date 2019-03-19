@@ -92,20 +92,25 @@ public struct DataSourceUIConfiguration {
         case `class`
     }
 
+    public enum Context {
+        case sizing
+        case presentation
+    }
+
     public typealias ViewType = UICollectionReusableView
 
     public let dequeueSource: Source
     public let reuseIdentifier: String
     public let prototype: UICollectionReusableView
-    public let configure: (UICollectionReusableView, IndexPath) -> Void
+    public let configure: (UICollectionReusableView, IndexPath, Context) -> Void
 
-    public init<View>(prototype: View, dequeueSource: Source, reuseIdentifier: String? = nil, _ configure: @escaping (View, IndexPath) -> Void) where View: UICollectionReusableView {
+    public init<View>(prototype: View, dequeueSource: Source, reuseIdentifier: String? = nil, _ configure: @escaping (View, IndexPath, Context) -> Void) where View: UICollectionReusableView {
         self.reuseIdentifier = reuseIdentifier ?? prototype.reuseIdentifier ?? type(of: prototype).reuseIdentifier
         self.prototype = prototype
         self.dequeueSource = dequeueSource
-        self.configure = { view, indexPath in
+        self.configure = { view, indexPath, context in
             // swiftlint:disable force_cast
-            configure(view as! View, indexPath)
+            configure(view as! View, indexPath, context)
         }
     }
 

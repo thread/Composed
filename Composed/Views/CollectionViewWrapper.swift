@@ -1,3 +1,5 @@
+import UIKit
+
 public typealias CollectionViewDataSource = DataSource & DataSourceUIProviding
 
 internal final class CollectionViewWrapper: NSObject, UICollectionViewDataSource, FlowLayoutDelegate {
@@ -15,6 +17,14 @@ internal final class CollectionViewWrapper: NSObject, UICollectionViewDataSource
             }
         }
         didSet {
+            if let ds = dataSource as? DataSourceLifecycleObserving {
+                ds.prepare()
+
+                if collectionView.window != nil {
+                    ds.didBecomeActive()
+                }
+            }
+
             dataSource?.updateDelegate = self
             collectionView.delegate = self
             collectionView.dataSource = self
@@ -175,7 +185,7 @@ extension CollectionViewWrapper {
         let width = collectionView.bounds.width
         let target = CGSize(width: width, height: 0)
 
-        config.configure(config.prototype, IndexPath(item: 0, section: localSection))
+        config.configure(config.prototype, IndexPath(item: 0, section: localSection), .sizing)
         return config.prototype.systemLayoutSizeFitting(
             target, withHorizontalFittingPriority: .required,
             verticalFittingPriority: .fittingSizeLevel)
@@ -194,7 +204,7 @@ extension CollectionViewWrapper {
         let width = collectionView.bounds.width
         let target = CGSize(width: width, height: 0)
 
-        config.configure(config.prototype, IndexPath(item: 0, section: localSection))
+        config.configure(config.prototype, IndexPath(item: 0, section: localSection), .sizing)
         return config.prototype.systemLayoutSizeFitting(
             target, withHorizontalFittingPriority: .required,
             verticalFittingPriority: .fittingSizeLevel)
@@ -268,7 +278,7 @@ extension CollectionViewWrapper {
         }
 
         defer {
-            configuration?.configure(view, indexPath)
+            configuration?.configure(view, indexPath, .presentation)
         }
 
         let (localDataSource, _) = dataSource.dataSourceFor(global: indexPath)
@@ -291,7 +301,7 @@ extension CollectionViewWrapper {
         let width = collectionView.bounds.width
         let target = CGSize(width: width, height: 0)
 
-        config.configure(config.prototype, UICollectionView.globalElementIndexPath)
+        config.configure(config.prototype, UICollectionView.globalElementIndexPath, .sizing)
         return config.prototype.systemLayoutSizeFitting(
             target, withHorizontalFittingPriority: .required,
             verticalFittingPriority: .fittingSizeLevel).height
@@ -308,7 +318,7 @@ extension CollectionViewWrapper {
         let width = collectionView.bounds.width
         let target = CGSize(width: width, height: 0)
 
-        config.configure(config.prototype, UICollectionView.globalElementIndexPath)
+        config.configure(config.prototype, UICollectionView.globalElementIndexPath, .sizing)
         return config.prototype.systemLayoutSizeFitting(
             target, withHorizontalFittingPriority: .required,
             verticalFittingPriority: .fittingSizeLevel).height
@@ -320,15 +330,17 @@ extension CollectionViewWrapper {
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let (localDataSource, localIndexPath) = localDataSourceAndIndexPath(for: indexPath)
+        let strategy = sizingStrategy(for: localIndexPath.section, globalSection: indexPath.section, in: localDataSource)
+        if let cached = strategy.cachedSize(forElementAt: indexPath) { return cached }
+
         let config = localDataSource.cellConfiguration(for: localIndexPath)
         cellConfigurations[indexPath] = config
 
         let metrics = self.metrics(for: localIndexPath.section, globalSection: indexPath.section, in: localDataSource)
-        let strategy = sizingStrategy(for: localIndexPath.section, globalSection: indexPath.section, in: localDataSource)
         let size = CGSize(width: collectionView.bounds.width, height: CGFloat.greatestFiniteMagnitude)
         let context = DataSourceUISizingContext(prototype: config.prototype, indexPath: localIndexPath, layoutSize: size, metrics: metrics)
 
-        config.configure(config.prototype, localIndexPath)
+        config.configure(config.prototype, localIndexPath, .sizing)
         return strategy.size(forElementAt: localIndexPath, context: context, dataSource: localDataSource)
     }
 
@@ -365,7 +377,7 @@ extension CollectionViewWrapper {
         }
 
         let config = cellConfigurations[indexPath] ?? localDataSource.cellConfiguration(for: localIndexPath)
-        config.configure(cell, localIndexPath)
+        config.configure(cell, localIndexPath, .presentation)
 
         guard let editable = dataSource as? DataSourceUIEditing, editable.supportsEditing(for: localIndexPath) else { return }
         (cell as? DataSourceUIEditingView)?.setEditing(editable.isEditing, animated: false)

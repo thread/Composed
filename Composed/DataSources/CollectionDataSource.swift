@@ -1,13 +1,8 @@
+import Foundation
+
 public protocol CollectionDataSource: DataSource, DataStoreDelegate {
     associatedtype Store: DataStore
     func element(at indexPath: IndexPath) -> Store.Element
-}
-
-extension DataSourceLifecycleObserving where Self: CollectionDataSource {
-    public func prepare() { }
-    public func invalidate() { }
-    public func didBecomeActive() { }
-    public func willResignActive() { }
 }
 
 public extension CollectionDataSource {

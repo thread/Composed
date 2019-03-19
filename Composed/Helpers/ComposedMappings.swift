@@ -1,3 +1,5 @@
+import Foundation
+
 internal final class ComposedMappings {
 
     internal private(set) unowned var dataSource: DataSource

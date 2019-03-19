@@ -17,36 +17,39 @@
 		5402214B2195C4F800F0E173 /* Composed.h in Headers */ = {isa = PBXBuildFile; fileRef = 5402213B2195C4F700F0E173 /* Composed.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5402214E2195C4F800F0E173 /* Composed.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 540221392195C4F700F0E173 /* Composed.framework */; };
 		5402214F2195C4F800F0E173 /* Composed.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 540221392195C4F700F0E173 /* Composed.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		5430E3ED222473630017A450 /* AggregateDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5430E3CD222473620017A450 /* AggregateDataSource.swift */; };
-		5430E3EE222473630017A450 /* CollectionDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5430E3CE222473620017A450 /* CollectionDataSource.swift */; };
-		5430E3EF222473630017A450 /* SectionedDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5430E3CF222473620017A450 /* SectionedDataSource.swift */; };
-		5430E3F0222473630017A450 /* SegmentedDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5430E3D0222473620017A450 /* SegmentedDataSource.swift */; };
-		5430E3F1222473630017A450 /* GlobalDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5430E3D1222473620017A450 /* GlobalDataSource.swift */; };
-		5430E3F2222473630017A450 /* BasicDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5430E3D2222473620017A450 /* BasicDataSource.swift */; };
-		5430E3F3222473630017A450 /* ComposedDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5430E3D3222473620017A450 /* ComposedDataSource.swift */; };
-		5430E3F4222473630017A450 /* DataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5430E3D4222473620017A450 /* DataSource.swift */; };
-		5430E3F5222473630017A450 /* DataSourceUI+Configurations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5430E3D6222473620017A450 /* DataSourceUI+Configurations.swift */; };
-		5430E3F6222473630017A450 /* DataSourceHeaderFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5430E3D7222473620017A450 /* DataSourceHeaderFooterView.swift */; };
-		5430E3F7222473630017A450 /* DataSourceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5430E3D8222473620017A450 /* DataSourceViewController.swift */; };
-		5430E3F8222473630017A450 /* CollectionViewWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5430E3D9222473620017A450 /* CollectionViewWrapper.swift */; };
-		5430E3F9222473630017A450 /* DataSourceChangeSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5430E3DB222473620017A450 /* DataSourceChangeSet.swift */; };
-		5430E3FA222473630017A450 /* DataSourceHashableWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5430E3DC222473620017A450 /* DataSourceHashableWrapper.swift */; };
-		5430E3FB222473630017A450 /* ComposedMappings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5430E3DD222473620017A450 /* ComposedMappings.swift */; };
-		5430E3FD222473630017A450 /* DataSourceUIProviding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5430E3DF222473620017A450 /* DataSourceUIProviding.swift */; };
-		5430E3FE222473630017A450 /* DataSourceUI+Behaviours.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5430E3E0222473620017A450 /* DataSourceUI+Behaviours.swift */; };
-		5430E3FF222473630017A450 /* NibLoadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5430E3E1222473620017A450 /* NibLoadable.swift */; };
-		5430E400222473630017A450 /* ArrayDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5430E3E3222473630017A450 /* ArrayDataStore.swift */; };
-		5430E401222473630017A450 /* ManagedDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5430E3E4222473630017A450 /* ManagedDataStore.swift */; };
-		5430E402222473630017A450 /* DataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5430E3E5222473630017A450 /* DataStore.swift */; };
-		5430E403222473630017A450 /* FlowLayoutInvalidationContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5430E3E7222473630017A450 /* FlowLayoutInvalidationContext.swift */; };
-		5430E404222473630017A450 /* FlowLayout+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5430E3E8222473630017A450 /* FlowLayout+Helpers.swift */; };
-		5430E405222473630017A450 /* FlowLayoutAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5430E3E9222473630017A450 /* FlowLayoutAttributes.swift */; };
-		5430E406222473630017A450 /* FlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5430E3EA222473630017A450 /* FlowLayout.swift */; };
-		5430E407222473630017A450 /* FlowLayout+Metrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5430E3EB222473630017A450 /* FlowLayout+Metrics.swift */; };
-		5430E408222473630017A450 /* FlowLayout+Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5430E3EC222473630017A450 /* FlowLayout+Types.swift */; };
 		546AA49521D5178900588DE4 /* PersonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 546AA49421D5178900588DE4 /* PersonCell.xib */; };
 		548A8B6E2214EEBE00C0A276 /* FooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 548A8B6D2214EEBE00C0A276 /* FooterView.xib */; };
 		548A8B702214FA2800C0A276 /* BackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 548A8B6F2214FA2800C0A276 /* BackgroundView.swift */; };
+		54905FA62240FD100096A08D /* AggregateDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54905F852240FD100096A08D /* AggregateDataSource.swift */; };
+		54905FA72240FD100096A08D /* CollectionDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54905F862240FD100096A08D /* CollectionDataSource.swift */; };
+		54905FA82240FD100096A08D /* SectionedDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54905F872240FD100096A08D /* SectionedDataSource.swift */; };
+		54905FA92240FD100096A08D /* SegmentedDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54905F882240FD100096A08D /* SegmentedDataSource.swift */; };
+		54905FAA2240FD100096A08D /* EmbeddedDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54905F892240FD100096A08D /* EmbeddedDataSource.swift */; };
+		54905FAB2240FD100096A08D /* GlobalDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54905F8A2240FD100096A08D /* GlobalDataSource.swift */; };
+		54905FAC2240FD100096A08D /* BasicDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54905F8B2240FD100096A08D /* BasicDataSource.swift */; };
+		54905FAD2240FD100096A08D /* ComposedDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54905F8C2240FD100096A08D /* ComposedDataSource.swift */; };
+		54905FAE2240FD100096A08D /* DataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54905F8D2240FD100096A08D /* DataSource.swift */; };
+		54905FAF2240FD100096A08D /* ArrayDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54905F8F2240FD100096A08D /* ArrayDataStore.swift */; };
+		54905FB02240FD100096A08D /* ManagedDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54905F902240FD100096A08D /* ManagedDataStore.swift */; };
+		54905FB12240FD100096A08D /* DataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54905F912240FD100096A08D /* DataStore.swift */; };
+		54905FB22240FD100096A08D /* DataSourceChangeSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54905F932240FD100096A08D /* DataSourceChangeSet.swift */; };
+		54905FB32240FD100096A08D /* DataSourceHashableWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54905F942240FD100096A08D /* DataSourceHashableWrapper.swift */; };
+		54905FB42240FD100096A08D /* ComposedMappings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54905F952240FD100096A08D /* ComposedMappings.swift */; };
+		54905FB52240FD100096A08D /* DataSourceUIProviding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54905F962240FD100096A08D /* DataSourceUIProviding.swift */; };
+		54905FB62240FD100096A08D /* DataSourceUI+Behaviours.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54905F972240FD100096A08D /* DataSourceUI+Behaviours.swift */; };
+		54905FB72240FD100096A08D /* NibLoadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54905F982240FD100096A08D /* NibLoadable.swift */; };
+		54905FB82240FD100096A08D /* FlowLayoutInvalidationContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54905F9A2240FD100096A08D /* FlowLayoutInvalidationContext.swift */; };
+		54905FB92240FD100096A08D /* FlowLayout+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54905F9B2240FD100096A08D /* FlowLayout+Helpers.swift */; };
+		54905FBA2240FD100096A08D /* FlowLayoutAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54905F9C2240FD100096A08D /* FlowLayoutAttributes.swift */; };
+		54905FBB2240FD100096A08D /* FlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54905F9D2240FD100096A08D /* FlowLayout.swift */; };
+		54905FBC2240FD100096A08D /* FlowLayout+Metrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54905F9E2240FD100096A08D /* FlowLayout+Metrics.swift */; };
+		54905FBD2240FD100096A08D /* FlowLayout+Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54905F9F2240FD100096A08D /* FlowLayout+Types.swift */; };
+		54905FBE2240FD100096A08D /* DataSourceUI+Configurations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54905FA12240FD100096A08D /* DataSourceUI+Configurations.swift */; };
+		54905FBF2240FD100096A08D /* DataSourceHeaderFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54905FA22240FD100096A08D /* DataSourceHeaderFooterView.swift */; };
+		54905FC02240FD100096A08D /* DataSourceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54905FA32240FD100096A08D /* DataSourceViewController.swift */; };
+		54905FC12240FD100096A08D /* EmbeddedDataSourceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54905FA42240FD100096A08D /* EmbeddedDataSourceCell.swift */; };
+		54905FC22240FD100096A08D /* CollectionViewWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54905FA52240FD100096A08D /* CollectionViewWrapper.swift */; };
+		54905FC4224103290096A08D /* DataSourceLifecycleObserving.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54905FC3224103290096A08D /* DataSourceLifecycleObserving.swift */; };
 		54BAB15E221497FA0064CE51 /* GlobalHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54BAB15D221497FA0064CE51 /* GlobalHeaderView.swift */; };
 		54BAB160221498000064CE51 /* GlobalHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 54BAB15F221498000064CE51 /* GlobalHeaderView.xib */; };
 		54BAB1642214D05C0064CE51 /* GlobalFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54BAB1632214D05C0064CE51 /* GlobalFooterView.swift */; };
@@ -106,37 +109,40 @@
 		540221412195C4F700F0E173 /* ComposedTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ComposedTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		540221482195C4F800F0E173 /* ComposedTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposedTests.swift; sourceTree = "<group>"; };
 		5402214A2195C4F800F0E173 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		5430E3CD222473620017A450 /* AggregateDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AggregateDataSource.swift; sourceTree = "<group>"; };
-		5430E3CE222473620017A450 /* CollectionDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionDataSource.swift; sourceTree = "<group>"; };
-		5430E3CF222473620017A450 /* SectionedDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SectionedDataSource.swift; sourceTree = "<group>"; };
-		5430E3D0222473620017A450 /* SegmentedDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegmentedDataSource.swift; sourceTree = "<group>"; };
-		5430E3D1222473620017A450 /* GlobalDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlobalDataSource.swift; sourceTree = "<group>"; };
-		5430E3D2222473620017A450 /* BasicDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicDataSource.swift; sourceTree = "<group>"; };
-		5430E3D3222473620017A450 /* ComposedDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposedDataSource.swift; sourceTree = "<group>"; };
-		5430E3D4222473620017A450 /* DataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSource.swift; sourceTree = "<group>"; };
-		5430E3D6222473620017A450 /* DataSourceUI+Configurations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DataSourceUI+Configurations.swift"; sourceTree = "<group>"; };
-		5430E3D7222473620017A450 /* DataSourceHeaderFooterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSourceHeaderFooterView.swift; sourceTree = "<group>"; };
-		5430E3D8222473620017A450 /* DataSourceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSourceViewController.swift; sourceTree = "<group>"; };
-		5430E3D9222473620017A450 /* CollectionViewWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewWrapper.swift; sourceTree = "<group>"; };
-		5430E3DB222473620017A450 /* DataSourceChangeSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSourceChangeSet.swift; sourceTree = "<group>"; };
-		5430E3DC222473620017A450 /* DataSourceHashableWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSourceHashableWrapper.swift; sourceTree = "<group>"; };
-		5430E3DD222473620017A450 /* ComposedMappings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposedMappings.swift; sourceTree = "<group>"; };
-		5430E3DF222473620017A450 /* DataSourceUIProviding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSourceUIProviding.swift; sourceTree = "<group>"; };
-		5430E3E0222473620017A450 /* DataSourceUI+Behaviours.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DataSourceUI+Behaviours.swift"; sourceTree = "<group>"; };
-		5430E3E1222473620017A450 /* NibLoadable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NibLoadable.swift; sourceTree = "<group>"; };
-		5430E3E3222473630017A450 /* ArrayDataStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArrayDataStore.swift; sourceTree = "<group>"; };
-		5430E3E4222473630017A450 /* ManagedDataStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedDataStore.swift; sourceTree = "<group>"; };
-		5430E3E5222473630017A450 /* DataStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataStore.swift; sourceTree = "<group>"; };
-		5430E3E7222473630017A450 /* FlowLayoutInvalidationContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlowLayoutInvalidationContext.swift; sourceTree = "<group>"; };
-		5430E3E8222473630017A450 /* FlowLayout+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FlowLayout+Helpers.swift"; sourceTree = "<group>"; };
-		5430E3E9222473630017A450 /* FlowLayoutAttributes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlowLayoutAttributes.swift; sourceTree = "<group>"; };
-		5430E3EA222473630017A450 /* FlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlowLayout.swift; sourceTree = "<group>"; };
-		5430E3EB222473630017A450 /* FlowLayout+Metrics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FlowLayout+Metrics.swift"; sourceTree = "<group>"; };
-		5430E3EC222473630017A450 /* FlowLayout+Types.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FlowLayout+Types.swift"; sourceTree = "<group>"; };
 		546865242204E3CA00E79B56 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		546AA49421D5178900588DE4 /* PersonCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PersonCell.xib; sourceTree = "<group>"; };
 		548A8B6D2214EEBE00C0A276 /* FooterView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FooterView.xib; sourceTree = "<group>"; };
 		548A8B6F2214FA2800C0A276 /* BackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundView.swift; sourceTree = "<group>"; };
+		54905F852240FD100096A08D /* AggregateDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AggregateDataSource.swift; sourceTree = "<group>"; };
+		54905F862240FD100096A08D /* CollectionDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionDataSource.swift; sourceTree = "<group>"; };
+		54905F872240FD100096A08D /* SectionedDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SectionedDataSource.swift; sourceTree = "<group>"; };
+		54905F882240FD100096A08D /* SegmentedDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegmentedDataSource.swift; sourceTree = "<group>"; };
+		54905F892240FD100096A08D /* EmbeddedDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmbeddedDataSource.swift; sourceTree = "<group>"; };
+		54905F8A2240FD100096A08D /* GlobalDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlobalDataSource.swift; sourceTree = "<group>"; };
+		54905F8B2240FD100096A08D /* BasicDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicDataSource.swift; sourceTree = "<group>"; };
+		54905F8C2240FD100096A08D /* ComposedDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposedDataSource.swift; sourceTree = "<group>"; };
+		54905F8D2240FD100096A08D /* DataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSource.swift; sourceTree = "<group>"; };
+		54905F8F2240FD100096A08D /* ArrayDataStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArrayDataStore.swift; sourceTree = "<group>"; };
+		54905F902240FD100096A08D /* ManagedDataStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedDataStore.swift; sourceTree = "<group>"; };
+		54905F912240FD100096A08D /* DataStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataStore.swift; sourceTree = "<group>"; };
+		54905F932240FD100096A08D /* DataSourceChangeSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSourceChangeSet.swift; sourceTree = "<group>"; };
+		54905F942240FD100096A08D /* DataSourceHashableWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSourceHashableWrapper.swift; sourceTree = "<group>"; };
+		54905F952240FD100096A08D /* ComposedMappings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposedMappings.swift; sourceTree = "<group>"; };
+		54905F962240FD100096A08D /* DataSourceUIProviding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSourceUIProviding.swift; sourceTree = "<group>"; };
+		54905F972240FD100096A08D /* DataSourceUI+Behaviours.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DataSourceUI+Behaviours.swift"; sourceTree = "<group>"; };
+		54905F982240FD100096A08D /* NibLoadable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NibLoadable.swift; sourceTree = "<group>"; };
+		54905F9A2240FD100096A08D /* FlowLayoutInvalidationContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlowLayoutInvalidationContext.swift; sourceTree = "<group>"; };
+		54905F9B2240FD100096A08D /* FlowLayout+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FlowLayout+Helpers.swift"; sourceTree = "<group>"; };
+		54905F9C2240FD100096A08D /* FlowLayoutAttributes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlowLayoutAttributes.swift; sourceTree = "<group>"; };
+		54905F9D2240FD100096A08D /* FlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlowLayout.swift; sourceTree = "<group>"; };
+		54905F9E2240FD100096A08D /* FlowLayout+Metrics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FlowLayout+Metrics.swift"; sourceTree = "<group>"; };
+		54905F9F2240FD100096A08D /* FlowLayout+Types.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FlowLayout+Types.swift"; sourceTree = "<group>"; };
+		54905FA12240FD100096A08D /* DataSourceUI+Configurations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DataSourceUI+Configurations.swift"; sourceTree = "<group>"; };
+		54905FA22240FD100096A08D /* DataSourceHeaderFooterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSourceHeaderFooterView.swift; sourceTree = "<group>"; };
+		54905FA32240FD100096A08D /* DataSourceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSourceViewController.swift; sourceTree = "<group>"; };
+		54905FA42240FD100096A08D /* EmbeddedDataSourceCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmbeddedDataSourceCell.swift; sourceTree = "<group>"; };
+		54905FA52240FD100096A08D /* CollectionViewWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewWrapper.swift; sourceTree = "<group>"; };
+		54905FC3224103290096A08D /* DataSourceLifecycleObserving.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSourceLifecycleObserving.swift; sourceTree = "<group>"; };
 		54BAB15D221497FA0064CE51 /* GlobalHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalHeaderView.swift; sourceTree = "<group>"; };
 		54BAB15F221498000064CE51 /* GlobalHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GlobalHeaderView.xib; sourceTree = "<group>"; };
 		54BAB1632214D05C0064CE51 /* GlobalFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalFooterView.swift; sourceTree = "<group>"; };
@@ -216,11 +222,11 @@
 		5402213A2195C4F700F0E173 /* Composed */ = {
 			isa = PBXGroup;
 			children = (
-				5430E3CC222473620017A450 /* DataSources */,
-				5430E3E2222473630017A450 /* DataStores */,
-				5430E3DA222473620017A450 /* Helpers */,
-				5430E3E6222473630017A450 /* Layout */,
-				5430E3D5222473620017A450 /* Views */,
+				54905F842240FD100096A08D /* DataSources */,
+				54905F8E2240FD100096A08D /* DataStores */,
+				54905F922240FD100096A08D /* Helpers */,
+				54905F992240FD100096A08D /* Layout */,
+				54905FA02240FD100096A08D /* Views */,
 				5402213B2195C4F700F0E173 /* Composed.h */,
 				5402213C2195C4F700F0E173 /* Info.plist */,
 			);
@@ -236,74 +242,77 @@
 			path = ComposedTests;
 			sourceTree = "<group>";
 		};
-		5430E3CC222473620017A450 /* DataSources */ = {
-			isa = PBXGroup;
-			children = (
-				5430E3CD222473620017A450 /* AggregateDataSource.swift */,
-				5430E3CE222473620017A450 /* CollectionDataSource.swift */,
-				5430E3CF222473620017A450 /* SectionedDataSource.swift */,
-				5430E3D0222473620017A450 /* SegmentedDataSource.swift */,
-				5430E3D1222473620017A450 /* GlobalDataSource.swift */,
-				5430E3D2222473620017A450 /* BasicDataSource.swift */,
-				5430E3D3222473620017A450 /* ComposedDataSource.swift */,
-				5430E3D4222473620017A450 /* DataSource.swift */,
-			);
-			path = DataSources;
-			sourceTree = "<group>";
-		};
-		5430E3D5222473620017A450 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				5430E3D6222473620017A450 /* DataSourceUI+Configurations.swift */,
-				5430E3D7222473620017A450 /* DataSourceHeaderFooterView.swift */,
-				5430E3D8222473620017A450 /* DataSourceViewController.swift */,
-				5430E3D9222473620017A450 /* CollectionViewWrapper.swift */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
-		5430E3DA222473620017A450 /* Helpers */ = {
-			isa = PBXGroup;
-			children = (
-				5430E3DB222473620017A450 /* DataSourceChangeSet.swift */,
-				5430E3DC222473620017A450 /* DataSourceHashableWrapper.swift */,
-				5430E3DD222473620017A450 /* ComposedMappings.swift */,
-				5430E3DF222473620017A450 /* DataSourceUIProviding.swift */,
-				5430E3E0222473620017A450 /* DataSourceUI+Behaviours.swift */,
-				5430E3E1222473620017A450 /* NibLoadable.swift */,
-			);
-			path = Helpers;
-			sourceTree = "<group>";
-		};
-		5430E3E2222473630017A450 /* DataStores */ = {
-			isa = PBXGroup;
-			children = (
-				5430E3E3222473630017A450 /* ArrayDataStore.swift */,
-				5430E3E4222473630017A450 /* ManagedDataStore.swift */,
-				5430E3E5222473630017A450 /* DataStore.swift */,
-			);
-			path = DataStores;
-			sourceTree = "<group>";
-		};
-		5430E3E6222473630017A450 /* Layout */ = {
-			isa = PBXGroup;
-			children = (
-				5430E3EA222473630017A450 /* FlowLayout.swift */,
-				5430E3E9222473630017A450 /* FlowLayoutAttributes.swift */,
-				5430E3E7222473630017A450 /* FlowLayoutInvalidationContext.swift */,
-				5430E3E8222473630017A450 /* FlowLayout+Helpers.swift */,
-				5430E3EB222473630017A450 /* FlowLayout+Metrics.swift */,
-				5430E3EC222473630017A450 /* FlowLayout+Types.swift */,
-			);
-			path = Layout;
-			sourceTree = "<group>";
-		};
 		546865232204E3CA00E79B56 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				546865242204E3CA00E79B56 /* UIKit.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		54905F842240FD100096A08D /* DataSources */ = {
+			isa = PBXGroup;
+			children = (
+				54905F852240FD100096A08D /* AggregateDataSource.swift */,
+				54905F862240FD100096A08D /* CollectionDataSource.swift */,
+				54905F872240FD100096A08D /* SectionedDataSource.swift */,
+				54905F882240FD100096A08D /* SegmentedDataSource.swift */,
+				54905F892240FD100096A08D /* EmbeddedDataSource.swift */,
+				54905F8A2240FD100096A08D /* GlobalDataSource.swift */,
+				54905F8B2240FD100096A08D /* BasicDataSource.swift */,
+				54905F8C2240FD100096A08D /* ComposedDataSource.swift */,
+				54905F8D2240FD100096A08D /* DataSource.swift */,
+				54905FC3224103290096A08D /* DataSourceLifecycleObserving.swift */,
+			);
+			path = DataSources;
+			sourceTree = "<group>";
+		};
+		54905F8E2240FD100096A08D /* DataStores */ = {
+			isa = PBXGroup;
+			children = (
+				54905F8F2240FD100096A08D /* ArrayDataStore.swift */,
+				54905F902240FD100096A08D /* ManagedDataStore.swift */,
+				54905F912240FD100096A08D /* DataStore.swift */,
+			);
+			path = DataStores;
+			sourceTree = "<group>";
+		};
+		54905F922240FD100096A08D /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				54905F932240FD100096A08D /* DataSourceChangeSet.swift */,
+				54905F942240FD100096A08D /* DataSourceHashableWrapper.swift */,
+				54905F952240FD100096A08D /* ComposedMappings.swift */,
+				54905F962240FD100096A08D /* DataSourceUIProviding.swift */,
+				54905F972240FD100096A08D /* DataSourceUI+Behaviours.swift */,
+				54905F982240FD100096A08D /* NibLoadable.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		54905F992240FD100096A08D /* Layout */ = {
+			isa = PBXGroup;
+			children = (
+				54905F9A2240FD100096A08D /* FlowLayoutInvalidationContext.swift */,
+				54905F9B2240FD100096A08D /* FlowLayout+Helpers.swift */,
+				54905F9C2240FD100096A08D /* FlowLayoutAttributes.swift */,
+				54905F9D2240FD100096A08D /* FlowLayout.swift */,
+				54905F9E2240FD100096A08D /* FlowLayout+Metrics.swift */,
+				54905F9F2240FD100096A08D /* FlowLayout+Types.swift */,
+			);
+			path = Layout;
+			sourceTree = "<group>";
+		};
+		54905FA02240FD100096A08D /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				54905FA12240FD100096A08D /* DataSourceUI+Configurations.swift */,
+				54905FA22240FD100096A08D /* DataSourceHeaderFooterView.swift */,
+				54905FA32240FD100096A08D /* DataSourceViewController.swift */,
+				54905FA42240FD100096A08D /* EmbeddedDataSourceCell.swift */,
+				54905FA52240FD100096A08D /* CollectionViewWrapper.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -468,33 +477,36 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5430E403222473630017A450 /* FlowLayoutInvalidationContext.swift in Sources */,
-				5430E3F6222473630017A450 /* DataSourceHeaderFooterView.swift in Sources */,
-				5430E3EE222473630017A450 /* CollectionDataSource.swift in Sources */,
-				5430E3ED222473630017A450 /* AggregateDataSource.swift in Sources */,
-				5430E401222473630017A450 /* ManagedDataStore.swift in Sources */,
-				5430E3F9222473630017A450 /* DataSourceChangeSet.swift in Sources */,
-				5430E3F1222473630017A450 /* GlobalDataSource.swift in Sources */,
-				5430E3FD222473630017A450 /* DataSourceUIProviding.swift in Sources */,
-				5430E3EF222473630017A450 /* SectionedDataSource.swift in Sources */,
-				5430E3F7222473630017A450 /* DataSourceViewController.swift in Sources */,
-				5430E405222473630017A450 /* FlowLayoutAttributes.swift in Sources */,
-				5430E3FF222473630017A450 /* NibLoadable.swift in Sources */,
-				5430E400222473630017A450 /* ArrayDataStore.swift in Sources */,
-				5430E3FE222473630017A450 /* DataSourceUI+Behaviours.swift in Sources */,
-				5430E3F8222473630017A450 /* CollectionViewWrapper.swift in Sources */,
-				5430E3F5222473630017A450 /* DataSourceUI+Configurations.swift in Sources */,
-				5430E3F0222473630017A450 /* SegmentedDataSource.swift in Sources */,
-				5430E402222473630017A450 /* DataStore.swift in Sources */,
-				5430E3FA222473630017A450 /* DataSourceHashableWrapper.swift in Sources */,
-				5430E3F2222473630017A450 /* BasicDataSource.swift in Sources */,
-				5430E3F4222473630017A450 /* DataSource.swift in Sources */,
-				5430E406222473630017A450 /* FlowLayout.swift in Sources */,
-				5430E3FB222473630017A450 /* ComposedMappings.swift in Sources */,
-				5430E3F3222473630017A450 /* ComposedDataSource.swift in Sources */,
-				5430E407222473630017A450 /* FlowLayout+Metrics.swift in Sources */,
-				5430E404222473630017A450 /* FlowLayout+Helpers.swift in Sources */,
-				5430E408222473630017A450 /* FlowLayout+Types.swift in Sources */,
+				54905FC22240FD100096A08D /* CollectionViewWrapper.swift in Sources */,
+				54905FC4224103290096A08D /* DataSourceLifecycleObserving.swift in Sources */,
+				54905FB62240FD100096A08D /* DataSourceUI+Behaviours.swift in Sources */,
+				54905FAD2240FD100096A08D /* ComposedDataSource.swift in Sources */,
+				54905FC02240FD100096A08D /* DataSourceViewController.swift in Sources */,
+				54905FB52240FD100096A08D /* DataSourceUIProviding.swift in Sources */,
+				54905FC12240FD100096A08D /* EmbeddedDataSourceCell.swift in Sources */,
+				54905FB72240FD100096A08D /* NibLoadable.swift in Sources */,
+				54905FB12240FD100096A08D /* DataStore.swift in Sources */,
+				54905FBA2240FD100096A08D /* FlowLayoutAttributes.swift in Sources */,
+				54905FA72240FD100096A08D /* CollectionDataSource.swift in Sources */,
+				54905FB22240FD100096A08D /* DataSourceChangeSet.swift in Sources */,
+				54905FB92240FD100096A08D /* FlowLayout+Helpers.swift in Sources */,
+				54905FAA2240FD100096A08D /* EmbeddedDataSource.swift in Sources */,
+				54905FAE2240FD100096A08D /* DataSource.swift in Sources */,
+				54905FBB2240FD100096A08D /* FlowLayout.swift in Sources */,
+				54905FA62240FD100096A08D /* AggregateDataSource.swift in Sources */,
+				54905FAB2240FD100096A08D /* GlobalDataSource.swift in Sources */,
+				54905FA82240FD100096A08D /* SectionedDataSource.swift in Sources */,
+				54905FBD2240FD100096A08D /* FlowLayout+Types.swift in Sources */,
+				54905FB82240FD100096A08D /* FlowLayoutInvalidationContext.swift in Sources */,
+				54905FA92240FD100096A08D /* SegmentedDataSource.swift in Sources */,
+				54905FB32240FD100096A08D /* DataSourceHashableWrapper.swift in Sources */,
+				54905FB02240FD100096A08D /* ManagedDataStore.swift in Sources */,
+				54905FAC2240FD100096A08D /* BasicDataSource.swift in Sources */,
+				54905FBE2240FD100096A08D /* DataSourceUI+Configurations.swift in Sources */,
+				54905FBF2240FD100096A08D /* DataSourceHeaderFooterView.swift in Sources */,
+				54905FB42240FD100096A08D /* ComposedMappings.swift in Sources */,
+				54905FAF2240FD100096A08D /* ArrayDataStore.swift in Sources */,
+				54905FBC2240FD100096A08D /* FlowLayout+Metrics.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

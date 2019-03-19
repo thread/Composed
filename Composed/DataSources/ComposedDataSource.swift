@@ -1,3 +1,5 @@
+import Foundation
+
 open class ComposedDataSource: AggregateDataSource {
 
     public var descendants: [DataSource] {
@@ -100,8 +102,15 @@ open class ComposedDataSource: AggregateDataSource {
         _invalidate()
 
         if isActive {
-            children.compactMap { $0 as? DataSourceLifecycleObserving }.forEach { $0.prepare() }
-            children.compactMap { $0 as? DataSourceLifecycleObserving }.forEach { $0.didBecomeActive() }
+            children
+                .lazy
+                .compactMap { $0 as? DataSourceLifecycleObserving }
+                .forEach { $0.prepare() }
+
+            children
+                .lazy
+                .compactMap { $0 as? DataSourceLifecycleObserving }
+                .forEach { $0.didBecomeActive() }
         }
 
         return (0..<wrapper.dataSource.numberOfSections).map(mapping.globalSection(forLocal:))
@@ -132,8 +141,13 @@ open class ComposedDataSource: AggregateDataSource {
 
         _invalidate()
 
-        children.compactMap { $0 as? DataSourceLifecycleObserving }.forEach { $0.willResignActive() }
-        children.compactMap { $0 as? DataSourceLifecycleObserving }.forEach { $0.invalidate() }
+        children.lazy
+            .compactMap { $0 as? DataSourceLifecycleObserving }
+            .forEach { $0.willResignActive() }
+
+        children.lazy
+            .compactMap { $0 as? DataSourceLifecycleObserving }
+            .forEach { $0.invalidate() }
 
         return removedSections
     }
@@ -169,24 +183,28 @@ open class ComposedDataSource: AggregateDataSource {
 
     open func prepare() {
         children
+            .lazy
             .compactMap { $0 as? DataSourceLifecycleObserving }
             .forEach { $0.prepare() }
     }
 
     open func invalidate() {
         children
+            .lazy
             .compactMap { $0 as? DataSourceLifecycleObserving }
             .forEach { $0.invalidate() }
     }
 
     open func didBecomeActive() {
         children
+            .lazy
             .compactMap { $0 as? DataSourceLifecycleObserving }
             .forEach { $0.didBecomeActive() }
     }
 
     open func willResignActive() {
         children
+            .lazy
             .compactMap { $0 as? DataSourceLifecycleObserving }
             .forEach { $0.willResignActive() }
     }
@@ -225,7 +243,7 @@ extension ComposedDataSource {
 
 public extension ComposedDataSource {
 
-    public func indexPath(where predicate: @escaping (Any) -> Bool) -> IndexPath? {
+    func indexPath(where predicate: @escaping (Any) -> Bool) -> IndexPath? {
         for child in children {
             if let indexPath = child.indexPath(where: predicate) {
                 let mapping = self.mapping(for: child)

@@ -1,3 +1,5 @@
+import Foundation
+
 public protocol DataStoreDelegate: class {
     func dataStore(willPerform updates: [DataSourceUpdate])
     func dataStore(didPerform updates: [DataSourceUpdate])

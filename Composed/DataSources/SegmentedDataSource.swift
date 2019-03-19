@@ -1,3 +1,5 @@
+import Foundation
+
 public protocol DataSourceUpdateDelegateSegmented: DataSourceUpdateDelegate {
     func dataSource(_ dataSource: SegmentedDataSource, didSelect child: DataSource, atIndex index: Int)
 }
@@ -122,12 +124,14 @@ open class SegmentedDataSource: AggregateDataSource {
 
     open func prepare() {
         children
+            .lazy
             .compactMap { $0 as? DataSourceLifecycleObserving }
             .forEach { $0.prepare() }
     }
 
     open func invalidate() {
         children
+            .lazy
             .compactMap { $0 as? DataSourceLifecycleObserving }
             .forEach { $0.invalidate() }
     }

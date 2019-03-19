@@ -1,3 +1,5 @@
+import Foundation
+
 public protocol DataSourceChangeset {
     /// The offsets of deleted sections.
     var deletedSections: [Int] { get }

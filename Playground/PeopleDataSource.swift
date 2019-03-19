@@ -19,20 +19,20 @@ final class PeopleDataSource: SectionedDataSource<Person>, DataSourceUIProviding
     }
 
     func cellConfiguration(for indexPath: IndexPath) -> DataSourceUIConfiguration {
-        return DataSourceUIConfiguration(prototype: PersonCell.fromNib, dequeueSource: .nib) { cell, indexPath in
+        return DataSourceUIConfiguration(prototype: PersonCell.fromNib, dequeueSource: .nib) { cell, indexPath, _ in
             cell.prepare(person: self.element(at: indexPath))
         }
     }
 
     func footerConfiguration(for section: Int) -> DataSourceUIConfiguration? {
-        return DataSourceUIConfiguration(prototype: FooterView.fromNib, dequeueSource: .nib) { view, indexPath in
+        return DataSourceUIConfiguration(prototype: FooterView.fromNib, dequeueSource: .nib) { view, indexPath, _ in
             view.prepare(title: "\(self.numberOfElements(in: section)) items")
         }
     }
 
     func headerConfiguration(for section: Int) -> DataSourceUIConfiguration? {
         return title.map { title in
-            DataSourceUIConfiguration(prototype: HeaderView.fromNib, dequeueSource: .nib) { view, indexPath in
+            DataSourceUIConfiguration(prototype: HeaderView.fromNib, dequeueSource: .nib) { view, indexPath, _ in
                 view.prepare(title: title)
             }
         }
@@ -44,23 +44,14 @@ final class PeopleDataSource: SectionedDataSource<Person>, DataSourceUIProviding
 
 }
 
-extension PeopleDataSource: DataSourceSelecting {
-
-    func selectElement(at indexPath: IndexPath) {
-        let global = updateDelegate?.dataSource(self, globalFor: indexPath)
-        print(global!.dataSource)
-    }
-
-}
-
 final class ListDataSource: ComposedDataSource, DataSourceUIGlobalProvider {
 
     func globalHeaderConfiguration() -> DataSourceUIConfiguration? {
-        return DataSourceUIConfiguration(prototype: GlobalHeaderView.fromNib, dequeueSource: .nib) { _, _ in }
+        return DataSourceUIConfiguration(prototype: GlobalHeaderView.fromNib, dequeueSource: .nib) { _, _, _ in }
     }
 
     func globalFooterConfiguration() -> DataSourceUIConfiguration? {
-        return DataSourceUIConfiguration(prototype: GlobalFooterView.fromNib, dequeueSource: .nib) { _, _ in }
+        return DataSourceUIConfiguration(prototype: GlobalFooterView.fromNib, dequeueSource: .nib) { _, _, _ in }
     }
 
 }

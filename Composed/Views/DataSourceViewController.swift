@@ -50,6 +50,12 @@ open class DataSourceViewController: UIViewController {
 
     open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
+        if !collectionView.allowsMultipleSelection {
+            collectionView.indexPathsForSelectedItems?.first
+                .map { collectionView.deselectItem(at: $0, animated: animated) }
+        }
+
         guard presentedViewController == nil else { return }
         wrapper.becomeActive()
     }

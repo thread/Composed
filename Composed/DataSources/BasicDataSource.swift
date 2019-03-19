@@ -1,3 +1,5 @@
+import Foundation
+
 open class BasicDataSource<Store>: CollectionDataSource where Store: DataStore {
 
     public private(set) var store: Store {

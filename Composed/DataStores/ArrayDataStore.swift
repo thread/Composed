@@ -1,3 +1,5 @@
+import Foundation
+
 public final class ArrayDataStore<Element>: DataStore {
 
     public weak var delegate: DataStoreDelegate?
