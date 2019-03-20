@@ -125,23 +125,23 @@ open class SegmentedDataSource: AggregateDataSource {
     open func prepare() {
         children
             .lazy
-            .compactMap { $0 as? DataSourceLifecycleObserving }
+            .compactMap { $0 as? LifecycleObservingDataSource }
             .forEach { $0.prepare() }
     }
 
     open func invalidate() {
         children
             .lazy
-            .compactMap { $0 as? DataSourceLifecycleObserving }
+            .compactMap { $0 as? LifecycleObservingDataSource }
             .forEach { $0.invalidate() }
     }
 
     open func didBecomeActive() {
-        (selectedChild as? DataSourceLifecycleObserving)?.didBecomeActive()
+        (selectedChild as? LifecycleObservingDataSource)?.didBecomeActive()
     }
 
     open func willResignActive() {
-        (selectedChild as? DataSourceLifecycleObserving)?.willResignActive()
+        (selectedChild as? LifecycleObservingDataSource)?.willResignActive()
     }
 
 }
@@ -208,7 +208,7 @@ extension SegmentedDataSource: DataSourceUpdateDelegate {
         updateDelegate?.dataSource(self, performBatchUpdates: updates, completion: completion)
     }
 
-    public final func dataSource(_ dataSource: DataSource, invalidateWith context: DataSourceUIInvalidationContext) {
+    public final func dataSource(_ dataSource: DataSource, invalidateWith context: DataSourceInvalidationContext) {
         guard selectedChild != nil else { return }
         updateDelegate?.dataSource(self, invalidateWith: context)
     }

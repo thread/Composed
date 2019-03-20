@@ -110,7 +110,7 @@ public extension SectionedDataSource {
 
 }
 
-extension SectionedDataSource: DataSourceLifecycleObserving where Element: DataSourceLifecycleObserving {
+extension SectionedDataSource: LifecycleObservingDataSource where Element: LifecycleObservingDataSource {
 
     public func prepare() {
         stores.flatMap { $0.elements }.forEach { $0.prepare() }

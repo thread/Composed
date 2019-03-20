@@ -6,16 +6,16 @@ struct Person {
     var age: Int
 }
 
-final class PeopleDataSource: SectionedDataSource<Person>, DataSourceUIProviding {
+final class PeopleDataSource: SectionedDataSource<Person>, CollectionUIProvidingDataSource {
 
     var title: String?
 
-    func sizingStrategy() -> DataSourceUISizingStrategy {
+    func sizingStrategy() -> CollectionUISizingStrategy {
         return ColumnSizingStrategy(columnCount: 2, sizingMode: .automatic(isUniform: true))
     }
 
-    func metrics(for section: Int) -> DataSourceUISectionMetrics {
-        return DataSourceUISectionMetrics(insets: UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20), horizontalSpacing: 8, verticalSpacing: 8)
+    func metrics(for section: Int) -> CollectionUISectionMetrics {
+        return CollectionUISectionMetrics(insets: UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20), horizontalSpacing: 8, verticalSpacing: 8)
     }
 
     func cellConfiguration(for indexPath: IndexPath) -> DataSourceUIConfiguration {
@@ -44,7 +44,7 @@ final class PeopleDataSource: SectionedDataSource<Person>, DataSourceUIProviding
 
 }
 
-final class ListDataSource: ComposedDataSource, DataSourceUIGlobalProvider {
+final class ListDataSource: ComposedDataSource, GlobalProvidingDataSource {
 
     var placeholderView: UIView? {
         let view = UIActivityIndicatorView(style: .gray)

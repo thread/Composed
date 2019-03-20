@@ -1,17 +1,17 @@
 import UIKit
 
-public protocol DataSourceUIEditingView {
+public protocol DataSourceUIEditing: UIView {
     var isEditing: Bool { get }
     func setEditing(_ editing: Bool, animated: Bool)
 }
 
-public protocol DataSourceUIEditing: DataSource {
+public protocol EditHandlingDataSource: DataSource {
     var isEditing: Bool { get }
     func setEditing(_ editing: Bool, animated: Bool)
     func supportsEditing(for indexPath: IndexPath) -> Bool
 }
 
-public extension DataSourceSelecting {
+public extension SelectionHandlingDataSource {
     func shouldSelectElement(at indexPath: IndexPath) -> Bool { return true }
     func shouldDeselectElement(at indexPath: IndexPath) -> Bool { return true }
     func deselectElement(at indexPath: IndexPath) { }
@@ -23,12 +23,15 @@ public enum DataSourceScrollPosition {
     case bottom
 }
 
-public protocol DataSourceUIScrollPositioning {
+@available(*, deprecated, renamed: "ScrollEventHandlingDataSource")
+public typealias DataSourceUIScrollPositioning = ScrollEventHandlingDataSource
+
+public protocol ScrollEventHandlingDataSource: DataSource {
     var preferredScrollPosition: DataSourceScrollPosition { get }
     func scrollToPreferredPosition() -> Bool
 }
 
-extension DataSourceUIScrollPositioning where Self: UIScrollView {
+extension ScrollEventHandlingDataSource where Self: UIScrollView {
 
     public func scrollToPreferredPosition() -> Bool {
         let contentBounds = CGRect(origin: .zero, size: contentSize)

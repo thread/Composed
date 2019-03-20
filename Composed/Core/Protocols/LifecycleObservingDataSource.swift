@@ -1,4 +1,6 @@
-public protocol DataSourceLifecycleObserving {
+import Foundation
+
+public protocol LifecycleObservingDataSource: DataSource {
 
     /// Called when the dataSource is initially prepared, or after an invalidation.
     func prepare()
@@ -14,7 +16,7 @@ public protocol DataSourceLifecycleObserving {
 
 }
 
-extension DataSourceLifecycleObserving where Self: CollectionDataSource {
+extension LifecycleObservingDataSource where Self: CollectionDataSource {
     public func prepare() { }
     public func invalidate() { }
     public func didBecomeActive() { }

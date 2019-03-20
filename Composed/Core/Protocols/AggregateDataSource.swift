@@ -1,4 +1,4 @@
-public protocol AggregateDataSource: DataSource, DataSourceLifecycleObserving {
+public protocol AggregateDataSource: LifecycleObservingDataSource {
     var children: [DataSource] { get }
     var descendants: [DataSource] { get }
 

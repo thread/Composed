@@ -104,12 +104,12 @@ open class ComposedDataSource: AggregateDataSource {
         if isActive {
             children
                 .lazy
-                .compactMap { $0 as? DataSourceLifecycleObserving }
+                .compactMap { $0 as? LifecycleObservingDataSource }
                 .forEach { $0.prepare() }
 
             children
                 .lazy
-                .compactMap { $0 as? DataSourceLifecycleObserving }
+                .compactMap { $0 as? LifecycleObservingDataSource }
                 .forEach { $0.didBecomeActive() }
         }
 
@@ -142,11 +142,11 @@ open class ComposedDataSource: AggregateDataSource {
         _invalidate()
 
         children.lazy
-            .compactMap { $0 as? DataSourceLifecycleObserving }
+            .compactMap { $0 as? LifecycleObservingDataSource }
             .forEach { $0.willResignActive() }
 
         children.lazy
-            .compactMap { $0 as? DataSourceLifecycleObserving }
+            .compactMap { $0 as? LifecycleObservingDataSource }
             .forEach { $0.invalidate() }
 
         return removedSections
@@ -184,28 +184,28 @@ open class ComposedDataSource: AggregateDataSource {
     open func prepare() {
         children
             .lazy
-            .compactMap { $0 as? DataSourceLifecycleObserving }
+            .compactMap { $0 as? LifecycleObservingDataSource }
             .forEach { $0.prepare() }
     }
 
     open func invalidate() {
         children
             .lazy
-            .compactMap { $0 as? DataSourceLifecycleObserving }
+            .compactMap { $0 as? LifecycleObservingDataSource }
             .forEach { $0.invalidate() }
     }
 
     open func didBecomeActive() {
         children
             .lazy
-            .compactMap { $0 as? DataSourceLifecycleObserving }
+            .compactMap { $0 as? LifecycleObservingDataSource }
             .forEach { $0.didBecomeActive() }
     }
 
     open func willResignActive() {
         children
             .lazy
-            .compactMap { $0 as? DataSourceLifecycleObserving }
+            .compactMap { $0 as? LifecycleObservingDataSource }
             .forEach { $0.willResignActive() }
     }
 
@@ -354,8 +354,8 @@ extension ComposedDataSource: DataSourceUpdateDelegate {
         updateDelegate?.dataSource(self, didPerform: globalUpdates(fromLocal: updates, in: dataSource))
     }
 
-    public final func dataSource(_ dataSource: DataSource, invalidateWith context: DataSourceUIInvalidationContext) {
-        var globalContext = DataSourceUIInvalidationContext()
+    public final func dataSource(_ dataSource: DataSource, invalidateWith context: DataSourceInvalidationContext) {
+        var globalContext = DataSourceInvalidationContext()
         globalContext.invalidateGlobalHeader = context.invalidateGlobalHeader
         globalContext.invalidateGlobalFooter = context.invalidateGlobalFooter
 

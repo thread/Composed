@@ -17,7 +17,7 @@ public protocol DataSourceUpdateDelegate: class {
 
     func dataSourceDidReload(_ dataSource: DataSource)
     func dataSource(_ dataSource: DataSource, performBatchUpdates updates: () -> Void, completion: ((Bool) -> Void)?)
-    func dataSource(_ dataSource: DataSource, invalidateWith context: DataSourceUIInvalidationContext)
+    func dataSource(_ dataSource: DataSource, invalidateWith context: DataSourceInvalidationContext)
 
     func dataSource(_ dataSource: DataSource, globalFor local: IndexPath) -> (dataSource: DataSource, globalIndexPath: IndexPath)
     func dataSource(_ dataSource: DataSource, globalFor local: Int) -> (dataSource: DataSource, globalSection: Int)
@@ -80,7 +80,11 @@ public extension DataSource {
 
 }
 
-public protocol DataSourceSelecting: DataSource {
+
+@available(*, deprecated, renamed: "SelectionHandlingDataSource")
+public typealias DataSourceSelecting = SelectionHandlingDataSource
+
+public protocol SelectionHandlingDataSource: DataSource {
     func shouldSelectElement(at indexPath: IndexPath) -> Bool
     func shouldDeselectElement(at indexPath: IndexPath) -> Bool
 

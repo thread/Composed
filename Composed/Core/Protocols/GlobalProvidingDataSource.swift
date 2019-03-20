@@ -1,10 +1,10 @@
-public protocol DataSourceUIGlobalProvider {
+public protocol GlobalProvidingDataSource: DataSource {
     var placeholderView: UIView? { get }
     func globalHeaderConfiguration() -> DataSourceUIConfiguration?
     func globalFooterConfiguration() -> DataSourceUIConfiguration?
 }
 
-public extension DataSourceUIGlobalProvider {
+public extension GlobalProvidingDataSource {
     var placeholderView: UIView? { return nil }
     func globalHeaderConfiguration() -> DataSourceUIConfiguration? { return nil }
     func globalFooterConfiguration() -> DataSourceUIConfiguration? { return nil }
