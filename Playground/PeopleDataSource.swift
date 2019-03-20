@@ -44,7 +44,7 @@ final class PeopleDataSource: SectionedDataSource<Person>, CollectionUIProviding
 
 }
 
-final class ListDataSource: ComposedDataSource, GlobalProvidingDataSource {
+final class ListDataSource: ComposedDataSource, GlobalViewsProvidingDataSource {
 
     var placeholderView: UIView? {
         let view = UIActivityIndicatorView(style: .gray)

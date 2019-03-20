@@ -1,5 +1,8 @@
 import UIKit
 
+@available(*, deprecated, renamed: "CollectionUISizingContext")
+public typealias DataSourceUISizingStrategy = CollectionUISizingContext
+
 public struct CollectionUISizingContext {
     public let prototype: UICollectionReusableView
     public let indexPath: IndexPath

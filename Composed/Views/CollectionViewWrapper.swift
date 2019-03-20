@@ -145,7 +145,7 @@ internal final class CollectionViewWrapper: NSObject, UICollectionViewDataSource
 
     private func preparePlaceholderIfNeeded() {
         collectionView.backgroundView = dataSource.isEmpty
-            ? (dataSource as? GlobalProvidingDataSource)?.placeholderView
+            ? (dataSource as? GlobalViewsProvidingDataSource)?.placeholderView
             : nil
     }
 
@@ -223,11 +223,11 @@ extension CollectionViewWrapper {
         let configuration: DataSourceUIConfiguration?
 
         switch (kind, dataSource) {
-        case let (UICollectionView.elementKindGlobalHeader, dataSource as GlobalProvidingDataSource):
+        case let (UICollectionView.elementKindGlobalHeader, dataSource as GlobalViewsProvidingDataSource):
             configuration = globalConfigurations[kind]
                 ?? dataSource.globalHeaderConfiguration()
 
-        case let (UICollectionView.elementKindGlobalFooter, dataSource as GlobalProvidingDataSource):
+        case let (UICollectionView.elementKindGlobalFooter, dataSource as GlobalViewsProvidingDataSource):
             configuration = globalConfigurations[kind]
                 ?? dataSource.globalFooterConfiguration()
 
@@ -264,11 +264,11 @@ extension CollectionViewWrapper {
         let configuration: DataSourceUIConfiguration?
 
         switch (elementKind, dataSource) {
-        case let (UICollectionView.elementKindGlobalHeader, dataSource as GlobalProvidingDataSource):
+        case let (UICollectionView.elementKindGlobalHeader, dataSource as GlobalViewsProvidingDataSource):
             configuration = globalConfigurations[elementKind]
                 ?? dataSource.globalHeaderConfiguration()
 
-        case let (UICollectionView.elementKindGlobalFooter, dataSource as GlobalProvidingDataSource):
+        case let (UICollectionView.elementKindGlobalFooter, dataSource as GlobalViewsProvidingDataSource):
             configuration = globalConfigurations[elementKind]
                 ?? dataSource.globalFooterConfiguration()
 
@@ -303,7 +303,7 @@ extension CollectionViewWrapper {
 extension CollectionViewWrapper {
 
     func heightForGlobalHeader(in collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout) -> CGFloat {
-        guard let config = (dataSource as? GlobalProvidingDataSource)?.globalHeaderConfiguration() else {
+        guard let config = (dataSource as? GlobalViewsProvidingDataSource)?.globalHeaderConfiguration() else {
             globalConfigurations[UICollectionView.elementKindGlobalHeader] = nil
             return 0
         }
@@ -320,7 +320,7 @@ extension CollectionViewWrapper {
     }
 
     func heightForGlobalFooter(in collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout) -> CGFloat {
-        guard let config = (dataSource as? GlobalProvidingDataSource)?.globalFooterConfiguration() else {
+        guard let config = (dataSource as? GlobalViewsProvidingDataSource)?.globalFooterConfiguration() else {
             globalConfigurations[UICollectionView.elementKindGlobalFooter] = nil
             return 0
         }

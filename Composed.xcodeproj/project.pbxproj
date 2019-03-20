@@ -27,7 +27,7 @@
 		54905FA82240FD100096A08D /* SectionedDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54905F872240FD100096A08D /* SectionedDataSource.swift */; };
 		54905FA92240FD100096A08D /* SegmentedDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54905F882240FD100096A08D /* SegmentedDataSource.swift */; };
 		54905FAA2240FD100096A08D /* EmbeddedDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54905F892240FD100096A08D /* EmbeddedDataSource.swift */; };
-		54905FAB2240FD100096A08D /* GlobalProvidingDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54905F8A2240FD100096A08D /* GlobalProvidingDataSource.swift */; };
+		54905FAB2240FD100096A08D /* GlobalViewsProvidingDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54905F8A2240FD100096A08D /* GlobalViewsProvidingDataSource.swift */; };
 		54905FAC2240FD100096A08D /* BasicDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54905F8B2240FD100096A08D /* BasicDataSource.swift */; };
 		54905FAD2240FD100096A08D /* ComposedDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54905F8C2240FD100096A08D /* ComposedDataSource.swift */; };
 		54905FAE2240FD100096A08D /* DataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54905F8D2240FD100096A08D /* DataSource.swift */; };
@@ -122,7 +122,7 @@
 		54905F872240FD100096A08D /* SectionedDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SectionedDataSource.swift; sourceTree = "<group>"; };
 		54905F882240FD100096A08D /* SegmentedDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegmentedDataSource.swift; sourceTree = "<group>"; };
 		54905F892240FD100096A08D /* EmbeddedDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmbeddedDataSource.swift; sourceTree = "<group>"; };
-		54905F8A2240FD100096A08D /* GlobalProvidingDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlobalProvidingDataSource.swift; sourceTree = "<group>"; };
+		54905F8A2240FD100096A08D /* GlobalViewsProvidingDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlobalViewsProvidingDataSource.swift; sourceTree = "<group>"; };
 		54905F8B2240FD100096A08D /* BasicDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicDataSource.swift; sourceTree = "<group>"; };
 		54905F8C2240FD100096A08D /* ComposedDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposedDataSource.swift; sourceTree = "<group>"; };
 		54905F8D2240FD100096A08D /* DataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSource.swift; sourceTree = "<group>"; };
@@ -261,7 +261,7 @@
 				54905F8D2240FD100096A08D /* DataSource.swift */,
 				54905F852240FD100096A08D /* AggregateDataSource.swift */,
 				54905F862240FD100096A08D /* CollectionDataSource.swift */,
-				54905F8A2240FD100096A08D /* GlobalProvidingDataSource.swift */,
+				54905F8A2240FD100096A08D /* GlobalViewsProvidingDataSource.swift */,
 				54905FC3224103290096A08D /* LifecycleObservingDataSource.swift */,
 				54905F962240FD100096A08D /* DataSource+CollectionUI.swift */,
 				54905F972240FD100096A08D /* DataSource+Handlers.swift */,
@@ -518,7 +518,7 @@
 				543EAE982242CBF100C70080 /* DataSourceInvalidationContext.swift in Sources */,
 				54905FBB2240FD100096A08D /* FlowLayout.swift in Sources */,
 				54905FA62240FD100096A08D /* AggregateDataSource.swift in Sources */,
-				54905FAB2240FD100096A08D /* GlobalProvidingDataSource.swift in Sources */,
+				54905FAB2240FD100096A08D /* GlobalViewsProvidingDataSource.swift in Sources */,
 				54905FA82240FD100096A08D /* SectionedDataSource.swift in Sources */,
 				54905FBD2240FD100096A08D /* FlowLayout+Types.swift in Sources */,
 				54905FB82240FD100096A08D /* FlowLayoutInvalidationContext.swift in Sources */,

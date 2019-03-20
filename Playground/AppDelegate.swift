@@ -28,8 +28,8 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         countries.title = "Countries"
 
         let list = ListDataSource()
-//        list.append(people)
-//        list.append(countries)
+        list.append(people)
+        list.append(countries)
 
         let layout = FlowLayout()
         layout.globalFooter.prefersFollowContent = true
