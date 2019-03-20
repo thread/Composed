@@ -90,7 +90,7 @@ internal final class CollectionViewWrapper: NSObject, UICollectionViewDataSource
             .lazy
             .compactMap { $0 }, headers, footers]
             .flatMap { $0 }
-            .compactMap { $0 as? DataSourceUIEditing }
+            .compactMap { $0 as? DataSourceEditableView }
             .forEach { $0.setEditing(editing, animated: animated) }
 
         let itemIndexPaths = collectionView.indexPathsForVisibleItems
@@ -103,7 +103,7 @@ internal final class CollectionViewWrapper: NSObject, UICollectionViewDataSource
 
             dataSource.setEditing(editing, animated: animated)
 
-            let cell = collectionView.cellForItem(at: global) as? DataSourceUIEditing
+            let cell = collectionView.cellForItem(at: global) as? DataSourceEditableView
             cell?.setEditing(editing, animated: animated)
         }
     }
@@ -295,7 +295,7 @@ extension CollectionViewWrapper {
             : dataSource.dataSourceFor(global: indexPath)
 
         guard let editable = localDataSource as? EditHandlingDataSource else { return }
-        (view as? DataSourceUIEditing)?.setEditing(editable.isEditing, animated: false)
+        (view as? DataSourceEditableView)?.setEditing(editable.isEditing, animated: false)
     }
 
 }
@@ -391,7 +391,7 @@ extension CollectionViewWrapper {
         config.configure(cell, localIndexPath, .presentation)
 
         guard let editable = dataSource as? EditHandlingDataSource, editable.supportsEditing(for: localIndexPath) else { return }
-        (cell as? DataSourceUIEditing)?.setEditing(editable.isEditing, animated: false)
+        (cell as? DataSourceEditableView)?.setEditing(editable.isEditing, animated: false)
     }
 
     func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {

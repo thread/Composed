@@ -1,14 +1,31 @@
 import UIKit
 
-public protocol DataSourceUIEditing: UIView {
+@available(*, deprecated, renamed: "DataSourceEditableView")
+public typealias DataSourceUIEditingView = DataSourceEditableView
+
+public protocol DataSourceEditableView: UIView {
     var isEditing: Bool { get }
     func setEditing(_ editing: Bool, animated: Bool)
 }
+
+@available(*, deprecated, renamed: "EditHandlingDataSource")
+public typealias DataSourceUIEditing = EditHandlingDataSource
 
 public protocol EditHandlingDataSource: DataSource {
     var isEditing: Bool { get }
     func setEditing(_ editing: Bool, animated: Bool)
     func supportsEditing(for indexPath: IndexPath) -> Bool
+}
+
+@available(*, deprecated, renamed: "SelectionHandlingDataSource")
+public typealias DataSourceSelecting = SelectionHandlingDataSource
+
+public protocol SelectionHandlingDataSource: DataSource {
+    func shouldSelectElement(at indexPath: IndexPath) -> Bool
+    func shouldDeselectElement(at indexPath: IndexPath) -> Bool
+
+    func selectElement(at indexPath: IndexPath)
+    func deselectElement(at indexPath: IndexPath)
 }
 
 public extension SelectionHandlingDataSource {

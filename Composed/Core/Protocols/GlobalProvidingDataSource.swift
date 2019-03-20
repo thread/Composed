@@ -1,3 +1,8 @@
+import Foundation
+
+@available(*, deprecated, renamed: "GlobalProvidingDataSource")
+public typealias DataSourceUIGlobalProviding = GlobalProvidingDataSource
+
 public protocol GlobalProvidingDataSource: DataSource {
     var placeholderView: UIView? { get }
     func globalHeaderConfiguration() -> DataSourceUIConfiguration?

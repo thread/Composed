@@ -79,15 +79,3 @@ public extension DataSource {
     }
 
 }
-
-
-@available(*, deprecated, renamed: "SelectionHandlingDataSource")
-public typealias DataSourceSelecting = SelectionHandlingDataSource
-
-public protocol SelectionHandlingDataSource: DataSource {
-    func shouldSelectElement(at indexPath: IndexPath) -> Bool
-    func shouldDeselectElement(at indexPath: IndexPath) -> Bool
-
-    func selectElement(at indexPath: IndexPath)
-    func deselectElement(at indexPath: IndexPath)
-}

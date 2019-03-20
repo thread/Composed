@@ -1,5 +1,8 @@
 import UIKit
 
+@available(*, deprecated, renamed: "CollectionUISectionMetrics")
+public typealias DataSourceUISectionMetrics = CollectionUISectionMetrics
+
 public struct CollectionUISectionMetrics {
 
     public let insets: UIEdgeInsets
