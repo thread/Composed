@@ -35,7 +35,6 @@ open class DataSourceViewController: UIViewController {
         edgesForExtendedLayout = .top
         extendedLayoutIncludesOpaqueBars = true
 
-        collectionView.backgroundColor = .white
         collectionView.alwaysBounceVertical = true
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(collectionView)
