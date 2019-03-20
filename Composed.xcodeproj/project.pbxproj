@@ -19,6 +19,7 @@
 		5402214F2195C4F800F0E173 /* Composed.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 540221392195C4F700F0E173 /* Composed.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		543EAE932242CA2100C70080 /* CollectionView+Sizing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 543EAE922242CA2100C70080 /* CollectionView+Sizing.swift */; };
 		543EAE982242CBF100C70080 /* DataSourceInvalidationContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 543EAE972242CBF100C70080 /* DataSourceInvalidationContext.swift */; };
+		543EAE9A2242D3CD00C70080 /* PhotosDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 543EAE992242D3CD00C70080 /* PhotosDataStore.swift */; };
 		546AA49521D5178900588DE4 /* PersonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 546AA49421D5178900588DE4 /* PersonCell.xib */; };
 		548A8B6E2214EEBE00C0A276 /* FooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 548A8B6D2214EEBE00C0A276 /* FooterView.xib */; };
 		548A8B702214FA2800C0A276 /* BackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 548A8B6F2214FA2800C0A276 /* BackgroundView.swift */; };
@@ -113,6 +114,7 @@
 		5402214A2195C4F800F0E173 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		543EAE922242CA2100C70080 /* CollectionView+Sizing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionView+Sizing.swift"; sourceTree = "<group>"; };
 		543EAE972242CBF100C70080 /* DataSourceInvalidationContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSourceInvalidationContext.swift; sourceTree = "<group>"; };
+		543EAE992242D3CD00C70080 /* PhotosDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosDataStore.swift; sourceTree = "<group>"; };
 		546865242204E3CA00E79B56 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		546AA49421D5178900588DE4 /* PersonCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PersonCell.xib; sourceTree = "<group>"; };
 		548A8B6D2214EEBE00C0A276 /* FooterView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FooterView.xib; sourceTree = "<group>"; };
@@ -292,9 +294,10 @@
 		54905F8E2240FD100096A08D /* DataStores */ = {
 			isa = PBXGroup;
 			children = (
+				54905F912240FD100096A08D /* DataStore.swift */,
 				54905F8F2240FD100096A08D /* ArrayDataStore.swift */,
 				54905F902240FD100096A08D /* ManagedDataStore.swift */,
-				54905F912240FD100096A08D /* DataStore.swift */,
+				543EAE992242D3CD00C70080 /* PhotosDataStore.swift */,
 			);
 			path = DataStores;
 			sourceTree = "<group>";
@@ -511,6 +514,7 @@
 				54905FBA2240FD100096A08D /* FlowLayoutAttributes.swift in Sources */,
 				54905FA72240FD100096A08D /* CollectionDataSource.swift in Sources */,
 				54905FB22240FD100096A08D /* DataSourceChangeSet.swift in Sources */,
+				543EAE9A2242D3CD00C70080 /* PhotosDataStore.swift in Sources */,
 				54905FB92240FD100096A08D /* FlowLayout+Helpers.swift in Sources */,
 				543EAE932242CA2100C70080 /* CollectionView+Sizing.swift in Sources */,
 				54905FAA2240FD100096A08D /* EmbeddedDataSource.swift in Sources */,
