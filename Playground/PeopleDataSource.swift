@@ -46,6 +46,12 @@ final class PeopleDataSource: SectionedDataSource<Person>, DataSourceUIProviding
 
 final class ListDataSource: ComposedDataSource, DataSourceUIGlobalProvider {
 
+    var placeholderView: UIView? {
+        let view = UIActivityIndicatorView(style: .gray)
+        view.startAnimating()
+        return view
+    }
+
     func globalHeaderConfiguration() -> DataSourceUIConfiguration? {
         return DataSourceUIConfiguration(prototype: GlobalHeaderView.fromNib, dequeueSource: .nib) { _, _, _ in }
     }

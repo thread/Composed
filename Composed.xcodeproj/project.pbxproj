@@ -25,7 +25,7 @@
 		54905FA82240FD100096A08D /* SectionedDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54905F872240FD100096A08D /* SectionedDataSource.swift */; };
 		54905FA92240FD100096A08D /* SegmentedDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54905F882240FD100096A08D /* SegmentedDataSource.swift */; };
 		54905FAA2240FD100096A08D /* EmbeddedDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54905F892240FD100096A08D /* EmbeddedDataSource.swift */; };
-		54905FAB2240FD100096A08D /* GlobalDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54905F8A2240FD100096A08D /* GlobalDataSource.swift */; };
+		54905FAB2240FD100096A08D /* DataSourceUIGlobalProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54905F8A2240FD100096A08D /* DataSourceUIGlobalProvider.swift */; };
 		54905FAC2240FD100096A08D /* BasicDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54905F8B2240FD100096A08D /* BasicDataSource.swift */; };
 		54905FAD2240FD100096A08D /* ComposedDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54905F8C2240FD100096A08D /* ComposedDataSource.swift */; };
 		54905FAE2240FD100096A08D /* DataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54905F8D2240FD100096A08D /* DataSource.swift */; };
@@ -118,7 +118,7 @@
 		54905F872240FD100096A08D /* SectionedDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SectionedDataSource.swift; sourceTree = "<group>"; };
 		54905F882240FD100096A08D /* SegmentedDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegmentedDataSource.swift; sourceTree = "<group>"; };
 		54905F892240FD100096A08D /* EmbeddedDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmbeddedDataSource.swift; sourceTree = "<group>"; };
-		54905F8A2240FD100096A08D /* GlobalDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlobalDataSource.swift; sourceTree = "<group>"; };
+		54905F8A2240FD100096A08D /* DataSourceUIGlobalProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSourceUIGlobalProvider.swift; sourceTree = "<group>"; };
 		54905F8B2240FD100096A08D /* BasicDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicDataSource.swift; sourceTree = "<group>"; };
 		54905F8C2240FD100096A08D /* ComposedDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposedDataSource.swift; sourceTree = "<group>"; };
 		54905F8D2240FD100096A08D /* DataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSource.swift; sourceTree = "<group>"; };
@@ -258,7 +258,7 @@
 				54905F872240FD100096A08D /* SectionedDataSource.swift */,
 				54905F882240FD100096A08D /* SegmentedDataSource.swift */,
 				54905F892240FD100096A08D /* EmbeddedDataSource.swift */,
-				54905F8A2240FD100096A08D /* GlobalDataSource.swift */,
+				54905F8A2240FD100096A08D /* DataSourceUIGlobalProvider.swift */,
 				54905F8B2240FD100096A08D /* BasicDataSource.swift */,
 				54905F8C2240FD100096A08D /* ComposedDataSource.swift */,
 				54905F8D2240FD100096A08D /* DataSource.swift */,
@@ -494,7 +494,7 @@
 				54905FAE2240FD100096A08D /* DataSource.swift in Sources */,
 				54905FBB2240FD100096A08D /* FlowLayout.swift in Sources */,
 				54905FA62240FD100096A08D /* AggregateDataSource.swift in Sources */,
-				54905FAB2240FD100096A08D /* GlobalDataSource.swift in Sources */,
+				54905FAB2240FD100096A08D /* DataSourceUIGlobalProvider.swift in Sources */,
 				54905FA82240FD100096A08D /* SectionedDataSource.swift in Sources */,
 				54905FBD2240FD100096A08D /* FlowLayout+Types.swift in Sources */,
 				54905FB82240FD100096A08D /* FlowLayoutInvalidationContext.swift in Sources */,

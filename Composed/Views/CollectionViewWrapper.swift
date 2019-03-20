@@ -52,6 +52,7 @@ internal final class CollectionViewWrapper: NSObject, UICollectionViewDataSource
 
     internal func becomeActive() {
         collectionView.flashScrollIndicators()
+        preparePlaceholderIfNeeded()
     }
 
     internal func resignActive() {
@@ -138,7 +139,15 @@ internal final class CollectionViewWrapper: NSObject, UICollectionViewDataSource
     }
 
     internal func dataSource(_ dataSource: DataSource, willPerform updates: [DataSourceUpdate]) { }
-    internal func dataSource(_ dataSource: DataSource, didPerform updates: [DataSourceUpdate]) { }
+    internal func dataSource(_ dataSource: DataSource, didPerform updates: [DataSourceUpdate]) {
+        preparePlaceholderIfNeeded()
+    }
+
+    private func preparePlaceholderIfNeeded() {
+        collectionView.backgroundView = dataSource.isEmpty
+            ? (dataSource as? DataSourceUIGlobalProvider)?.placeholderView
+            : nil
+    }
 
 }
 
@@ -281,7 +290,10 @@ extension CollectionViewWrapper {
             configuration?.configure(view, indexPath, .presentation)
         }
 
-        let (localDataSource, _) = dataSource.dataSourceFor(global: indexPath)
+        let (localDataSource, _) = indexPath == UICollectionView.globalElementIndexPath
+            ? (dataSource!, indexPath)
+            : dataSource.dataSourceFor(global: indexPath)
+
         guard let editable = localDataSource as? DataSourceUIEditing else { return }
         (view as? DataSourceUIEditingView)?.setEditing(editable.isEditing, animated: false)
     }
@@ -499,6 +511,7 @@ extension CollectionViewWrapper: DataSourceUpdateDelegate {
     public func dataSourceDidReload(_ dataSource: DataSource) {
         // Update
         collectionView.reloadData()
+        preparePlaceholderIfNeeded()
     }
 
     public func dataSource(_ dataSource: DataSource, performBatchUpdates updates: () -> Void, completion: ((Bool) -> Void)?) {
