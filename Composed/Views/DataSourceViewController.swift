@@ -26,7 +26,10 @@ open class DataSourceViewController: UIViewController {
     }
 
     public required init?(coder aDecoder: NSCoder) {
-        fatalError()
+        self.layout = FlowLayout()
+        let collectionView = type(of: self).collectionViewClass.init(frame: .zero, collectionViewLayout: layout)
+        self.wrapper = CollectionViewWrapper(collectionView: collectionView)
+        super.init(coder: aDecoder)
     }
 
     open override func viewDidLoad() {
