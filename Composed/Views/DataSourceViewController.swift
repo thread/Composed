@@ -22,7 +22,7 @@ open class DataSourceViewController: UIViewController {
         self.wrapper = CollectionViewWrapper(collectionView: collectionView)
         self.layout = layout
         super.init(nibName: nil, bundle: nil)
-        self.wrapper.prepare(dataSource: dataSource)
+        self.wrapper.replace(dataSource: dataSource)
     }
 
     public required init?(coder aDecoder: NSCoder) {
@@ -67,6 +67,10 @@ open class DataSourceViewController: UIViewController {
     open override func setEditing(_ editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
         wrapper.setEditing(editing, animated: animated)
+    }
+
+    public func replace(dataSource: DataSource) {
+        wrapper.replace(dataSource: dataSource)
     }
 
 }

@@ -33,7 +33,7 @@ final class EmbeddedDataSourceCell: UICollectionViewCell {
     }()
 
     func prepare(dataSource: CollectionViewDataSource) {
-        wrapper.prepare(dataSource: dataSource)
+        wrapper.replace(dataSource: dataSource)
     }
 
     override func apply(_ layoutAttributes: UICollectionViewLayoutAttributes) {

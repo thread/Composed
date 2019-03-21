@@ -45,7 +45,7 @@ internal final class CollectionViewWrapper: NSObject, UICollectionViewDataSource
         super.init()
     }
 
-    internal func prepare(dataSource: DataSource) {
+    internal func replace(dataSource: DataSource) {
         self.dataSource = dataSource
         NotificationCenter.default.addObserver(self, selector: #selector(endEditingIfNecessary), name: UIApplication.didEnterBackgroundNotification, object: nil)
     }
