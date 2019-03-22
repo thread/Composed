@@ -35,16 +35,6 @@ open class DataSourceViewController: UIViewController {
         }, completion: nil)
     }
 
-    open override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.willTransition(to: newCollection, with: coordinator)
-
-        coordinator.animate(alongsideTransition: { context in
-            var context = DataSourceInvalidationContext()
-            context.invalidateLayoutMetrics  = true
-            self.wrapper.invalidate(with: context)
-        }, completion: nil)
-    }
-
     public required init?(coder aDecoder: NSCoder) {
         self.layout = FlowLayout()
         let collectionView = type(of: self).collectionViewClass.init(frame: .zero, collectionViewLayout: layout)
