@@ -121,6 +121,7 @@ internal final class CollectionViewWrapper: NSObject, UICollectionViewDataSource
 
         let layoutContext = FlowLayoutInvalidationContext()
         layoutContext.invalidateItems(at: Array(context.invalidatedElementIndexPaths))
+        layoutContext.invalidateFlowLayoutDelegateMetrics = context.invalidateLayoutMetrics
 
         let headerIndexPaths = context.invalidatedHeaderIndexes.map { IndexPath(item: 0, section: $0) }
         if !headerIndexPaths.isEmpty {
@@ -134,6 +135,11 @@ internal final class CollectionViewWrapper: NSObject, UICollectionViewDataSource
 
         layoutContext.invalidateGlobalHeader = context.invalidateGlobalHeaderMetrics
         layoutContext.invalidateGlobalFooter = context.invalidateGlobalFooterMetrics
+
+        if context.invalidateLayoutMetrics {
+            sizingStrategies.removeAll()
+            metrics.removeAll()
+        }
 
         collectionView.collectionViewLayout.invalidateLayout(with: layoutContext)
     }

@@ -29,7 +29,9 @@ open class DataSourceViewController: UIViewController {
         super.willTransition(to: newCollection, with: coordinator)
 
         coordinator.animate(alongsideTransition: { context in
-            self.collectionView.collectionViewLayout.invalidateLayout()
+            var context = DataSourceInvalidationContext()
+            context.invalidateLayoutMetrics  = true
+            self.wrapper.invalidate(with: context)
         }, completion: nil)
     }
 

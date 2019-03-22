@@ -66,6 +66,8 @@ public struct DataSourceInvalidationContext {
         }
     }
 
+    public var invalidateLayoutMetrics: Bool = false
+
     public private(set) var invalidatedElementIndexPaths: Set<IndexPath> = []
     public private(set) var invalidatedHeaderIndexes = IndexSet()
     public private(set) var invalidatedFooterIndexes = IndexSet()
