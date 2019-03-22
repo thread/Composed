@@ -28,6 +28,9 @@ public protocol CollectionUIProvidingDataSource: DataSource {
     func footerConfiguration(for section: Int) -> DataSourceUIConfiguration?
     func backgroundViewClass(for section: Int) -> UICollectionReusableView.Type?
 
+    func willBeginDisplay(ofElementAt indexPath: IndexPath)
+    func didEndDisplay(ofElementAt indexPath: IndexPath)
+
     func willBeginDisplay()
     func didEndDisplay()
 }
@@ -36,6 +39,9 @@ public extension CollectionUIProvidingDataSource {
     func headerConfiguration(for section: Int) -> DataSourceUIConfiguration? { return nil }
     func footerConfiguration(for section: Int) -> DataSourceUIConfiguration? { return nil }
     func backgroundViewClass(for section: Int) -> UICollectionReusableView.Type? { return nil }
+
+    func willBeginDisplay(ofElementAt indexPath: IndexPath) { }
+    func didEndDisplay(ofElementAt indexPath: IndexPath) { }
 
     func willBeginDisplay() { }
     func didEndDisplay() { }

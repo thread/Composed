@@ -383,6 +383,8 @@ extension CollectionViewWrapper {
         if localIndexPath.item == 0 || localIndexPath.item - 1 == localDataSource.numberOfElements(in: localIndexPath.section) {
             localDataSource.didEndDisplay()
         }
+
+        localDataSource.didEndDisplay(ofElementAt: localIndexPath)
     }
 
     internal func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
@@ -395,6 +397,8 @@ extension CollectionViewWrapper {
 
         let config = cellConfiguration(for: localIndexPath, globalIndexPath: indexPath, dataSource: localDataSource)
         config.configure(cell, localIndexPath, .presentation)
+
+        localDataSource.willBeginDisplay(ofElementAt: localIndexPath)
 
         guard let editable = dataSource as? EditHandlingDataSource, editable.supportsEditing(for: localIndexPath) else { return }
         (cell as? DataSourceEditableView)?.setEditing(editable.isEditing, animated: false)
