@@ -15,7 +15,7 @@ public final class EmbeddedContentDataSource<Element>: SectionedDataSource<Eleme
         return metrics
     }
 
-    public func sizingStrategy() -> CollectionUISizingStrategy {
+    public func sizingStrategy(for traitCollection: UITraitCollection) -> CollectionUISizingStrategy {
         return ColumnSizingStrategy(columnCount: 1, sizingMode: .automatic(isUniform: true))
     }
 

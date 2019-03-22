@@ -21,7 +21,7 @@ public struct CollectionUISectionMetrics {
 public typealias DataSourceUIProviding = CollectionUIProvidingDataSource
 
 public protocol CollectionUIProvidingDataSource: DataSource {
-    func sizingStrategy() -> CollectionUISizingStrategy
+    func sizingStrategy(for traitCollection: UITraitCollection) -> CollectionUISizingStrategy
     func metrics(for section: Int) -> CollectionUISectionMetrics
     func cellConfiguration(for indexPath: IndexPath) -> DataSourceUIConfiguration
     func headerConfiguration(for section: Int) -> DataSourceUIConfiguration?

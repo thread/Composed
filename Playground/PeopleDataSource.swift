@@ -10,7 +10,7 @@ final class PeopleDataSource: SectionedDataSource<Person>, CollectionUIProviding
 
     var title: String?
 
-    func sizingStrategy() -> CollectionUISizingStrategy {
+    func sizingStrategy(for traitCollection: UITraitCollection) -> CollectionUISizingStrategy {
         return ColumnSizingStrategy(columnCount: 2, sizingMode: .automatic(isUniform: true))
     }
 

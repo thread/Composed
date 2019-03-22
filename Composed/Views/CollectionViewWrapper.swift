@@ -447,7 +447,7 @@ private extension CollectionViewWrapper {
 
     func sizingStrategy(for localSection: Int, globalSection: Int, in dataSource: CollectionUIProvidingDataSource) -> CollectionUISizingStrategy {
         if let strategy = sizingStrategies[globalSection] { return strategy }
-        let strategy = dataSource.sizingStrategy()
+        let strategy = dataSource.sizingStrategy(for: collectionView.traitCollection)
         sizingStrategies[globalSection] = strategy
         return strategy
     }
