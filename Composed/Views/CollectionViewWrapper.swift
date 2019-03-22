@@ -140,8 +140,6 @@ internal final class CollectionViewWrapper: NSObject, UICollectionViewDataSource
             sizingStrategies.removeAll()
             metrics.removeAll()
         }
-
-        collectionView.collectionViewLayout.invalidateLayout(with: layoutContext)
     }
 
     internal func dataSource(_ dataSource: DataSource, willPerform updates: [DataSourceUpdate]) { }
