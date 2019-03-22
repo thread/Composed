@@ -11,7 +11,8 @@ final class PeopleDataSource: SectionedDataSource<Person>, CollectionUIProviding
     var title: String?
 
     func sizingStrategy(for traitCollection: UITraitCollection) -> CollectionUISizingStrategy {
-        return ColumnSizingStrategy(columnCount: 2, sizingMode: .automatic(isUniform: true))
+        let columnCount = traitCollection.horizontalSizeClass == .compact ? 2 : 4
+        return ColumnSizingStrategy(columnCount: columnCount, sizingMode: .automatic(isUniform: true))
     }
 
     func metrics(for section: Int) -> CollectionUISectionMetrics {
