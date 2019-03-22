@@ -25,6 +25,16 @@ open class DataSourceViewController: UIViewController {
         self.wrapper.replace(dataSource: dataSource)
     }
 
+    open override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+
+        coordinator.animate(alongsideTransition: { context in
+            var context = DataSourceInvalidationContext()
+            context.invalidateLayoutMetrics  = true
+            self.wrapper.invalidate(with: context)
+        }, completion: nil)
+    }
+
     open override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         super.willTransition(to: newCollection, with: coordinator)
 
