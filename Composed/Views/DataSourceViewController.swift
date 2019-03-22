@@ -25,6 +25,10 @@ open class DataSourceViewController: UIViewController {
         self.wrapper.replace(dataSource: dataSource)
     }
 
+    open override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+        collectionView.collectionViewLayout.invalidateLayout()
+    }
+
     public required init?(coder aDecoder: NSCoder) {
         self.layout = FlowLayout()
         let collectionView = type(of: self).collectionViewClass.init(frame: .zero, collectionViewLayout: layout)
