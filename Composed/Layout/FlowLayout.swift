@@ -255,6 +255,7 @@ open class FlowLayout: UICollectionViewFlowLayout {
     open override func prepare(forAnimatedBoundsChange oldBounds: CGRect) {
         super.prepare(forAnimatedBoundsChange: oldBounds)
         firstVisibleIndexPath = collectionView?.indexPathsForVisibleItems.first
+        print(firstVisibleIndexPath!)
     }
 
     open override func finalizeAnimatedBoundsChange() {
@@ -262,9 +263,11 @@ open class FlowLayout: UICollectionViewFlowLayout {
         firstVisibleIndexPath = nil
     }
 
-    open override func targetContentOffset(forProposedContentOffset proposedContentOffset: CGPoint) -> CGPoint {
-        guard let collectionView = collectionView, let indexPath = firstVisibleIndexPath, let attributes = layoutAttributesForItem(at: indexPath) else {
-            return super.targetContentOffset(forProposedContentOffset: proposedContentOffset)
+    open override func targetContentOffset(forProposedContentOffset proposedContentOffset: CGPoint, withScrollingVelocity velocity: CGPoint) -> CGPoint {
+        guard let collectionView = collectionView,
+            let indexPath = firstVisibleIndexPath,
+            let attributes = layoutAttributesForItem(at: indexPath) else {
+                return super.targetContentOffset(forProposedContentOffset: proposedContentOffset, withScrollingVelocity: velocity)
         }
 
         return CGPoint(x: attributes.frame.minX - collectionView.contentInset.left,
