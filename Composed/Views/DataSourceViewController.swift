@@ -30,17 +30,7 @@ open class DataSourceViewController: UIViewController {
 
         coordinator.animate(alongsideTransition: { context in
             var context = DataSourceInvalidationContext()
-            context.invalidateLayoutMetrics = true
-            self.wrapper.invalidate(with: context)
-        }, completion: nil)
-    }
-
-    open override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.willTransition(to: newCollection, with: coordinator)
-
-        coordinator.animate(alongsideTransition: { context in
-            var context = DataSourceInvalidationContext()
-            context.invalidateLayoutMetrics = true
+            context.invalidateLayoutMetrics  = true
             self.wrapper.invalidate(with: context)
         }, completion: nil)
     }
