@@ -255,7 +255,6 @@ open class FlowLayout: UICollectionViewFlowLayout {
     open override func prepare(forAnimatedBoundsChange oldBounds: CGRect) {
         super.prepare(forAnimatedBoundsChange: oldBounds)
         firstVisibleIndexPath = collectionView?.indexPathsForVisibleItems.first
-        print(firstVisibleIndexPath!)
     }
 
     open override func finalizeAnimatedBoundsChange() {
