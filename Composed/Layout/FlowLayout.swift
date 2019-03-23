@@ -248,6 +248,29 @@ open class FlowLayout: UICollectionViewFlowLayout {
         return context
     }
 
+    // MARK: Scroll position restoration
+
+    private var firstVisibleIndexPath: IndexPath?
+
+    open override func prepare(forAnimatedBoundsChange oldBounds: CGRect) {
+        super.prepare(forAnimatedBoundsChange: oldBounds)
+        firstVisibleIndexPath = collectionView?.indexPathsForVisibleItems.first
+    }
+
+    open override func finalizeAnimatedBoundsChange() {
+        super.finalizeAnimatedBoundsChange()
+        firstVisibleIndexPath = nil
+    }
+
+    open override func targetContentOffset(forProposedContentOffset proposedContentOffset: CGPoint) -> CGPoint {
+        guard let collectionView = collectionView, let indexPath = firstVisibleIndexPath, let attributes = layoutAttributesForItem(at: indexPath) else {
+            return super.targetContentOffset(forProposedContentOffset: proposedContentOffset)
+        }
+
+        return CGPoint(x: attributes.frame.minX - collectionView.contentInset.left,
+                       y: attributes.frame.minY - collectionView.contentInset.top)
+    }
+
 }
 
 private extension FlowLayout {
