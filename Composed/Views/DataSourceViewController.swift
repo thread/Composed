@@ -28,18 +28,7 @@ open class DataSourceViewController: UIViewController {
     open override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
 
-        let offset = collectionView.contentOffset
-        let width  = collectionView.bounds.size.width
-
-        let index = round(offset.x / width)
-        let newOffset = CGPoint(x: index * size.width, y: offset.y)
-
-        collectionView.setContentOffset(newOffset, animated: false)
-
         coordinator.animate(alongsideTransition: { context in
-            self.collectionView.reloadData()
-            self.collectionView.setContentOffset(newOffset, animated: false)
-
             var context = DataSourceInvalidationContext()
             context.invalidateLayoutMetrics  = true
             self.wrapper.invalidate(with: context)
