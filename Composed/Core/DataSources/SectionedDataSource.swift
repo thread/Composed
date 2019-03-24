@@ -12,12 +12,11 @@ open class SectionedDataSource<Element>: CollectionDataSource {
     }
 
     public init(elements: [Element]) {
-        if elements.isEmpty { return }
         stores = [ArrayDataStore(elements: elements)]
     }
 
-    public convenience init(elements: Element...) {
-        self.init(elements: elements)
+    public convenience init(stores: ArrayDataStore<Element>...) {
+        self.init(stores: stores)
     }
 
     public init(contentsOf elements: [[Element]]) {

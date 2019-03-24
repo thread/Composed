@@ -47,15 +47,3 @@ open class BasicDataSource<Store>: CollectionDataSource where Store: DataStore {
 }
 
 public typealias ArrayDataSource<Element> = BasicDataSource<ArrayDataStore<Element>>
-
-public extension BasicDataSource {
-
-    convenience init<Element>(elements: [Element] = []) where Store == ArrayDataStore<Element> {
-        self.init(store: ArrayDataStore(elements: elements))
-    }
-
-    convenience init<Element>(elements: Element...) where Store == ArrayDataStore<Element> {
-        self.init(store: ArrayDataStore(elements: elements))
-    }
-
-}

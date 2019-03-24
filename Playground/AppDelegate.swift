@@ -18,7 +18,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
             Person(name: "Joseph Duffy", age: 24)
         ]
 
-        let people = PeopleDataSource(elements: [])
+        let people = PeopleDataSource(stores: [])
         people.title = "People"
         people.append(elements: family)
         people.append(elements: friends)
@@ -58,4 +58,3 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
 }
-
