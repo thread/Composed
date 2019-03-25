@@ -124,14 +124,14 @@ public final class ManagedDataStore<Element>: NSObject, NSFetchedResultsControll
 
             switch type {
             case .delete:
-                if numberOfElements(in: indexPath!.section) == 1 {
-                    forceReload = true
+                if self.numberOfElements(in: indexPath!.section) == 1 {
+                    self.forceReload = true
                 } else {
                     delegate?.dataStore(didDeleteIndexPaths: [indexPath!])
                 }
             case .insert:
                 if self.numberOfElements(in: newIndexPath!.section) == 0 {
-                    forceReload
+                    self.forceReload = true
                 } else {
                     delegate?.dataStore(didInsertIndexPaths: [newIndexPath!])
                 }
