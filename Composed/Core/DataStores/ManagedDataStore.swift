@@ -7,6 +7,7 @@ public final class ManagedDataStore<Element>: NSObject, NSFetchedResultsControll
     public weak var delegate: DataStoreDelegate?
     private var updates: (() -> Void)?
     private var operations: [DataSourceUpdate] = []
+    private var forceReload: Bool = false
 
     private var fetchedResultsController: NSFetchedResultsController<Element>?
     private let managedObjectContext: NSManagedObjectContext
@@ -71,6 +72,7 @@ public final class ManagedDataStore<Element>: NSObject, NSFetchedResultsControll
     public func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         updates = nil
         operations.removeAll()
+        forceReload = false
     }
 
     public func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
@@ -105,8 +107,18 @@ public final class ManagedDataStore<Element>: NSObject, NSFetchedResultsControll
 
         switch type {
         case .delete:
+            if numberOfElements(in: indexPath!.section) == 1 {
+                forceReload = true
+                return
+            }
+
             operations.append(.deleteIndexPaths([indexPath!]))
         case .insert:
+            if numberOfElements(in: newIndexPath!.section) == 0 {
+                forceReload = true
+                return
+            }
+
             operations.append(.insertIndexPaths([newIndexPath!]))
         case .update:
             operations.append(.updateIndexPaths([indexPath!]))
@@ -128,7 +140,8 @@ public final class ManagedDataStore<Element>: NSObject, NSFetchedResultsControll
             case .update:
                 delegate?.dataStore(didUpdateIndexPaths: [indexPath!])
             case .move:
-                delegate?.dataStore(didMoveFromIndexPath: indexPath!, toIndexPath: newIndexPath!)
+                delegate?.dataStore(didDeleteIndexPaths: [indexPath!])
+                delegate?.dataStore(didInsertIndexPaths: [newIndexPath!])
             @unknown default:
                 break
             }
@@ -136,10 +149,16 @@ public final class ManagedDataStore<Element>: NSObject, NSFetchedResultsControll
     }
 
     public func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        if forceReload {
+            delegate?.dataStoreDidReload()
+            forceReload = false
+            return
+        }
+
         defer {
             delegate?.dataStore(willPerform: operations)
         }
-        
+
         delegate?.dataStore(performBatchUpdates: {
             updates?()
         }, completion: { [unowned self] _ in
