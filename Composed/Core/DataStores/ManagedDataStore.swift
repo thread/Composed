@@ -140,8 +140,7 @@ public final class ManagedDataStore<Element>: NSObject, NSFetchedResultsControll
             case .update:
                 delegate?.dataStore(didUpdateIndexPaths: [indexPath!])
             case .move:
-                delegate?.dataStore(didDeleteIndexPaths: [indexPath!])
-                delegate?.dataStore(didInsertIndexPaths: [newIndexPath!])
+                delegate?.dataStore(didMoveFromIndexPath: indexPath!, toIndexPath: newIndexPath!)
             @unknown default:
                 break
             }
