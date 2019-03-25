@@ -107,17 +107,17 @@ public final class ManagedDataStore<Element>: NSObject, NSFetchedResultsControll
 
         switch type {
         case .delete:
-            if numberOfElements(in: indexPath!.section) == 1 {
-                forceReload = true
-                return
-            }
+//            if numberOfElements(in: indexPath!.section) == 1 {
+//                forceReload = true
+//                return
+//            }
 
             operations.append(.deleteIndexPaths([indexPath!]))
         case .insert:
-            if numberOfElements(in: newIndexPath!.section) == 0 {
-                forceReload = true
-                return
-            }
+//            if numberOfElements(in: newIndexPath!.section) == 0 {
+//                forceReload = true
+//                return
+//            }
 
             operations.append(.insertIndexPaths([newIndexPath!]))
         case .update:
