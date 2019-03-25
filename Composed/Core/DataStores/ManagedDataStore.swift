@@ -107,18 +107,8 @@ public final class ManagedDataStore<Element>: NSObject, NSFetchedResultsControll
 
         switch type {
         case .delete:
-//            if numberOfElements(in: indexPath!.section) == 1 {
-//                forceReload = true
-//                return
-//            }
-
             operations.append(.deleteIndexPaths([indexPath!]))
         case .insert:
-//            if numberOfElements(in: newIndexPath!.section) == 0 {
-//                forceReload = true
-//                return
-//            }
-
             operations.append(.insertIndexPaths([newIndexPath!]))
         case .update:
             operations.append(.updateIndexPaths([indexPath!]))
@@ -134,14 +124,16 @@ public final class ManagedDataStore<Element>: NSObject, NSFetchedResultsControll
 
             switch type {
             case .delete:
-                delegate?.dataStore(didDeleteIndexPaths: [indexPath!])
-                if self.numberOfElements(in: indexPath!.section) == 1 {
-                    delegate?.dataStore(didDeleteSections: IndexSet(integer: indexPath!.section))
+                if numberOfElements(in: indexPath!.section) == 1 {
+                    forceReload = true
+                } else {
+                    delegate?.dataStore(didDeleteIndexPaths: [indexPath!])
                 }
             case .insert:
-                delegate?.dataStore(didInsertIndexPaths: [newIndexPath!])
                 if self.numberOfElements(in: newIndexPath!.section) == 0 {
-                    delegate?.dataStore(didInsertSections: IndexSet(integer: newIndexPath!.section))
+                    forceReload
+                } else {
+                    delegate?.dataStore(didInsertIndexPaths: [newIndexPath!])
                 }
             case .update:
                 delegate?.dataStore(didUpdateIndexPaths: [indexPath!])
