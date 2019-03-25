@@ -368,9 +368,10 @@ extension CollectionViewWrapper {
         let (localDataSource, localIndexPath) = localDataSourceAndIndexPath(for: indexPath)
 
         // Check if the first or last item in this section is about to disappear
-        if localIndexPath.item == 0 || localIndexPath.item - 1 == localDataSource.numberOfElements(in: localIndexPath.section) {
-            localDataSource.didEndDisplay()
-        }
+        #warning("when using a fetched results controller this crashes if you try and delete a non-last element")
+//        if localIndexPath.item == 0 || localIndexPath.item - 1 == localDataSource.numberOfElements(in: localIndexPath.section) {
+//            localDataSource.didEndDisplay()
+//        }
 
         localDataSource.didEndDisplay(ofCell: cell, at: localIndexPath)
     }
@@ -379,9 +380,10 @@ extension CollectionViewWrapper {
         let (localDataSource, localIndexPath) = localDataSourceAndIndexPath(for: indexPath)
 
         // Check if an first or last item in this section is about to appear
-        if localIndexPath.item == 0 || localIndexPath.item - 1 == localDataSource.numberOfElements(in: localIndexPath.section) {
-            localDataSource.willBeginDisplay()
-        }
+        #warning("when using a fetched results controller this crashes at times")
+//        if localIndexPath.item == 0 || localIndexPath.item - 1 == localDataSource.numberOfElements(in: localIndexPath.section) {
+//            localDataSource.willBeginDisplay()
+//        }
 
         let config = cellConfiguration(for: localIndexPath, globalIndexPath: indexPath, dataSource: localDataSource)
         config.configure(cell, localIndexPath, .presentation)
