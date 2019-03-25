@@ -2,6 +2,7 @@ import Foundation
 
 public final class ArrayDataStore<Element>: DataStore {
 
+    public weak var dataSource: DataSource?
     public weak var delegate: DataStoreDelegate?
     public private(set) var elements: [Element] = []
 

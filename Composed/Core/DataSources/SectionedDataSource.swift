@@ -9,10 +9,12 @@ open class SectionedDataSource<Element>: CollectionDataSource {
 
     public init(stores: [ArrayDataStore<Element>] = []) {
         self.stores = stores
+        stores.forEach { $0.dataSource = self }
     }
 
     public init(elements: [Element]) {
         stores = [ArrayDataStore(elements: elements)]
+        stores.forEach { $0.dataSource = self }
     }
 
     public convenience init(stores: ArrayDataStore<Element>...) {
@@ -26,6 +28,8 @@ open class SectionedDataSource<Element>: CollectionDataSource {
             .lazy
             .filter { !$0.isEmpty }
             .map { ArrayDataStore(elements: $0) }
+
+        stores.forEach { $0.dataSource = self }
     }
 
     public var numberOfSections: Int {
@@ -68,12 +72,14 @@ public extension SectionedDataSource {
         store.delegate = self
         stores.append(store)
         updateDelegate?.dataSource(self, didInsertSections: IndexSet(integer: stores.count))
+        store.dataSource = self
     }
 
     func insert(store: Store, at index: Int) {
         store.delegate = self
         stores.insert(store, at: index)
         updateDelegate?.dataSource(self, didInsertSections: IndexSet(integer: index))
+        store.dataSource = self
     }
 
     func remove(store: Store) {
@@ -81,6 +87,7 @@ public extension SectionedDataSource {
         store.delegate = nil
         stores.remove(at: index)
         updateDelegate?.dataSource(self, didDeleteSections: IndexSet(integer: index))
+        store.dataSource = nil
     }
 
 }

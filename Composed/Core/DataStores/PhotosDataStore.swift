@@ -8,6 +8,7 @@ public final class PhotosDataStore<Element>: NSObject, PHPhotoLibraryChangeObser
         PHPhotoLibrary.shared().unregisterChangeObserver(self)
     }
 
+    public weak var dataSource: DataSource?
     public weak var delegate: DataStoreDelegate?
     public private(set) var result: PHFetchResult<Element>
 

@@ -22,6 +22,7 @@ public protocol DataStore: class {
     associatedtype Element
 
     var delegate: DataStoreDelegate? { get set }
+    var dataSource: DataSource? { get set }
 
     var isEmpty: Bool { get }
     var numberOfSections: Int { get }

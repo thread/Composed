@@ -4,7 +4,9 @@ public typealias ManagedDataSource<Element> = BasicDataSource<ManagedDataStore<E
 
 public final class ManagedDataStore<Element>: NSObject, NSFetchedResultsControllerDelegate, DataStore where Element: NSManagedObject {
 
+    public weak var dataSource: DataSource?
     public weak var delegate: DataStoreDelegate?
+
     private var updates: (() -> Void)?
     private var operations: [DataSourceUpdate] = []
     private var forceReload: Bool = false
@@ -124,25 +126,21 @@ public final class ManagedDataStore<Element>: NSObject, NSFetchedResultsControll
 
             switch type {
             case .delete:
-                self.fetchedResultsController?.delegate = nil
-
-                if self.numberOfElements(in: indexPath!.section) == 1 {
+                if let dataSource = self.dataSource as? CollectionUIProvidingDataSource,
+                    let collectionView = dataSource.collectionView,
+                    collectionView.numberOfItems(inSection: indexPath!.section) == 1 {
                     self.forceReload = true
                 } else {
                     delegate?.dataStore(didDeleteIndexPaths: [indexPath!])
                 }
-
-                self.fetchedResultsController?.delegate = self
             case .insert:
-                self.fetchedResultsController?.delegate = nil
-
-                if self.numberOfElements(in: newIndexPath!.section) == 0 {
+                if let dataSource = self.dataSource as? CollectionUIProvidingDataSource,
+                    let collectionView = dataSource.collectionView,
+                    collectionView.numberOfItems(inSection: newIndexPath!.section) == 0 {
                     self.forceReload = true
                 } else {
                     delegate?.dataStore(didInsertIndexPaths: [newIndexPath!])
                 }
-
-                self.fetchedResultsController?.delegate = self
             case .update:
                 delegate?.dataStore(didUpdateIndexPaths: [indexPath!])
             case .move:
