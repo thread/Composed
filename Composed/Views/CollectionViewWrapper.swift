@@ -47,27 +47,15 @@ internal final class CollectionViewWrapper: NSObject, UICollectionViewDataSource
 
     internal func replace(dataSource: DataSource) {
         self.dataSource = dataSource
-        NotificationCenter.default.addObserver(self, selector: #selector(endEditingIfNecessary), name: UIApplication.didEnterBackgroundNotification, object: nil)
     }
 
-    internal func becomeActive() {
+    @objc internal func becomeActive() {
         collectionView.flashScrollIndicators()
         preparePlaceholderIfNeeded()
     }
 
-    internal func resignActive() {
-        endEditingIfNecessary()
-    }
-
-    @objc private func endEditingIfNecessary() {
-        guard isEditing else { return }
-
-        if collectionView.allowsMultipleSelection &&
-            collectionView.indexPathsForSelectedItems?.isEmpty == false {
-            return
-        }
-
-        setEditing(false, animated: false)
+    @objc internal func resignActive() {
+        
     }
 
     @objc internal func numberOfSections(in collectionView: UICollectionView) -> Int {

@@ -58,6 +58,21 @@ open class DataSourceViewController: UIViewController {
             view.topAnchor.constraint(equalTo: collectionView.topAnchor),
             view.bottomAnchor.constraint(equalTo: collectionView.bottomAnchor)
         ])
+
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(endEditingIfNecessary),
+                                               name: UIApplication.didEnterBackgroundNotification, object: nil)
+    }
+
+    @objc private func endEditingIfNecessary() {
+        guard isEditing else { return }
+
+        if collectionView.allowsMultipleSelection &&
+            collectionView.indexPathsForSelectedItems?.isEmpty == false {
+            return
+        }
+
+        setEditing(false, animated: false)
     }
 
     open override func viewWillAppear(_ animated: Bool) {
