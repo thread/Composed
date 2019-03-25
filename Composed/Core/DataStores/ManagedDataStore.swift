@@ -136,7 +136,7 @@ public final class ManagedDataStore<Element>: NSObject, NSFetchedResultsControll
             case .insert:
                 if let dataSource = self.dataSource as? CollectionUIProvidingDataSource,
                     let collectionView = dataSource.collectionView,
-                    collectionView.numberOfItems(inSection: newIndexPath!.section) == 0 {
+                    newIndexPath!.section > collectionView.numberOfSections - 1 {
                     self.forceReload = true
                 } else {
                     delegate?.dataStore(didInsertIndexPaths: [newIndexPath!])
