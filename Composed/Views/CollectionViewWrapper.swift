@@ -354,7 +354,7 @@ extension CollectionViewWrapper {
         if let cached = strategy.cachedSize(forElementAt: indexPath) { return cached }
 
         let metrics = self.metrics(for: localIndexPath.section, globalSection: indexPath.section, in: localDataSource)
-        let size = CGSize(width: collectionView.bounds.width, height: CGFloat.greatestFiniteMagnitude)
+        let size = CGSize(width: collectionView.safeAreaLayoutGuide.layoutFrame.width, height: CGFloat.greatestFiniteMagnitude)
         let context = CollectionUISizingContext(prototype: config.prototype, indexPath: localIndexPath, layoutSize: size, metrics: metrics)
 
         config.configure(config.prototype, localIndexPath, .sizing)

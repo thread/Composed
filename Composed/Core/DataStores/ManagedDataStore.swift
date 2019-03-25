@@ -124,17 +124,25 @@ public final class ManagedDataStore<Element>: NSObject, NSFetchedResultsControll
 
             switch type {
             case .delete:
+                self.fetchedResultsController?.delegate = nil
+
                 if self.numberOfElements(in: indexPath!.section) == 1 {
                     self.forceReload = true
                 } else {
                     delegate?.dataStore(didDeleteIndexPaths: [indexPath!])
                 }
+
+                self.fetchedResultsController?.delegate = self
             case .insert:
+                self.fetchedResultsController?.delegate = nil
+
                 if self.numberOfElements(in: newIndexPath!.section) == 0 {
                     self.forceReload = true
                 } else {
                     delegate?.dataStore(didInsertIndexPaths: [newIndexPath!])
                 }
+
+                self.fetchedResultsController?.delegate = self
             case .update:
                 delegate?.dataStore(didUpdateIndexPaths: [indexPath!])
             case .move:
@@ -146,21 +154,19 @@ public final class ManagedDataStore<Element>: NSObject, NSFetchedResultsControll
     }
 
     public func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        delegate?.dataStore(willPerform: operations)
+
         if forceReload {
             delegate?.dataStoreDidReload()
+            delegate?.dataStore(didPerform: self.operations)
             forceReload = false
-            return
+        } else {
+            delegate?.dataStore(performBatchUpdates: {
+                updates?()
+            }, completion: { [unowned self] _ in
+                self.delegate?.dataStore(didPerform: self.operations)
+            })
         }
-
-        defer {
-            delegate?.dataStore(willPerform: operations)
-        }
-
-        delegate?.dataStore(performBatchUpdates: {
-            updates?()
-        }, completion: { [unowned self] _ in
-            self.delegate?.dataStore(didPerform: self.operations)
-        })
     }
 
 }
