@@ -463,9 +463,9 @@ private extension CollectionViewWrapper {
     }
 
     func cellConfiguration(for localIndexPath: IndexPath, globalIndexPath: IndexPath, dataSource: CollectionUIProvidingDataSource) -> DataSourceUIConfiguration {
-//        if let configuration = cellConfigurations[globalIndexPath] { return configuration }
+        if let configuration = cellConfigurations[globalIndexPath] { return configuration }
         let configuration = dataSource.cellConfiguration(for: localIndexPath)
-//        cellConfigurations[globalIndexPath] = configuration
+        cellConfigurations[globalIndexPath] = configuration
         return configuration
     }
 
