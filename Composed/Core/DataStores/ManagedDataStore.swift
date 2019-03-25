@@ -135,8 +135,14 @@ public final class ManagedDataStore<Element>: NSObject, NSFetchedResultsControll
             switch type {
             case .delete:
                 delegate?.dataStore(didDeleteIndexPaths: [indexPath!])
+                if self.numberOfElements(in: indexPath!.section) == 1 {
+                    delegate?.dataStore(didDeleteSections: IndexSet(integer: indexPath!.section))
+                }
             case .insert:
                 delegate?.dataStore(didInsertIndexPaths: [newIndexPath!])
+                if self.numberOfElements(in: newIndexPath!.section) == 0 {
+                    delegate?.dataStore(didInsertSections: IndexSet(integer: newIndexPath!.section))
+                }
             case .update:
                 delegate?.dataStore(didUpdateIndexPaths: [indexPath!])
             case .move:
