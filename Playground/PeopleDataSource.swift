@@ -68,11 +68,6 @@ final class PersonCell: UICollectionViewCell, ReusableViewNibLoadable {
     @IBOutlet private weak var nameLabel: UILabel!
     @IBOutlet private weak var ageLabel: UILabel!
 
-    override func awakeAfter(using aDecoder: NSCoder) -> Any? {
-        print(#function)
-        return super.awakeAfter(using: aDecoder)
-    }
-
     override func awakeFromNib() {
         super.awakeFromNib()
 
