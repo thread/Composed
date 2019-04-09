@@ -10,8 +10,8 @@ final class PeopleDataSource: SectionedDataSource<Person>, CollectionUIProviding
 
     var title: String?
 
-    func sizingStrategy(for traitCollection: UITraitCollection) -> CollectionUISizingStrategy {
-        let columnCount = traitCollection.horizontalSizeClass == .compact ? 2 : 4
+    func sizingStrategy(in collectionView: UICollectionView) -> CollectionUISizingStrategy {
+        let columnCount = collectionView.traitCollection.horizontalSizeClass == .compact ? 2 : 4
         return ColumnSizingStrategy(columnCount: columnCount, sizingMode: .automatic(isUniform: true))
     }
 

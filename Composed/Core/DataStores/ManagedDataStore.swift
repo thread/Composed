@@ -12,7 +12,7 @@ public final class ManagedDataStore<Element>: NSObject, NSFetchedResultsControll
     private var forceReload: Bool = false
 
     private var fetchedResultsController: NSFetchedResultsController<Element>?
-    private let managedObjectContext: NSManagedObjectContext
+    public let managedObjectContext: NSManagedObjectContext
 
     public private(set) var request: NSFetchRequest<Element>?
     public private(set) var sectionNameKeyPath: String?
@@ -109,13 +109,34 @@ public final class ManagedDataStore<Element>: NSObject, NSFetchedResultsControll
 
         switch type {
         case .delete:
+            // Leaving this code here for now because I know for a fact it doesn't crash but I _think_ its no longer needed? The app needs a lot more testing to be sure.
+            
+//            if let dataSource = self.dataSource as? CollectionUIProvidingDataSource,
+//                let collectionView = dataSource.collectionView,
+//                collectionView.numberOfItems(inSection: indexPath!.section) == 1 {
+//                forceReload = true
+//                return
+//            }
+
             operations.append(.deleteIndexPaths([indexPath!]))
         case .insert:
+            if let dataSource = self.dataSource as? CollectionUIProvidingDataSource,
+                let collectionView = dataSource.collectionView,
+                newIndexPath!.section > collectionView.numberOfSections - 1 {
+                forceReload = true
+                return
+            }
+
             operations.append(.insertIndexPaths([newIndexPath!]))
         case .update:
             operations.append(.updateIndexPaths([indexPath!]))
         case .move:
-            operations.append(.moveIndexPaths([(source: indexPath!, target: newIndexPath!)]))
+            if indexPath == newIndexPath {
+                operations.append(.updateIndexPaths([indexPath!]))
+            } else {
+                operations.append(.moveIndexPaths([(source: indexPath!, target: newIndexPath!)]))
+            }
+
         @unknown default:
             break
         }
@@ -126,25 +147,14 @@ public final class ManagedDataStore<Element>: NSObject, NSFetchedResultsControll
 
             switch type {
             case .delete:
-                if let dataSource = self.dataSource as? CollectionUIProvidingDataSource,
-                    let collectionView = dataSource.collectionView,
-                    collectionView.numberOfItems(inSection: indexPath!.section) == 1 {
-                    self.forceReload = true
-                } else {
-                    delegate?.dataStore(didDeleteIndexPaths: [indexPath!])
-                }
+                delegate?.dataStore(didDeleteIndexPaths: [indexPath!])
             case .insert:
-                if let dataSource = self.dataSource as? CollectionUIProvidingDataSource,
-                    let collectionView = dataSource.collectionView,
-                    newIndexPath!.section > collectionView.numberOfSections - 1 {
-                    self.forceReload = true
-                } else {
-                    delegate?.dataStore(didInsertIndexPaths: [newIndexPath!])
-                }
+                delegate?.dataStore(didInsertIndexPaths: [newIndexPath!])
             case .update:
                 delegate?.dataStore(didUpdateIndexPaths: [indexPath!])
             case .move:
-                delegate?.dataStore(didMoveFromIndexPath: indexPath!, toIndexPath: newIndexPath!)
+                delegate?.dataStore(didDeleteIndexPaths: [indexPath!])
+                delegate?.dataStore(didInsertIndexPaths: [newIndexPath!])
             @unknown default:
                 break
             }

@@ -30,14 +30,6 @@ open class FlowLayout: UICollectionViewFlowLayout {
     private var cachedGlobalFooterSize: CGSize = .zero
     private var backgroundViewClasses: [Int: UICollectionReusableView.Type] = [:]
 
-    public override init() {
-        super.init()
-    }
-
-    public required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-
     open override func prepare() {
         super.prepare()
         guard let collectionView = collectionView else { return }
@@ -254,7 +246,7 @@ open class FlowLayout: UICollectionViewFlowLayout {
 
     open override func prepare(forAnimatedBoundsChange oldBounds: CGRect) {
         super.prepare(forAnimatedBoundsChange: oldBounds)
-        firstVisibleIndexPath = collectionView?.indexPathsForVisibleItems.first
+        saveContentOffset()
     }
 
     open override func finalizeAnimatedBoundsChange() {
@@ -263,10 +255,22 @@ open class FlowLayout: UICollectionViewFlowLayout {
     }
 
     open override func targetContentOffset(forProposedContentOffset proposedContentOffset: CGPoint, withScrollingVelocity velocity: CGPoint) -> CGPoint {
+        guard let offset = restoredContentOffset() else {
+            return super.targetContentOffset(forProposedContentOffset: proposedContentOffset, withScrollingVelocity: velocity)
+        }
+
+        return offset
+    }
+
+    public func saveContentOffset() {
+        firstVisibleIndexPath = collectionView?.indexPathsForVisibleItems.sorted().first
+    }
+
+    public func restoredContentOffset() -> CGPoint? {
         guard let collectionView = collectionView,
             let indexPath = firstVisibleIndexPath,
             let attributes = layoutAttributesForItem(at: indexPath) else {
-                return super.targetContentOffset(forProposedContentOffset: proposedContentOffset, withScrollingVelocity: velocity)
+                return nil
         }
 
         return CGPoint(x: attributes.frame.minX - collectionView.contentInset.left,

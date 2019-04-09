@@ -1,56 +1,32 @@
 import UIKit
 
-final class EmbeddedDataSourceCell: UICollectionViewCell {
+final class EmbeddedDataSourceCell: UICollectionViewCell, ReusableViewNibLoadable {
 
     private static var scrollOffsets: [IndexPath: CGPoint] = [:]
 
     private var indexPath: IndexPath?
+    @IBOutlet public private(set) var collectionView: UICollectionView!
+    @IBOutlet private weak var heightConstraint: NSLayoutConstraint!
 
     private lazy var wrapper: CollectionViewWrapper = {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .horizontal
-
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        let wrapper = CollectionViewWrapper(collectionView: collectionView)
-
-        contentView.backgroundColor = .clear
-        contentView.addSubview(collectionView)
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-
-        NSLayoutConstraint.activate([
-            contentView.leadingAnchor.constraint(equalTo: collectionView.leadingAnchor),
-            contentView.trailingAnchor.constraint(equalTo: collectionView.trailingAnchor),
-            contentView.topAnchor.constraint(equalTo: collectionView.topAnchor),
-            contentView.bottomAnchor.constraint(equalTo: collectionView.bottomAnchor)
-            ])
-
-        NSLayoutConstraint.activate([
-            contentView.leadingAnchor.constraint(equalTo: collectionView.leadingAnchor),
-            contentView.trailingAnchor.constraint(equalTo: collectionView.trailingAnchor),
-            ])
-
-        return wrapper
+        return CollectionViewWrapper(collectionView: collectionView)
     }()
 
-    func prepare(dataSource: CollectionViewDataSource) {
+    func prepare(dataSource: _EmbeddedDataSource) {
         wrapper.replace(dataSource: dataSource)
+        wrapper.becomeActive()
     }
 
     override func apply(_ layoutAttributes: UICollectionViewLayoutAttributes) {
         super.apply(layoutAttributes)
-
-        guard let offset = type(of: self).scrollOffsets[layoutAttributes.indexPath] else { return }
-
-        wrapper.collectionView.setContentOffset(offset, animated: false)
-        indexPath = layoutAttributes.indexPath
+        collectionView.backgroundColor = .clear
+        collectionView.contentInsetAdjustmentBehavior = .always
+        collectionView.decelerationRate = UIScrollView.DecelerationRate(rawValue: 0.992)
     }
 
     override func prepareForReuse() {
         super.prepareForReuse()
-        guard let indexPath = indexPath else { return }
-
-        _ = type(of: self).scrollOffsets[indexPath]
-        type(of: self).scrollOffsets[indexPath] = wrapper.collectionView.contentOffset
+        wrapper.resignActive()
     }
 
 }

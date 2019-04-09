@@ -59,6 +59,11 @@ public extension DataSource {
             .allSatisfy { numberOfElements(in: $0) == 0 }
     }
 
+    var isEmbedded: Bool {
+        guard let delegate = updateDelegate else { return false }
+        return delegate is _EmbeddedDataSource
+    }
+
 }
 
 public extension DataSource {

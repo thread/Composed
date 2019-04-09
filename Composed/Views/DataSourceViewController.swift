@@ -2,27 +2,38 @@ import UIKit
 
 open class DataSourceViewController: UIViewController {
 
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
     open class var collectionViewClass: UICollectionView.Type {
         return UICollectionView.self
+    }
+
+    open class var layoutClass: UICollectionViewLayout.Type {
+        return FlowLayout.self
     }
 
     public var collectionView: UICollectionView {
         return wrapper.collectionView
     }
 
-    public var dataSource: DataSource {
+    public var dataSource: DataSource? {
         return wrapper.dataSource
     }
 
     private let wrapper: CollectionViewWrapper
     public let layout: UICollectionViewLayout
 
-    public init(dataSource: DataSource, layout: UICollectionViewLayout = FlowLayout()) {
+    public init(dataSource: DataSource?, layout: UICollectionViewLayout = FlowLayout()) {
         let collectionView = type(of: self).collectionViewClass.init(frame: .zero, collectionViewLayout: layout)
         self.wrapper = CollectionViewWrapper(collectionView: collectionView)
         self.layout = layout
         super.init(nibName: nil, bundle: nil)
-        self.wrapper.replace(dataSource: dataSource)
+
+        if let dataSource = dataSource {
+            self.wrapper.replace(dataSource: dataSource)
+        }
     }
 
     open override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -36,7 +47,7 @@ open class DataSourceViewController: UIViewController {
     }
 
     public required init?(coder aDecoder: NSCoder) {
-        self.layout = FlowLayout()
+        self.layout = type(of: self).layoutClass.init()
         let collectionView = type(of: self).collectionViewClass.init(frame: .zero, collectionViewLayout: layout)
         self.wrapper = CollectionViewWrapper(collectionView: collectionView)
         super.init(coder: aDecoder)
@@ -62,6 +73,15 @@ open class DataSourceViewController: UIViewController {
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(endEditingIfNecessary),
                                                name: UIApplication.didEnterBackgroundNotification, object: nil)
+
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(invalidateEverything),
+                                               name: UIContentSizeCategory.didChangeNotification, object: nil)
+    }
+
+    @objc private func invalidateEverything() {
+        collectionView.collectionViewLayout.invalidateLayout()
+        collectionView.reloadData()
     }
 
     @objc private func endEditingIfNecessary() {
@@ -77,11 +97,6 @@ open class DataSourceViewController: UIViewController {
 
     open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
-        if !collectionView.allowsMultipleSelection {
-            collectionView.indexPathsForSelectedItems?.first
-                .map { collectionView.deselectItem(at: $0, animated: animated) }
-        }
 
         guard presentedViewController == nil else { return }
         wrapper.becomeActive()

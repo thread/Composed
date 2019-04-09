@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 @available(*, deprecated, renamed: "GlobalProvidingDataSource")
 public typealias DataSourceUIGlobalProviding = GlobalViewsProvidingDataSource

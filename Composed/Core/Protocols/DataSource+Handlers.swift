@@ -21,10 +21,10 @@ public protocol EditHandlingDataSource: DataSource {
 public typealias DataSourceSelecting = SelectionHandlingDataSource
 
 public protocol SelectionHandlingDataSource: DataSource {
+    var allowsMultipleSelection: Bool { get }
     func shouldSelectElement(at indexPath: IndexPath) -> Bool
-    func shouldDeselectElement(at indexPath: IndexPath) -> Bool
-
     func selectElement(at indexPath: IndexPath)
+    func shouldDeselectElement(at indexPath: IndexPath) -> Bool
     func deselectElement(at indexPath: IndexPath)
 }
 

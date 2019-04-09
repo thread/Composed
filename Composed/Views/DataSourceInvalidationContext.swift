@@ -68,6 +68,22 @@ public struct DataSourceInvalidationContext {
 
     public var invalidateLayoutMetrics: Bool = false
 
+    public private(set) var reloadingElementIndexPaths: Set<IndexPath> = []
+    public private(set) var reloadingHeaderIndexes = IndexSet()
+    public private(set) var reloadingFooterIndexes = IndexSet()
+
+    public mutating func reloadElements(at indexPaths: [IndexPath]) {
+        indexPaths.forEach { reloadingElementIndexPaths.insert($0) }
+    }
+
+    public mutating func reloadHeaders(in sections: IndexSet) {
+        sections.forEach { reloadingHeaderIndexes.insert($0) }
+    }
+
+    public mutating func reloadFooters(in sections: IndexSet) {
+        sections.forEach { reloadingFooterIndexes.insert($0) }
+    }
+
     public private(set) var invalidatedElementIndexPaths: Set<IndexPath> = []
     public private(set) var invalidatedHeaderIndexes = IndexSet()
     public private(set) var invalidatedFooterIndexes = IndexSet()
