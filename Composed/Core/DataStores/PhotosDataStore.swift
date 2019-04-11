@@ -38,7 +38,7 @@ public final class PhotosDataStore<Element>: NSObject, PHPhotoLibraryChangeObser
         return IndexPath(item: result.index(of: element), section: 0)
     }
 
-    public func indexPath(where predicate: @escaping (Any) -> Bool) -> IndexPath? {
+    public func indexPath(where predicate: @escaping (Element) -> Bool) -> IndexPath? {
         fatalError("Unsupported")
     }
 

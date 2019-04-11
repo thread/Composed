@@ -29,7 +29,7 @@ public protocol DataStore: class {
     func numberOfElements(in section: Int) -> Int
 
     func element(at indexPath: IndexPath) -> Element
-    func indexPath(where predicate: @escaping (Any) -> Bool) -> IndexPath?
+    func indexPath(where predicate: @escaping (Element) -> Bool) -> IndexPath?
 }
 
 public extension DataStore {
@@ -53,10 +53,7 @@ public extension DataStore where Element: Equatable {
     }
 
     func indexPath(for element: Element) -> IndexPath? {
-        return indexPath { other in
-            guard let other = other as? Element else { return false }
-            return other == element
-        }
+        return indexPath { $0 == element }
     }
 
 }

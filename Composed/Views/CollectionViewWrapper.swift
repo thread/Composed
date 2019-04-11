@@ -430,23 +430,6 @@ extension CollectionViewWrapper {
         return cell
     }
 
-    func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
-        let (dataSource, localIndexPath) = localDataSourceAndIndexPath(for: indexPath)
-        return (dataSource as? MenuProvidingDataSource)?.menuItems(for: localIndexPath).contains { $0.action == action } == true
-    }
-
-    func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
-        let (dataSource, localIndexPath) = localDataSourceAndIndexPath(for: indexPath)
-        UIMenuController.shared.menuItems = (dataSource as? MenuProvidingDataSource)?
-            .menuItems(for: localIndexPath)
-        return true
-    }
-
-    func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
-        let (dataSource, localIndexPath) = localDataSourceAndIndexPath(for: indexPath)
-        (dataSource as? MenuProvidingDataSource)?.perform(action: action, for: localIndexPath)
-    }
-
     func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
         guard let dataSource = dataSource else { return false }
         let (localDataSource, localIndexPath) = dataSource.dataSourceFor(global: indexPath)

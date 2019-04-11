@@ -24,7 +24,7 @@ open class BasicDataSource<Store>: CollectionDataSource where Store: DataStore {
         return store.numberOfElements(in: section)
     }
 
-    public func indexPath(where predicate: @escaping (Any) -> Bool) -> IndexPath? {
+    public func indexPath(where predicate: @escaping (Store.Element) -> Bool) -> IndexPath? {
         return store.indexPath(where: predicate)
     }
 

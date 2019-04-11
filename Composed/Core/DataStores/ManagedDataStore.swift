@@ -37,7 +37,7 @@ public final class ManagedDataStore<Element>: NSObject, NSFetchedResultsControll
         return fetchedResultsController!.object(at: indexPath)
     }
 
-    public func indexPath(where predicate: @escaping (Any) -> Bool) -> IndexPath? {
+    public func indexPath(where predicate: @escaping (Element) -> Bool) -> IndexPath? {
         for section in 0..<numberOfSections {
             for item in 0..<numberOfElements(in: section) {
                 let indexPath = IndexPath(item: item, section: section)

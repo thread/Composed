@@ -3,10 +3,17 @@ import UIKit
 @available(*, deprecated, renamed: "DataSourceEditableView")
 public typealias DataSourceUIEditingView = DataSourceEditableView
 
+#if swift(>=5.0)
 public protocol DataSourceEditableView: UIView {
     var isEditing: Bool { get }
     func setEditing(_ editing: Bool, animated: Bool)
 }
+#else
+public protocol DataSourceEditableView {
+    var isEditing: Bool { get }
+    func setEditing(_ editing: Bool, animated: Bool)
+}
+#endif
 
 @available(*, deprecated, renamed: "EditHandlingDataSource")
 public typealias DataSourceUIEditing = EditHandlingDataSource

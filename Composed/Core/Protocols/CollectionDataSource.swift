@@ -1,8 +1,23 @@
 import Foundation
 
-public protocol CollectionDataSource: DataSource, DataStoreDelegate {
+public protocol CollectionDataSource: SearchableDataSource, DataStoreDelegate {
     associatedtype Store: DataStore
     func element(at indexPath: IndexPath) -> Store.Element
+}
+
+/// The indexPath of the element satisfying `predicate`. Returns nil if the predicate cannot be satisfied
+///
+/// - Parameter predicate: The predicate to use
+/// - Returns: An `IndexPath` if the specified predicate can be satisfied, nil otherwise
+//func indexPath(where predicate: @escaping (Store.Element) -> Bool) -> IndexPath?
+
+public extension CollectionDataSource {
+    func indexPath<Element>(where predicate: @escaping (Element) -> Bool) -> IndexPath? {
+        return indexPath { (element: Store.Element) in
+            guard let element = element as? Element else { return false }
+            return predicate(element)
+        }
+    }
 }
 
 public extension CollectionDataSource {
@@ -16,11 +31,9 @@ public extension CollectionDataSource {
 extension CollectionDataSource where Store.Element: Equatable {
 
     func indexPath(of element: Store.Element) -> IndexPath? {
-        return indexPath { other in
-            guard let other = other as? Store.Element else { return false }
-            return other == element
-        }
+        return indexPath { $0 == element }
     }
+
 }
 
 extension CollectionDataSource {
