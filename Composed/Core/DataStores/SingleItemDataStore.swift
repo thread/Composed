@@ -27,7 +27,7 @@ open class SingleItemDataStore<Element>: DataStore {
     }
     
     public func element(at indexPath: IndexPath) -> Element {
-        guard indexPath.item == 0 else { fatalError() }
+        guard indexPath.section == 0, indexPath.item == 0 else { fatalError() }
         return element
     }
     
