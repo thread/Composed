@@ -37,8 +37,7 @@ open class SectionedDataSource<Element>: CollectionDataSource {
     }
 
     public func numberOfElements(in section: Int) -> Int {
-        return stores[section].numberOfElements(in: section)
-
+        return stores[section].numberOfElements(in: 0)
     }
 
     public func element(at indexPath: IndexPath) -> Element {
