@@ -38,6 +38,7 @@ open class SectionedDataSource<Element>: CollectionDataSource {
 
     public func numberOfElements(in section: Int) -> Int {
         return stores[section].numberOfElements(in: 0)
+
     }
 
     public func element(at indexPath: IndexPath) -> Element {
@@ -45,7 +46,7 @@ open class SectionedDataSource<Element>: CollectionDataSource {
         return stores[indexPath.section].element(at: localIndexPath)
     }
 
-    public func indexPath(where predicate: @escaping (Element) -> Bool) -> IndexPath? {
+    public func indexPath(where predicate: @escaping (Any) -> Bool) -> IndexPath? {
         for section in 0..<stores.count {
             if let indexPath = stores[section].indexPath(where: predicate) {
                 return IndexPath(item: indexPath.item, section: section)

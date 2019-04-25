@@ -28,7 +28,7 @@ public final class DataSourceUIConfiguration {
     }
 
     public private(set) lazy var reuseIdentifier: String = {
-        prototype.reuseIdentifier ?? type(of: prototype).reuseIdentifier
+        return prototype.reuseIdentifier ?? type(of: prototype).reuseIdentifier
     }()
 
     public init<View>(prototype: @escaping @autoclosure () -> View, dequeueSource: Source, reuseIdentifier: String? = nil, _ configure: @escaping (View, IndexPath, Context) -> Void) where View: UICollectionReusableView {

@@ -6,7 +6,7 @@ import UIKit
  Each section will then contain its own UICollectionView that will present the
  contents of the embedded DataSource
  */
-open class EmbeddingDataSource: SearchableDataSource {
+open class EmbeddingDataSource: DataSource {
 
     internal let embedded: _EmbeddedDataSource
 
@@ -25,8 +25,8 @@ open class EmbeddingDataSource: SearchableDataSource {
         return 1
     }
 
-    public func indexPath<Element>(where predicate: @escaping (Element) -> Bool) -> IndexPath? {
-        return (embedded.child as? SearchableDataSource)?.indexPath(where: predicate)
+    public func indexPath(where predicate: @escaping (Any) -> Bool) -> IndexPath? {
+        return embedded.indexPath(where: predicate)
     }
 
     public func dataSourceFor(global section: Int) -> (dataSource: DataSource, localSection: Int) {
@@ -141,6 +141,10 @@ internal class _EmbeddedDataSource: DataSource {
 
     public func numberOfElements(in section: Int) -> Int {
         return child.numberOfElements(in: section)
+    }
+
+    public func indexPath(where predicate: @escaping (Any) -> Bool) -> IndexPath? {
+        return child.indexPath(where: predicate)
     }
 
     public func dataSourceFor(global section: Int) -> (dataSource: DataSource, localSection: Int) {

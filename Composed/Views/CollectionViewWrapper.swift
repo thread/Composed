@@ -89,7 +89,7 @@ internal final class CollectionViewWrapper: NSObject, UICollectionViewDataSource
     private var _numberOfSections: Int = 0
     @objc internal func numberOfSections(in collectionView: UICollectionView) -> Int {
         _invalidate()
-        return dataSource?.numberOfSections ?? 0
+        return _numberOfSections
     }
 
     @objc public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -430,6 +430,23 @@ extension CollectionViewWrapper {
         return cell
     }
 
+    func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
+        let (dataSource, localIndexPath) = localDataSourceAndIndexPath(for: indexPath)
+        return (dataSource as? MenuProvidingDataSource)?.menuItems(for: localIndexPath).contains { $0.action == action } == true
+    }
+
+    func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
+        let (dataSource, localIndexPath) = localDataSourceAndIndexPath(for: indexPath)
+        UIMenuController.shared.menuItems = (dataSource as? MenuProvidingDataSource)?
+            .menuItems(for: localIndexPath)
+        return true
+    }
+
+    func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
+        let (dataSource, localIndexPath) = localDataSourceAndIndexPath(for: indexPath)
+        (dataSource as? MenuProvidingDataSource)?.perform(action: action, for: localIndexPath)
+    }
+
     func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
         guard let dataSource = dataSource else { return false }
         let (localDataSource, localIndexPath) = dataSource.dataSourceFor(global: indexPath)
@@ -475,25 +492,29 @@ extension CollectionViewWrapper {
 private extension CollectionViewWrapper {
 
     func localDataSourceAndIndexPath(for global: IndexPath) -> (DataSource & CollectionUIProvidingDataSource, IndexPath) {
-        guard let rootDataSource = dataSource else { fatalError("No dataSource appears to be attached to this wrapper" )}
-        let (localDataSource, localIndexPath) = rootDataSource.dataSourceFor(global: global)
-
-        guard let dataSource = localDataSource as? DataSource & CollectionUIProvidingDataSource else {
-            fatalError("The dataSource: (\(String(describing: localDataSource))), must conform to \(String(describing: CollectionUIProvidingDataSource.self))")
+        guard let mapping = globalSectionToMapping[global.section] else {
+            fatalError("A dataSource for section; \(global) was not found. This should never happen!")
         }
 
-        return (dataSource, localIndexPath)
+        guard let dataSource = mapping.dataSource as? DataSource & CollectionUIProvidingDataSource else {
+            fatalError("The dataSource: (\(String(describing: mapping.dataSource))), must conform to \(String(describing: CollectionUIProvidingDataSource.self))")
+        }
+
+        let local = mapping.localIndexPath(forGlobal: global)
+        return (dataSource, local)
     }
 
     func localDataSourceAndSection(for global: Int) -> (DataSource & CollectionUIProvidingDataSource, Int) {
-        guard let rootDataSource = dataSource else { fatalError("No dataSource appears to be attached to this wrapper" )}
-        let (localDataSource, localSection) = rootDataSource.dataSourceFor(global: global)
-
-        guard let dataSource = localDataSource as? DataSource & CollectionUIProvidingDataSource else {
-            fatalError("The dataSource: (\(String(describing: localDataSource))), must conform to \(String(describing: CollectionUIProvidingDataSource.self))")
+        guard let mapping = globalSectionToMapping[global] else {
+            fatalError("A dataSource for section; \(global) was not found. This should never happen!")
         }
 
-        return (dataSource, localSection)
+        guard let dataSource = mapping.dataSource as? DataSource & CollectionUIProvidingDataSource else {
+            fatalError("The dataSource: (\(String(describing: mapping.dataSource))), must conform to \(String(describing: CollectionUIProvidingDataSource.self))")
+        }
+
+        let local = mapping.localSection(forGlobal: global)
+        return (dataSource, local)
     }
 
     func metrics(for localSection: Int, globalSection: Int, in dataSource: CollectionUIProvidingDataSource) -> CollectionUISectionMetrics {

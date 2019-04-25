@@ -40,6 +40,15 @@ public protocol DataSource: class {
     /// - Returns: The number of elements contained in the specified section
     func numberOfElements(in section: Int) -> Int
 
+    /// The indexPath of the element satisfying `predicate`. Returns nil if the predicate cannot be satisfied
+    ///
+    /// - Parameter predicate: The predicate to use
+    /// - Returns: An `IndexPath` if the specified predicate can be satisfied, nil otherwise
+    func indexPath(where predicate: @escaping (Any) -> Bool) -> IndexPath?
+
+    func dataSourceFor(global section: Int) -> (dataSource: DataSource, localSection: Int)
+    func dataSourceFor(global indexPath: IndexPath) -> (dataSource: DataSource, localIndexPath: IndexPath)
+
 }
 
 public extension DataSource {

@@ -109,7 +109,7 @@ open class SegmentedDataSource: AggregateDataSource {
     }
 
     public final func indexPath(where predicate: @escaping (Any) -> Bool) -> IndexPath? {
-        return (selectedChild as? SearchableDataSource)?.indexPath(where: predicate)
+        return selectedChild?.indexPath(where: predicate)
     }
 
     public final func dataSourceFor(global section: Int) -> (dataSource: DataSource, localSection: Int) {

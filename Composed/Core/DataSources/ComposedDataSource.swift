@@ -241,14 +241,14 @@ extension ComposedDataSource {
 
 }
 
-extension ComposedDataSource: SearchableDataSource {
+public extension ComposedDataSource {
 
-    public func indexPath<Element>(where predicate: @escaping (Element) -> Bool) -> IndexPath? {
+    func indexPath(where predicate: @escaping (Any) -> Bool) -> IndexPath? {
         for child in children {
-            guard let child = child as? SearchableDataSource else { continue }
-            guard let indexPath = child.indexPath(where: predicate) else { continue }
-            let mapping = self.mapping(for: child)
-            return mapping.globalIndexPath(forLocal: indexPath)
+            if let indexPath = child.indexPath(where: predicate) {
+                let mapping = self.mapping(for: child)
+                return mapping.globalIndexPath(forLocal: indexPath)
+            }
         }
 
         return nil
