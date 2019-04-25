@@ -44,8 +44,9 @@ open class SegmentedDataSource: AggregateDataSource {
     public init() { }
 
     public final func setSelected(index: Int, animated: Bool) {
-        guard index != selectedIndex,
-            _children.indices.contains(index) else {
+        guard index != selectedIndex else { return }
+        
+        guard _children.indices.contains(index) else {
             assertionFailure("Index out of bounds: \(index). Should be in the range: \(0..<_children.count)")
             return
         }
