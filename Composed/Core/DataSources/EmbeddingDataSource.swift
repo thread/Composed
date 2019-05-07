@@ -49,13 +49,13 @@ extension EmbeddingDataSource: CollectionUIProvidingDataSource {
         return ColumnSizingStrategy(columnCount: 1, sizingMode: .automatic(isUniform: false))
     }
 
-    public func cellConfiguration(for indexPath: IndexPath) -> DataSourceUIConfiguration {
-        return DataSourceUIConfiguration(prototype: EmbeddedDataSourceCell.fromNib, dequeueSource: .nib) { [unowned self] cell, _, _ in
+    public func cellConfiguration(for indexPath: IndexPath) -> CollectionUIViewProvider {
+        return CollectionUIViewProvider(prototype: EmbeddedDataSourceCell.fromNib, dequeueSource: .nib) { [unowned self] cell, _, _ in
             cell.prepare(dataSource: self.embedded)
         }
     }
 
-    public func headerConfiguration(for section: Int) -> DataSourceUIConfiguration? {
+    public func headerConfiguration(for section: Int) -> CollectionUIViewProvider? {
         return embedded.child.headerConfiguration(for: section)
     }
 
@@ -115,11 +115,7 @@ extension EmbeddingDataSource: DataSourceUpdateDelegate {
 
     }
 
-    public func dataSource(_ dataSource: DataSource, globalFor local: IndexPath) -> (dataSource: DataSource, globalIndexPath: IndexPath) {
-        return (self, local)
-    }
-
-    public func dataSource(_ dataSource: DataSource, globalFor local: Int) -> (dataSource: DataSource, globalSection: Int) {
+    public func dataSource(_ dataSource: DataSource, sectionFor local: Int) -> (dataSource: DataSource, globalSection: Int) {
         return (self, local)
     }
 
@@ -217,11 +213,7 @@ extension _EmbeddedDataSource: DataSourceUpdateDelegate {
         updateDelegate?.dataSource(self, invalidateWith: context)
     }
 
-    public func dataSource(_ dataSource: DataSource, globalFor local: IndexPath) -> (dataSource: DataSource, globalIndexPath: IndexPath) {
-        return (self, local)
-    }
-
-    public func dataSource(_ dataSource: DataSource, globalFor local: Int) -> (dataSource: DataSource, globalSection: Int) {
+    public func dataSource(_ dataSource: DataSource, sectionFor local: Int) -> (dataSource: DataSource, globalSection: Int) {
         return (self, local)
     }
 

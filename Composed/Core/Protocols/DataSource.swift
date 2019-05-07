@@ -19,10 +19,17 @@ public protocol DataSourceUpdateDelegate: class {
     func dataSource(_ dataSource: DataSource, performBatchUpdates updates: () -> Void, completion: ((Bool) -> Void)?)
     func dataSource(_ dataSource: DataSource, invalidateWith context: DataSourceInvalidationContext)
 
-    func dataSource(_ dataSource: DataSource, globalFor local: IndexPath) -> (dataSource: DataSource, globalIndexPath: IndexPath)
-    func dataSource(_ dataSource: DataSource, globalFor local: Int) -> (dataSource: DataSource, globalSection: Int)
+    func dataSource(_ dataSource: DataSource, sectionFor localSection: Int) -> (dataSource: DataSource, globalSection: Int)
     
 }
+
+public extension DataSourceUpdateDelegate {
+    @available(swift, obsoleted: 1.0, message: "This is no longer required and has been removed entirely. Calling this method results in a fatalError")
+    func dataSource(_ dataSource: DataSource, globalFor local: IndexPath) -> (dataSource: DataSource, globalIndexPath: IndexPath) { fatalError() }
+    @available(swift, obsoleted: 1.0, message: "This is no longer required and has been removed entirely. Calling this method results in a fatalError")
+    func dataSource(_ dataSource: DataSource, globalFor local: Int) -> (dataSource: DataSource, globalSection: Int) { fatalError() }
+}
+
 // MARK: -
 
 /// Represents a definition of a DataSource for representing a single source of data and its associated visual representations

@@ -371,16 +371,10 @@ extension ComposedDataSource: DataSourceUpdateDelegate {
         updateDelegate?.dataSource(self, invalidateWith: globalContext)
     }
 
-    public func dataSource(_ dataSource: DataSource, globalFor local: IndexPath) -> (dataSource: DataSource, globalIndexPath: IndexPath) {
-        let mapping = self.mapping(for: dataSource)
-        let global = mapping.globalIndexPath(forLocal: local)
-        return updateDelegate?.dataSource(self, globalFor: global) ?? (self, global)
-    }
-
-    public func dataSource(_ dataSource: DataSource, globalFor local: Int) -> (dataSource: DataSource, globalSection: Int) {
+    public func dataSource(_ dataSource: DataSource, sectionFor local: Int) -> (dataSource: DataSource, globalSection: Int) {
         let mapping = self.mapping(for: dataSource)
         let global = mapping.globalSection(forLocal: local)
-        return updateDelegate?.dataSource(self, globalFor: global) ?? (self, global)
+        return updateDelegate?.dataSource(self, sectionFor: global) ?? (self, global)
     }
 
 }

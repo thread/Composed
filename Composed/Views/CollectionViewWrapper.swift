@@ -30,10 +30,10 @@ internal final class CollectionViewWrapper: NSObject, UICollectionViewDataSource
         }
     }
 
-    private var globalConfigurations: [String: DataSourceUIConfiguration] = [:]
-    private var headerConfigurations: [Int: DataSourceUIConfiguration] = [:]
-    private var footerConfigurations: [Int: DataSourceUIConfiguration] = [:]
-    private var cellConfigurations: [IndexPath: DataSourceUIConfiguration] = [:]
+    private var globalConfigurations: [String: CollectionUIViewProvider] = [:]
+    private var headerConfigurations: [Int: CollectionUIViewProvider] = [:]
+    private var footerConfigurations: [Int: CollectionUIViewProvider] = [:]
+    private var cellConfigurations: [IndexPath: CollectionUIViewProvider] = [:]
     private var metrics: [Int: CollectionUISectionMetrics] = [:]
     private var sizingStrategies: [Int: CollectionUISizingStrategy] = [:]
 
@@ -255,7 +255,7 @@ extension CollectionViewWrapper {
     }
 
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let configuration: DataSourceUIConfiguration?
+        let configuration: CollectionUIViewProvider?
         let sectionDataSource: DataSource?
 
         switch (kind, dataSource) {
@@ -503,7 +503,7 @@ private extension CollectionViewWrapper {
         return strategy
     }
 
-    func cellConfiguration(for localIndexPath: IndexPath, globalIndexPath: IndexPath, dataSource: CollectionUIProvidingDataSource) -> DataSourceUIConfiguration {
+    func cellConfiguration(for localIndexPath: IndexPath, globalIndexPath: IndexPath, dataSource: CollectionUIProvidingDataSource) -> CollectionUIViewProvider {
         if let configuration = cellConfigurations[globalIndexPath] { return configuration }
         let configuration = dataSource.cellConfiguration(for: localIndexPath)
         cellConfigurations[globalIndexPath] = configuration
@@ -617,12 +617,7 @@ extension CollectionViewWrapper: DataSourceUpdateDelegate {
         invalidate(with: context)
     }
 
-    public func dataSource(_ dataSource: DataSource, globalFor local: IndexPath) -> (dataSource: DataSource, globalIndexPath: IndexPath) {
-        guard let dataSource = self.dataSource else { fatalError("This should never be called when dataSource == nil") }
-        return (dataSource, local)
-    }
-
-    public func dataSource(_ dataSource: DataSource, globalFor local: Int) -> (dataSource: DataSource, globalSection: Int) {
+    public func dataSource(_ dataSource: DataSource, sectionFor local: Int) -> (dataSource: DataSource, globalSection: Int) {
         guard let dataSource = self.dataSource else { fatalError("This should never be called when dataSource == nil") }
         return (dataSource, local)
     }

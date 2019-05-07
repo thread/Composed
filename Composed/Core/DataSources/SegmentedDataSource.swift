@@ -214,14 +214,9 @@ extension SegmentedDataSource: DataSourceUpdateDelegate {
         updateDelegate?.dataSource(self, invalidateWith: context)
     }
 
-    public func dataSource(_ dataSource: DataSource, globalFor local: IndexPath) -> (dataSource: DataSource, globalIndexPath: IndexPath) {
+    public func dataSource(_ dataSource: DataSource, sectionFor local: Int) -> (dataSource: DataSource, globalSection: Int) {
         guard selectedChild != nil else { return (self, local) }
-        return updateDelegate?.dataSource(self, globalFor: local) ?? (self, local)
-    }
-
-    public func dataSource(_ dataSource: DataSource, globalFor local: Int) -> (dataSource: DataSource, globalSection: Int) {
-        guard selectedChild != nil else { return (self, local) }
-        return updateDelegate?.dataSource(self, globalFor: local) ?? (self, local)
+        return updateDelegate?.dataSource(self, sectionFor: local) ?? (self, local)
     }
 
 }

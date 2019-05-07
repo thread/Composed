@@ -52,7 +52,7 @@
 		54A17338225CC72900A7D7FD /* Snap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A17315225CC71A00A7D7FD /* Snap.swift */; };
 		54A17339225CC72900A7D7FD /* DataSourceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A17316225CC71A00A7D7FD /* DataSourceViewController.swift */; };
 		54A1733A225CC72900A7D7FD /* EmbeddedDataSourceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A17317225CC71A00A7D7FD /* EmbeddedDataSourceCell.swift */; };
-		54A1733B225CC72900A7D7FD /* DataSourceUIConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A17318225CC71A00A7D7FD /* DataSourceUIConfiguration.swift */; };
+		54A1733B225CC72900A7D7FD /* CollectionUIViewProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A17318225CC71A00A7D7FD /* CollectionUIViewProvider.swift */; };
 		54A1733C225CC72900A7D7FD /* CollectionViewWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A17319225CC71A00A7D7FD /* CollectionViewWrapper.swift */; };
 		54A1733D225CC72900A7D7FD /* DataSourceInvalidationContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A1731A225CC71A00A7D7FD /* DataSourceInvalidationContext.swift */; };
 		54BAB15E221497FA0064CE51 /* GlobalHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54BAB15D221497FA0064CE51 /* GlobalHeaderView.swift */; };
@@ -150,7 +150,7 @@
 		54A17315225CC71A00A7D7FD /* Snap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Snap.swift; sourceTree = "<group>"; };
 		54A17316225CC71A00A7D7FD /* DataSourceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSourceViewController.swift; sourceTree = "<group>"; };
 		54A17317225CC71A00A7D7FD /* EmbeddedDataSourceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmbeddedDataSourceCell.swift; sourceTree = "<group>"; };
-		54A17318225CC71A00A7D7FD /* DataSourceUIConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSourceUIConfiguration.swift; sourceTree = "<group>"; };
+		54A17318225CC71A00A7D7FD /* CollectionUIViewProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionUIViewProvider.swift; sourceTree = "<group>"; };
 		54A17319225CC71A00A7D7FD /* CollectionViewWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewWrapper.swift; sourceTree = "<group>"; };
 		54A1731A225CC71A00A7D7FD /* DataSourceInvalidationContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSourceInvalidationContext.swift; sourceTree = "<group>"; };
 		54BAB15D221497FA0064CE51 /* GlobalHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalHeaderView.swift; sourceTree = "<group>"; };
@@ -339,7 +339,7 @@
 				54A17315225CC71A00A7D7FD /* Snap.swift */,
 				54A17316225CC71A00A7D7FD /* DataSourceViewController.swift */,
 				54A17317225CC71A00A7D7FD /* EmbeddedDataSourceCell.swift */,
-				54A17318225CC71A00A7D7FD /* DataSourceUIConfiguration.swift */,
+				54A17318225CC71A00A7D7FD /* CollectionUIViewProvider.swift */,
 				54A17319225CC71A00A7D7FD /* CollectionViewWrapper.swift */,
 				54A1731A225CC71A00A7D7FD /* DataSourceInvalidationContext.swift */,
 			);
@@ -538,7 +538,7 @@
 				54A17335225CC72900A7D7FD /* FlowLayout+Types.swift in Sources */,
 				54A17337225CC72900A7D7FD /* DataSourceHeaderFooterView.swift in Sources */,
 				54A1731F225CC72900A7D7FD /* ComposedDataSource.swift in Sources */,
-				54A1733B225CC72900A7D7FD /* DataSourceUIConfiguration.swift in Sources */,
+				54A1733B225CC72900A7D7FD /* CollectionUIViewProvider.swift in Sources */,
 				54A1732E225CC72900A7D7FD /* CollectionView+Sizing.swift in Sources */,
 				54A1732B225CC72900A7D7FD /* DataSourceChangeSet.swift in Sources */,
 				54A17320225CC72900A7D7FD /* ArrayDataStore.swift in Sources */,

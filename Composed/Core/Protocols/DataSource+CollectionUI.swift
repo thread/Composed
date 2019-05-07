@@ -25,15 +25,15 @@ public typealias DataSourceUIProviding = CollectionUIProvidingDataSource
 public protocol CollectionUIProvidingDataSource: DataSource {
     func sizingStrategy(in collectionView: UICollectionView) -> CollectionUISizingStrategy
     func metrics(for section: Int) -> CollectionUISectionMetrics
-    func cellConfiguration(for indexPath: IndexPath) -> DataSourceUIConfiguration
-    func headerConfiguration(for section: Int) -> DataSourceUIConfiguration?
-    func footerConfiguration(for section: Int) -> DataSourceUIConfiguration?
+    func cellConfiguration(for indexPath: IndexPath) -> CollectionUIViewProvider
+    func headerConfiguration(for section: Int) -> CollectionUIViewProvider?
+    func footerConfiguration(for section: Int) -> CollectionUIViewProvider?
     func backgroundViewClass(for section: Int) -> UICollectionReusableView.Type?
 }
 
 public extension CollectionUIProvidingDataSource {
-    func headerConfiguration(for section: Int) -> DataSourceUIConfiguration? { return nil }
-    func footerConfiguration(for section: Int) -> DataSourceUIConfiguration? { return nil }
+    func headerConfiguration(for section: Int) -> CollectionUIViewProvider? { return nil }
+    func footerConfiguration(for section: Int) -> CollectionUIViewProvider? { return nil }
     func backgroundViewClass(for section: Int) -> UICollectionReusableView.Type? { return nil }
 
     func willBeginDisplay(ofCell cell: UICollectionViewCell, at indexPath: IndexPath) { }

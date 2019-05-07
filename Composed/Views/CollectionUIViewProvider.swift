@@ -1,6 +1,9 @@
 import UIKit
 
-public final class DataSourceUIConfiguration {
+@available(*, deprecated, renamed: "DataSourceUIConfiguration")
+public typealias DataSourceUIConfiguration = CollectionUIViewProvider
+
+public final class CollectionUIViewProvider {
 
     public enum Source {
         case nib
