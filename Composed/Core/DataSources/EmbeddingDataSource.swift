@@ -29,7 +29,7 @@ open class EmbeddingDataSource: DataSource {
         return embedded.indexPath(where: predicate)
     }
 
-    public func dataSourceFor(global section: Int) -> (dataSource: DataSource, localSection: Int) {
+    public func localSection(for section: Int) -> (dataSource: DataSource, localSection: Int) {
         return (self, section)
     }
 
@@ -143,7 +143,7 @@ internal class _EmbeddedDataSource: DataSource {
         return child.indexPath(where: predicate)
     }
 
-    public func dataSourceFor(global section: Int) -> (dataSource: DataSource, localSection: Int) {
+    public func localSection(for section: Int) -> (dataSource: DataSource, localSection: Int) {
         return (child, 0)
     }
 

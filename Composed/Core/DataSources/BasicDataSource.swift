@@ -32,7 +32,7 @@ open class BasicDataSource<Store>: CollectionDataSource where Store: DataStore {
         return store.element(at: indexPath)
     }
 
-    public func dataSourceFor(global section: Int) -> (dataSource: DataSource, localSection: Int) {
+    public func localSection(for section: Int) -> (dataSource: DataSource, localSection: Int) {
         return (self, section)
     }
 

@@ -227,16 +227,10 @@ extension ComposedDataSource {
         return (dataSource, local)
     }
 
-    public final func dataSourceFor(global section: Int) -> (dataSource: DataSource, localSection: Int) {
+    public final func localSection(for section: Int) -> (dataSource: DataSource, localSection: Int) {
         let mapping = self.mapping(for: section)
         let local = mapping.localSection(forGlobal: section)
-        return mapping.dataSource.dataSourceFor(global: local)
-    }
-
-    public final func dataSourceFor(global indexPath: IndexPath) -> (dataSource: DataSource, localIndexPath: IndexPath) {
-        let mapping = self.mapping(for: indexPath.section)
-        let local = mapping.localIndexPath(forGlobal: indexPath)
-        return mapping.dataSource.dataSourceFor(global: local)
+        return mapping.dataSource.localSection(for: local)
     }
 
 }

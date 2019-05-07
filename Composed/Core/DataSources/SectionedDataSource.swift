@@ -56,7 +56,7 @@ open class SectionedDataSource<Element>: CollectionDataSource {
         return nil
     }
 
-    public func dataSourceFor(global section: Int) -> (dataSource: DataSource, localSection: Int) {
+    public func localSection(for section: Int) -> (dataSource: DataSource, localSection: Int) {
         return (self, section)
     }
 

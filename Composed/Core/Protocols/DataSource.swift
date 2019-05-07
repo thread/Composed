@@ -26,8 +26,15 @@ public protocol DataSourceUpdateDelegate: class {
 public extension DataSourceUpdateDelegate {
     @available(swift, obsoleted: 1.0, message: "This is no longer required and has been removed entirely. Calling this method results in a fatalError")
     func dataSource(_ dataSource: DataSource, globalFor local: IndexPath) -> (dataSource: DataSource, globalIndexPath: IndexPath) { fatalError() }
-    @available(swift, obsoleted: 1.0, message: "This is no longer required and has been removed entirely. Calling this method results in a fatalError")
+    @available(*, deprecated, renamed: "dataSource(_:sectionFor:)", message: "Method has been named. Calling this method will now result in a fatalError")
     func dataSource(_ dataSource: DataSource, globalFor local: Int) -> (dataSource: DataSource, globalSection: Int) { fatalError() }
+}
+
+public extension DataSource {
+    @available(*, deprecated, renamed: "localSection(for:)")
+    func dataSourceFor(global section: Int) -> (dataSource: DataSource, localSection: Int) { fatalError() }
+    @available(*, deprecated, message: "Use localSection(for:) – Map the section, then set indexPath.item manually, it remains unchanged")
+    func dataSourceFor(global indexPath: IndexPath) -> (dataSource: DataSource, localIndexPath: IndexPath) { fatalError() }
 }
 
 // MARK: -
@@ -53,8 +60,7 @@ public protocol DataSource: class {
     /// - Returns: An `IndexPath` if the specified predicate can be satisfied, nil otherwise
     func indexPath(where predicate: @escaping (Any) -> Bool) -> IndexPath?
 
-    func dataSourceFor(global section: Int) -> (dataSource: DataSource, localSection: Int)
-    func dataSourceFor(global indexPath: IndexPath) -> (dataSource: DataSource, localIndexPath: IndexPath)
+    func localSection(for section: Int) -> (dataSource: DataSource, localSection: Int)
 
 }
 

@@ -101,7 +101,7 @@ internal final class CollectionViewWrapper: NSObject, UICollectionViewDataSource
         let sections = Set(indexPaths.map { $0.indexPath.section })
 
         for global in sections {
-            let (localDataSource, _) = dataSource.dataSourceFor(global: global)
+            let (localDataSource, _) = dataSource.localSection(for: global)
 
             if let dataSource = localDataSource as? EditHandlingDataSource {
                 dataSource.setEditing(editing, animated: animated)
@@ -425,13 +425,15 @@ extension CollectionViewWrapper {
 
     func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
         guard let dataSource = dataSource else { return false }
-        let (localDataSource, localIndexPath) = dataSource.dataSourceFor(global: indexPath)
+        let (localDataSource, localSection) = dataSource.localSection(for: indexPath.section)
+        let localIndexPath = IndexPath(item: indexPath.item, section: localSection)
         return (localDataSource as? SelectionHandlingDataSource)?.shouldSelectElement(at: localIndexPath) ?? false
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let dataSource = dataSource else { return }
-        let (localDataSource, localIndexPath) = dataSource.dataSourceFor(global: indexPath)
+        let (localDataSource, localSection) = dataSource.localSection(for: indexPath.section)
+        let localIndexPath = IndexPath(item: indexPath.item, section: localSection)
         guard let selectionDataSource = localDataSource as? SelectionHandlingDataSource else { return }
 
         if !selectionDataSource.allowsMultipleSelection {
@@ -453,13 +455,15 @@ extension CollectionViewWrapper {
 
     func collectionView(_ collectionView: UICollectionView, shouldDeselectItemAt indexPath: IndexPath) -> Bool {
         guard let dataSource = dataSource else { return false }
-        let (localDataSource, localIndexPath) = dataSource.dataSourceFor(global: indexPath)
+        let (localDataSource, localSection) = dataSource.localSection(for: indexPath.section)
+        let localIndexPath = IndexPath(item: indexPath.item, section: localSection)
         return (localDataSource as? SelectionHandlingDataSource)?.shouldDeselectElement(at: localIndexPath) ?? false
     }
 
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         guard let dataSource = dataSource else { return }
-        let (localDataSource, localIndexPath) = dataSource.dataSourceFor(global: indexPath)
+        let (localDataSource, localSection) = dataSource.localSection(for: indexPath.section)
+        let localIndexPath = IndexPath(item: indexPath.item, section: localSection)
         (localDataSource as? SelectionHandlingDataSource)?.deselectElement(at: localIndexPath)
     }
 
@@ -468,8 +472,9 @@ extension CollectionViewWrapper {
 private extension CollectionViewWrapper {
 
     func localDataSourceAndIndexPath(for global: IndexPath) -> (DataSource & CollectionUIProvidingDataSource, IndexPath) {
-        guard let rootDataSource = dataSource else { fatalError("No dataSource appears to be attached to this wrapper" )}
-        let (localDataSource, localIndexPath) = rootDataSource.dataSourceFor(global: global)
+        guard let rootDataSource = dataSource else { fatalError("No dataSource appears to be attached to this wrapper" ) }
+        let (localDataSource, localSection) = rootDataSource.localSection(for: global.section)
+        let localIndexPath = IndexPath(item: global.item, section: localSection)
 
         guard let dataSource = localDataSource as? DataSource & CollectionUIProvidingDataSource else {
             fatalError("The dataSource: (\(String(describing: localDataSource))), must conform to \(String(describing: CollectionUIProvidingDataSource.self))")
@@ -479,8 +484,8 @@ private extension CollectionViewWrapper {
     }
 
     func localDataSourceAndSection(for global: Int) -> (DataSource & CollectionUIProvidingDataSource, Int) {
-        guard let rootDataSource = dataSource else { fatalError("No dataSource appears to be attached to this wrapper" )}
-        let (localDataSource, localSection) = rootDataSource.dataSourceFor(global: global)
+        guard let rootDataSource = dataSource else { fatalError("No dataSource appears to be attached to this wrapper") }
+        let (localDataSource, localSection) = rootDataSource.localSection(for: global)
 
         guard let dataSource = localDataSource as? DataSource & CollectionUIProvidingDataSource else {
             fatalError("The dataSource: (\(String(describing: localDataSource))), must conform to \(String(describing: CollectionUIProvidingDataSource.self))")
@@ -555,7 +560,7 @@ extension CollectionViewWrapper: DataSourceUpdateDelegate {
     private func lifecycleObservers(for sections: IndexSet, in dataSource: DataSource) -> [LifecycleObservingDataSource] {
         return sections
             .lazy
-            .map { dataSource.dataSourceFor(global: $0) }
+            .map { dataSource.localSection(for: $0) }
             .compactMap { $0.dataSource as? LifecycleObservingDataSource }
     }
 

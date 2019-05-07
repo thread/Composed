@@ -113,14 +113,9 @@ open class SegmentedDataSource: AggregateDataSource {
         return selectedChild?.indexPath(where: predicate)
     }
 
-    public final func dataSourceFor(global section: Int) -> (dataSource: DataSource, localSection: Int) {
+    public final func localSection(for section: Int) -> (dataSource: DataSource, localSection: Int) {
         guard let child = selectedChild else { fatalError("SegmentedDataSource has no selectedChild") }
-        return child.dataSourceFor(global: section)
-    }
-
-    public final func dataSourceFor(global indexPath: IndexPath) -> (dataSource: DataSource, localIndexPath: IndexPath) {
-        guard let child = selectedChild else { fatalError("SegmentedDataSource has no selectedChild") }
-        return child.dataSourceFor(global: indexPath)
+        return child.localSection(for: section)
     }
 
     open func prepare() {
