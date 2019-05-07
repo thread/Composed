@@ -153,19 +153,17 @@ open class ComposedDataSource: AggregateDataSource {
     }
 
     public final func removeAll() {
-        updateDelegate?.dataSource(self, willPerform: [])
-        updateDelegate?.dataSource(self, performBatchUpdates: {
-            dataSourceToMappings.forEach {
-                if $0.key.dataSource.updateDelegate === self {
-                    $0.key.dataSource.updateDelegate = nil
-                }
+//        updateDelegate?.dataSource(self, willPerform: [])
+        let removedIndexes = dataSourceToMappings.flatMap {
+            _remove(dataSource: $0.key.dataSource)
+        }
 
-                let indexes = _remove(dataSource: $0.key.dataSource)
-                updateDelegate?.dataSource(self, didDeleteSections: IndexSet(indexes))
-            }
-        }, completion: { [unowned self] _ in
-            self.updateDelegate?.dataSource(self, didPerform: [])
-        })
+        updateDelegate?.dataSource(self, didDeleteSections: IndexSet(removedIndexes))
+//        updateDelegate?.dataSource(self, performBatchUpdates: {
+//
+//        }, completion: { [unowned self] _ in
+//            self.updateDelegate?.dataSource(self, didPerform: [])
+//        })
     }
 
     private func _invalidate() {
@@ -279,9 +277,9 @@ private extension ComposedDataSource {
 extension ComposedDataSource: DataSourceUpdateDelegate {
 
     public final func dataSource(_ dataSource: DataSource, didInsertSections sections: IndexSet) {
+        _invalidate()
         let mapping = self.mapping(for: dataSource)
         let global = sections.map(mapping.globalSection(forLocal:))
-        _invalidate()
         updateDelegate?.dataSource(self, didInsertSections: IndexSet(global))
     }
 

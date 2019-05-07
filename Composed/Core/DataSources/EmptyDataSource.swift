@@ -7,4 +7,5 @@ open class EmptyDataSource: DataSource {
     public func numberOfElements(in section: Int) -> Int { return 0 }
     public func indexPath(where predicate: @escaping (Any) -> Bool) -> IndexPath? { return nil }
     public func localSection(for section: Int) -> (dataSource: DataSource, localSection: Int) { return (self, section) }
+    public init() { }
 }

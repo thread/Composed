@@ -115,8 +115,11 @@ open class FlowLayout: UICollectionViewFlowLayout {
     }
 
     open override func layoutAttributesForDecorationView(ofKind elementKind: String, at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
+        guard let collectionView = collectionView else { return nil }
+
         let firstIndex = 0
-        let lastIndex = collectionView!.numberOfItems(inSection: indexPath.section) - 1
+        let numberOfItems = collectionView.dataSource?.collectionView(collectionView, numberOfItemsInSection: indexPath.section) ?? 0
+        let lastIndex = numberOfItems - 1
         guard lastIndex >= 0 else { return nil }
 
         guard let firstAttributes = layoutAttributesForItem(at: IndexPath(item: firstIndex, section: indexPath.section)),
@@ -124,14 +127,14 @@ open class FlowLayout: UICollectionViewFlowLayout {
                 return nil
         }
 
-        guard let delegate = collectionView?.delegate as? FlowLayoutDelegate else { return nil }
+        guard let delegate = collectionView.delegate as? FlowLayoutDelegate else { return nil }
 
         let metrics = self.metrics(forSection: indexPath.section, delegate: delegate)
         let bgAttributes = FlowLayoutAttributes(forDecorationViewOfKind: elementKind, with: indexPath)
 
         let x = metrics.insets.left
         let y = firstAttributes.frame.minY
-        let w = collectionView!.bounds.width - (metrics.insets.left + metrics.insets.right)
+        let w = collectionView.bounds.width - (metrics.insets.left + metrics.insets.right)
         let h = lastAttributes.frame.maxY - firstAttributes.frame.minY
 
         bgAttributes.frame = CGRect(x: x, y: y, width: w, height: h)
@@ -158,7 +161,8 @@ open class FlowLayout: UICollectionViewFlowLayout {
         var attributes = NSArray(array: originalAttributes, copyItems: true) as? [UICollectionViewLayoutAttributes]
 
         func appendBackgroundViews() {
-            for section in 0..<collectionView.numberOfSections {
+            let numberOfSections = collectionView.dataSource?.numberOfSections?(in: collectionView) ?? 0
+            for section in 0..<numberOfSections {
                 guard let backgroundViewClass = (collectionView.delegate as? FlowLayoutDelegate)?
                     .backgroundViewClass?(in: collectionView, forSectionAt: section) else { continue }
 
@@ -175,7 +179,7 @@ open class FlowLayout: UICollectionViewFlowLayout {
 
         if !requiresLayout {
             // if we don't have any global elements we can just add the background views now
-            appendBackgroundViews()
+//            appendBackgroundViews()
             return attributes
         } else {
             // otherwise we need to adjust the frames first
@@ -186,7 +190,7 @@ open class FlowLayout: UICollectionViewFlowLayout {
 
             }
 
-            appendBackgroundViews()
+//            appendBackgroundViews()
 
             if cachedGlobalHeaderSize.height > 0,
                 let header = layoutAttributesForSupplementaryView(ofKind: UICollectionView.elementKindGlobalHeader,

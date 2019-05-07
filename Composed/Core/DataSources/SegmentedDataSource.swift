@@ -42,30 +42,46 @@ open class SegmentedDataSource: AggregateDataSource {
     }
 
     public init() { }
+    public init(children: [DataSource]) {
+        children.forEach { append(dataSource: $0) }
+    }
 
-    public final func setSelected(index: Int, animated: Bool) {
+    public final func setSelected(index: Int?, animated: Bool = false) {
         guard index != selectedIndex else { return }
+
+        guard let index = index else {
+            selectedChild = nil
+
+            if animated {
+                updateDelegate?.dataSource(self, didDeleteSections: IndexSet(integer: 0))
+            } else {
+                updateDelegate?.dataSourceDidReload(self)
+            }
+
+            return
+        }
         
         guard _children.indices.contains(index) else {
             assertionFailure("Index out of bounds: \(index). Should be in the range: \(0..<_children.count)")
             return
         }
 
-        let hadChild = selectedChild != nil
+        let deletedSections = 0..<numberOfSections
+        let insertedSections = 0..<_children[index].numberOfSections
+
         selectedChild = _children[index]
 
-        (updateDelegate as? DataSourceUpdateDelegateSegmented)?
-            .dataSource(self, didSelect: _children[index], atIndex: index)
-
         if animated {
-            if hadChild {
-                updateDelegate?.dataSource(self, didUpdateSections: IndexSet(integer: 0))
-            } else {
-                updateDelegate?.dataSource(self, didInsertSections: IndexSet(integer: 0))
-            }
+            updateDelegate?.dataSource(self, performBatchUpdates: {
+                updateDelegate?.dataSource(self, didDeleteSections: IndexSet(deletedSections))
+                updateDelegate?.dataSource(self, didInsertSections: IndexSet(insertedSections))
+            }, completion: nil)
         } else {
             updateDelegate?.dataSourceDidReload(self)
         }
+
+        (updateDelegate as? DataSourceUpdateDelegateSegmented)?
+            .dataSource(self, didSelect: _children[index], atIndex: index)
     }
 
     public final func append(dataSource: DataSource) {
@@ -91,18 +107,16 @@ open class SegmentedDataSource: AggregateDataSource {
         dataSource.updateDelegate = nil
 
         if _children.isEmpty {
-            selectedChild = nil
-            updateDelegate?.dataSource(self, didDeleteSections: IndexSet(integer: 0))
+            setSelected(index: nil, animated: true)
         } else {
-            setSelected(index: _children.index(before: index), animated: false)
+            setSelected(index: _children.index(before: index), animated: true)
         }
     }
 
     public final func removeAll() {
         _children.forEach { $0.updateDelegate = nil }
         _children.removeAll()
-        selectedChild = nil
-        updateDelegate?.dataSource(self, didDeleteSections: IndexSet(integer: 0))
+        setSelected(index: nil, animated: true)
     }
 
     public final func numberOfElements(in section: Int) -> Int {

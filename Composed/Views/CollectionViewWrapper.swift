@@ -60,10 +60,6 @@ internal final class CollectionViewWrapper: NSObject, UICollectionViewDataSource
         
     }
 
-    private var mappings: [ComposedMappings] = []
-    private var globalSectionToMapping: [Int: ComposedMappings] = [:]
-
-    private var _numberOfSections: Int = 0
     @objc internal func numberOfSections(in collectionView: UICollectionView) -> Int {
         return dataSource?.numberOfSections ?? 0
     }
@@ -436,19 +432,19 @@ extension CollectionViewWrapper {
         let localIndexPath = IndexPath(item: indexPath.item, section: localSection)
         guard let selectionDataSource = localDataSource as? SelectionHandlingDataSource else { return }
 
-        if !selectionDataSource.allowsMultipleSelection {
-            guard let mapping = globalSectionToMapping[indexPath.section] else { return }
-            let selectedIndexPathsInSection = (collectionView.indexPathsForSelectedItems ?? [])
-                .filter { $0.section == indexPath.section && $0 != indexPath }
-
-            mapping.localIndexPaths(forGlobal: selectedIndexPathsInSection).forEach {
-                selectionDataSource.deselectElement(at: $0)
-            }
-
-            selectedIndexPathsInSection.forEach {
-                collectionView.deselectItem(at: $0, animated: true)
-            }
-        }
+//        if !selectionDataSource.allowsMultipleSelection {
+//            let selectedIndexPathsInSection = (collectionView.indexPathsForSelectedItems ?? [])
+//                .filter { $0.section == indexPath.section && $0 != indexPath }
+//
+//
+//            mapping.localIndexPaths(forGlobal: selectedIndexPathsInSection).forEach {
+//                selectionDataSource.deselectElement(at: $0)
+//            }
+//
+//            selectedIndexPathsInSection.forEach {
+//                collectionView.deselectItem(at: $0, animated: true)
+//            }
+//        }
 
         selectionDataSource.selectElement(at: localIndexPath)
     }

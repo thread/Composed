@@ -6,6 +6,10 @@ struct Person {
     var age: Int
 }
 
+final class PeoplePlaceholderDataSource: EmptyDataSource, CollectionUIProvidingDataSource {
+    func metrics(for section: Int) -> CollectionUISectionMetrics { return .zero }
+}
+
 final class PeopleArrayDataSource: ArrayDataSource<Person>, CollectionUIProvidingDataSource {
 
     var title: String?
