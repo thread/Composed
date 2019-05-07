@@ -35,7 +35,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         let layout = FlowLayout()
         layout.globalFooter.prefersFollowContent = true
         let controller = DataSourceViewController(dataSource: list, layout: layout)
-        controller.navigationItem.largeTitleDisplayMode = .always
+        controller.navigationItem.largeTitleDisplayMode = .never
 
         let tab = window?.rootViewController as? UITabBarController
         let nav = tab?.viewControllers?.first as? UINavigationController
