@@ -6,7 +6,39 @@ struct Person {
     var age: Int
 }
 
-final class PeopleDataSource: SectionedDataSource<Person>, CollectionUIProvidingDataSource {
+final class PeopleArrayDataSource: ArrayDataSource<Person>, CollectionUIProvidingDataSource {
+
+    var title: String?
+
+    func sizingStrategy(in collectionView: UICollectionView) -> CollectionUISizingStrategy {
+        return ColumnSizingStrategy(columnCount: 1, sizingMode: .automatic(isUniform: false))
+    }
+
+    func metrics(for section: Int) -> CollectionUISectionMetrics {
+        return CollectionUISectionMetrics(insets: UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20), horizontalSpacing: 8, verticalSpacing: 8)
+    }
+
+    func cellConfiguration(for indexPath: IndexPath) -> CollectionUIViewProvider {
+        return CollectionUIViewProvider(prototype: PersonCell.fromNib, dequeueSource: .nib) { cell, indexPath, _ in
+            cell.prepare(person: self.element(at: indexPath))
+        }
+    }
+
+    func headerConfiguration(for section: Int) -> CollectionUIViewProvider? {
+        return title.map { title in
+            CollectionUIViewProvider(prototype: HeaderView.fromNib, dequeueSource: .nib) { view, indexPath, _ in
+                view.prepare(title: title)
+            }
+        }
+    }
+
+    func backgroundViewClass(for section: Int) -> UICollectionReusableView.Type? {
+        return BackgroundView.self
+    }
+
+}
+
+final class PeopleSectionedDataSource: SectionedDataSource<Person>, CollectionUIProvidingDataSource {
 
     var title: String?
 

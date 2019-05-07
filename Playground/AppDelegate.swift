@@ -18,13 +18,14 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
             Person(name: "Joseph Duffy", age: 24)
         ]
 
-        let people = PeopleDataSource(stores: [])
-        people.title = "People"
-        people.append(elements: family)
-        people.append(elements: friends)
+        let familyDs = PeopleArrayDataSource(elements: family)
+        let friendsDs = PeopleArrayDataSource(elements: friends)
+        let people = ComposedDataSource(children: [familyDs, friendsDs])
+        familyDs.title = "Family"
+        friendsDs.title = "Friends"
 
         let names = countryNames
-        let countries = PeopleDataSource(elements: names)
+        let countries = PeopleSectionedDataSource(elements: names)
         countries.title = "Countries"
 
         let list = ListDataSource()
