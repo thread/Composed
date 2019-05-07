@@ -41,5 +41,3 @@ open class BasicDataSource<Store>: CollectionDataSource where Store: DataStore {
     }
 
 }
-
-public typealias ArrayDataSource<Element> = BasicDataSource<ArrayDataStore<Element>>
