@@ -26,14 +26,14 @@ class PeopleArrayDataSource: ArrayDataSource<Person>, CollectionUIProvidingDataS
     }
 
     func cellConfiguration(for indexPath: IndexPath) -> CollectionUIViewProvider {
-        return CollectionUIViewProvider(prototype: PersonCell.fromNib, dequeueSource: .nib) { cell, indexPath, _ in
+        return CollectionUIViewProvider(prototype: PersonCell.fromNib, dequeueMethod: .nib) { cell, indexPath, _ in
             cell.prepare(person: self.element(at: indexPath))
         }
     }
 
     func headerConfiguration(for section: Int) -> CollectionUIViewProvider? {
         return title.map { title in
-            CollectionUIViewProvider(prototype: HeaderView.fromNib, dequeueSource: .nib) { view, indexPath, _ in
+            CollectionUIViewProvider(prototype: HeaderView.fromNib, dequeueMethod: .nib) { view, indexPath, _ in
                 view.prepare(title: title)
             }
         }
@@ -59,20 +59,20 @@ class PeopleSectionedDataSource: SectionedDataSource<Person>, CollectionUIProvid
     }
 
     func cellConfiguration(for indexPath: IndexPath) -> CollectionUIViewProvider {
-        return CollectionUIViewProvider(prototype: PersonCell.fromNib, dequeueSource: .nib) { cell, indexPath, _ in
+        return CollectionUIViewProvider(prototype: PersonCell.fromNib, dequeueMethod: .nib) { cell, indexPath, _ in
             cell.prepare(person: self.element(at: indexPath))
         }
     }
 
     func footerConfiguration(for section: Int) -> CollectionUIViewProvider? {
-        return CollectionUIViewProvider(prototype: FooterView.fromNib, dequeueSource: .nib) { view, indexPath, _ in
+        return CollectionUIViewProvider(prototype: FooterView.fromNib, dequeueMethod: .nib) { view, indexPath, _ in
             view.prepare(title: "\(self.numberOfElements(in: section)) items")
         }
     }
 
     func headerConfiguration(for section: Int) -> CollectionUIViewProvider? {
         return title.map { title in
-            CollectionUIViewProvider(prototype: HeaderView.fromNib, dequeueSource: .nib) { view, indexPath, _ in
+            CollectionUIViewProvider(prototype: HeaderView.fromNib, dequeueMethod: .nib) { view, indexPath, _ in
                 view.prepare(title: title)
             }
         }
@@ -93,11 +93,11 @@ final class ListDataSource: ComposedDataSource, GlobalViewsProvidingDataSource {
     }
 
     func globalHeaderConfiguration() -> CollectionUIViewProvider? {
-        return CollectionUIViewProvider(prototype: GlobalHeaderView.fromNib, dequeueSource: .nib) { _, _, _ in }
+        return CollectionUIViewProvider(prototype: GlobalHeaderView.fromNib, dequeueMethod: .nib) { _, _, _ in }
     }
 
     func globalFooterConfiguration() -> CollectionUIViewProvider? {
-        return CollectionUIViewProvider(prototype: GlobalFooterView.fromNib, dequeueSource: .nib) { _, _, _ in }
+        return CollectionUIViewProvider(prototype: GlobalFooterView.fromNib, dequeueMethod: .nib) { _, _, _ in }
     }
 
 }

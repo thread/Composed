@@ -94,20 +94,20 @@ public final class DataSourceCoordinator: NSObject, UICollectionViewDataSource, 
             }
         }
 
-        context.reloadingElementIndexPaths.forEach {
+        context.refreshElementsIndexPaths.forEach {
             guard let cell = collectionView.cellForItem(at: $0) else { return }
             let local = localDataSourceAndIndexPath(for: $0)
             cellConfigurations[$0]?.configure(cell, local.1, .presentation)
         }
 
-        context.reloadingHeaderIndexes.forEach {
+        context.refreshHeaderIndexes.forEach {
             let indexPath = IndexPath(item: 0, section: $0)
             let kind = UICollectionView.elementKindSectionHeader
             guard let view = collectionView.supplementaryView(forElementKind: kind, at: indexPath) else { return }
             headerConfigurations[$0]?.configure(view, indexPath, .presentation)
         }
 
-        context.reloadingFooterIndexes.forEach {
+        context.refreshFooterIndexes.forEach {
             let indexPath = IndexPath(item: 0, section: $0)
             let kind = UICollectionView.elementKindSectionFooter
             guard let view = collectionView.supplementaryView(forElementKind: kind, at: indexPath) else { return }
@@ -254,7 +254,7 @@ public extension DataSourceCoordinator {
         }
 
         let type = Swift.type(of: config.prototype)
-        switch config.dequeueSource {
+        switch config.dequeueMethod {
         case .nib:
             collectionView.register(nibType: type, reuseIdentifier: config.reuseIdentifier, kind: kind)
         case .class:
@@ -357,7 +357,7 @@ public extension DataSourceCoordinator {
         let config = cellConfiguration(for: localIndexPath, globalIndexPath: indexPath, dataSource: localDataSource)
         let type = Swift.type(of: config.prototype)
 
-        switch config.dequeueSource {
+        switch config.dequeueMethod {
         case .nib:
             collectionView.register(nibType: type, reuseIdentifier: config.reuseIdentifier)
         case .class:

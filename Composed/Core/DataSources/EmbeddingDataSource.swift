@@ -50,7 +50,7 @@ extension EmbeddingDataSource: CollectionUIProvidingDataSource {
     }
 
     public func cellConfiguration(for indexPath: IndexPath) -> CollectionUIViewProvider {
-        return CollectionUIViewProvider(prototype: EmbeddedDataSourceCell.fromNib, dequeueSource: .nib) { [unowned self] cell, _, _ in
+        return CollectionUIViewProvider(prototype: EmbeddedDataSourceCell.fromNib, dequeueMethod: .nib) { [unowned self] cell, _, _ in
             cell.prepare(dataSource: self.embedded)
         }
     }

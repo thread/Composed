@@ -398,7 +398,6 @@
 		54A17312225CC71A00A7D7FD /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				54A17313225CC71A00A7D7FD /* EmbeddedDataSourceCell.xib */,
 				54A17314225CC71A00A7D7FD /* DataSourceHeaderFooterView.swift */,
 				54A17315225CC71A00A7D7FD /* Snap.swift */,
 				54A17316225CC71A00A7D7FD /* DataSourceViewController.swift */,
@@ -406,6 +405,7 @@
 				54A17318225CC71A00A7D7FD /* CollectionUIViewProvider.swift */,
 				54A17319225CC71A00A7D7FD /* DataSourceCoordinator.swift */,
 				54A1731A225CC71A00A7D7FD /* DataSourceInvalidationContext.swift */,
+				54A17313225CC71A00A7D7FD /* EmbeddedDataSourceCell.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";

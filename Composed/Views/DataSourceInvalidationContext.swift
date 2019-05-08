@@ -1,8 +1,13 @@
 import Foundation
 
+/// Describes the invalidation to perform on both a DataSource and a UICollectionViewLayout instance.
+///
+/// The implementation mirrors much of what you'd expect, with a few additions like refreshing (not reloading) of individual elements, support for global elements, etc...
 public struct DataSourceInvalidationContext {
 
     private var _invalidateGlobalHeader: Bool = false
+
+    /// If true, the global header will be invalidated
     public var invalidateGlobalHeader: Bool {
         get { return _invalidateGlobalHeader }
         set {
@@ -15,6 +20,8 @@ public struct DataSourceInvalidationContext {
     }
 
     private var _invalidateGlobalFooter: Bool = false
+
+    /// If true, the global footer will be invalidated
     public var invalidateGlobalFooter: Bool {
         get { return _invalidateGlobalFooter }
         set {
@@ -66,22 +73,23 @@ public struct DataSourceInvalidationContext {
         }
     }
 
+    // if set to false, the layout will not requery the delegate for size information etc.
     public var invalidateLayoutMetrics: Bool = false
 
-    public private(set) var reloadingElementIndexPaths: Set<IndexPath> = []
-    public private(set) var reloadingHeaderIndexes = IndexSet()
-    public private(set) var reloadingFooterIndexes = IndexSet()
+    public private(set) var refreshElementsIndexPaths: Set<IndexPath> = []
+    public private(set) var refreshHeaderIndexes = IndexSet()
+    public private(set) var refreshFooterIndexes = IndexSet()
 
-    public mutating func reloadElements(at indexPaths: [IndexPath]) {
-        indexPaths.forEach { reloadingElementIndexPaths.insert($0) }
+    public mutating func refreshElements(at indexPaths: [IndexPath]) {
+        indexPaths.forEach { refreshElementsIndexPaths.insert($0) }
     }
 
-    public mutating func reloadHeaders(in sections: IndexSet) {
-        sections.forEach { reloadingHeaderIndexes.insert($0) }
+    public mutating func refreshHeaders(in sections: IndexSet) {
+        sections.forEach { refreshHeaderIndexes.insert($0) }
     }
 
-    public mutating func reloadFooters(in sections: IndexSet) {
-        sections.forEach { reloadingFooterIndexes.insert($0) }
+    public mutating func refreshFooters(in sections: IndexSet) {
+        sections.forEach { refreshFooterIndexes.insert($0) }
     }
 
     public private(set) var invalidatedElementIndexPaths: Set<IndexPath> = []
@@ -101,4 +109,15 @@ public struct DataSourceInvalidationContext {
     }
 
     public init() { }
+    internal static func make(from context: DataSourceInvalidationContext) -> DataSourceInvalidationContext {
+        var globalContext = DataSourceInvalidationContext()
+        globalContext.invalidateGlobalHeader = context.invalidateGlobalHeader
+        globalContext.invalidateGlobalFooter = context.invalidateGlobalFooter
+        globalContext.invalidateLayoutMetrics = context.invalidateLayoutMetrics
+        globalContext.invalidateGlobalFooterData = context.invalidateGlobalFooterData
+        globalContext.invalidateGlobalHeaderData = context.invalidateGlobalHeaderData
+        globalContext.invalidateGlobalHeaderMetrics = context.invalidateGlobalHeaderMetrics
+        globalContext.invalidateGlobalFooterMetrics = context.invalidateGlobalFooterMetrics
+        return globalContext
+    }
 }

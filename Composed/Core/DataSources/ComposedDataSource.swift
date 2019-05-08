@@ -288,9 +288,7 @@ extension ComposedDataSource: DataSourceUpdateDelegate {
     }
 
     public final func dataSource(_ dataSource: DataSource, invalidateWith context: DataSourceInvalidationContext) {
-        var globalContext = DataSourceInvalidationContext()
-        globalContext.invalidateGlobalHeader = context.invalidateGlobalHeader
-        globalContext.invalidateGlobalFooter = context.invalidateGlobalFooter
+        var globalContext = DataSourceInvalidationContext.make(from: context)
 
         let elementIndexPaths = globalIndexPaths(forLocalIndexPaths: Array(context.invalidatedElementIndexPaths), inDataSource: dataSource)
         globalContext.invalidateElements(at: elementIndexPaths)

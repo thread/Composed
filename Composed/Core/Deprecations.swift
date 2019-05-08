@@ -65,6 +65,21 @@ public extension DataSource {
     func dataSourceFor(global indexPath: IndexPath) -> (dataSource: DataSource, localIndexPath: IndexPath) { fatalError() }
 }
 
+public extension DataSourceInvalidationContext {
+    @available(*, deprecated, renamed: "refreshElements(at:)")
+    mutating func reloadElements(at indexPaths: [IndexPath]) {
+        refreshElements(at: indexPaths)
+    }
+    @available(*, deprecated, renamed: "refreshHeaders(in:)")
+    mutating func reloadHeaders(in sections: IndexSet) {
+        refreshHeaders(in: sections)
+    }
+    @available(*, deprecated, renamed: "refreshFooters(in:)")
+    mutating func reloadFooters(in sections: IndexSet) {
+        refreshFooters(in: sections)
+    }
+}
+
 @available(*, deprecated, renamed: "DataSourceEditableView")
 public typealias DataSourceUIEditingView = EditHandling
 @available(*, deprecated, renamed: "EditHandlingDataSource")
@@ -88,3 +103,10 @@ public typealias DataSourceUISizingContext = CollectionUISizingContext
 public typealias DataSourceUISizingStrategy = CollectionUISizingStrategy
 @available(*, deprecated, renamed: "DataSourceUIConfiguration")
 public typealias DataSourceUIConfiguration = CollectionUIViewProvider
+
+extension CollectionUIViewProvider {
+    @available(*, deprecated, renamed: "init(prototype:dequeueMethod:reuseIdentifier:_:)")
+    public convenience init<View>(prototype: @escaping @autoclosure () -> View, dequeueSource: DequeueMethod, reuseIdentifier: String? = nil, _ configure: @escaping (View, IndexPath, Context) -> Void) where View: UICollectionReusableView {
+        self.init(prototype: prototype(), dequeueMethod: dequeueSource, reuseIdentifier: reuseIdentifier, configure)
+    }
+}
