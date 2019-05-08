@@ -58,7 +58,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 
 //        print(controller.dataSource!.debugDescription)
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            composed.removeAll()
+//            composed.removeAll()
 //            segmented.setSelected(index: 1)
 //            print(controller.dataSource!.debugDescription)
         }

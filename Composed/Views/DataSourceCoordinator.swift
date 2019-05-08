@@ -7,13 +7,7 @@ public final class DataSourceCoordinator: NSObject, UICollectionViewDataSource, 
     public let collectionView: UICollectionView
 
     /// The dataSource associated with this coordinator
-    public private(set) var dataSource: DataSource? {
-        didSet {
-            dataSource?.updateDelegate = self
-            collectionView.delegate = self
-            collectionView.dataSource = self
-        }
-    }
+    public private(set) var dataSource: DataSource?
 
     private var globalConfigurations: [String: CollectionUIViewProvider] = [:]
     private var headerConfigurations: [Int: CollectionUIViewProvider] = [:]
@@ -32,10 +26,14 @@ public final class DataSourceCoordinator: NSObject, UICollectionViewDataSource, 
     public init(collectionView: UICollectionView, dataSource: DataSource? = nil) {
         self.collectionView = collectionView
         super.init()
+        
         collectionView.isPrefetchingEnabled = true
         collectionView.allowsMultipleSelection = true
         collectionView.clipsToBounds = false
-        self.dataSource = dataSource
+
+        if let dataSource = dataSource {
+            replace(dataSource: dataSource)
+        }
     }
 
     /// Replaces the current dataSource
@@ -43,6 +41,9 @@ public final class DataSourceCoordinator: NSObject, UICollectionViewDataSource, 
     /// - Parameter dataSource: The new dataSource to associate with this coordinator
     public func replace(dataSource: DataSource) {
         self.dataSource = dataSource
+        dataSource.updateDelegate = self
+        collectionView.delegate = self
+        collectionView.dataSource = self
     }
 
     @objc public func numberOfSections(in collectionView: UICollectionView) -> Int {
