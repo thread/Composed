@@ -7,30 +7,43 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
 
-        let family = PeopleArrayDataSource(elements: [
+        let list1
+            = PeopleArrayDataSource(elements: [
             Person(name: "Shaps Benkau", age: 38),
             Person(name: "Uwe", age: 60),
             Person(name: "Anne", age: 35)
         ])
 
-        let friends = PeopleArrayDataSource(elements: [
+        let list2 = PeopleArrayDataSource(elements: [
             Person(name: "Stewart", age: 39),
             Person(name: "Joseph Duffy", age: 24)
         ])
 
-        let sectioned = PeopleSectionedDataSource(contentsOf: [
-            family.store.elements,
-            friends.store.elements
+        let list3 = PeopleArrayDataSource(elements: [
+            Person(name: "Stuart", age: 30),
+            Person(name: "Dan", age: 12)
         ])
 
+        let list4 = PeopleArrayDataSource(elements: [
+            Person(name: "Stuart", age: 30),
+            Person(name: "Dan", age: 12)
+            ])
+
+        let sectioned = PeopleSectionedDataSource(contentsOf: [
+            list1.store.elements,
+            list2.store.elements
+        ])
+
+        let empty = PeoplePlaceholderDataSource()
+        let innerComposed = ComposedDataSource(children: [list3, empty])
+
         let countries = PeopleSectionedDataSource(elements: countryNames)
+
+        let segmented = SegmentedDataSource(children: [innerComposed, list1])
+        let composed = ComposedDataSource(children: [sectioned, segmented, countries, list4])
+
         countries.title = "Countries"
 
-        let segmented = SegmentedDataSource(children: [friends, family])
-        let composed = ComposedDataSource(children: [sectioned, segmented, countries])
-
-        segmented.setSelected(index: nil)
-        
         let layout = FlowLayout()
         layout.globalFooter.prefersFollowContent = true
         let controller = DataSourceViewController(dataSource: composed, layout: layout)
@@ -46,7 +59,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         nav?.pushViewController(controller, animated: false)
 
         print(controller.dataSource!.debugDescription)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
 //            list.removeAll()
             segmented.setSelected(index: 1)
             print(controller.dataSource!.debugDescription)

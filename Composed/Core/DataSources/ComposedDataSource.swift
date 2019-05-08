@@ -270,8 +270,6 @@ private extension ComposedDataSource {
 extension ComposedDataSource: DataSourceUpdateDelegate {
 
     public func dataSource(_ dataSource: DataSource, performUpdates changeDetails: ComposedChangeDetails) {
-        _invalidate()
-
         var details = ComposedChangeDetails(hasIncrementalChanges: changeDetails.hasIncrementalChanges)
         let mapping = self.mapping(for: dataSource)
 
@@ -284,6 +282,7 @@ extension ComposedDataSource: DataSourceUpdateDelegate {
         details.movedSections = changeDetails.movedSections.map(mapping.globalSections(forLocal:))
         details.movedIndexPaths = changeDetails.movedIndexPaths.map(mapping.globalIndexPaths(forLocal:))
 
+        _invalidate()
         updateDelegate?.dataSource(self, performUpdates: details)
     }
 
