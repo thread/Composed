@@ -25,7 +25,7 @@ extension ArrayDataStore: MutableDataStore {
         set { elements[position] = newValue }
     }
 
-    public func insert<C>(contentsOf newElements: __owned C, at i: Int) where C : Collection, Element == C.Element {
+    public func insert<C>(contentsOf newElements: C, at i: Int) where C : Collection, Element == C.Element {
         elements.insert(contentsOf: newElements, at: i)
         let indexes = i..<newElements.count
         let indexPaths = indexes.map { IndexPath(item: $0, section: 0) }
@@ -44,7 +44,7 @@ extension ArrayDataStore: MutableDataStore {
         delegate?.dataStoreDidUpdate(changeDetails: details)
     }
 
-    public func replaceSubrange<C, R>(_ subrange: R, with newElements: __owned C)
+    public func replaceSubrange<C, R>(_ subrange: R, with newElements: C)
         where C : Collection, R : RangeExpression, Element == C.Element, Index == R.Bound {
             elements.replaceSubrange(subrange, with: newElements)
             let details = ComposedChangeDetails(hasIncrementalChanges: false)
