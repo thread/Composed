@@ -34,8 +34,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
             list2.store.elements
         ])
 
-        let empty = PeoplePlaceholderDataSource()
-        let innerComposed = ComposedDataSource(children: [list3, empty])
+        let innerComposed = ComposedDataSource(children: [list3])
 
         let countries = PeopleSectionedDataSource(elements: countryNames)
 

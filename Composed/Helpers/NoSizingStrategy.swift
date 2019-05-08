@@ -11,15 +11,3 @@ public struct NoSizingStrategy: CollectionUISizingStrategy {
     }
 
 }
-
-public extension CollectionUIProvidingDataSource where Self: EmptyDataSource {
-
-    func sizingStrategy(in collectionView: UICollectionView) -> CollectionUISizingStrategy {
-        return NoSizingStrategy()
-    }
-
-    func cellConfiguration(for indexPath: IndexPath) -> CollectionUIViewProvider {
-        fatalError("This should never be called since an EmptyDataSource will return 0 elements")
-    }
-
-}

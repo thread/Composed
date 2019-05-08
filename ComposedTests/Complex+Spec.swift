@@ -11,8 +11,8 @@ final class Complex_Spec: QuickSpec {
         var list1: ArrayDataSource<Int>!
         var list2: ArrayDataSource<Int>!
         var list3: ArrayDataSource<Int>!
-        var empty1: EmptyDataSource!
-        var empty2: EmptyDataSource!
+        var empty1: ArrayDataSource<Int>!
+        var empty2: ArrayDataSource<Int>!
         var sectioned: SectionedDataSource<Int>!
         var countries: SectionedDataSource<String>!
         var segmented: SegmentedDataSource!
@@ -31,8 +31,8 @@ final class Complex_Spec: QuickSpec {
                 list2.store.elements,
             ])
 
-            empty1 = EmptyDataSource()
-            empty2 = EmptyDataSource()
+            empty1 = ArrayDataSource(elements: [])
+            empty2 = ArrayDataSource(elements: [])
 
             countries = SectionedDataSource(elements: countryNames)
             segmented = SegmentedDataSource(children: [empty1, list1])
