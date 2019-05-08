@@ -2,47 +2,21 @@ import UIKit
 
 public extension UICollectionViewFlowLayout {
 
-    func columnWidth<LayoutDelegate: UICollectionViewDelegateFlowLayout>(forColumnCount columnCount: Int, inSection section: Int, delegate: LayoutDelegate) -> CGFloat {
+    func columnWidth(forColumnCount columnCount: Int, inSection section: Int) -> CGFloat {
         guard let collectionView = collectionView else { return 0 }
 
-        let metrics = self.metrics(forSection: section, delegate: delegate)
+        let metrics = self.metrics(forSection: section)
         let interitemSpacing = CGFloat(columnCount - 1) * metrics.horizontalSpacing
         let availableWiwdth = collectionView.bounds.width - metrics.insets.left - metrics.insets.right - interitemSpacing
 
         return (availableWiwdth / CGFloat(columnCount)).rounded(.down)
     }
 
-    internal func boundaryMetrics(for attributes: UICollectionViewLayoutAttributes) -> (minY: CGFloat, maxY: CGFloat) {
-        guard let collectionView = collectionView  else { return (0, 0) }
-        guard let delegate = collectionView.delegate as? UICollectionViewDelegateFlowLayout else { return (0, 0) }
-
-        let section = attributes.indexPath.count > 1
-            ? attributes.indexPath.section
-            : 0
-
-        // Prevents a divide by zero exception
-        let lastItem = collectionView.numberOfItems(inSection: section) - 1
-        if lastItem < 0 { return (0, 0) }
-
-        guard let firstAttributes = layoutAttributesForItem(at: IndexPath(item: 0, section: section)),
-            let lastAttributes = layoutAttributesForItem(at: IndexPath(item: lastItem, section: section)) else {
-                return (0, 0)
+    internal func metrics(forSection section: Int) -> FlowLayoutSectionMetrics {
+        guard let collectionView = collectionView,
+            let delegate = collectionView.delegate as? UICollectionViewDelegateFlowLayout else {
+                return .zero
         }
-
-        let frame = attributes.frame
-
-        // Section Boundaries:
-        let metrics = self.metrics(forSection: section, delegate: delegate)
-        //   The section should not be higher than the top of its first cell
-        let minY = firstAttributes.frame.minY - frame.height - metrics.insets.top
-        //   The section should not be lower than the bottom of its last cell
-        let maxY = lastAttributes.frame.maxY - frame.height + metrics.insets.bottom
-
-        return (minY, maxY)
-    }
-
-    internal func metrics(forSection section: Int, delegate: UICollectionViewDelegateFlowLayout) -> FlowLayoutSectionMetrics {
-        guard let collectionView = collectionView else { return .zero }
 
         let headerHeight = delegate.collectionView?(collectionView, layout: self, referenceSizeForHeaderInSection: section).height
             ?? headerReferenceSize.height
@@ -64,11 +38,6 @@ public extension UICollectionViewFlowLayout {
                                         insets: insets,
                                         horizontalSpacing: itemSpacing,
                                         verticalSpacing: lineSpacing)
-    }
-
-    internal func firstSectionMetrics() -> FlowLayoutSectionMetrics {
-        guard let layoutDelegate = collectionView?.delegate as? UICollectionViewDelegateFlowLayout else { return .zero }
-        return metrics(forSection: 0, delegate: layoutDelegate)
     }
 
 }
