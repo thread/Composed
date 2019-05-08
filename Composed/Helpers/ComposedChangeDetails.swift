@@ -36,7 +36,7 @@ public struct ComposedChangeDetails {
 
 }
 
-internal extension ComposedChangeDetails {
+public extension ComposedChangeDetails {
 
     init(changesets: [DataSourceChangeset]? = nil) {
         removedSections = IndexSet(changesets?.flatMap { $0.deletedSections } ?? [])
