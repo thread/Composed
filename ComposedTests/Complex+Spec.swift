@@ -51,7 +51,7 @@ final class Complex_Spec: QuickSpec {
                 beforeEach {
                     segmented.setSelected(index: nil)
                 }
-                
+
                 it("the dataSource counts should be adjusted") {
                     expect(segmented.numberOfSections).to(equal(0))
                     expect(innerComposed.numberOfSections).to(equal(1))
@@ -97,6 +97,20 @@ final class Complex_Spec: QuickSpec {
                 it("the dataSource counts should be adjusted") {
                     expect(innerComposed.numberOfSections).to(equal(3))
                     expect(outerComposed.numberOfSections).to(equal(7))
+                }
+            }
+
+            context("when a new child replaces an existing one in outerComposed") {
+                beforeEach {
+                    newList = ArrayDataSource(elements: [0])
+                    var children = outerComposed.children
+                    children.removeLast()
+                    children.append(newList)
+                    outerComposed.replace(children, animated: false)
+                }
+
+                it("the dataSource counts should be adjusted") {
+                    expect(outerComposed.numberOfSections).to(equal(6))
                 }
             }
         }

@@ -56,7 +56,7 @@ open class ComposedDataSource: AggregateDataSource {
         children.reversed().forEach { _insert(dataSource: $0, at: 0) }
     }
 
-    public final func setDataSources(_ dataSources: [DataSource], animated: Bool) {
+    public final func replace(_ dataSources: [DataSource], animated: Bool) {
         removeAll()
         dataSources.reversed().forEach { _insert(dataSource: $0, at: 0) }
         let details = ComposedChangeDetails(hasIncrementalChanges: false)
