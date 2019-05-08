@@ -71,8 +71,6 @@ public typealias DataSourceUIEditingView = EditHandling
 public typealias DataSourceUIEditing = EditHandlingDataSource
 @available(*, deprecated, renamed: "SelectionHandlingDataSource")
 public typealias DataSourceSelecting = SelectionHandlingDataSource
-@available(*, deprecated, renamed: "ScrollEventHandlingDataSource")
-public typealias DataSourceUIScrollPositioning = ScrollEventHandlingDataSource
 @available(*, deprecated, renamed: "LifecycleObservingDataSource")
 public typealias DataSourceLifecycleObserving = LifecycleObservingDataSource
 @available(*, deprecated, renamed: "GlobalProvidingDataSource")

@@ -58,19 +58,3 @@ extension DataSource where Self: CollectionUIProvidingDataSource {
     }
 
 }
-
-public protocol DataSourceMenuHandlingCell: UICollectionViewCell {
-    func handle(action: Selector)
-}
-
-public extension DataSourceMenuHandlingCell {
-    func handle(action: Selector) {
-        guard let view = superview as? UICollectionView else { fatalError() }
-        view.delegate?.collectionView?(view, performAction: action, forItemAt: view.indexPath(for: self)!, withSender: self)
-    }
-}
-
-public protocol MenuProvidingDataSource {
-    func menuItems(for indexPath: IndexPath) -> [UIMenuItem]
-    func perform(action: Selector, for indexPath: IndexPath)
-}
