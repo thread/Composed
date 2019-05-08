@@ -66,7 +66,7 @@ public extension DataSource {
 }
 
 @available(*, deprecated, renamed: "DataSourceEditableView")
-public typealias DataSourceUIEditingView = DataSourceEditableView
+public typealias DataSourceUIEditingView = EditHandling
 @available(*, deprecated, renamed: "EditHandlingDataSource")
 public typealias DataSourceUIEditing = EditHandlingDataSource
 @available(*, deprecated, renamed: "SelectionHandlingDataSource")

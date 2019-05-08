@@ -30,13 +30,13 @@ public struct ComposedChangeDetails {
         movedIndexPaths.forEach(handler)
     }
 
+    public init(hasIncrementalChanges: Bool) {
+        _hasIncrementalChanges = hasIncrementalChanges
+    }
+
 }
 
 internal extension ComposedChangeDetails {
-
-    init(hasIncrementalChanges: Bool) {
-        _hasIncrementalChanges = hasIncrementalChanges
-    }
 
     init(changesets: [DataSourceChangeset]? = nil) {
         removedSections = IndexSet(changesets?.flatMap { $0.deletedSections } ?? [])
