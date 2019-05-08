@@ -7,36 +7,35 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
 
-        let list1
-            = PeopleArrayDataSource(elements: [
+        let list1 = Family(elements: [
             Person(name: "Shaps Benkau", age: 38),
             Person(name: "Uwe", age: 60),
             Person(name: "Anne", age: 35)
         ])
 
-        let list2 = PeopleArrayDataSource(elements: [
+        let list2 = Friends(elements: [
             Person(name: "Stewart", age: 39),
             Person(name: "Joseph Duffy", age: 24)
         ])
 
-        let list3 = PeopleArrayDataSource(elements: [
+        let list3 = Coworkers(elements: [
             Person(name: "Stuart", age: 30),
             Person(name: "Dan", age: 12)
         ])
 
-        let list4 = PeopleArrayDataSource(elements: [
-            Person(name: "Stuart", age: 30),
-            Person(name: "Dan", age: 12)
-            ])
+        let list4 = Websites(elements: [
+            Person(name: "Youtube", age: 30),
+            Person(name: "Google", age: 12)
+        ])
 
-        let sectioned = PeopleSectionedDataSource(contentsOf: [
+        let sectioned = FamilyAndFriends(contentsOf: [
             list1.store.elements,
             list2.store.elements
         ])
 
         let innerComposed = ComposedDataSource(children: [list3])
 
-        let countries = PeopleSectionedDataSource(elements: countryNames)
+        let countries = Countries(elements: countryNames)
 
         let segmented = SegmentedDataSource(children: [innerComposed, list1])
         let composed = ComposedDataSource(children: [sectioned, segmented, countries, list4])
@@ -56,13 +55,6 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 
         nav?.navigationBar.isHidden = false
         nav?.pushViewController(controller, animated: false)
-
-        print(controller.dataSource!.debugDescription)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-//            list.removeAll()
-            segmented.setSelected(index: 1)
-            print(controller.dataSource!.debugDescription)
-        }
 
         return true
     }

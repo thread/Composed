@@ -6,7 +6,14 @@ struct Person {
     var age: Int
 }
 
-final class PeopleArrayDataSource: ArrayDataSource<Person>, CollectionUIProvidingDataSource {
+final class Family: PeopleArrayDataSource { }
+final class Friends: PeopleArrayDataSource { }
+final class Coworkers: PeopleArrayDataSource { }
+final class Websites: PeopleArrayDataSource { }
+final class FamilyAndFriends: PeopleSectionedDataSource { }
+final class Countries: PeopleSectionedDataSource { }
+
+class PeopleArrayDataSource: ArrayDataSource<Person>, CollectionUIProvidingDataSource {
 
     var title: String?
 
@@ -38,7 +45,7 @@ final class PeopleArrayDataSource: ArrayDataSource<Person>, CollectionUIProvidin
 
 }
 
-final class PeopleSectionedDataSource: SectionedDataSource<Person>, CollectionUIProvidingDataSource {
+class PeopleSectionedDataSource: SectionedDataSource<Person>, CollectionUIProvidingDataSource {
 
     var title: String?
 

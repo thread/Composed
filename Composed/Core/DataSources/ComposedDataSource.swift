@@ -113,6 +113,7 @@ open class ComposedDataSource: AggregateDataSource {
 
     public final func remove(dataSource: DataSource) {
         let indexes = _remove(dataSource: dataSource)
+        _invalidate()
         var details = ComposedChangeDetails()
         details.removedSections = IndexSet(indexes)
         updateDelegate?.dataSource(self, performUpdates: details)
@@ -126,17 +127,15 @@ open class ComposedDataSource: AggregateDataSource {
             fatalError("\(wrapper.dataSource) is not a child of this dataSource")
         }
 
-        let removedSections = (0..<wrapper.dataSource.numberOfSections)
+        let removedSections = (0..<dataSource.numberOfSections)
             .map(mapping.globalSection(forLocal:))
-        dataSourceToMappings[DataSourceHashableWrapper(wrapper.dataSource)] = nil
+        dataSourceToMappings[wrapper] = nil
 
         if let index = mappings.firstIndex(where: { DataSourceHashableWrapper($0.dataSource) == wrapper }) {
             mappings.remove(at: index)
         }
 
         wrapper.dataSource.updateDelegate = nil
-
-        _invalidate()
 
         children.lazy
             .compactMap { $0 as? LifecycleObservingDataSource }
@@ -150,9 +149,11 @@ open class ComposedDataSource: AggregateDataSource {
     }
 
     public final func removeAll() {
-        let indexes = dataSourceToMappings.flatMap {
-            _remove(dataSource: $0.key.dataSource)
+        let indexes = dataSourceToMappings.keys.flatMap {
+            _remove(dataSource: $0.dataSource)
         }
+
+        _invalidate()
 
         var details = ComposedChangeDetails()
         details.removedSections = IndexSet(indexes)
