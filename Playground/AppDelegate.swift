@@ -6,7 +6,6 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-
         let list1 = Family(elements: [
             Person(name: "Shaps Benkau", age: 38),
             Person(name: "Uwe", age: 60),

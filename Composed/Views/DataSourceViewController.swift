@@ -22,12 +22,12 @@ open class DataSourceViewController: UIViewController {
         return wrapper.dataSource
     }
 
-    private let wrapper: CollectionViewWrapper
+    private let wrapper: DataSourceCoordinator
     public let layout: UICollectionViewLayout
 
     public init(dataSource: DataSource?, layout: UICollectionViewLayout = FlowLayout()) {
         let collectionView = type(of: self).collectionViewClass.init(frame: .zero, collectionViewLayout: layout)
-        self.wrapper = CollectionViewWrapper(collectionView: collectionView)
+        self.wrapper = DataSourceCoordinator(collectionView: collectionView)
         self.layout = layout
         super.init(nibName: nil, bundle: nil)
 
@@ -49,7 +49,7 @@ open class DataSourceViewController: UIViewController {
     public required init?(coder aDecoder: NSCoder) {
         self.layout = type(of: self).layoutClass.init()
         let collectionView = type(of: self).collectionViewClass.init(frame: .zero, collectionViewLayout: layout)
-        self.wrapper = CollectionViewWrapper(collectionView: collectionView)
+        self.wrapper = DataSourceCoordinator(collectionView: collectionView)
         super.init(coder: aDecoder)
     }
 

@@ -1,13 +1,12 @@
 import Foundation
-// MARK: Changes to this delegate require careful consideration
-// MARK: -
+
+/// The delegate for a dataSource is responsible for processing updates, invalidating elements and mapping section indexes.
+/// Typically, the delegate will also be the parent dataSource, however the 'root' dataSource will likely be a ... or DataSourceViewController
 public protocol DataSourceUpdateDelegate: class {
     func dataSource(_ dataSource: DataSource, performUpdates changeDetails: ComposedChangeDetails)
     func dataSource(_ dataSource: DataSource, invalidateWith context: DataSourceInvalidationContext)
     func dataSource(_ dataSource: DataSource, sectionFor localSection: Int) -> (dataSource: DataSource, globalSection: Int)
 }
-
-// MARK: -
 
 /// Represents a definition of a DataSource for representing a single source of data and its associated visual representations
 public protocol DataSource: class, CustomStringConvertible, CustomDebugStringConvertible {

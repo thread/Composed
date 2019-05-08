@@ -40,7 +40,7 @@ public extension CollectionUIProvidingDataSource {
 extension DataSource where Self: CollectionUIProvidingDataSource {
 
     public var collectionView: UICollectionView? {
-        if let wrapper = updateDelegate as? CollectionViewWrapper {
+        if let wrapper = updateDelegate as? DataSourceCoordinator {
             return wrapper.collectionView
         }
 
@@ -50,7 +50,7 @@ extension DataSource where Self: CollectionUIProvidingDataSource {
             parent = p.updateDelegate as? DataSource
         }
 
-        if let wrapper = parent?.updateDelegate as? CollectionViewWrapper {
+        if let wrapper = parent?.updateDelegate as? DataSourceCoordinator {
             return wrapper.collectionView
         }
 

@@ -11,6 +11,10 @@ public extension CollectionDataSource {
         return element(at: indexPath)
     }
 
+    func dataStoreDidUpdate(changeDetails: ComposedChangeDetails) {
+        updateDelegate?.dataSource(self, performUpdates: changeDetails)
+    }
+
 }
 
 extension CollectionDataSource where Store.Element: Equatable {
@@ -21,12 +25,4 @@ extension CollectionDataSource where Store.Element: Equatable {
             return other == element
         }
     }
-}
-
-extension CollectionDataSource {
-
-    public func dataStoreDidUpdate(changeDetails: ComposedChangeDetails) {
-        updateDelegate?.dataSource(self, performUpdates: changeDetails)
-    }
-
 }

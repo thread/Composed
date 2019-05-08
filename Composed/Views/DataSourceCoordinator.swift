@@ -1,10 +1,10 @@
 import UIKit
 
-internal final class CollectionViewWrapper: NSObject, UICollectionViewDataSource, FlowLayoutDelegate {
+public final class DataSourceCoordinator: NSObject, UICollectionViewDataSource, FlowLayoutDelegate {
 
-    internal let collectionView: UICollectionView
+    public let collectionView: UICollectionView
 
-    private(set) var dataSource: DataSource? {
+    public private(set) var dataSource: DataSource? {
         didSet {
             dataSource?.updateDelegate = self
             collectionView.delegate = self
@@ -19,9 +19,9 @@ internal final class CollectionViewWrapper: NSObject, UICollectionViewDataSource
     private var metrics: [Int: CollectionUISectionMetrics] = [:]
     private var sizingStrategies: [Int: CollectionUISizingStrategy] = [:]
 
-    private var isEditing: Bool = false
+    public private(set) var isEditing: Bool = false
 
-    internal init(collectionView: UICollectionView) {
+    public init(collectionView: UICollectionView) {
         self.collectionView = collectionView
         super.init()
         collectionView.isPrefetchingEnabled = true
@@ -29,11 +29,11 @@ internal final class CollectionViewWrapper: NSObject, UICollectionViewDataSource
         collectionView.clipsToBounds = false
     }
 
-    internal func replace(dataSource: DataSource) {
+    public func replace(dataSource: DataSource) {
         self.dataSource = dataSource
     }
 
-    @objc internal func numberOfSections(in collectionView: UICollectionView) -> Int {
+    @objc public func numberOfSections(in collectionView: UICollectionView) -> Int {
         return dataSource?.numberOfSections ?? 0
     }
 
@@ -41,7 +41,7 @@ internal final class CollectionViewWrapper: NSObject, UICollectionViewDataSource
         return dataSource?.numberOfElements(in: section) ?? 0
     }
 
-    internal func setEditing(_ editing: Bool, animated: Bool) {
+    public func setEditing(_ editing: Bool, animated: Bool) {
         isEditing = editing
         guard let dataSource = dataSource else { return }
 
@@ -83,7 +83,7 @@ internal final class CollectionViewWrapper: NSObject, UICollectionViewDataSource
         }
     }
 
-    internal func invalidate(with context: DataSourceInvalidationContext) {
+    public func invalidate(with context: DataSourceInvalidationContext) {
         defer {
             if context.invalidateGlobalHeaderData, let view = collectionView.supplementaryView(forElementKind: UICollectionView.elementKindGlobalHeader, at: UICollectionView.globalElementIndexPath) {
                 globalConfigurations[UICollectionView.elementKindGlobalHeader]?.configure(view, UICollectionView.globalElementIndexPath, .presentation)
@@ -147,7 +147,7 @@ internal final class CollectionViewWrapper: NSObject, UICollectionViewDataSource
 
 }
 
-extension CollectionViewWrapper {
+public extension DataSourceCoordinator {
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         let (localDataSource, localSection) = localDataSourceAndSection(for: section)
@@ -166,7 +166,7 @@ extension CollectionViewWrapper {
 
 }
 
-extension CollectionViewWrapper {
+public extension DataSourceCoordinator {
 
     func backgroundViewClass(in collectionView: UICollectionView, forSectionAt section: Int) -> UICollectionReusableView.Type? {
         let (localDataSource, localSection) = localDataSourceAndSection(for: section)
@@ -273,7 +273,7 @@ extension CollectionViewWrapper {
 
 }
 
-extension CollectionViewWrapper {
+public extension DataSourceCoordinator {
 
     func heightForGlobalHeader(in collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout) -> CGFloat {
         guard let config = (dataSource as? GlobalViewsProvidingDataSource)?.globalHeaderConfiguration() else {
@@ -311,7 +311,7 @@ extension CollectionViewWrapper {
 
 }
 
-extension CollectionViewWrapper {
+public extension DataSourceCoordinator {
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let (localDataSource, localIndexPath) = localDataSourceAndIndexPath(for: indexPath)
@@ -352,7 +352,7 @@ extension CollectionViewWrapper {
         (cell as? EditHandling)?.setEditing(editable.isEditing, animated: false)
     }
 
-    internal func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let (localDataSource, localIndexPath) = localDataSourceAndIndexPath(for: indexPath)
         let config = cellConfiguration(for: localIndexPath, globalIndexPath: indexPath, dataSource: localDataSource)
         let type = Swift.type(of: config.prototype)
@@ -417,7 +417,7 @@ extension CollectionViewWrapper {
 
 }
 
-private extension CollectionViewWrapper {
+private extension DataSourceCoordinator {
 
     func localDataSourceAndIndexPath(for global: IndexPath) -> (DataSource & CollectionUIProvidingDataSource, IndexPath) {
         guard let rootDataSource = dataSource else { fatalError("No dataSource appears to be attached to this wrapper" ) }
@@ -496,7 +496,7 @@ private extension UICollectionView {
     
 }
 
-extension CollectionViewWrapper: DataSourceUpdateDelegate {
+extension DataSourceCoordinator: DataSourceUpdateDelegate {
 
     private func lifecycleObservers(for sections: IndexSet, in dataSource: DataSource) -> [LifecycleObservingDataSource] {
         return sections
@@ -505,7 +505,7 @@ extension CollectionViewWrapper: DataSourceUpdateDelegate {
             .compactMap { $0.dataSource as? LifecycleObservingDataSource }
     }
 
-    func dataSource(_ dataSource: DataSource, performUpdates changeDetails: ComposedChangeDetails) {
+    public func dataSource(_ dataSource: DataSource, performUpdates changeDetails: ComposedChangeDetails) {
         var changeDetails = changeDetails
 
         defer {
@@ -534,54 +534,6 @@ extension CollectionViewWrapper: DataSourceUpdateDelegate {
                 collectionView.moveItem(at: source, to: target)
             }
         }, completion: nil)
-    }
-
-    public func dataSource(_ dataSource: DataSource, performBatchUpdates updates: () -> Void, completion: ((Bool) -> Void)?) {
-        collectionView.performBatchUpdates(updates, completion: completion)
-    }
-
-    public func dataSource(_ dataSource: DataSource, didInsertSections sections: IndexSet) {
-        collectionView.insertSections(sections)
-        // if we have a new section, we just need to call prepare, didBecomeActive will be called by willDisplayCell at the appropriate time
-        lifecycleObservers(for: sections, in: dataSource).forEach { $0.prepare() }
-    }
-
-    public func dataSource(_ dataSource: DataSource, didDeleteSections sections: IndexSet) {
-        var hiddenSections = sections
-
-        let attributes = collectionView.collectionViewLayout.layoutAttributesForElements(in: collectionView.bounds)
-        attributes?.map { $0.indexPath }.forEach { hiddenSections.remove($0.section) }
-
-        collectionView.deleteSections(sections)
-
-        // The cell might not be visible, so we need to ask the dataSource to resign. If the cell was visible, this will trigger a 2nd call to willResignActive :(
-        lifecycleObservers(for: hiddenSections, in: dataSource).forEach { $0.willResignActive() }
-    }
-
-    public func dataSource(_ dataSource: DataSource, didUpdateSections sections: IndexSet) {
-        collectionView.reloadSections(sections)
-    }
-
-    public func dataSource(_ dataSource: DataSource, didMoveSection from: Int, to: Int) {
-        collectionView.moveSection(from, toSection: to)
-    }
-
-    public func dataSource(_ dataSource: DataSource, didInsertIndexPaths indexPaths: [IndexPath]) {
-        collectionView.insertItems(at: indexPaths)
-    }
-
-    public func dataSource(_ dataSource: DataSource, didDeleteIndexPaths indexPaths: [IndexPath]) {
-        collectionView.deleteItems(at: indexPaths)
-    }
-
-    public func dataSource(_ dataSource: DataSource, didUpdateIndexPaths indexPaths: [IndexPath]) {
-        var context = DataSourceInvalidationContext()
-        context.reloadElements(at: indexPaths)
-        invalidate(with: context)
-    }
-
-    public func dataSource(_ dataSource: DataSource, didMoveFromIndexPath from: IndexPath, toIndexPath to: IndexPath) {
-        collectionView.moveItem(at: from, to: to)
     }
 
     public func dataSource(_ dataSource: DataSource, invalidateWith context: DataSourceInvalidationContext) {
