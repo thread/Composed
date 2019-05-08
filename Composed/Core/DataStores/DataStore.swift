@@ -32,11 +32,6 @@ public protocol DataStore: class {
     func indexPath(where predicate: @escaping (Any) -> Bool) -> IndexPath?
 }
 
-public protocol MutableDataStore: DataStore {
-    func insert(_ element: Element, at index: Int)
-    func remove(at index: Int) -> Element
-}
-
 public extension DataStore {
 
     var isEmpty: Bool {
