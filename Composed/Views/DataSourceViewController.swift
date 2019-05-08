@@ -1,39 +1,49 @@
 import UIKit
 
+/// Provides a convenience controller for working with DataSource's.
+///
+/// Its not required that you use this controller, if you prefer to implement this yourself, you can use a `DataSourceCoordinator` directly.
 open class DataSourceViewController: UIViewController {
 
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
 
+    /// Override to provide a different subclass for your collectionView
     open class var collectionViewClass: UICollectionView.Type {
         return UICollectionView.self
     }
 
+    /// Override to provide a different subclass for your collectionViewLayout
     open class var layoutClass: UICollectionViewLayout.Type {
         return FlowLayout.self
     }
 
+    /// The associated collectionView used by this controller
     public var collectionView: UICollectionView {
         return wrapper.collectionView
     }
 
+    /// The associated dataSource used by this controller
     public var dataSource: DataSource? {
         return wrapper.dataSource
     }
 
-    private let wrapper: DataSourceCoordinator
+    /// The associated layout used by this controller
     public let layout: UICollectionViewLayout
 
+    private let wrapper: DataSourceCoordinator
+
+    /// Make a new controller with the associated dataSource and layout
+    ///
+    /// - Parameters:
+    ///   - dataSource: The dataSource to associate with this controller
+    ///   - layout: The layout to associate with this controller, defaults to `Composed.FlowLayout()`
     public init(dataSource: DataSource?, layout: UICollectionViewLayout = FlowLayout()) {
         let collectionView = type(of: self).collectionViewClass.init(frame: .zero, collectionViewLayout: layout)
-        self.wrapper = DataSourceCoordinator(collectionView: collectionView)
+        self.wrapper = DataSourceCoordinator(collectionView: collectionView, dataSource: dataSource)
         self.layout = layout
         super.init(nibName: nil, bundle: nil)
-
-        if let dataSource = dataSource {
-            self.wrapper.replace(dataSource: dataSource)
-        }
     }
 
     open override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -105,8 +115,12 @@ open class DataSourceViewController: UIViewController {
         wrapper.setEditing(editing, animated: animated)
     }
 
+    /// Convenience function for replacing the dataSource associated with this controller
+    ///
+    /// - Parameter dataSource: The new dataSource to associate with this controller
     public func replace(dataSource: DataSource) {
         wrapper.replace(dataSource: dataSource)
+        invalidateEverything()
     }
 
 }

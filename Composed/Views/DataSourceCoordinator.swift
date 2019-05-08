@@ -1,9 +1,12 @@
 import UIKit
 
+/// This coordinator provides the glue between a UICollectionView and a DataSource. Typically you would retain this on your UIViewController or use the provided DataSourceViewController which does this for you. This class handles all the coordination and updates as well as UICollectionView dataSource and delegate handling, ensuring relevant calls on your dataSource's performed.
 public final class DataSourceCoordinator: NSObject, UICollectionViewDataSource, FlowLayoutDelegate {
 
+    /// The collectionView associated with this coordinator
     public let collectionView: UICollectionView
 
+    /// The dataSource associated with this coordinator
     public private(set) var dataSource: DataSource? {
         didSet {
             dataSource?.updateDelegate = self
@@ -19,16 +22,25 @@ public final class DataSourceCoordinator: NSObject, UICollectionViewDataSource, 
     private var metrics: [Int: CollectionUISectionMetrics] = [:]
     private var sizingStrategies: [Int: CollectionUISizingStrategy] = [:]
 
+    /// Returns true if editing is currently enabled, false otherwise
     public private(set) var isEditing: Bool = false
 
-    public init(collectionView: UICollectionView) {
+    /// Make a new coordinator with the associated UICollectionView and DataSource
+    ///
+    /// - Parameter collectionView: The collectionView to associate with this coordinator
+    /// - Parameter dataSource: The dataSource to associate with this coordinator
+    public init(collectionView: UICollectionView, dataSource: DataSource? = nil) {
         self.collectionView = collectionView
         super.init()
         collectionView.isPrefetchingEnabled = true
         collectionView.allowsMultipleSelection = true
         collectionView.clipsToBounds = false
+        self.dataSource = dataSource
     }
 
+    /// Replaces the current dataSource
+    ///
+    /// - Parameter dataSource: The new dataSource to associate with this coordinator
     public func replace(dataSource: DataSource) {
         self.dataSource = dataSource
     }
@@ -41,6 +53,11 @@ public final class DataSourceCoordinator: NSObject, UICollectionViewDataSource, 
         return dataSource?.numberOfElements(in: section) ?? 0
     }
 
+    /// Sets editing on the collectionView and dataSource
+    ///
+    /// - Parameters:
+    ///   - editing: True to enable editing, false otherwise
+    ///   - animated: If true, the collectionView will animate its state
     public func setEditing(_ editing: Bool, animated: Bool) {
         isEditing = editing
         guard let dataSource = dataSource else { return }
@@ -83,6 +100,9 @@ public final class DataSourceCoordinator: NSObject, UICollectionViewDataSource, 
         }
     }
 
+    /// Invalidates the dataSource, collectionView and associated layout using the specified context
+    ///
+    /// - Parameter context: The context that defines the level of invalidation to perform
     public func invalidate(with context: DataSourceInvalidationContext) {
         defer {
             if context.invalidateGlobalHeaderData, let view = collectionView.supplementaryView(forElementKind: UICollectionView.elementKindGlobalHeader, at: UICollectionView.globalElementIndexPath) {
