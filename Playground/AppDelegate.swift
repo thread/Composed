@@ -6,6 +6,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+
         let list1 = Family(elements: [
             Person(name: "Shaps Benkau", age: 38),
             Person(name: "Uwe", age: 60),
@@ -54,6 +55,13 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 
         nav?.navigationBar.isHidden = false
         nav?.pushViewController(controller, animated: false)
+
+//        print(controller.dataSource!.debugDescription)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            composed.removeAll()
+//            segmented.setSelected(index: 1)
+//            print(controller.dataSource!.debugDescription)
+        }
 
         return true
     }

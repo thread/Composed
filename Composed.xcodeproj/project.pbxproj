@@ -398,8 +398,8 @@
 		54A17312225CC71A00A7D7FD /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				54A17314225CC71A00A7D7FD /* DataSourceHeaderFooterView.swift */,
 				54A17315225CC71A00A7D7FD /* Snap.swift */,
+				54A17314225CC71A00A7D7FD /* DataSourceHeaderFooterView.swift */,
 				54A17316225CC71A00A7D7FD /* DataSourceViewController.swift */,
 				54A17317225CC71A00A7D7FD /* EmbeddedDataSourceCell.swift */,
 				54A17318225CC71A00A7D7FD /* CollectionUIViewProvider.swift */,
