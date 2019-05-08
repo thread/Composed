@@ -20,6 +20,9 @@
 		54645B5D2281A3AE00E53245 /* ColumnSizingStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54645B5C2281A3AE00E53245 /* ColumnSizingStrategy.swift */; };
 		54645B5F2281A3C100E53245 /* CarouselSizingStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54645B5E2281A3C100E53245 /* CarouselSizingStrategy.swift */; };
 		54645B612281A3FD00E53245 /* NoSizingStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54645B602281A3FD00E53245 /* NoSizingStrategy.swift */; };
+		54645B642282E48600E53245 /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54645B622282E48600E53245 /* Quick.framework */; };
+		54645B652282E48600E53245 /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54645B632282E48600E53245 /* Nimble.framework */; };
+		54645B672282E56D00E53245 /* DataStore+Spec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54645B662282E56D00E53245 /* DataStore+Spec.swift */; };
 		546AA49521D5178900588DE4 /* PersonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 546AA49421D5178900588DE4 /* PersonCell.xib */; };
 		548A8B6E2214EEBE00C0A276 /* FooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 548A8B6D2214EEBE00C0A276 /* FooterView.xib */; };
 		548A8B702214FA2800C0A276 /* BackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 548A8B6F2214FA2800C0A276 /* BackgroundView.swift */; };
@@ -121,6 +124,9 @@
 		54645B5C2281A3AE00E53245 /* ColumnSizingStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColumnSizingStrategy.swift; sourceTree = "<group>"; };
 		54645B5E2281A3C100E53245 /* CarouselSizingStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarouselSizingStrategy.swift; sourceTree = "<group>"; };
 		54645B602281A3FD00E53245 /* NoSizingStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoSizingStrategy.swift; sourceTree = "<group>"; };
+		54645B622282E48600E53245 /* Quick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quick.framework; path = Carthage/Build/iOS/Quick.framework; sourceTree = "<group>"; };
+		54645B632282E48600E53245 /* Nimble.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Nimble.framework; path = Carthage/Build/iOS/Nimble.framework; sourceTree = "<group>"; };
+		54645B662282E56D00E53245 /* DataStore+Spec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DataStore+Spec.swift"; sourceTree = "<group>"; };
 		546865242204E3CA00E79B56 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		546AA49421D5178900588DE4 /* PersonCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PersonCell.xib; sourceTree = "<group>"; };
 		548A8B6D2214EEBE00C0A276 /* FooterView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FooterView.xib; sourceTree = "<group>"; };
@@ -188,6 +194,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				54645B652282E48600E53245 /* Nimble.framework in Frameworks */,
+				54645B642282E48600E53245 /* Quick.framework in Frameworks */,
 				540221422195C4F800F0E173 /* Composed.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -254,6 +262,7 @@
 			isa = PBXGroup;
 			children = (
 				5402214A2195C4F800F0E173 /* Info.plist */,
+				54645B662282E56D00E53245 /* DataStore+Spec.swift */,
 			);
 			path = ComposedTests;
 			sourceTree = "<group>";
@@ -261,6 +270,8 @@
 		546865232204E3CA00E79B56 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				54645B632282E48600E53245 /* Nimble.framework */,
+				54645B622282E48600E53245 /* Quick.framework */,
 				546865242204E3CA00E79B56 /* UIKit.framework */,
 			);
 			name = Frameworks;
@@ -447,6 +458,7 @@
 					};
 					540221402195C4F700F0E173 = {
 						CreatedOnToolsVersion = 10.1;
+						LastSwiftMigration = 1020;
 						TestTargetID = 5402211E2195C44F00F0E173;
 					};
 				};
@@ -567,6 +579,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				54645B672282E56D00E53245 /* DataStore+Spec.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -833,8 +846,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = V2CWYL9AN8;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = ComposedTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -843,6 +861,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.152percent.ComposedTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Composed.app/Composed";
@@ -853,8 +872,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = V2CWYL9AN8;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = ComposedTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

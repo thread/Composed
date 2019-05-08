@@ -1,6 +1,6 @@
 import Foundation
 
-public final class ArrayDataStore<Element>: DataStore {
+public final class ArrayDataStore<Element>: MutableDataStore {
 
     public weak var dataSource: DataSource?
     public weak var delegate: DataStoreDelegate?
@@ -32,6 +32,17 @@ public final class ArrayDataStore<Element>: DataStore {
         } else {
             return nil
         }
+    }
+
+    public func insert(_ element: Element, at index: Int) {
+        elements.insert(element, at: index)
+        delegate?.dataStore(didInsertIndexPaths: [IndexPath(item: index, section: 0)])
+    }
+
+    public func remove(at index: Int) -> Element {
+        let element = elements.remove(at: index)
+        delegate?.dataStore(didDeleteIndexPaths: [IndexPath(item: index, section: 0)])
+        return element
     }
 
     public func setElements(_ elements: [Element], changesets: [DataSourceChangeset]? = nil) {
