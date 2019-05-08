@@ -10,7 +10,7 @@ public protocol DataSourceUpdateDelegate: class {
 // MARK: -
 
 /// Represents a definition of a DataSource for representing a single source of data and its associated visual representations
-public protocol DataSource: class {
+public protocol DataSource: class, CustomStringConvertible, CustomDebugStringConvertible {
 
     /// The delegate responsible for responding to update events. This is generally used for update propogation. The 'root' DataSource's delegate will generally be a `UIViewController`
     var updateDelegate: DataSourceUpdateDelegate? { get set }
@@ -64,6 +64,18 @@ public extension DataSource {
 
     func descendants(in sections: IndexSet) -> [DataSource] {
         return sections.compactMap { self.localSection(for: $0).dataSource }
+    }
+
+}
+
+extension DataSource {
+
+    public var description: String {
+        return DataSourceHashableWrapper(self).description
+    }
+
+    public var debugDescription: String {
+        return DataSourceHashableWrapper(self).debugDescription
     }
 
 }

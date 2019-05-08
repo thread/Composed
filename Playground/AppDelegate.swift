@@ -7,34 +7,34 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
 
-//        let family = [
-//            Person(name: "Shaps Benkau", age: 38),
-//            Person(name: "Uwe", age: 60),
-//            Person(name: "Anne", age: 35)
-//        ]
-
-        let friends = [
-            Person(name: "Stewart", age: 39),
-            Person(name: "Joseph Duffy", age: 24)
-        ]
-
-//        let familyDs = PeopleArrayDataSource(elements: family)
-        let friendsDs = PeopleArrayDataSource(elements: friends)
-        let people = SegmentedDataSource(children: [friendsDs])
-        friendsDs.title = "Friends"
-        people.setSelected(index: nil, animated: false)
-
-        let names = countryNames
-        let countries = PeopleSectionedDataSource(elements: names)
-        countries.title = "Countries"
-
-        let list = ListDataSource(children: [
-            people, countries
+        let family = PeopleArrayDataSource(elements: [
+            Person(name: "Shaps Benkau", age: 38),
+            Person(name: "Uwe", age: 60),
+            Person(name: "Anne", age: 35)
         ])
 
+        let friends = PeopleArrayDataSource(elements: [
+            Person(name: "Stewart", age: 39),
+            Person(name: "Joseph Duffy", age: 24)
+        ])
+
+        let sectioned = PeopleSectionedDataSource(contentsOf: [
+            family.store.elements,
+            friends.store.elements
+        ])
+
+        let countries = PeopleSectionedDataSource(elements: countryNames)
+        countries.title = "Countries"
+
+        let segmented = SegmentedDataSource(children: [friends, family])
+        let composed = ComposedDataSource(children: [sectioned, segmented, countries])
+
+        segmented.setSelected(index: nil)
+        
         let layout = FlowLayout()
         layout.globalFooter.prefersFollowContent = true
-        let controller = DataSourceViewController(dataSource: list, layout: layout)
+        let controller = DataSourceViewController(dataSource: composed, layout: layout)
+
         controller.navigationItem.largeTitleDisplayMode = .never
         controller.collectionView.backgroundColor = .white
 
@@ -45,9 +45,11 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         nav?.navigationBar.isHidden = false
         nav?.pushViewController(controller, animated: false)
 
+        print(controller.dataSource!.debugDescription)
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
 //            list.removeAll()
-            people.setSelected(index: 0, animated: true)
+            segmented.setSelected(index: 1)
+            print(controller.dataSource!.debugDescription)
         }
 
         return true

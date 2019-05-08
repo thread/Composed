@@ -1,29 +1,11 @@
 import UIKit
 
-public typealias CollectionViewDataSource = DataSource & CollectionUIProvidingDataSource
-
 internal final class CollectionViewWrapper: NSObject, UICollectionViewDataSource, FlowLayoutDelegate {
 
     internal let collectionView: UICollectionView
 
     private(set) var dataSource: DataSource? {
-        willSet {
-            resignActive()
-
-            if newValue !== dataSource, let ds = dataSource as? LifecycleObservingDataSource {
-                ds.willResignActive()
-                ds.invalidate()
-            }
-        }
         didSet {
-            if let ds = dataSource as? LifecycleObservingDataSource {
-                ds.prepare()
-
-                if collectionView.window != nil {
-                    ds.didBecomeActive()
-                }
-            }
-
             dataSource?.updateDelegate = self
             collectionView.delegate = self
             collectionView.dataSource = self
@@ -49,15 +31,6 @@ internal final class CollectionViewWrapper: NSObject, UICollectionViewDataSource
 
     internal func replace(dataSource: DataSource) {
         self.dataSource = dataSource
-    }
-
-    @objc internal func becomeActive() {
-        collectionView.flashScrollIndicators()
-        preparePlaceholderIfNeeded()
-    }
-
-    @objc internal func resignActive() {
-        
     }
 
     @objc internal func numberOfSections(in collectionView: UICollectionView) -> Int {

@@ -10,18 +10,12 @@ final class EmbeddedDataSourceCell: UICollectionViewCell, ReusableViewNibLoadabl
 
     func prepare(dataSource: _EmbeddedDataSource) {
         wrapper.replace(dataSource: dataSource)
-        wrapper.becomeActive()
     }
 
     override func apply(_ layoutAttributes: UICollectionViewLayoutAttributes) {
         super.apply(layoutAttributes)
         collectionView.backgroundColor = .clear
         collectionView.contentInsetAdjustmentBehavior = .always
-    }
-
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        wrapper.resignActive()
     }
 
 }

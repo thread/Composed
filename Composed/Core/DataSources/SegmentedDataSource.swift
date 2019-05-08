@@ -2,7 +2,11 @@ import Foundation
 
 public protocol DataSourceUpdateDelegateSegmented: DataSourceUpdateDelegate {
     func dataSource(_ dataSource: SegmentedDataSource, didSelect child: DataSource, atIndex index: Int)
-    func dataSource(_ dataSource: SegmentedDataSource, didDeselect index: Int)
+    func dataSource(_ dataSource: SegmentedDataSource, willDeselect index: Int)
+}
+
+public extension DataSourceUpdateDelegateSegmented {
+    func dataSource(_ dataSource: SegmentedDataSource, willDeselect index: Int) { }
 }
 
 open class SegmentedDataSource: AggregateDataSource {
@@ -50,9 +54,6 @@ open class SegmentedDataSource: AggregateDataSource {
     public final func setSelected(index: Int?, animated: Bool = false) {
         guard index != selectedIndex else { return }
 
-        let previous = selectedIndex
-        let hadChild = selectedChild != nil
-
         defer {
             let details = ComposedChangeDetails(hasIncrementalChanges: false)
             updateDelegate?.dataSource(self, performUpdates: details)
@@ -68,12 +69,12 @@ open class SegmentedDataSource: AggregateDataSource {
             return
         }
 
-        selectedChild = _children[index]
-
-        if hadChild {
+        if selectedChild != nil {
             (updateDelegate as? DataSourceUpdateDelegateSegmented)?
-                .dataSource(self, didDeselect: previous)
+                .dataSource(self, willDeselect: selectedIndex)
         }
+
+        selectedChild = _children[index]
         
         (updateDelegate as? DataSourceUpdateDelegateSegmented)?
             .dataSource(self, didSelect: _children[index], atIndex: index)

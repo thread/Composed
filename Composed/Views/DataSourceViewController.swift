@@ -97,14 +97,7 @@ open class DataSourceViewController: UIViewController {
 
     open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
-        guard presentedViewController == nil else { return }
-        wrapper.becomeActive()
-    }
-
-    open override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        wrapper.resignActive()
+        collectionView.flashScrollIndicators()
     }
 
     open override func setEditing(_ editing: Bool, animated: Bool) {
