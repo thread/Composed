@@ -63,56 +63,12 @@ extension EmbeddingDataSource: CollectionUIProvidingDataSource {
 
 extension EmbeddingDataSource: DataSourceUpdateDelegate {
 
-    public func dataSource(_ dataSource: DataSource, willPerform updates: [DataSourceUpdate]) {
-
-    }
-
-    public func dataSource(_ dataSource: DataSource, didPerform updates: [DataSourceUpdate]) {
-
-    }
-
-    public func dataSource(_ dataSource: DataSource, didInsertSections sections: IndexSet) {
-//        collectionView.insertSections(sections)
-    }
-
-    public func dataSource(_ dataSource: DataSource, didDeleteSections sections: IndexSet) {
-//        collectionView.deleteSections(sections)
-    }
-
-    public func dataSource(_ dataSource: DataSource, didUpdateSections sections: IndexSet) {
-//        collectionView.reloadSections(sections)
-    }
-
-    public func dataSource(_ dataSource: DataSource, didMoveSection from: Int, to: Int) {
-
-    }
-
-    public func dataSource(_ dataSource: DataSource, didInsertIndexPaths indexPaths: [IndexPath]) {
-
-    }
-
-    public func dataSource(_ dataSource: DataSource, didDeleteIndexPaths indexPaths: [IndexPath]) {
-
-    }
-
-    public func dataSource(_ dataSource: DataSource, didUpdateIndexPaths indexPaths: [IndexPath]) {
-
-    }
-
-    public func dataSource(_ dataSource: DataSource, didMoveFromIndexPath from: IndexPath, toIndexPath to: IndexPath) {
-
-    }
-
-    public func dataSourceDidReload(_ dataSource: DataSource) {
-
-    }
-
-    public func dataSource(_ dataSource: DataSource, performBatchUpdates updates: () -> Void, completion: ((Bool) -> Void)?) {
-
+    public func dataSource(_ dataSource: DataSource, performUpdates changeDetails: ComposedChangeDetails) {
+        fatalError("Implement")
     }
 
     public func dataSource(_ dataSource: DataSource, invalidateWith context: DataSourceInvalidationContext) {
-
+        fatalError("Implement")
     }
 
     public func dataSource(_ dataSource: DataSource, sectionFor local: Int) -> (dataSource: DataSource, globalSection: Int) {
@@ -161,52 +117,8 @@ extension _EmbeddedDataSource: GlobalViewsProvidingDataSource {
 
 extension _EmbeddedDataSource: DataSourceUpdateDelegate {
 
-    public func dataSource(_ dataSource: DataSource, willPerform updates: [DataSourceUpdate]) {
-        updateDelegate?.dataSource(self, willPerform: updates)
-    }
-
-    public func dataSource(_ dataSource: DataSource, didPerform updates: [DataSourceUpdate]) {
-        updateDelegate?.dataSource(self, didPerform: updates)
-    }
-
-    public func dataSource(_ dataSource: DataSource, didInsertSections sections: IndexSet) {
-        updateDelegate?.dataSource(self, didInsertSections: sections)
-    }
-
-    public func dataSource(_ dataSource: DataSource, didDeleteSections sections: IndexSet) {
-        updateDelegate?.dataSource(self, didDeleteSections: sections)
-    }
-
-    public func dataSource(_ dataSource: DataSource, didUpdateSections sections: IndexSet) {
-        updateDelegate?.dataSource(self, didUpdateSections: sections)
-    }
-
-    public func dataSource(_ dataSource: DataSource, didMoveSection from: Int, to: Int) {
-        updateDelegate?.dataSource(self, didMoveSection: from, to: to)
-    }
-
-    public func dataSource(_ dataSource: DataSource, didInsertIndexPaths indexPaths: [IndexPath]) {
-        updateDelegate?.dataSource(self, didInsertIndexPaths: indexPaths)
-    }
-
-    public func dataSource(_ dataSource: DataSource, didDeleteIndexPaths indexPaths: [IndexPath]) {
-        updateDelegate?.dataSource(self, didDeleteIndexPaths: indexPaths)
-    }
-
-    public func dataSource(_ dataSource: DataSource, didUpdateIndexPaths indexPaths: [IndexPath]) {
-        updateDelegate?.dataSource(self, didUpdateIndexPaths: indexPaths)
-    }
-
-    public func dataSource(_ dataSource: DataSource, didMoveFromIndexPath from: IndexPath, toIndexPath to: IndexPath) {
-        updateDelegate?.dataSource(self, didMoveFromIndexPath: from, toIndexPath: to)
-    }
-
-    public func dataSourceDidReload(_ dataSource: DataSource) {
-        updateDelegate?.dataSourceDidReload(self)
-    }
-
-    public func dataSource(_ dataSource: DataSource, performBatchUpdates updates: () -> Void, completion: ((Bool) -> Void)?) {
-        updateDelegate?.dataSource(self, performBatchUpdates: updates, completion: completion)
+    func dataSource(_ dataSource: DataSource, performUpdates changeDetails: ComposedChangeDetails) {
+        updateDelegate?.dataSource(self, performUpdates: changeDetails)
     }
 
     public func dataSource(_ dataSource: DataSource, invalidateWith context: DataSourceInvalidationContext) {

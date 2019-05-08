@@ -2,39 +2,9 @@ import Foundation
 // MARK: Changes to this delegate require careful consideration
 // MARK: -
 public protocol DataSourceUpdateDelegate: class {
-    func dataSource(_ dataSource: DataSource, willPerform updates: [DataSourceUpdate])
-    func dataSource(_ dataSource: DataSource, didPerform updates: [DataSourceUpdate])
-    
-    func dataSource(_ dataSource: DataSource, didInsertSections sections: IndexSet)
-    func dataSource(_ dataSource: DataSource, didDeleteSections sections: IndexSet)
-    func dataSource(_ dataSource: DataSource, didUpdateSections sections: IndexSet)
-    func dataSource(_ dataSource: DataSource, didMoveSection from: Int, to: Int)
-
-    func dataSource(_ dataSource: DataSource, didInsertIndexPaths indexPaths: [IndexPath])
-    func dataSource(_ dataSource: DataSource, didDeleteIndexPaths indexPaths: [IndexPath])
-    func dataSource(_ dataSource: DataSource, didUpdateIndexPaths indexPaths: [IndexPath])
-    func dataSource(_ dataSource: DataSource, didMoveFromIndexPath from: IndexPath, toIndexPath to: IndexPath)
-
-    func dataSourceDidReload(_ dataSource: DataSource)
-    func dataSource(_ dataSource: DataSource, performBatchUpdates updates: () -> Void, completion: ((Bool) -> Void)?)
+    func dataSource(_ dataSource: DataSource, performUpdates changeDetails: ComposedChangeDetails)
     func dataSource(_ dataSource: DataSource, invalidateWith context: DataSourceInvalidationContext)
-
     func dataSource(_ dataSource: DataSource, sectionFor localSection: Int) -> (dataSource: DataSource, globalSection: Int)
-    
-}
-
-public extension DataSourceUpdateDelegate {
-    @available(swift, obsoleted: 1.0, message: "This is no longer required and has been removed entirely. Calling this method results in a fatalError")
-    func dataSource(_ dataSource: DataSource, globalFor local: IndexPath) -> (dataSource: DataSource, globalIndexPath: IndexPath) { fatalError() }
-    @available(*, deprecated, renamed: "dataSource(_:sectionFor:)", message: "Method has been named. Calling this method will now result in a fatalError")
-    func dataSource(_ dataSource: DataSource, globalFor local: Int) -> (dataSource: DataSource, globalSection: Int) { fatalError() }
-}
-
-public extension DataSource {
-    @available(*, deprecated, renamed: "localSection(for:)")
-    func dataSourceFor(global section: Int) -> (dataSource: DataSource, localSection: Int) { fatalError() }
-    @available(*, deprecated, message: "Use localSection(for:) – Map the section, then set indexPath.item manually, it remains unchanged")
-    func dataSourceFor(global indexPath: IndexPath) -> (dataSource: DataSource, localIndexPath: IndexPath) { fatalError() }
 }
 
 // MARK: -
@@ -77,10 +47,6 @@ public extension DataSource {
         return delegate is _EmbeddedDataSource
     }
 
-}
-
-public extension DataSource {
-
     var isRoot: Bool {
         return !(updateDelegate is DataSource)
     }
@@ -94,6 +60,10 @@ public extension DataSource {
         }
 
         return dataSource.updateDelegate != nil
+    }
+
+    func descendants(in sections: IndexSet) -> [DataSource] {
+        return sections.compactMap { self.localSection(for: $0).dataSource }
     }
 
 }

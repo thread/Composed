@@ -2,6 +2,7 @@ import Foundation
 
 public protocol DataSourceUpdateDelegateSegmented: DataSourceUpdateDelegate {
     func dataSource(_ dataSource: SegmentedDataSource, didSelect child: DataSource, atIndex index: Int)
+    func dataSource(_ dataSource: SegmentedDataSource, didDeselect index: Int)
 }
 
 open class SegmentedDataSource: AggregateDataSource {
@@ -49,15 +50,16 @@ open class SegmentedDataSource: AggregateDataSource {
     public final func setSelected(index: Int?, animated: Bool = false) {
         guard index != selectedIndex else { return }
 
+        let previous = selectedIndex
+        let hadChild = selectedChild != nil
+
+        defer {
+            let details = ComposedChangeDetails(hasIncrementalChanges: false)
+            updateDelegate?.dataSource(self, performUpdates: details)
+        }
+
         guard let index = index else {
             selectedChild = nil
-
-            if animated {
-                updateDelegate?.dataSource(self, didDeleteSections: IndexSet(integer: 0))
-            } else {
-                updateDelegate?.dataSourceDidReload(self)
-            }
-
             return
         }
         
@@ -66,20 +68,13 @@ open class SegmentedDataSource: AggregateDataSource {
             return
         }
 
-        let deletedSections = 0..<numberOfSections
-        let insertedSections = 0..<_children[index].numberOfSections
-
         selectedChild = _children[index]
 
-        if animated {
-            updateDelegate?.dataSource(self, performBatchUpdates: {
-                updateDelegate?.dataSource(self, didDeleteSections: IndexSet(deletedSections))
-                updateDelegate?.dataSource(self, didInsertSections: IndexSet(insertedSections))
-            }, completion: nil)
-        } else {
-            updateDelegate?.dataSourceDidReload(self)
+        if hadChild {
+            (updateDelegate as? DataSourceUpdateDelegateSegmented)?
+                .dataSource(self, didDeselect: previous)
         }
-
+        
         (updateDelegate as? DataSourceUpdateDelegateSegmented)?
             .dataSource(self, didSelect: _children[index], atIndex: index)
     }
@@ -158,64 +153,8 @@ open class SegmentedDataSource: AggregateDataSource {
 
 extension SegmentedDataSource: DataSourceUpdateDelegate {
 
-    public final func dataSource(_ dataSource: DataSource, willPerform updates: [DataSourceUpdate]) {
-        guard selectedChild != nil else { return }
-        updateDelegate?.dataSource(self, willPerform: updates)
-    }
-
-    public final func dataSource(_ dataSource: DataSource, didPerform updates: [DataSourceUpdate]) {
-        guard selectedChild != nil else { return }
-        updateDelegate?.dataSource(self, didPerform: updates)
-    }
-
-    public final func dataSource(_ dataSource: DataSource, didInsertSections sections: IndexSet) {
-        guard selectedChild != nil else { return }
-        updateDelegate?.dataSource(self, didInsertSections: sections)
-    }
-
-    public final func dataSource(_ dataSource: DataSource, didDeleteSections sections: IndexSet) {
-        guard selectedChild != nil else { return }
-        updateDelegate?.dataSource(self, didDeleteSections: sections)
-    }
-
-    public final func dataSource(_ dataSource: DataSource, didUpdateSections sections: IndexSet) {
-        guard selectedChild != nil else { return }
-        updateDelegate?.dataSource(self, didUpdateSections: sections)
-    }
-
-    public final func dataSource(_ dataSource: DataSource, didMoveSection from: Int, to: Int) {
-        guard selectedChild != nil else { return }
-        updateDelegate?.dataSource(self, didMoveSection: from, to: to)
-    }
-
-    public final func dataSource(_ dataSource: DataSource, didInsertIndexPaths indexPaths: [IndexPath]) {
-        guard selectedChild != nil else { return }
-        updateDelegate?.dataSource(self, didInsertIndexPaths: indexPaths)
-    }
-
-    public final func dataSource(_ dataSource: DataSource, didDeleteIndexPaths indexPaths: [IndexPath]) {
-        guard selectedChild != nil else { return }
-        updateDelegate?.dataSource(self, didDeleteIndexPaths: indexPaths)
-    }
-
-    public final func dataSource(_ dataSource: DataSource, didUpdateIndexPaths indexPaths: [IndexPath]) {
-        guard selectedChild != nil else { return }
-        updateDelegate?.dataSource(self, didUpdateIndexPaths: indexPaths)
-    }
-
-    public final func dataSource(_ dataSource: DataSource, didMoveFromIndexPath from: IndexPath, toIndexPath to: IndexPath) {
-        guard selectedChild != nil else { return }
-        updateDelegate?.dataSource(self, didMoveFromIndexPath: from, toIndexPath: to)
-    }
-
-    public final func dataSourceDidReload(_ dataSource: DataSource) {
-        guard selectedChild != nil else { return }
-        updateDelegate?.dataSourceDidReload(self)
-    }
-
-    public final func dataSource(_ dataSource: DataSource, performBatchUpdates updates: () -> Void, completion: ((Bool) -> Void)?) {
-        guard selectedChild != nil else { return }
-        updateDelegate?.dataSource(self, performBatchUpdates: updates, completion: completion)
+    public func dataSource(_ dataSource: DataSource, performUpdates changeDetails: ComposedChangeDetails) {
+        updateDelegate?.dataSource(self, performUpdates: changeDetails)
     }
 
     public final func dataSource(_ dataSource: DataSource, invalidateWith context: DataSourceInvalidationContext) {

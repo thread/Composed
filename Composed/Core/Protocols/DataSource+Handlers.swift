@@ -1,24 +1,15 @@
 import UIKit
 
-@available(*, deprecated, renamed: "DataSourceEditableView")
-public typealias DataSourceUIEditingView = DataSourceEditableView
-
 public protocol DataSourceEditableView: UIView {
     var isEditing: Bool { get }
     func setEditing(_ editing: Bool, animated: Bool)
 }
-
-@available(*, deprecated, renamed: "EditHandlingDataSource")
-public typealias DataSourceUIEditing = EditHandlingDataSource
 
 public protocol EditHandlingDataSource: DataSource {
     var isEditing: Bool { get }
     func setEditing(_ editing: Bool, animated: Bool)
     func supportsEditing(for indexPath: IndexPath) -> Bool
 }
-
-@available(*, deprecated, renamed: "SelectionHandlingDataSource")
-public typealias DataSourceSelecting = SelectionHandlingDataSource
 
 public protocol SelectionHandlingDataSource: DataSource {
     var allowsMultipleSelection: Bool { get }
@@ -39,9 +30,6 @@ public enum DataSourceScrollPosition {
     case top
     case bottom
 }
-
-@available(*, deprecated, renamed: "ScrollEventHandlingDataSource")
-public typealias DataSourceUIScrollPositioning = ScrollEventHandlingDataSource
 
 public protocol ScrollEventHandlingDataSource: DataSource {
     var preferredScrollPosition: DataSourceScrollPosition { get }

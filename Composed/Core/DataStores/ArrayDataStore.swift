@@ -2,7 +2,6 @@ import Foundation
 
 public final class ArrayDataStore<Element>: DataStore {
 
-    public weak var dataSource: DataSource?
     public weak var delegate: DataStoreDelegate?
     public internal(set) var elements: [Element] = []
 
@@ -35,21 +34,12 @@ public final class ArrayDataStore<Element>: DataStore {
         return elements[indexPath.item]
     }
 
-    public func indexPath(where predicate: @escaping (Any) -> Bool) -> IndexPath? {
+    public func indexPath(where predicate: @escaping (Element) -> Bool) -> IndexPath? {
         if let index = elements.firstIndex(where: predicate) {
             return IndexPath(item: index, section: 0)
         } else {
             return nil
         }
-    }
-
-}
-
-extension ArrayDataStore {
-
-    @available(*, deprecated, renamed: "replaceElements(_:changesets:)")
-    public func setElements(_ elements: [Element], changesets: [DataSourceChangeset]? = nil) {
-        replaceElements(elements, changesets: changesets)
     }
 
 }

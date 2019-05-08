@@ -26,6 +26,18 @@ internal final class ComposedMappings {
         return localToGlobalSections[section]!
     }
 
+    internal func globalSections(forLocal sections: (source: Int, target: Int)) -> (Int, Int) {
+        let source = globalSection(forLocal: sections.source)
+        let target = globalSection(forLocal: sections.target)
+        return (source, target)
+    }
+
+    internal func globalIndexPaths(forLocal indexPaths: (source: IndexPath, target: IndexPath)) -> (IndexPath, IndexPath) {
+        let source = globalIndexPath(forLocal: indexPaths.source)
+        let target = globalIndexPath(forLocal: indexPaths.target)
+        return (source, target)
+    }
+
     internal func localSections(forGlobal sections: IndexSet) -> IndexSet {
         var localIndexes = IndexSet()
 

@@ -1,8 +1,5 @@
 import Foundation
 
-@available(*, deprecated, renamed: "LifecycleObservingDataSource")
-public typealias DataSourceLifecycleObserving = LifecycleObservingDataSource
-
 public protocol LifecycleObservingDataSource: DataSource {
 
     /// Called when the dataSource is initially prepared, or after an invalidation.

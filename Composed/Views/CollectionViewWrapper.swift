@@ -166,11 +166,6 @@ internal final class CollectionViewWrapper: NSObject, UICollectionViewDataSource
         collectionView.collectionViewLayout.invalidateLayout(with: layoutContext)
     }
 
-    internal func dataSource(_ dataSource: DataSource, willPerform updates: [DataSourceUpdate]) { }
-    internal func dataSource(_ dataSource: DataSource, didPerform updates: [DataSourceUpdate]) {
-        preparePlaceholderIfNeeded()
-    }
-
     private func preparePlaceholderIfNeeded() {
         collectionView.backgroundView = dataSource?.isEmpty == true
             ? (dataSource as? GlobalViewsProvidingDataSource)?.placeholderView
@@ -546,13 +541,6 @@ private extension UICollectionView {
 
 extension CollectionViewWrapper: DataSourceUpdateDelegate {
 
-    ///    This is a little difficult to read and to see where the scopes exist.
-    ///    But its highly efficient, so worthy of inclusion.
-    ///
-    ///    1. Grab all the local dataSources for each section inserted
-    ///    2. Hash them to remove duplicates (since DS's can contain multiple sections)
-    ///    3. Map them to DataSourceUILifecycleObserving
-    ///    4. Call didBecomeActive
     private func lifecycleObservers(for sections: IndexSet, in dataSource: DataSource) -> [LifecycleObservingDataSource] {
         return sections
             .lazy
@@ -560,10 +548,35 @@ extension CollectionViewWrapper: DataSourceUpdateDelegate {
             .compactMap { $0.dataSource as? LifecycleObservingDataSource }
     }
 
-    public func dataSourceDidReload(_ dataSource: DataSource) {
-        // Update
-        collectionView.reloadData()
-        preparePlaceholderIfNeeded()
+    func dataSource(_ dataSource: DataSource, performUpdates changeDetails: ComposedChangeDetails) {
+        var changeDetails = changeDetails
+
+        defer {
+            preparePlaceholderIfNeeded()
+        }
+
+        guard changeDetails.hasIncrementalChanges else {
+            collectionView.reloadData()
+            return
+        }
+
+        collectionView.performBatchUpdates({
+            collectionView.deleteSections(changeDetails.removedSections)
+            collectionView.insertSections(changeDetails.insertedSections)
+            collectionView.reloadSections(changeDetails.updatedSections)
+
+            changeDetails.enumerateMovedSections { source, target in
+                collectionView.moveSection(source, toSection: target)
+            }
+
+            collectionView.deleteItems(at: changeDetails.removedIndexPaths)
+            collectionView.insertItems(at: changeDetails.insertedIndexPaths)
+            collectionView.reloadItems(at: changeDetails.updatedIndexPaths)
+
+            changeDetails.enumerateMovedIndexPaths { source, target in
+                collectionView.moveItem(at: source, to: target)
+            }
+        }, completion: nil)
     }
 
     public func dataSource(_ dataSource: DataSource, performBatchUpdates updates: () -> Void, completion: ((Bool) -> Void)?) {

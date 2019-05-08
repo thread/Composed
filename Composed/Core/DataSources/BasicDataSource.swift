@@ -13,7 +13,6 @@ open class BasicDataSource<Store>: CollectionDataSource where Store: DataStore {
     public init(store: Store) {
         self.store = store
         self.store.delegate = self
-        store.dataSource = self
     }
 
     public var numberOfSections: Int {

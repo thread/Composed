@@ -1,8 +1,5 @@
 import UIKit
 
-@available(*, deprecated, renamed: "DataSourceUIConfiguration")
-public typealias DataSourceUIConfiguration = CollectionUIViewProvider
-
 public final class CollectionUIViewProvider {
 
     public enum Source {

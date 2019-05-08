@@ -1,8 +1,5 @@
 import UIKit
 
-@available(*, deprecated, renamed: "CollectionUISectionMetrics")
-public typealias DataSourceUISectionMetrics = CollectionUISectionMetrics
-
 public struct CollectionUISectionMetrics {
 
     public let insets: UIEdgeInsets
@@ -18,9 +15,6 @@ public struct CollectionUISectionMetrics {
     public static let zero = CollectionUISectionMetrics(insets: .zero, horizontalSpacing: 0, verticalSpacing: 0)
 
 }
-
-@available(*, deprecated, renamed: "CollectionUIProvidingDataSource")
-public typealias DataSourceUIProviding = CollectionUIProvidingDataSource
 
 public protocol CollectionUIProvidingDataSource: DataSource {
     func sizingStrategy(in collectionView: UICollectionView) -> CollectionUISizingStrategy
