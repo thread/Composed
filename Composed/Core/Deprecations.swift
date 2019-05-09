@@ -80,7 +80,7 @@ public extension DataSourceInvalidationContext {
     }
 }
 
-@available(*, deprecated, renamed: "DataSourceEditableView")
+@available(*, deprecated, renamed: "EditHandling")g
 public typealias DataSourceUIEditingView = EditHandling
 @available(*, deprecated, renamed: "EditHandlingDataSource")
 public typealias DataSourceUIEditing = EditHandlingDataSource
@@ -101,7 +101,7 @@ public typealias DataSourceUISectionMetrics = CollectionUISectionMetrics
 public typealias DataSourceUISizingContext = CollectionUISizingContext
 @available(*, deprecated, renamed: "CollectionUISizingStrategy")
 public typealias DataSourceUISizingStrategy = CollectionUISizingStrategy
-@available(*, deprecated, renamed: "DataSourceUIConfiguration")
+@available(*, deprecated, renamed: "CollectionUIViewProvider")
 public typealias DataSourceUIConfiguration = CollectionUIViewProvider
 
 extension CollectionUIViewProvider {
