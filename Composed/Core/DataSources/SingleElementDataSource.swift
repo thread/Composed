@@ -13,12 +13,6 @@ open class SingleElementDataSource<Element>: DataSource {
     /// The number of elements the data source provides. Hardcoded to `1`
     public var numberOfSections: Int { return 1 }
 
-    /// The index paths this data source provides. Each `IndexPath` will
-    /// have a section of 0
-    public var indexPaths: [IndexPath] {
-        return (0...numberOfElements(in: 0)).map { IndexPath(item: $0, section: 0) }
-    }
-
     public var isEmpty: Bool {
         return numberOfElements(in: 0) == 0
     }
