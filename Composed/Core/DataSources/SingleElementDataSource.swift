@@ -9,14 +9,6 @@ open class SingleElementDataSource<Element>: DataSource {
     
     /// The element being stored by the data source
     public private(set) var element: Element
-    
-    /// `true` if `element` is an `Optional.none`
-    public var elementIsNil: Bool {
-        switch element as Any {
-        case Optional<Any>.none: return true
-        default: return false
-        }
-    }
 
     /// The number of elements the data source provides. Hardcoded to `1`
     public var numberOfSections: Int { return 1 }
@@ -62,7 +54,10 @@ open class SingleElementDataSource<Element>: DataSource {
             return 0
         }
         
-        return elementIsNil ? 0 : 1
+        switch element as Any {
+        case Optional<Any>.none: return 0
+        default: return 1
+        }
     }
 
     /**
