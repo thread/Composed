@@ -80,7 +80,7 @@ public extension DataSourceInvalidationContext {
     }
 }
 
-@available(*, deprecated, renamed: "EditHandling")g
+@available(*, deprecated, renamed: "EditHandling")
 public typealias DataSourceUIEditingView = EditHandling
 @available(*, deprecated, renamed: "EditHandlingDataSource")
 public typealias DataSourceUIEditing = EditHandlingDataSource
