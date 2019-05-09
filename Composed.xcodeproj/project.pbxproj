@@ -61,6 +61,7 @@
 		54BAB1662214D0630064CE51 /* GlobalFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 54BAB1652214D0630064CE51 /* GlobalFooterView.xib */; };
 		54D0A8A521F64AF600C65B72 /* HeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 54D0A8A421F64AF600C65B72 /* HeaderView.xib */; };
 		D93738212260C641001F29EB /* SingleElementDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D93738202260C641001F29EB /* SingleElementDataSource.swift */; };
+		D937381D22609C05001F29EB /* ArrayDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D937381C22609C05001F29EB /* ArrayDataSource.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -160,6 +161,7 @@
 		54BAB1652214D0630064CE51 /* GlobalFooterView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GlobalFooterView.xib; sourceTree = "<group>"; };
 		54D0A8A421F64AF600C65B72 /* HeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HeaderView.xib; sourceTree = "<group>"; };
 		D93738202260C641001F29EB /* SingleElementDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleElementDataSource.swift; sourceTree = "<group>"; };
+		D937381C22609C05001F29EB /* ArrayDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayDataSource.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -290,6 +292,7 @@
 				54A172FA225CC71A00A7D7FD /* SegmentedDataSource.swift */,
 				54A172FB225CC71A00A7D7FD /* EmbeddingDataSource.swift */,
 				54A172FC225CC71A00A7D7FD /* BasicDataSource.swift */,
+				D937381C22609C05001F29EB /* ArrayDataSource.swift */,
 				54A172FD225CC71A00A7D7FD /* ComposedDataSource.swift */,
 				D93738202260C641001F29EB /* SingleElementDataSource.swift */,
 			);
@@ -538,6 +541,7 @@
 				54A17327225CC72900A7D7FD /* LifecycleObservingDataSource.swift in Sources */,
 				54A17321225CC72900A7D7FD /* ManagedDataStore.swift in Sources */,
 				54A1732C225CC72900A7D7FD /* DataSourceHashableWrapper.swift in Sources */,
+				D937381D22609C05001F29EB /* ArrayDataSource.swift in Sources */,
 				54A1731D225CC72900A7D7FD /* EmbeddingDataSource.swift in Sources */,
 				54A17335225CC72900A7D7FD /* FlowLayout+Types.swift in Sources */,
 				54A17337225CC72900A7D7FD /* DataSourceHeaderFooterView.swift in Sources */,
