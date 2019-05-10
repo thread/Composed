@@ -56,14 +56,19 @@ public extension DataSourceUpdateDelegate {
     @available(swift, obsoleted: 1.0, message: "This is no longer required and has been removed entirely. Calling this method results in a fatalError")
     func dataSource(_ dataSource: DataSource, globalFor local: IndexPath) -> (dataSource: DataSource, globalIndexPath: IndexPath) { fatalError() }
     @available(*, deprecated, renamed: "dataSource(_:sectionFor:)", message: "Method has been named. Calling this method will now result in a fatalError")
-    func dataSource(_ dataSource: DataSource, globalFor local: Int) -> (dataSource: DataSource, globalSection: Int) { fatalError() }
+    func dataSource(_ dataSource: DataSource, globalFor local: Int) -> (dataSource: DataSource, globalSection: Int) {
+        return self.dataSource(dataSource, sectionFor: local)
+    }
 }
 
 public extension DataSource {
     @available(*, deprecated, renamed: "localSection(for:)")
-    func dataSourceFor(global section: Int) -> (dataSource: DataSource, localSection: Int) { fatalError() }
+    func dataSourceFor(global section: Int) -> (dataSource: DataSource, localSection: Int) { return localSection(for: section) }
     @available(*, deprecated, message: "Use localSection(for:) – Map the section, then set indexPath.item manually, it remains unchanged")
-    func dataSourceFor(global indexPath: IndexPath) -> (dataSource: DataSource, localIndexPath: IndexPath) { fatalError() }
+    func dataSourceFor(global indexPath: IndexPath) -> (dataSource: DataSource, localIndexPath: IndexPath) {
+        let global = localSection(for: indexPath.section)
+        return (global.dataSource, IndexPath(item: indexPath.item, section: global.localSection) )
+    }
 }
 
 public extension DataSourceInvalidationContext {
