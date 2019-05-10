@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 public extension DataStoreDelegate {
     @available(swift, obsoleted: 1.0, message: "This is no longer required and has been removed entirely. Calling this method results in a fatalError")
