@@ -1,6 +1,6 @@
 import UIKit
 
-public protocol EditHandling: UIView {
+public protocol EditHandling {
     var isEditing: Bool { get }
     func setEditing(_ editing: Bool, animated: Bool)
 }

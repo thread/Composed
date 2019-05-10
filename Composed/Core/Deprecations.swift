@@ -103,6 +103,8 @@ public typealias DataSourceUISizingContext = CollectionUISizingContext
 public typealias DataSourceUISizingStrategy = CollectionUISizingStrategy
 @available(*, deprecated, renamed: "CollectionUIViewProvider")
 public typealias DataSourceUIConfiguration = CollectionUIViewProvider
+@available(*, deprecated, renamed: "EditHandling")
+public typealias DataSourceEditableView = EditHandling
 
 extension CollectionUIViewProvider {
     @available(*, deprecated, renamed: "init(prototype:dequeueMethod:reuseIdentifier:_:)")
