@@ -28,6 +28,17 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
             Person(name: "Google", age: 12)
         ])
 
+        let embedded = EmbeddingDataSource(child:
+            Family(elements: [
+                Person(name: "Person 1", age: 1),
+                Person(name: "Person 2 with a long name", age: 2),
+                Person(name: "P 3", age: 3),
+                Person(name: "Person 4", age: 4),
+                Person(name: "Person 5", age: 5),
+                Person(name: "Person 6", age: 6),
+                Person(name: "Person 7", age: 7),
+            ])
+        )
         let sectioned = FamilyAndFriends(contentsOf: [
             list1.store.elements,
             list2.store.elements
@@ -38,7 +49,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         let countries = Countries(elements: countryNames)
 
         let segmented = SegmentedDataSource(children: [innerComposed, list1])
-        let composed = ComposedDataSource(children: [sectioned, segmented, countries, list4])
+        let composed = ComposedDataSource(children: [embedded, sectioned, segmented, countries, list4])
 
         countries.title = "Countries"
 

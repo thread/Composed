@@ -8,7 +8,7 @@ import UIKit
  */
 open class EmbeddingDataSource: DataSource {
 
-    internal let embedded: _EmbeddedDataSource
+    fileprivate let embedded: _EmbeddedDataSource
 
     public init(child: CollectionUIProvidingDataSource) {
         self.embedded = _EmbeddedDataSource(child: child)
@@ -46,7 +46,7 @@ extension EmbeddingDataSource: CollectionUIProvidingDataSource {
     }
 
     public func sizingStrategy(in collectionView: UICollectionView) -> CollectionUISizingStrategy {
-        return ColumnSizingStrategy(columnCount: 1, sizingMode: .automatic(isUniform: false))
+        return ColumnSizingStrategy(columnCount: 1, sizingMode: .fixed(height: 120))
     }
 
     public func cellConfiguration(for indexPath: IndexPath) -> CollectionUIViewProvider {
@@ -77,7 +77,7 @@ extension EmbeddingDataSource: DataSourceUpdateDelegate {
 
 }
 
-internal class _EmbeddedDataSource: DataSource {
+private class _EmbeddedDataSource: DataSource {
 
     public let child: CollectionUIProvidingDataSource
     weak var updateDelegate: DataSourceUpdateDelegate?
@@ -100,13 +100,41 @@ internal class _EmbeddedDataSource: DataSource {
     }
 
     public func localSection(for section: Int) -> (dataSource: DataSource, localSection: Int) {
-        return (child, 0)
+        return (self, 0)
     }
 
     public func dataSourceFor(global indexPath: IndexPath) -> (dataSource: DataSource, localIndexPath: IndexPath) {
-        return (child, IndexPath(item: indexPath.item, section: 0))
+        return (self, IndexPath(item: indexPath.item, section: 0))
     }
 
+}
+
+extension _EmbeddedDataSource: CollectionUIProvidingDataSource {
+    
+    func metrics(for section: Int) -> CollectionUISectionMetrics {
+        return child.metrics(for: section)
+    }
+    
+    func cellConfiguration(for indexPath: IndexPath) -> CollectionUIViewProvider {
+        return child.cellConfiguration(for: indexPath)
+    }
+    
+    func sizingStrategy(in collectionView: UICollectionView) -> CollectionUISizingStrategy {
+        return CarouselSizingStrategy(sizingMode: .automatic(isUniform: false))
+    }
+    
+    func headerConfiguration(for section: Int) -> CollectionUIViewProvider? {
+        return child.headerConfiguration(for: section)
+    }
+    
+    func footerConfiguration(for section: Int) -> CollectionUIViewProvider? {
+        return child.footerConfiguration(for: section)
+    }
+    
+    func backgroundViewClass(for section: Int) -> UICollectionReusableView.Type? {
+        return child.backgroundViewClass(for: section)
+    }
+    
 }
 
 extension _EmbeddedDataSource: GlobalViewsProvidingDataSource {
@@ -127,6 +155,15 @@ extension _EmbeddedDataSource: DataSourceUpdateDelegate {
 
     public func dataSource(_ dataSource: DataSource, sectionFor local: Int) -> (dataSource: DataSource, globalSection: Int) {
         return (self, local)
+    }
+
+}
+
+public extension DataSource {
+    
+    var isEmbedded: Bool {
+        guard let delegate = updateDelegate else { return false }
+        return delegate is _EmbeddedDataSource
     }
 
 }

@@ -338,22 +338,6 @@ public extension DataSourceCoordinator {
         let (localDataSource, localIndexPath) = localDataSourceAndIndexPath(for: indexPath)
         let layoutSize = CGSize(width: collectionView.safeAreaLayoutGuide.layoutFrame.width, height: collectionView.bounds.height)
 
-        if let embedding = localDataSource as? EmbeddingDataSource {
-            let dataSource = embedding.embedded.child
-            let strategy = dataSource.sizingStrategy(in: collectionView)
-            let metrics = dataSource.metrics(for: 0)
-            let cellConfig = dataSource.cellConfiguration(for: IndexPath(item: 0, section: 0))
-
-            let layoutSize = CGSize(width: collectionView.bounds.width, height: collectionView.bounds.height)
-            let context = CollectionUISizingContext(prototype: cellConfig.prototype,
-                                                    indexPath: IndexPath(item: 0, section: 0),
-                                                    layoutSize: layoutSize,
-                                                    metrics: metrics)
-
-            let size = strategy.size(forElementAt: IndexPath(item: 0, section: 0), context: context, dataSource: dataSource)
-            return CGSize(width: layoutSize.width, height: size.height + metrics.insets.top + metrics.insets.bottom)
-        }
-
         let metrics = self.metrics(for: localIndexPath.section, globalSection: indexPath.section, in: localDataSource)
         let strategy = sizingStrategy(for: localIndexPath.section, globalSection: indexPath.section, in: localDataSource)
 

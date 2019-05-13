@@ -8,7 +8,7 @@ final class EmbeddedDataSourceCell: UICollectionViewCell, ReusableViewNibLoadabl
         return DataSourceCoordinator(collectionView: collectionView)
     }()
 
-    func prepare(dataSource: _EmbeddedDataSource) {
+    func prepare(dataSource: DataSource) {
         wrapper.replace(dataSource: dataSource)
     }
 
