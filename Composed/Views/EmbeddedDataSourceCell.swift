@@ -4,7 +4,7 @@ final class EmbeddedDataSourceCell: UICollectionViewCell, ReusableViewNibLoadabl
 
     @IBOutlet public private(set) var collectionView: UICollectionView!
 
-    private lazy var wrapper: DataSourceCoordinator = {
+    internal lazy var wrapper: DataSourceCoordinator = {
         return DataSourceCoordinator(collectionView: collectionView)
     }()
 

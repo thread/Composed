@@ -81,6 +81,7 @@
 		54E5CA3D2283277600CCA628 /* Lifecycle+Spec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54E5CA3C2283277600CCA628 /* Lifecycle+Spec.swift */; };
 		54E5CA3F228327AC00CCA628 /* Wrapper+Spec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54E5CA3E228327AC00CCA628 /* Wrapper+Spec.swift */; };
 		D937381D22609C05001F29EB /* ArrayDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D937381C22609C05001F29EB /* ArrayDataSource.swift */; };
+		D99AFEA62289C87B00874117 /* EmbeddingSizingStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = D99AFEA52289C87B00874117 /* EmbeddingSizingStrategy.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -202,6 +203,7 @@
 		54E5CA3C2283277600CCA628 /* Lifecycle+Spec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Lifecycle+Spec.swift"; sourceTree = "<group>"; };
 		54E5CA3E228327AC00CCA628 /* Wrapper+Spec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Wrapper+Spec.swift"; sourceTree = "<group>"; };
 		D937381C22609C05001F29EB /* ArrayDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayDataSource.swift; sourceTree = "<group>"; };
+		D99AFEA52289C87B00874117 /* EmbeddingSizingStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmbeddingSizingStrategy.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -327,6 +329,7 @@
 				54645B602281A3FD00E53245 /* NoSizingStrategy.swift */,
 				54645B5C2281A3AE00E53245 /* ColumnSizingStrategy.swift */,
 				54645B5E2281A3C100E53245 /* CarouselSizingStrategy.swift */,
+				D99AFEA52289C87B00874117 /* EmbeddingSizingStrategy.swift */,
 				54A172F6225CC71900A7D7FD /* NibLoadable.swift */,
 			);
 			path = Helpers;
@@ -576,6 +579,7 @@
 				54A17328225CC72900A7D7FD /* GlobalViewsProvidingDataSource.swift in Sources */,
 				54645B692282E8BC00E53245 /* MutableDataStore.swift in Sources */,
 				54A17333225CC72900A7D7FD /* FlowLayout.swift in Sources */,
+				D99AFEA62289C87B00874117 /* EmbeddingSizingStrategy.swift in Sources */,
 				54A17332225CC72900A7D7FD /* FlowLayoutAttributes.swift in Sources */,
 				54645B5F2281A3C100E53245 /* CarouselSizingStrategy.swift in Sources */,
 				54A1733D225CC72900A7D7FD /* DataSourceInvalidationContext.swift in Sources */,
@@ -790,7 +794,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = V2CWYL9AN8;
+				DEVELOPMENT_TEAM = T2ABQ5MBH8;
 				INFOPLIST_FILE = Playground/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -809,7 +813,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = V2CWYL9AN8;
+				DEVELOPMENT_TEAM = T2ABQ5MBH8;
 				INFOPLIST_FILE = Playground/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
