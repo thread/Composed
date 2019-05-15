@@ -1,28 +1,13 @@
 import Foundation
 
 public protocol DataStoreDelegate: class {
-    func dataStore(willPerform updates: [DataSourceUpdate])
-    func dataStore(didPerform updates: [DataSourceUpdate])
-
-    func dataStore(didInsertSections sections: IndexSet)
-    func dataStore(didDeleteSections sections: IndexSet)
-    func dataStore(didUpdateSections sections: IndexSet)
-    func dataStore(didMoveSection from: Int, to: Int)
-
-    func dataStore(didInsertIndexPaths indexPaths: [IndexPath])
-    func dataStore(didDeleteIndexPaths indexPaths: [IndexPath])
-    func dataStore(didUpdateIndexPaths indexPaths: [IndexPath])
-    func dataStore(didMoveFromIndexPath from: IndexPath, toIndexPath to: IndexPath)
-
-    func dataStoreDidReload()
-    func dataStore(performBatchUpdates updates: () -> Void, completion: ((Bool) -> Void)?)
+    func dataStoreDidUpdate(changeDetails: ComposedChangeDetails)
 }
 
 public protocol DataStore: class {
     associatedtype Element
 
     var delegate: DataStoreDelegate? { get set }
-    var dataSource: DataSource? { get set }
 
     var isEmpty: Bool { get }
     var numberOfSections: Int { get }
@@ -53,7 +38,9 @@ public extension DataStore where Element: Equatable {
     }
 
     func indexPath(for element: Element) -> IndexPath? {
-        return indexPath { $0 == element }
+        return indexPath { other in
+            return other == element
+        }
     }
 
 }

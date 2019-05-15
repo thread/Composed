@@ -9,9 +9,9 @@ open class ArrayDataSource<Element>: BasicDataSource<ArrayDataStore<Element>> {
      
      - parameter elements: The elements to passed to the `ArrayDataStore`
      */
-    public init(elements: [Element]) {
+    public convenience init(elements: [Element]) {
         let store = ArrayDataStore(elements: elements)
-        super.init(store: store)
+        self.init(store: store)
     }
     
 }

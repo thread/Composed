@@ -1,18 +1,26 @@
 import UIKit
 
-public struct GlobalAttributes {
+/// Represents a set of preferences for configuring a global element's behaviour in a `Composed.FlowLayout`
+public struct GlobalPreferences {
 
+    /// If true, the global element will remain pinned to the collectionView's bounds
     public var pinsToBounds: Bool = true
+    /// If true, the global element will remain pinned to the collectionView's content
     public var pinsToContent: Bool = false
+    /// If true, the global element will remain pinned to the collectionView's bounds, unless the content forces the element off-screen.
     public var prefersFollowContent: Bool = false
-
+    /// The inset to use betweent his element and the associated section. Useful for creating additional spacing, similar to sectionInsets
     public var inset: CGFloat = 0
+    /// If true, the global element will respect any safeAreaInsets. If false, the element will be positioned relative to the bounds
     public var layoutFromSafeArea: Bool = true
 
     internal init() { }
 
 }
 
+/// A UICollectionViewFlowLayout subclass that adds global headers, footers and section background views support with various configurations.
+///
+/// This class implements high-performance invalidate APIs to ensure smooth scrolling even with large dataSets.
 open class FlowLayout: UICollectionViewFlowLayout {
 
     open override class var layoutAttributesClass: AnyClass {
@@ -23,8 +31,10 @@ open class FlowLayout: UICollectionViewFlowLayout {
         return FlowLayoutInvalidationContext.self
     }
 
-    public var globalHeader = GlobalAttributes()
-    public var globalFooter = GlobalAttributes()
+    /// Global header preferences
+    public var globalHeader = GlobalPreferences()
+    /// Global footer preferences
+    public var globalFooter = GlobalPreferences()
 
     private var cachedGlobalHeaderSize: CGSize = .zero
     private var cachedGlobalFooterSize: CGSize = .zero
@@ -115,8 +125,11 @@ open class FlowLayout: UICollectionViewFlowLayout {
     }
 
     open override func layoutAttributesForDecorationView(ofKind elementKind: String, at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
+        guard let collectionView = collectionView else { return nil }
+
         let firstIndex = 0
-        let lastIndex = collectionView!.numberOfItems(inSection: indexPath.section) - 1
+        let numberOfItems = collectionView.dataSource?.collectionView(collectionView, numberOfItemsInSection: indexPath.section) ?? 0
+        let lastIndex = numberOfItems - 1
         guard lastIndex >= 0 else { return nil }
 
         guard let firstAttributes = layoutAttributesForItem(at: IndexPath(item: firstIndex, section: indexPath.section)),
@@ -124,14 +137,12 @@ open class FlowLayout: UICollectionViewFlowLayout {
                 return nil
         }
 
-        guard let delegate = collectionView?.delegate as? FlowLayoutDelegate else { return nil }
-
-        let metrics = self.metrics(forSection: indexPath.section, delegate: delegate)
+        let metrics = self.metrics(forSection: indexPath.section)
         let bgAttributes = FlowLayoutAttributes(forDecorationViewOfKind: elementKind, with: indexPath)
 
         let x = metrics.insets.left
         let y = firstAttributes.frame.minY
-        let w = collectionView!.bounds.width - (metrics.insets.left + metrics.insets.right)
+        let w = collectionView.bounds.width - (metrics.insets.left + metrics.insets.right)
         let h = lastAttributes.frame.maxY - firstAttributes.frame.minY
 
         bgAttributes.frame = CGRect(x: x, y: y, width: w, height: h)
@@ -158,7 +169,8 @@ open class FlowLayout: UICollectionViewFlowLayout {
         var attributes = NSArray(array: originalAttributes, copyItems: true) as? [UICollectionViewLayoutAttributes]
 
         func appendBackgroundViews() {
-            for section in 0..<collectionView.numberOfSections {
+            let numberOfSections = collectionView.dataSource?.numberOfSections?(in: collectionView) ?? 0
+            for section in 0..<numberOfSections {
                 guard let backgroundViewClass = (collectionView.delegate as? FlowLayoutDelegate)?
                     .backgroundViewClass?(in: collectionView, forSectionAt: section) else { continue }
 

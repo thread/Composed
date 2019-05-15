@@ -7,34 +7,47 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
 
-        let family = [
+        let list1 = Family(elements: [
             Person(name: "Shaps Benkau", age: 38),
             Person(name: "Uwe", age: 60),
             Person(name: "Anne", age: 35)
-        ]
+        ])
 
-        let friends = [
+        let list2 = Friends(elements: [
             Person(name: "Stewart", age: 39),
             Person(name: "Joseph Duffy", age: 24)
-        ]
+        ])
 
-        let people = PeopleDataSource(stores: [])
-        people.title = "People"
-        people.append(elements: family)
-        people.append(elements: friends)
+        let list3 = Coworkers(elements: [
+            Person(name: "Stuart", age: 30),
+            Person(name: "Dan", age: 12)
+        ])
 
-        let names = countryNames
-        let countries = PeopleDataSource(elements: names)
+        let list4 = Websites(elements: [
+            Person(name: "Youtube", age: 30),
+            Person(name: "Google", age: 12)
+        ])
+
+        let sectioned = FamilyAndFriends(contentsOf: [
+            list1.store.elements,
+            list2.store.elements
+        ])
+
+        let innerComposed = ComposedDataSource(children: [list3])
+
+        let countries = Countries(elements: countryNames)
+
+        let segmented = SegmentedDataSource(children: [innerComposed, list1])
+        let composed = ComposedDataSource(children: [sectioned, segmented, countries, list4])
+
         countries.title = "Countries"
-
-        let list = ListDataSource()
-        list.append(people)
-        list.append(countries)
 
         let layout = FlowLayout()
         layout.globalFooter.prefersFollowContent = true
-        let controller = DataSourceViewController(dataSource: list, layout: layout)
-        controller.navigationItem.largeTitleDisplayMode = .always
+        let controller = DataSourceViewController(dataSource: composed, layout: layout)
+
+        controller.navigationItem.largeTitleDisplayMode = .never
+        controller.collectionView.backgroundColor = .white
 
         let tab = window?.rootViewController as? UITabBarController
         let nav = tab?.viewControllers?.first as? UINavigationController

@@ -1,8 +1,12 @@
 import UIKit
 
+/// A UICollectionViewLayoutAttributes subclass that provides additional support when working with `Composed.FlowLayout`
 open class FlowLayoutAttributes: UICollectionViewLayoutAttributes {
 
+    /// Returns true if these attributes are for the first element in the associated section
     open var isFirstInSection: Bool = false
+
+    /// Returns true if these attributes are for the last element in the associated section
     open var isLastInSection: Bool = false
 
     open override func copy(with zone: NSZone? = nil) -> Any {

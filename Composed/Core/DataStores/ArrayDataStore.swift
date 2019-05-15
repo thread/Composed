@@ -2,11 +2,19 @@ import Foundation
 
 public final class ArrayDataStore<Element>: DataStore {
 
-    public weak var dataSource: DataSource?
     public weak var delegate: DataStoreDelegate?
-    public private(set) var elements: [Element] = []
+    public internal(set) var elements: [Element] = []
 
-    public init(elements: [Element]) {
+    public var isEmpty: Bool {
+        return elements.isEmpty
+    }
+
+    public init() {
+        self.elements = []
+    }
+
+    public convenience init(elements: [Element]) {
+        self.init()
         self.elements = elements
     }
 
@@ -32,57 +40,6 @@ public final class ArrayDataStore<Element>: DataStore {
         } else {
             return nil
         }
-    }
-
-    public func setElements(_ elements: [Element], changesets: [DataSourceChangeset]? = nil) {
-        guard let changesets = changesets else {
-            self.elements = elements
-            delegate?.dataStoreDidReload()
-            return
-        }
-
-        let updates = changesets.flatMap { $0.updates }
-
-        delegate?.dataStore(performBatchUpdates: {
-            self.elements = elements
-            delegate?.dataStore(willPerform: updates)
-
-            for changeset in changesets {
-                if !changeset.deletedSections.isEmpty {
-                    delegate?.dataStore(didDeleteSections: IndexSet(changeset.deletedSections))
-                }
-
-                if !changeset.insertedSections.isEmpty {
-                    delegate?.dataStore(didInsertSections: IndexSet(changeset.insertedSections))
-                }
-
-                if !changeset.updatedSections.isEmpty {
-                    delegate?.dataStore(didUpdateSections: IndexSet(changeset.updatedSections))
-                }
-
-                for (source, target) in changeset.movedSections {
-                    delegate?.dataStore(didMoveSection: source, to: target)
-                }
-
-                if !changeset.deletedIndexPaths.isEmpty {
-                    delegate?.dataStore(didDeleteIndexPaths: changeset.deletedIndexPaths)
-                }
-
-                if !changeset.insertedIndexPaths.isEmpty {
-                    delegate?.dataStore(didInsertIndexPaths: changeset.insertedIndexPaths)
-                }
-
-                if !changeset.updatedIndexPaths.isEmpty {
-                    delegate?.dataStore(didUpdateIndexPaths: changeset.updatedIndexPaths)
-                }
-
-                for (source, target) in changeset.movedIndexPaths {
-                    delegate?.dataStore(didMoveFromIndexPath: source, toIndexPath: target)
-                }
-            }
-        }, completion: { [weak delegate] _ in
-            delegate?.dataStore(didPerform: updates)
-        })
     }
 
 }

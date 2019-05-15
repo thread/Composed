@@ -28,7 +28,26 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "540221402195C4F700F0E173"
+               BuildableName = "ComposedTests.xctest"
+               BlueprintName = "ComposedTests"
+               ReferencedContainer = "container:Composed.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "540221382195C4F700F0E173"
+            BuildableName = "Composed.framework"
+            BlueprintName = "Composed"
+            ReferencedContainer = "container:Composed.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>

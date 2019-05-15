@@ -44,99 +44,25 @@ public final class PhotosDataStore<Element>: NSObject, PHPhotoLibraryChangeObser
 
     public func photoLibraryDidChange(_ changeInstance: PHChange) {
         DispatchQueue.main.sync {
-            guard let changeDetails = changeInstance.changeDetails(for: result) else { return }
+            guard let details = changeInstance.changeDetails(for: result) else { return }
+            var composedDetails = ComposedChangeDetails(hasIncrementalChanges: details.hasIncrementalChanges)
 
-            guard changeDetails.hasIncrementalChanges else {
-                delegate?.dataStoreDidReload()
-                return
+            composedDetails.removedIndexPaths = details.removedIndexes?
+                .compactMap { IndexPath(item: $0, section: 0) } ?? []
+            composedDetails.insertedIndexPaths = details.insertedIndexes?
+                .compactMap { IndexPath(item: $0, section: 0) } ?? []
+            composedDetails.updatedIndexPaths = details.changedIndexes?
+                .compactMap { IndexPath(item: $0, section: 0) } ?? []
+
+            var moves: [(IndexPath, IndexPath)] = []
+            details.enumerateMoves { source, target in
+                moves.append((IndexPath(item: source, section: 0), IndexPath(item: target, section: 0)))
             }
 
-            let changeset = PhotosChangeset(changeDetails: changeDetails)
+            composedDetails.movedIndexPaths = moves
 
-            let updates = changeset.updates
-
-            delegate?.dataStore(performBatchUpdates: {
-                result = changeDetails.fetchResultAfterChanges
-                delegate?.dataStore(willPerform: updates)
-
-                if !changeset.deletedSections.isEmpty {
-                    delegate?.dataStore(didDeleteSections: IndexSet(changeset.deletedSections))
-                }
-
-                if !changeset.insertedSections.isEmpty {
-                    delegate?.dataStore(didInsertSections: IndexSet(changeset.insertedSections))
-                }
-
-                if !changeset.updatedSections.isEmpty {
-                    delegate?.dataStore(didUpdateSections: IndexSet(changeset.updatedSections))
-                }
-
-                for (source, target) in changeset.movedSections {
-                    delegate?.dataStore(didMoveSection: source, to: target)
-                }
-
-                if !changeset.deletedIndexPaths.isEmpty {
-                    delegate?.dataStore(didDeleteIndexPaths: changeset.deletedIndexPaths)
-                }
-
-                if !changeset.insertedIndexPaths.isEmpty {
-                    delegate?.dataStore(didInsertIndexPaths: changeset.insertedIndexPaths)
-                }
-
-                if !changeset.updatedIndexPaths.isEmpty {
-                    delegate?.dataStore(didUpdateIndexPaths: changeset.updatedIndexPaths)
-                }
-
-                for (source, target) in changeset.movedIndexPaths {
-                    delegate?.dataStore(didMoveFromIndexPath: source, toIndexPath: target)
-                }
-            }, completion: { [weak delegate] _ in
-                delegate?.dataStore(didPerform: updates)
-            })
+            delegate?.dataStoreDidUpdate(changeDetails: composedDetails)
         }
-    }
-
-}
-
-private struct PhotosChangeset<Asset>: DataSourceChangeset where Asset: PHObject {
-
-    private let changeDetails: PHFetchResultChangeDetails<Asset>
-
-    init(changeDetails: PHFetchResultChangeDetails<Asset>) {
-        self.changeDetails = changeDetails
-    }
-
-    var deletedSections: [Int] { return [] }
-    var insertedSections: [Int] { return [] }
-    var updatedSections: [Int] { return [] }
-    var movedSections: [(source: Int, target: Int)] { return [] }
-
-    var deletedIndexPaths: [IndexPath] {
-        return changeDetails.removedIndexes?
-            .compactMap { IndexPath(item: $0, section: 0) }
-            ?? []
-    }
-
-    var insertedIndexPaths: [IndexPath] {
-        return changeDetails.insertedIndexes?
-            .compactMap { IndexPath(item: $0, section: 0) }
-            ?? []
-    }
-
-    var updatedIndexPaths: [IndexPath] {
-        return changeDetails.changedIndexes?
-            .compactMap { IndexPath(item: $0, section: 0) }
-            ?? []
-    }
-
-    var movedIndexPaths: [(source: IndexPath, target: IndexPath)] {
-        var moves: [(IndexPath, IndexPath)] = []
-
-        changeDetails.enumerateMoves { from, to in
-            moves.append((IndexPath(item: from, section: 0), IndexPath(item: to, section: 0)))
-        }
-
-        return moves
     }
 
 }

@@ -1,9 +1,16 @@
 import UIKit
 
-public final class DataSourceUIConfiguration {
+/// Defines a provider for a view, prototype and configuration handler. Cells, headers and footers can all be configured with this provider
+public final class CollectionUIViewProvider {
 
-    public enum Source {
+    /// The method to use when dequeuing a view from a UICollectionView
+    ///
+    /// - nib: Load from a XIB
+    /// - `class`: Load from a class
+    public enum DequeueMethod {
+        /// Load from a nib
         case nib
+        /// Load from a class
         case `class`
     }
 
@@ -14,7 +21,7 @@ public final class DataSourceUIConfiguration {
 
     public typealias ViewType = UICollectionReusableView
 
-    public let dequeueSource: Source
+    public let dequeueMethod: DequeueMethod
     public let configure: (UICollectionReusableView, IndexPath, Context) -> Void
 
     private let prototypeProvider: () -> UICollectionReusableView
@@ -28,13 +35,13 @@ public final class DataSourceUIConfiguration {
     }
 
     public private(set) lazy var reuseIdentifier: String = {
-        prototype.reuseIdentifier ?? type(of: prototype).reuseIdentifier
+        return prototype.reuseIdentifier ?? type(of: prototype).reuseIdentifier
     }()
 
-    public init<View>(prototype: @escaping @autoclosure () -> View, dequeueSource: Source, reuseIdentifier: String? = nil, _ configure: @escaping (View, IndexPath, Context) -> Void) where View: UICollectionReusableView {
+    public init<View>(prototype: @escaping @autoclosure () -> View, dequeueMethod: DequeueMethod, reuseIdentifier: String? = nil, _ configure: @escaping (View, IndexPath, Context) -> Void) where View: UICollectionReusableView {
 
         self.prototypeProvider = prototype
-        self.dequeueSource = dequeueSource
+        self.dequeueMethod = dequeueMethod
         self.configure = { view, indexPath, context in
             // swiftlint:disable force_cast
             configure(view as! View, indexPath, context)

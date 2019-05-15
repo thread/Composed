@@ -13,7 +13,6 @@ open class BasicDataSource<Store>: CollectionDataSource where Store: DataStore {
     public init(store: Store) {
         self.store = store
         self.store.delegate = self
-        store.dataSource = self
     }
 
     public var numberOfSections: Int {
@@ -24,7 +23,7 @@ open class BasicDataSource<Store>: CollectionDataSource where Store: DataStore {
         return store.numberOfElements(in: section)
     }
 
-    public func indexPath(where predicate: @escaping (Store.Element) -> Bool) -> IndexPath? {
+    public func indexPath(where predicate: @escaping (Any) -> Bool) -> IndexPath? {
         return store.indexPath(where: predicate)
     }
 
@@ -32,12 +31,8 @@ open class BasicDataSource<Store>: CollectionDataSource where Store: DataStore {
         return store.element(at: indexPath)
     }
 
-    public func dataSourceFor(global section: Int) -> (dataSource: DataSource, localSection: Int) {
+    public func localSection(for section: Int) -> (dataSource: DataSource, localSection: Int) {
         return (self, section)
-    }
-
-    public func dataSourceFor(global indexPath: IndexPath) -> (dataSource: DataSource, localIndexPath: IndexPath) {
-        return (self, indexPath)
     }
 
 }

@@ -9,12 +9,10 @@ open class SectionedDataSource<Element>: CollectionDataSource {
 
     public init(stores: [ArrayDataStore<Element>] = []) {
         self.stores = stores
-        stores.forEach { $0.dataSource = self }
     }
 
     public init(elements: [Element]) {
         stores = [ArrayDataStore(elements: elements)]
-        stores.forEach { $0.dataSource = self }
     }
 
     public convenience init(stores: ArrayDataStore<Element>...) {
@@ -28,8 +26,6 @@ open class SectionedDataSource<Element>: CollectionDataSource {
             .lazy
             .filter { !$0.isEmpty }
             .map { ArrayDataStore(elements: $0) }
-
-        stores.forEach { $0.dataSource = self }
     }
 
     public var numberOfSections: Int {
@@ -38,6 +34,7 @@ open class SectionedDataSource<Element>: CollectionDataSource {
 
     public func numberOfElements(in section: Int) -> Int {
         return stores[section].numberOfElements(in: 0)
+
     }
 
     public func element(at indexPath: IndexPath) -> Element {
@@ -45,7 +42,7 @@ open class SectionedDataSource<Element>: CollectionDataSource {
         return stores[indexPath.section].element(at: localIndexPath)
     }
 
-    public func indexPath(where predicate: @escaping (Element) -> Bool) -> IndexPath? {
+    public func indexPath(where predicate: @escaping (Any) -> Bool) -> IndexPath? {
         for section in 0..<stores.count {
             if let indexPath = stores[section].indexPath(where: predicate) {
                 return IndexPath(item: indexPath.item, section: section)
@@ -55,7 +52,7 @@ open class SectionedDataSource<Element>: CollectionDataSource {
         return nil
     }
 
-    public func dataSourceFor(global section: Int) -> (dataSource: DataSource, localSection: Int) {
+    public func localSection(for section: Int) -> (dataSource: DataSource, localSection: Int) {
         return (self, section)
     }
 
@@ -70,23 +67,29 @@ public extension SectionedDataSource {
     func append(store: Store) {
         store.delegate = self
         stores.append(store)
-        updateDelegate?.dataSource(self, didInsertSections: IndexSet(integer: stores.count))
-        store.dataSource = self
+
+        var details = ComposedChangeDetails()
+        details.insertedSections = IndexSet(integer: stores.count)
+        updateDelegate?.dataSource(self, performUpdates: details)
     }
 
     func insert(store: Store, at index: Int) {
         store.delegate = self
         stores.insert(store, at: index)
-        updateDelegate?.dataSource(self, didInsertSections: IndexSet(integer: index))
-        store.dataSource = self
+
+        var details = ComposedChangeDetails()
+        details.insertedSections = IndexSet(integer: index)
+        updateDelegate?.dataSource(self, performUpdates: details)
     }
 
     func remove(store: Store) {
         guard let index = stores.firstIndex(where: { $0 === store }) else { return }
         store.delegate = nil
         stores.remove(at: index)
-        updateDelegate?.dataSource(self, didDeleteSections: IndexSet(integer: index))
-        store.dataSource = nil
+
+        var details = ComposedChangeDetails()
+        details.removedSections = IndexSet(integer: index)
+        updateDelegate?.dataSource(self, performUpdates: details)
     }
 
 }
