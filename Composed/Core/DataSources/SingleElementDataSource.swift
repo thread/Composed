@@ -59,7 +59,7 @@ open class SingleElementDataSource<Element>: DataSource {
      
      - parameter element: The new element
      */
-    public func setElement(_ element: Element) {
+    public func replaceElement(_ element: Element) {
         let previousIndexPaths = indexPaths
 
         updateDelegate?.dataSource(self, willPerform: [])
