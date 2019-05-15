@@ -60,31 +60,37 @@ open class SingleElementDataSource<Element>: DataSource {
      - parameter element: The new element
      */
     public func replaceElement(_ element: Element) {
-        let previousIndexPaths = indexPaths
+        let wasEmpty = isEmpty
+        self.element = element
 
-        updateDelegate?.dataSource(self, willPerform: [])
-        updateDelegate?.dataSource(self, performBatchUpdates: {
-            self.element = element
-            let indexPaths = self.indexPaths
+        var details = ComposedChangeDetails()
+        let indexPath = IndexPath(item: 0, section: 0)
 
-            switch (previousIndexPaths.isEmpty, indexPaths.isEmpty) {
-            case (false, false):
-                let indexPathsDelta = indexPaths.count - previousIndexPaths.count
-                if indexPathsDelta == 0 {
-                    updateDelegate?.dataSource(self, didUpdateIndexPaths: indexPaths)
-                } else {
-                    updateDelegate?.dataSourceDidReload(self)
-                }
-            case (true, false):
-                updateDelegate?.dataSource(self, didInsertIndexPaths: indexPaths)
-            case (false, true):
-                updateDelegate?.dataSource(self, didDeleteIndexPaths: previousIndexPaths)
-            case (true, true):
-                break
-            }
-        }, completion: { _ in
-            self.updateDelegate?.dataSource(self, didPerform: [])
-        })
+        switch (wasEmpty, isEmpty) {
+        case (true, true):
+            break
+        case (true, false):
+            details.insertedIndexPaths = [indexPath]
+        case (false, true):
+            details.removedIndexPaths = [indexPath]
+        case (false, false):
+            details.updatedIndexPaths = [indexPath]
+        }
+
+        updateDelegate?.dataSource(self, performUpdates: details)
+    }
+
+    public func indexPath(where predicate: @escaping (Any) -> Bool) -> IndexPath? {
+        if isEmpty { return nil }
+        return predicate(element) ? IndexPath(item: 0, section: 0) : nil
+    }
+
+    public func localSection(for section: Int) -> (dataSource: DataSource, localSection: Int) {
+        return (self, section)
+    }
+
+    func dataSource(_ dataSource: DataSource, sectionFor localSection: Int) -> (dataSource: DataSource, globalSection: Int) {
+        return (self, localSection)
     }
 
 }

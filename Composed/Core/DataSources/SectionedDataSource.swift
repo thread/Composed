@@ -1,6 +1,5 @@
 import Foundation
 
-#warning("Make this a MutableDataStore")
 open class SectionedDataSource<Element>: CollectionDataSource {
 
     public typealias Store = ArrayDataStore<Element>
