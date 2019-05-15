@@ -268,21 +268,27 @@ private extension ComposedDataSource {
 
 }
 
+internal extension ComposedChangeDetails {
+
+    init(other details: ComposedChangeDetails, mapping: ComposedMappings) {
+        hasIncrementalChanges = details.hasIncrementalChanges
+        insertedSections = IndexSet(details.insertedSections.map(mapping.globalSection(forLocal:)))
+        insertedIndexPaths = details.insertedIndexPaths
+        removedSections = IndexSet(details.removedSections.map(mapping.globalSection(forLocal:)))
+        removedIndexPaths = details.removedIndexPaths
+        updatedSections = IndexSet(details.updatedSections.map(mapping.globalSection(forLocal:)))
+        updatedIndexPaths = details.updatedIndexPaths
+        movedSections = details.movedSections.map(mapping.globalSections(forLocal:))
+        movedIndexPaths = details.movedIndexPaths.map(mapping.globalIndexPaths(forLocal:))
+    }
+
+}
+
 extension ComposedDataSource: DataSourceUpdateDelegate {
 
     public func dataSource(_ dataSource: DataSource, performUpdates changeDetails: ComposedChangeDetails) {
-        var details = ComposedChangeDetails(hasIncrementalChanges: changeDetails.hasIncrementalChanges)
         let mapping = self.mapping(for: dataSource)
-
-        details.insertedSections = IndexSet(changeDetails.insertedSections.map(mapping.globalSection(forLocal:)))
-        details.insertedIndexPaths = changeDetails.insertedIndexPaths
-        details.removedSections = IndexSet(changeDetails.removedSections.map(mapping.globalSection(forLocal:)))
-        details.removedIndexPaths = changeDetails.removedIndexPaths
-        details.updatedSections = IndexSet(changeDetails.updatedSections.map(mapping.globalSection(forLocal:)))
-        details.updatedIndexPaths = changeDetails.updatedIndexPaths
-        details.movedSections = changeDetails.movedSections.map(mapping.globalSections(forLocal:))
-        details.movedIndexPaths = changeDetails.movedIndexPaths.map(mapping.globalIndexPaths(forLocal:))
-
+        let details = ComposedChangeDetails(other: changeDetails, mapping: mapping)
         _invalidate()
         updateDelegate?.dataSource(self, performUpdates: details)
     }
