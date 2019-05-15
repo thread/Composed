@@ -70,7 +70,7 @@ public extension SectionedDataSource {
         stores.append(store)
 
         var details = ComposedChangeDetails()
-        details.removedSections = IndexSet(integer: stores.count)
+        details.insertedSections = IndexSet(integer: stores.count)
         updateDelegate?.dataSource(self, performUpdates: details)
     }
 
@@ -79,7 +79,7 @@ public extension SectionedDataSource {
         stores.insert(store, at: index)
 
         var details = ComposedChangeDetails()
-        details.removedSections = IndexSet(integer: index)
+        details.insertedSections = IndexSet(integer: index)
         updateDelegate?.dataSource(self, performUpdates: details)
     }
 
