@@ -53,7 +53,11 @@ extension EmbeddingDataSource: CollectionUIProvidingDataSource {
     }
 
     public func cellConfiguration(for indexPath: IndexPath) -> CollectionUIViewProvider {
-        return CollectionUIViewProvider(prototype: EmbeddedDataSourceCell.fromNib, dequeueMethod: .nib) { [unowned self] cell, _, _ in
+        return CollectionUIViewProvider(prototype: EmbeddedDataSourceCell.fromNib, dequeueMethod: .nib) { [weak self] cell, _, _ in
+            guard let self = self else {
+                assertionFailure("Configuration should be not be alive when data source has been deallocated")
+                return
+            }
             cell.prepare(dataSource: self.embedded)
         }
     }
