@@ -118,3 +118,10 @@ extension CollectionUIViewProvider {
         self.init(prototype: prototype(), dequeueMethod: dequeueSource, reuseIdentifier: reuseIdentifier, configure)
     }
 }
+
+public extension LifecycleObservingDataSource {
+    @available(*, deprecated, renamed: "didLoad")
+    func didLoad() { didLoad() }
+    @available(*, deprecated, renamed: "willUnload")
+    func willUnload() { willUnload() }
+}

@@ -39,7 +39,19 @@ public extension CollectionUIProvidingDataSource {
 
 extension DataSource where Self: CollectionUIProvidingDataSource {
 
-    public var collectionView: UICollectionView? {
+    public var indexPathsForVisibleElements: [IndexPath] {
+        return []
+    }
+
+    public var indexPathsForSelectedElements: [IndexPath] {
+        return []
+    }
+
+    public func resuableView(for indexPath: IndexPath, of kind: String? = nil) -> UICollectionReusableView? {
+        return nil
+    }
+
+    internal var collectionView: UICollectionView? {
         if let wrapper = updateDelegate as? DataSourceCoordinator {
             return wrapper.collectionView
         }

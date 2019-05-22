@@ -120,12 +120,12 @@ public extension SectionedDataSource {
 
 extension SectionedDataSource: LifecycleObservingDataSource where Element: LifecycleObservingDataSource {
 
-    public func prepare() {
-        stores.flatMap { $0.elements }.forEach { $0.prepare() }
+    public func didLoad() {
+        stores.flatMap { $0.elements }.forEach { $0.didLoad() }
     }
 
-    public func invalidate() {
-        stores.flatMap { $0.elements }.forEach { $0.invalidate() }
+    public func willUnload() {
+        stores.flatMap { $0.elements }.forEach { $0.willUnload() }
     }
 
     public func didBecomeActive() {
