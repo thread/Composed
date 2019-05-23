@@ -5,6 +5,8 @@ public final class DataSourceCoordinator: NSObject, UICollectionViewDataSource, 
 
     /// The collectionView associated with this coordinator
     public let collectionView: UICollectionView
+    
+    internal var globalProvider: SectionProvider!
 
     /// The dataSource associated with this coordinator
     public private(set) var dataSource: DataSource?
