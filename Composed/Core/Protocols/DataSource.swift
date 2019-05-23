@@ -50,6 +50,16 @@ public extension DataSource {
         return !(updateDelegate is DataSource)
     }
 
+    var rootDataSource: DataSource {
+        var dataSource: DataSource = self
+
+        while !dataSource.isRoot, let parent = dataSource.updateDelegate as? DataSource {
+            dataSource = parent
+        }
+
+        return dataSource
+    }
+
     /// Returns true if the rootDataSource's updateDelegate is non-nil
     var isActive: Bool {
         var dataSource: DataSource = self

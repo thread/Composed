@@ -15,6 +15,8 @@ public final class DataSourceCoordinator: NSObject, UICollectionViewDataSource, 
     private var cellConfigurations: [IndexPath: CollectionUIViewProvider] = [:]
     private var metrics: [Int: CollectionUISectionMetrics] = [:]
     private var sizingStrategies: [Int: CollectionUISizingStrategy] = [:]
+    private var selectionHandlers: [IndexPath: SelectionContext] = [:]
+    private var deselectionHandlers: [IndexPath: SelectionContext] = [:]
 
     /// Returns true if editing is currently enabled, false otherwise
     public private(set) var isEditing: Bool = false
@@ -391,49 +393,50 @@ public extension DataSourceCoordinator {
         return cell
     }
 
-    func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+    func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
         guard let dataSource = dataSource else { return false }
         let (localDataSource, localSection) = dataSource.localSection(for: indexPath.section)
         let localIndexPath = IndexPath(item: indexPath.item, section: localSection)
-        return (localDataSource as? SelectionHandlingDataSource)?.shouldSelectElement(at: localIndexPath) ?? false
+
+        guard let selectionDataSource = localDataSource as? SelectionHandlingDataSource,
+            let handler = selectionDataSource.selectionHandler(forElementAt: localIndexPath) else { return false }
+        selectionHandlers[indexPath] = SelectionContext(localDataSource: selectionDataSource, localIndexPath: localIndexPath, handler: handler)
+
+        return true
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let dataSource = dataSource else { return }
-        let (localDataSource, localSection) = dataSource.localSection(for: indexPath.section)
-        let localIndexPath = IndexPath(item: indexPath.item, section: localSection)
-        guard let selectionDataSource = localDataSource as? SelectionHandlingDataSource else { return }
+        guard let dataSource = dataSource, let context = selectionHandlers[indexPath] else { return }
 
-        #warning("Implement both single and multiple selection handling")
-//        if !selectionDataSource.allowsMultipleSelection {
-//            let selectedIndexPathsInSection = (collectionView.indexPathsForSelectedItems ?? [])
-//                .filter { $0.section == indexPath.section && $0 != indexPath }
-//
-//
-//            mapping.localIndexPaths(forGlobal: selectedIndexPathsInSection).forEach {
-//                selectionDataSource.deselectElement(at: $0)
-//            }
-//
-//            selectedIndexPathsInSection.forEach {
-//                collectionView.deselectItem(at: $0, animated: true)
-//            }
-//        }
+        let selectedIndexPaths = (collectionView.indexPathsForSelectedItems ?? []).filter { $0 != indexPath }
+        let indexPaths = collectionView.localIndexPaths(for: selectedIndexPaths, globalDataSource: dataSource, localDataSource: context.localDataSource)
 
-        selectionDataSource.selectElement(at: localIndexPath)
+        if !context.localDataSource.allowsMultipleSelection {
+            indexPaths.forEach { collectionView.deselectItem(at: $0.global, animated: true) }
+        }
+
+        context.handler()
+        selectionHandlers[indexPath] = nil
     }
 
     func collectionView(_ collectionView: UICollectionView, shouldDeselectItemAt indexPath: IndexPath) -> Bool {
         guard let dataSource = dataSource else { return false }
         let (localDataSource, localSection) = dataSource.localSection(for: indexPath.section)
         let localIndexPath = IndexPath(item: indexPath.item, section: localSection)
-        return (localDataSource as? SelectionHandlingDataSource)?.shouldDeselectElement(at: localIndexPath) ?? false
+
+        guard let selectionDataSource = localDataSource as? SelectionHandlingDataSource,
+            selectionDataSource.allowsMultipleSelection,
+            let handler = selectionDataSource.deselectionHandler(forElementAt: localIndexPath) else { return false }
+        deselectionHandlers[indexPath] = SelectionContext(localDataSource: selectionDataSource, localIndexPath: localIndexPath, handler: handler)
+
+        return true
     }
 
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        guard let dataSource = dataSource else { return }
-        let (localDataSource, localSection) = dataSource.localSection(for: indexPath.section)
-        let localIndexPath = IndexPath(item: indexPath.item, section: localSection)
-        (localDataSource as? SelectionHandlingDataSource)?.deselectElement(at: localIndexPath)
+        if let context = deselectionHandlers[indexPath] {
+            context.handler()
+            deselectionHandlers[indexPath] = nil
+        }
     }
 
 }

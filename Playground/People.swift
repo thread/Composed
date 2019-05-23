@@ -45,6 +45,38 @@ class PeopleArrayDataSource: ArrayDataSource<Person>, CollectionUIProvidingDataS
 
 }
 
+extension PeopleArrayDataSource: SelectionHandlingDataSource {
+
+    var allowsMultipleSelection: Bool {
+        return false
+    }
+
+    func selectionHandler(forElementAt indexPath: IndexPath) -> (() -> Void)? {
+        return { print("Selected: \(self.selectedIndexPaths)") }
+    }
+
+    func deselectionHandler(forElementAt indexPath: IndexPath) -> (() -> Void)? {
+        return { print("Selected: \(self.selectedIndexPaths)") }
+    }
+
+}
+
+extension PeopleSectionedDataSource: SelectionHandlingDataSource {
+
+    var allowsMultipleSelection: Bool {
+        return true
+    }
+
+    func selectionHandler(forElementAt indexPath: IndexPath) -> (() -> Void)? {
+        return { print("Selected: \(self.selectedIndexPaths)") }
+    }
+
+    func deselectionHandler(forElementAt indexPath: IndexPath) -> (() -> Void)? {
+        return { print("Selected: \(self.selectedIndexPaths)") }
+    }
+
+}
+
 class PeopleSectionedDataSource: SectionedDataSource<Person>, CollectionUIProvidingDataSource {
 
     var title: String?
