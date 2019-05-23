@@ -52,11 +52,11 @@ extension PeopleArrayDataSource: SelectionHandlingDataSource {
     }
 
     func selectionHandler(forElementAt indexPath: IndexPath) -> (() -> Void)? {
-        return { print("Selected: \(self.selectedIndexPaths)") }
+        return { print("Selected: \(self.selectedElements)") }
     }
 
     func deselectionHandler(forElementAt indexPath: IndexPath) -> (() -> Void)? {
-        return { print("Selected: \(self.selectedIndexPaths)") }
+        return { print("Selected: \(self.selectedElements)") }
     }
 
 }
@@ -68,11 +68,11 @@ extension PeopleSectionedDataSource: SelectionHandlingDataSource {
     }
 
     func selectionHandler(forElementAt indexPath: IndexPath) -> (() -> Void)? {
-        return { print("Selected: \(self.selectedIndexPaths)") }
+        return { print("Selected: \(self.selectedElements)") }
     }
 
     func deselectionHandler(forElementAt indexPath: IndexPath) -> (() -> Void)? {
-        return { print("Selected: \(self.selectedIndexPaths)") }
+        return { print("Selected: \(self.selectedElements)") }
     }
 
 }

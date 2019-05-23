@@ -24,6 +24,12 @@ extension SelectionHandlingDataSource where Self: CollectionUIProvidingDataSourc
     }
 }
 
+extension SelectionHandlingDataSource where Self: CollectionUIProvidingDataSource & CollectionDataSource {
+    public var selectedElements: [Store.Element] {
+        return selectedIndexPaths.map { element(at: $0) }
+    }
+}
+
 public extension SelectionHandlingDataSource {
     func deselectionHandler(forElementAt indexPath: IndexPath) -> (() -> Void)? { return nil }
 }
