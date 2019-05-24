@@ -1,10 +1,14 @@
 import Foundation
 
-public final class ArraySection<Element>: MutableSection {
+open class ArraySection<Element>: MutableSection {
     
     public weak var updateDelegate: SectionUpdateDelegate?
     
-    public var elements: [Element] = []
+    public var elements: [Element]
+    
+    public init(elements: [Element] = []) {
+        self.elements = elements
+    }
     
     public func element(at index: Int) -> Element {
         return elements[index]

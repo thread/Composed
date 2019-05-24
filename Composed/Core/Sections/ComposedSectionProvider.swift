@@ -41,6 +41,8 @@ public final class ComposedSectionProvider: AggregateSectionProvider, SectionPro
         })
     }
     
+    public init() { }
+    
     public func numberOfElements(in section: Int) -> Int {
         return sections[section].numberOfElements
     }
@@ -72,7 +74,7 @@ public final class ComposedSectionProvider: AggregateSectionProvider, SectionPro
         return -1
     }
     
-    func append(_ child: SectionProvider) {
+    public func append(_ child: SectionProvider) {
         child.updateDelegate = self
         
         let firstIndex = sections.count
@@ -82,7 +84,7 @@ public final class ComposedSectionProvider: AggregateSectionProvider, SectionPro
         updateDelegate?.provider(self, didInsertSections: child.sections, at: IndexSet(integersIn: firstIndex..<endIndex))
     }
     
-    func append(_ child: Section) {
+    public func append(_ child: Section) {
         let index = children.count
         children.append(.section(child))
         updateDelegate?.provider(self, didInsertSections: [child], at: IndexSet(integer: index))
