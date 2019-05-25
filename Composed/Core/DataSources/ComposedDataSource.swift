@@ -269,19 +269,19 @@ private extension ComposedDataSource {
 }
 
 internal extension ComposedChangeDetails {
-
+    
     init(other details: ComposedChangeDetails, mapping: ComposedMappings) {
         hasIncrementalChanges = details.hasIncrementalChanges
         insertedSections = IndexSet(details.insertedSections.map(mapping.globalSection(forLocal:)))
-        insertedIndexPaths = details.insertedIndexPaths
+        insertedIndexPaths = details.insertedIndexPaths.map(mapping.globalIndexPath(forLocal:))
         removedSections = IndexSet(details.removedSections.map(mapping.globalSection(forLocal:)))
-        removedIndexPaths = details.removedIndexPaths
+        removedIndexPaths = details.removedIndexPaths.map(mapping.globalIndexPath(forLocal:))
         updatedSections = IndexSet(details.updatedSections.map(mapping.globalSection(forLocal:)))
-        updatedIndexPaths = details.updatedIndexPaths
+        updatedIndexPaths = details.updatedIndexPaths.map(mapping.globalIndexPath(forLocal:))
         movedSections = details.movedSections.map(mapping.globalSections(forLocal:))
         movedIndexPaths = details.movedIndexPaths.map(mapping.globalIndexPaths(forLocal:))
     }
-
+    
 }
 
 extension ComposedDataSource: DataSourceUpdateDelegate {
