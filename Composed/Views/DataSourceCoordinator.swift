@@ -345,15 +345,16 @@ public extension DataSourceCoordinator {
 
         if let embedding = localDataSource as? EmbeddingDataSource {
             let dataSource = embedding.embedded.child
-            let strategy = dataSource.sizingStrategy(in: collectionView)
-            let metrics = dataSource.metrics(for: 0)
+            let strategy = dataSource.sizingStrategy(for: collectionView.traitCollection, layoutSize: collectionView.bounds.size)
+            let metrics = dataSource.metrics(for: 0, traitCollection: collectionView.traitCollection, layoutSize: collectionView.bounds.size)
             let cellConfig = dataSource.cellConfiguration(for: IndexPath(item: 0, section: 0))
 
             let layoutSize = CGSize(width: collectionView.bounds.width, height: collectionView.bounds.height)
             let context = CollectionUISizingContext(prototype: cellConfig.prototype,
                                                     indexPath: IndexPath(item: 0, section: 0),
                                                     layoutSize: layoutSize,
-                                                    metrics: metrics)
+                                                    metrics: metrics,
+                                                    traitCollection: collectionView.traitCollection)
 
             let size = strategy.size(forElementAt: IndexPath(item: 0, section: 0), context: context, dataSource: dataSource)
             return CGSize(width: layoutSize.width, height: size.height + metrics.insets.top + metrics.insets.bottom)
@@ -365,7 +366,11 @@ public extension DataSourceCoordinator {
         if let cached = strategy.cachedSize(forElementAt: indexPath) { return cached }
         let config = cellConfiguration(for: localIndexPath, globalIndexPath: indexPath, dataSource: localDataSource)
 
-        let context = CollectionUISizingContext(prototype: config.prototype, indexPath: localIndexPath, layoutSize: layoutSize, metrics: metrics)
+        let context = CollectionUISizingContext(prototype: config.prototype,
+                                                indexPath: localIndexPath,
+                                                layoutSize: layoutSize,
+                                                metrics: metrics,
+                                                traitCollection: collectionView.traitCollection)
 
         config.configure(config.prototype, localIndexPath, .sizing)
         return strategy.size(forElementAt: localIndexPath, context: context, dataSource: localDataSource)
@@ -471,14 +476,14 @@ private extension DataSourceCoordinator {
 
     func metrics(for localSection: Int, globalSection: Int, in dataSource: CollectionUIProvidingDataSource) -> CollectionUISectionMetrics {
         if let metrics = self.metrics[globalSection] { return metrics }
-        let metrics = dataSource.metrics(for: localSection)
+        let metrics = dataSource.metrics(for: localSection, traitCollection: collectionView.traitCollection, layoutSize: collectionView.bounds.size)
         self.metrics[globalSection] = metrics
         return metrics
     }
 
     func sizingStrategy(for localSection: Int, globalSection: Int, in dataSource: CollectionUIProvidingDataSource) -> CollectionUISizingStrategy {
         if let strategy = sizingStrategies[globalSection] { return strategy }
-        let strategy = dataSource.sizingStrategy(in: collectionView)
+        let strategy = dataSource.sizingStrategy(for: collectionView.traitCollection, layoutSize: collectionView.bounds.size)
         sizingStrategies[globalSection] = strategy
         return strategy
     }

@@ -41,11 +41,11 @@ open class EmbeddingDataSource: DataSource {
 
 extension EmbeddingDataSource: CollectionUIProvidingDataSource {
 
-    public func metrics(for section: Int) -> CollectionUISectionMetrics {
+    public func metrics(for section: Int, traitCollection: UITraitCollection, layoutSize: CGSize) -> CollectionUISectionMetrics {
         return .zero
     }
 
-    public func sizingStrategy(in collectionView: UICollectionView) -> CollectionUISizingStrategy {
+    public func sizingStrategy(for traitCollection: UITraitCollection, layoutSize: CGSize) -> CollectionUISizingStrategy {
         return ColumnSizingStrategy(columnCount: 1, sizingMode: .automatic(isUniform: false))
     }
 

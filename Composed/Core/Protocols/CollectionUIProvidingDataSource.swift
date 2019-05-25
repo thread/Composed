@@ -17,8 +17,8 @@ public struct CollectionUISectionMetrics {
 }
 
 public protocol CollectionUIProvidingDataSource: DataSource {
-    func sizingStrategy(in collectionView: UICollectionView) -> CollectionUISizingStrategy
-    func metrics(for section: Int) -> CollectionUISectionMetrics
+    func sizingStrategy(for traitCollection: UITraitCollection, layoutSize: CGSize) -> CollectionUISizingStrategy
+    func metrics(for section: Int, traitCollection: UITraitCollection, layoutSize: CGSize) -> CollectionUISectionMetrics
     func cellConfiguration(for indexPath: IndexPath) -> CollectionUIViewProvider
     func headerConfiguration(for section: Int) -> CollectionUIViewProvider?
     func footerConfiguration(for section: Int) -> CollectionUIViewProvider?
