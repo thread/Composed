@@ -48,6 +48,7 @@ public final class DataSourceCoordinator: NSObject, UICollectionViewDataSource, 
         dataSource.updateDelegate = self
         collectionView.delegate = self
         collectionView.dataSource = self
+        preparePlaceholderIfNeeded()
     }
 
     @objc public func numberOfSections(in collectionView: UICollectionView) -> Int {
