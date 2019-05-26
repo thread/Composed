@@ -89,15 +89,19 @@ public final class ManagedDataStore<Element>: NSObject, NSFetchedResultsControll
         switch type {
         case .delete:
             changeDetails?.removedIndexPaths.append(indexPath!)
-        case .insert:
-
-            guard let sections = controller.sections,
-                newIndexPath!.section > sections.count else {
-                    changeDetails?.hasIncrementalChanges = false
-                    return
+            
+            if let sections = controller.sections,
+                sections.indices.contains(indexPath!.section),
+                indexPath!.item == 0, sections[indexPath!.section].numberOfObjects == 1 {
+                changeDetails?.hasIncrementalChanges = false
             }
-
+        case .insert:
             changeDetails?.insertedIndexPaths.append(newIndexPath!)
+            
+            if let sections = controller.sections,
+                newIndexPath!.section > sections.count {
+                changeDetails?.hasIncrementalChanges = false
+            }
         case .update:
             changeDetails?.updatedIndexPaths.append(indexPath!)
         case .move:
