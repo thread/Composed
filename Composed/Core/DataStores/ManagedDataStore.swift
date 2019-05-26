@@ -91,8 +91,7 @@ public final class ManagedDataStore<Element>: NSObject, NSFetchedResultsControll
             changeDetails?.removedIndexPaths.append(indexPath!)
             
             if let sections = controller.sections,
-                sections.indices.contains(indexPath!.section),
-                indexPath!.item == 0, sections[indexPath!.section].numberOfObjects == 1 {
+                sections[indexPath!.section].numberOfObjects == 1 {
                 changeDetails?.hasIncrementalChanges = false
             }
         case .insert:
