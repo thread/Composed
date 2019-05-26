@@ -287,9 +287,9 @@ internal extension ComposedChangeDetails {
 extension ComposedDataSource: DataSourceUpdateDelegate {
 
     public func dataSource(_ dataSource: DataSource, performUpdates changeDetails: ComposedChangeDetails) {
+        _invalidate()
         let mapping = self.mapping(for: dataSource)
         let details = ComposedChangeDetails(other: changeDetails, mapping: mapping)
-        _invalidate()
         updateDelegate?.dataSource(self, performUpdates: details)
     }
 
