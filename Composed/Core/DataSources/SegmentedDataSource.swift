@@ -147,15 +147,3 @@ extension SegmentedDataSource: DataSourceUpdateDelegate {
     }
 
 }
-
-public extension SegmentedDataSource {
-
-    func selectElement(at indexPath: IndexPath) {
-
-    }
-
-    func deselectElement(at indexPath: IndexPath) {
-
-    }
-
-}
