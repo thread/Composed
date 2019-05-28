@@ -1,6 +1,10 @@
 import UIKit
 import Composed
 
+protocol DataSourceLifecycle {
+    func didBecomeVisible()
+}
+
 @UIApplicationMain
 final class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
@@ -38,6 +42,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         let countries = Countries(elements: countryNames)
 
         let segmented = SegmentedDataSource(children: [innerComposed, list1])
+        segmented.setSelected(index: 1)
         let composed = ComposedDataSource(children: [sectioned, segmented, countries, list4])
 
         countries.title = "Countries"
@@ -55,6 +60,8 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 
         nav?.navigationBar.isHidden = false
         nav?.pushViewController(controller, animated: false)
+
+        list1.didBecomeVisible()
 
         return true
     }

@@ -74,7 +74,9 @@ open class SegmentedDataSource: AggregateDataSource {
                 .dataSource(self, willDeselect: selectedIndex)
         }
 
+        selectedChild?.updateDelegate = nil
         selectedChild = _children[index]
+        selectedChild?.updateDelegate = self
         
         (updateDelegate as? DataSourceUpdateDelegateSegmented)?
             .dataSource(self, didSelect: _children[index], atIndex: index)
@@ -90,8 +92,6 @@ open class SegmentedDataSource: AggregateDataSource {
         if selectedChild == nil {
             setSelected(index: index, animated: false)
         }
-
-        dataSource.updateDelegate = self
     }
 
     public final func remove(dataSource: DataSource) {
@@ -128,28 +128,6 @@ open class SegmentedDataSource: AggregateDataSource {
         return child.localSection(for: section)
     }
 
-    open func didLoad() {
-        children
-            .lazy
-            .compactMap { $0 as? LifecycleObservingDataSource }
-            .forEach { $0.didLoad() }
-    }
-
-    open func willUnload() {
-        children
-            .lazy
-            .compactMap { $0 as? LifecycleObservingDataSource }
-            .forEach { $0.willUnload() }
-    }
-
-    open func didBecomeActive() {
-        (selectedChild as? LifecycleObservingDataSource)?.didBecomeActive()
-    }
-
-    open func willResignActive() {
-        (selectedChild as? LifecycleObservingDataSource)?.willResignActive()
-    }
-
 }
 
 extension SegmentedDataSource: DataSourceUpdateDelegate {
@@ -166,6 +144,18 @@ extension SegmentedDataSource: DataSourceUpdateDelegate {
     public func dataSource(_ dataSource: DataSource, sectionFor local: Int) -> (dataSource: DataSource, globalSection: Int) {
         guard selectedChild != nil else { return (self, local) }
         return updateDelegate?.dataSource(self, sectionFor: local) ?? (self, local)
+    }
+
+}
+
+public extension SegmentedDataSource {
+
+    func selectElement(at indexPath: IndexPath) {
+
+    }
+
+    func deselectElement(at indexPath: IndexPath) {
+
     }
 
 }

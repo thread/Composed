@@ -45,6 +45,12 @@ class PeopleArrayDataSource: ArrayDataSource<Person>, CollectionUIProvidingDataS
 
 }
 
+extension PeopleArrayDataSource: DataSourceLifecycle {
+    func didBecomeVisible() {
+        selectElement(at: IndexPath(item: 0, section: 0))
+    }
+}
+
 extension PeopleArrayDataSource: SelectionHandlingDataSource {
 
     var allowsMultipleSelection: Bool {

@@ -307,23 +307,3 @@ public extension SectionedDataSource {
     }
 
 }
-
-extension SectionedDataSource: LifecycleObservingDataSource where Element: LifecycleObservingDataSource {
-
-    public func didLoad() {
-        stores.flatMap { $0.elements }.forEach { $0.didLoad() }
-    }
-
-    public func willUnload() {
-        stores.flatMap { $0.elements }.forEach { $0.willUnload() }
-    }
-
-    public func didBecomeActive() {
-        stores.flatMap { $0.elements }.forEach { $0.didBecomeActive() }
-    }
-
-    public func willResignActive() {
-        stores.flatMap { $0.elements }.forEach { $0.willResignActive() }
-    }
-
-}

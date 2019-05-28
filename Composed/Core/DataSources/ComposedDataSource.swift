@@ -16,15 +16,7 @@ open class ComposedDataSource: AggregateDataSource {
         return descendants
     }
 
-    public weak var updateDelegate: DataSourceUpdateDelegate? {
-        didSet {
-            if updateDelegate == nil {
-                willResignActive()
-            } else {
-                if isActive { didBecomeActive() }
-            }
-        }
-    }
+    public weak var updateDelegate: DataSourceUpdateDelegate?
 
     public var children: [DataSource] {
         return mappings.map { $0.dataSource }
@@ -96,18 +88,6 @@ open class ComposedDataSource: AggregateDataSource {
 
         _invalidate()
 
-        if isActive {
-            children
-                .lazy
-                .compactMap { $0 as? LifecycleObservingDataSource }
-                .forEach { $0.didLoad() }
-
-            children
-                .lazy
-                .compactMap { $0 as? LifecycleObservingDataSource }
-                .forEach { $0.didBecomeActive() }
-        }
-
         return (0..<wrapper.dataSource.numberOfSections).map(mapping.globalSection(forLocal:))
     }
 
@@ -137,14 +117,6 @@ open class ComposedDataSource: AggregateDataSource {
 
         wrapper.dataSource.updateDelegate = nil
 
-        children.lazy
-            .compactMap { $0 as? LifecycleObservingDataSource }
-            .forEach { $0.willResignActive() }
-
-        children.lazy
-            .compactMap { $0 as? LifecycleObservingDataSource }
-            .forEach { $0.willUnload() }
-
         return removedSections
     }
 
@@ -171,34 +143,6 @@ open class ComposedDataSource: AggregateDataSource {
 
             _numberOfSections += mapping.numberOfSections
         }
-    }
-
-    open func didLoad() {
-        children
-            .lazy
-            .compactMap { $0 as? LifecycleObservingDataSource }
-            .forEach { $0.didLoad() }
-    }
-
-    open func willUnload() {
-        children
-            .lazy
-            .compactMap { $0 as? LifecycleObservingDataSource }
-            .forEach { $0.willUnload() }
-    }
-
-    open func didBecomeActive() {
-        children
-            .lazy
-            .compactMap { $0 as? LifecycleObservingDataSource }
-            .forEach { $0.didBecomeActive() }
-    }
-
-    open func willResignActive() {
-        children
-            .lazy
-            .compactMap { $0 as? LifecycleObservingDataSource }
-            .forEach { $0.willResignActive() }
     }
 
 }
