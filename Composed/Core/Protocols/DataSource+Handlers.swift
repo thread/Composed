@@ -22,6 +22,16 @@ extension SelectionHandlingDataSource where Self: CollectionUIProvidingDataSourc
         let indexPaths = collectionView.indexPathsForSelectedItems ?? []
         return collectionView.localIndexPaths(for: indexPaths, globalDataSource: rootDataSource, localDataSource: self).map { $0.local }
     }
+
+    public func selectElement(at indexPath: IndexPath) {
+        let section = updateDelegate?.dataSource(self, sectionFor: indexPath.section).globalSection ?? indexPath.section
+        collectionView?.selectItem(at: IndexPath(item: indexPath.item, section: section), animated: true, scrollPosition: [])
+    }
+
+    public func deselectElement(at indexPath: IndexPath) {
+        let section = updateDelegate?.dataSource(self, sectionFor: indexPath.section).globalSection ?? indexPath.section
+        collectionView?.deselectItem(at: IndexPath(item: indexPath.item, section: section), animated: true)
+    }
 }
 
 extension SelectionHandlingDataSource where Self: CollectionUIProvidingDataSource & CollectionDataSource {

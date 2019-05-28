@@ -17,11 +17,11 @@ class PeopleArrayDataSource: ArrayDataSource<Person>, CollectionUIProvidingDataS
 
     var title: String?
 
-    func sizingStrategy(in collectionView: UICollectionView) -> CollectionUISizingStrategy {
+    func sizingStrategy(for traitCollection: UITraitCollection, layoutSize: CGSize) -> CollectionUISizingStrategy {
         return ColumnSizingStrategy(columnCount: 1, sizingMode: .automatic(isUniform: false))
     }
 
-    func metrics(for section: Int) -> CollectionUISectionMetrics {
+    func metrics(for section: Int, traitCollection: UITraitCollection, layoutSize: CGSize) -> CollectionUISectionMetrics {
         return CollectionUISectionMetrics(insets: UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20), horizontalSpacing: 8, verticalSpacing: 8)
     }
 
@@ -81,12 +81,12 @@ class PeopleSectionedDataSource: SectionedDataSource<Person>, CollectionUIProvid
 
     var title: String?
 
-    func sizingStrategy(in collectionView: UICollectionView) -> CollectionUISizingStrategy {
-        let columnCount = collectionView.traitCollection.horizontalSizeClass == .compact ? 2 : 4
+    func sizingStrategy(for traitCollection: UITraitCollection, layoutSize: CGSize) -> CollectionUISizingStrategy {
+        let columnCount = traitCollection.horizontalSizeClass == .compact ? 2 : 4
         return ColumnSizingStrategy(columnCount: columnCount, sizingMode: .automatic(isUniform: true))
     }
 
-    func metrics(for section: Int) -> CollectionUISectionMetrics {
+    func metrics(for section: Int, traitCollection: UITraitCollection, layoutSize: CGSize) -> CollectionUISectionMetrics {
         return CollectionUISectionMetrics(insets: UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20), horizontalSpacing: 8, verticalSpacing: 8)
     }
 
