@@ -42,8 +42,9 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         let countries = Countries(elements: countryNames)
 
         let segmented = SegmentedDataSource(children: [innerComposed, list1])
-        segmented.setSelected(index: 1)
-        let composed = ComposedDataSource(children: [sectioned, segmented, countries, list4])
+        segmented.setSelected(index: nil, animated: false)
+
+        let composed = ComposedDataSource(children: [sectioned, segmented])
 
         countries.title = "Countries"
 
@@ -62,6 +63,14 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         nav?.pushViewController(controller, animated: false)
 
         list1.didBecomeVisible()
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            segmented.setSelected(index: 0, animated: true)
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                segmented.setSelected(index: nil, animated: true)
+            }
+        }
 
         return true
     }

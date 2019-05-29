@@ -231,10 +231,20 @@ internal extension ComposedChangeDetails {
 extension ComposedDataSource: DataSourceUpdateDelegate {
 
     public func dataSource(_ dataSource: DataSource, performUpdates changeDetails: ComposedChangeDetails) {
-        _invalidate()
         let mapping = self.mapping(for: dataSource)
+        
+        if !changeDetails.insertedSections.isEmpty {
+            // if we're inserting sections we need to invalidate BEFORE the update
+            _invalidate()
+        }
+
         let details = ComposedChangeDetails(other: changeDetails, mapping: mapping)
         updateDelegate?.dataSource(self, performUpdates: details)
+
+        if !changeDetails.removedSections.isEmpty {
+            // if we're removing sections we need to invalidate AFTER the update
+            _invalidate()
+        }
     }
 
     public final func dataSource(_ dataSource: DataSource, invalidateWith context: DataSourceInvalidationContext) {
