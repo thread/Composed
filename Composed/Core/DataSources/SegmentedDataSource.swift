@@ -39,6 +39,8 @@ open class SegmentedDataSource: AggregateDataSource {
     }
 
     public final func setSelected(index: Int?, animated: Bool = false) {
+        if index == nil && selectedChild == nil { return }
+        
         var details = ComposedChangeDetails(hasIncrementalChanges: animated)
 
         defer {
