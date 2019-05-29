@@ -44,7 +44,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         let segmented = SegmentedDataSource(children: [innerComposed, list1])
         segmented.setSelected(index: nil, animated: false)
 
-        let composed = ComposedDataSource(children: [sectioned, segmented])
+        let composed = ComposedDataSource(children: [sectioned, segmented, countries])
 
         countries.title = "Countries"
 

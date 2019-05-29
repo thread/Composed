@@ -60,9 +60,8 @@ open class SegmentedDataSource: AggregateDataSource {
             }
 
             selectedChild = _children[newIndex]
-            selectedChild?.updateDelegate = self
-
             details.insertedSections = IndexSet(integer: newIndex)
+            selectedChild?.updateDelegate = self
         case let (.some, .some(newIndex)):
             details.updatedSections = IndexSet(integer: newIndex)
         case (.none, .none):
