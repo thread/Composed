@@ -43,7 +43,6 @@
 		54A17324225CC72900A7D7FD /* AggregateDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A17304225CC71A00A7D7FD /* AggregateDataSource.swift */; };
 		54A17325225CC72900A7D7FD /* CollectionDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A17305225CC71A00A7D7FD /* CollectionDataSource.swift */; };
 		54A17326225CC72900A7D7FD /* DataSource+Handlers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A17306225CC71A00A7D7FD /* DataSource+Handlers.swift */; };
-		54A17327225CC72900A7D7FD /* LifecycleObservingDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A17307225CC71A00A7D7FD /* LifecycleObservingDataSource.swift */; };
 		54A17328225CC72900A7D7FD /* GlobalViewsProvidingDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A17308225CC71A00A7D7FD /* GlobalViewsProvidingDataSource.swift */; };
 		54A17329225CC72900A7D7FD /* DataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A17309225CC71A00A7D7FD /* DataSource.swift */; };
 		54A1732A225CC72900A7D7FD /* CollectionUIProvidingDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A1730A225CC71A00A7D7FD /* CollectionUIProvidingDataSource.swift */; };
@@ -172,7 +171,6 @@
 		54A17304225CC71A00A7D7FD /* AggregateDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AggregateDataSource.swift; sourceTree = "<group>"; };
 		54A17305225CC71A00A7D7FD /* CollectionDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionDataSource.swift; sourceTree = "<group>"; };
 		54A17306225CC71A00A7D7FD /* DataSource+Handlers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DataSource+Handlers.swift"; sourceTree = "<group>"; };
-		54A17307225CC71A00A7D7FD /* LifecycleObservingDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LifecycleObservingDataSource.swift; sourceTree = "<group>"; };
 		54A17308225CC71A00A7D7FD /* GlobalViewsProvidingDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalViewsProvidingDataSource.swift; sourceTree = "<group>"; };
 		54A17309225CC71A00A7D7FD /* DataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSource.swift; sourceTree = "<group>"; };
 		54A1730A225CC71A00A7D7FD /* CollectionUIProvidingDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionUIProvidingDataSource.swift; sourceTree = "<group>"; };
@@ -384,7 +382,6 @@
 				54A17305225CC71A00A7D7FD /* CollectionDataSource.swift */,
 				54A17304225CC71A00A7D7FD /* AggregateDataSource.swift */,
 				54A17306225CC71A00A7D7FD /* DataSource+Handlers.swift */,
-				54A17307225CC71A00A7D7FD /* LifecycleObservingDataSource.swift */,
 				54A17308225CC71A00A7D7FD /* GlobalViewsProvidingDataSource.swift */,
 				54A1730A225CC71A00A7D7FD /* CollectionUIProvidingDataSource.swift */,
 			);
@@ -608,7 +605,6 @@
 				54A1731C225CC72900A7D7FD /* SegmentedDataSource.swift in Sources */,
 				54A17339225CC72900A7D7FD /* DataSourceViewController.swift in Sources */,
 				54A1732D225CC72900A7D7FD /* ComposedMappings.swift in Sources */,
-				54A17327225CC72900A7D7FD /* LifecycleObservingDataSource.swift in Sources */,
 				54A17321225CC72900A7D7FD /* ManagedDataStore.swift in Sources */,
 				54E5CA292282FF7D00CCA628 /* Deprecations.swift in Sources */,
 				54A1732C225CC72900A7D7FD /* DataSourceHashableWrapper.swift in Sources */,

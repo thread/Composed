@@ -513,13 +513,6 @@ private extension UICollectionView {
 
 extension DataSourceCoordinator: DataSourceUpdateDelegate {
 
-    private func lifecycleObservers(for sections: IndexSet, in dataSource: DataSource) -> [LifecycleObservingDataSource] {
-        return sections
-            .lazy
-            .map { dataSource.localSection(for: $0) }
-            .compactMap { $0.dataSource as? LifecycleObservingDataSource }
-    }
-
     public func dataSource(_ dataSource: DataSource, performUpdates changeDetails: ComposedChangeDetails) {
         var changeDetails = changeDetails
 

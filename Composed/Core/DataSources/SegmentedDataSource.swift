@@ -1,14 +1,5 @@
 import Foundation
 
-public protocol DataSourceUpdateDelegateSegmented: DataSourceUpdateDelegate {
-    func dataSource(_ dataSource: SegmentedDataSource, didSelect child: DataSource, atIndex index: Int)
-    func dataSource(_ dataSource: SegmentedDataSource, willDeselect index: Int)
-}
-
-public extension DataSourceUpdateDelegateSegmented {
-    func dataSource(_ dataSource: SegmentedDataSource, willDeselect index: Int) { }
-}
-
 open class SegmentedDataSource: AggregateDataSource {
 
     public var descendants: [DataSource] {
@@ -21,11 +12,7 @@ open class SegmentedDataSource: AggregateDataSource {
     }
 
     public var children: [DataSource] {
-        guard let child = selectedChild else {
-            return []
-        }
-
-        return [child]
+        return selectedChild.flatMap { [$0] } ?? []
     }
 
     private var _children: [DataSource] = []
@@ -52,32 +39,36 @@ open class SegmentedDataSource: AggregateDataSource {
     }
 
     public final func setSelected(index: Int?, animated: Bool = false) {
-        guard index != selectedIndex else { return }
+        if index == nil && selectedChild == nil { return }
+        
+        var details = ComposedChangeDetails(hasIncrementalChanges: animated)
 
         defer {
-            let details = ComposedChangeDetails(hasIncrementalChanges: false)
             updateDelegate?.dataSource(self, performUpdates: details)
         }
 
-        guard let index = index else {
+        let newIndex = index
+        let index: Int? = selectedChild == nil ? nil : selectedIndex
+
+        switch (index, newIndex) {
+        case let (.some(index), .none):
+            selectedChild?.updateDelegate = nil
             selectedChild = nil
-            return
-        }
-        
-        guard _children.indices.contains(index) else {
-            assertionFailure("Index out of bounds: \(index). Should be in the range: \(0..<_children.count)")
-            return
-        }
+            details.removedSections = IndexSet(integer: index)
+        case let (.none, .some(newIndex)):
+            guard _children.indices.contains(newIndex) else {
+                assertionFailure("Index out of bounds: \(newIndex). Should be in the range: \(0..<_children.count)")
+                return
+            }
 
-        if selectedChild != nil {
-            (updateDelegate as? DataSourceUpdateDelegateSegmented)?
-                .dataSource(self, willDeselect: selectedIndex)
+            selectedChild = _children[newIndex]
+            details.insertedSections = IndexSet(integer: newIndex)
+            selectedChild?.updateDelegate = self
+        case let (.some, .some(newIndex)):
+            details.updatedSections = IndexSet(integer: newIndex)
+        case (.none, .none):
+            break
         }
-
-        selectedChild = _children[index]
-        
-        (updateDelegate as? DataSourceUpdateDelegateSegmented)?
-            .dataSource(self, didSelect: _children[index], atIndex: index)
     }
 
     public final func append(dataSource: DataSource) {
@@ -90,8 +81,6 @@ open class SegmentedDataSource: AggregateDataSource {
         if selectedChild == nil {
             setSelected(index: index, animated: false)
         }
-
-        dataSource.updateDelegate = self
     }
 
     public final func remove(dataSource: DataSource) {
@@ -126,28 +115,6 @@ open class SegmentedDataSource: AggregateDataSource {
     public final func localSection(for section: Int) -> (dataSource: DataSource, localSection: Int) {
         guard let child = selectedChild else { fatalError("SegmentedDataSource has no selectedChild") }
         return child.localSection(for: section)
-    }
-
-    open func didLoad() {
-        children
-            .lazy
-            .compactMap { $0 as? LifecycleObservingDataSource }
-            .forEach { $0.didLoad() }
-    }
-
-    open func willUnload() {
-        children
-            .lazy
-            .compactMap { $0 as? LifecycleObservingDataSource }
-            .forEach { $0.willUnload() }
-    }
-
-    open func didBecomeActive() {
-        (selectedChild as? LifecycleObservingDataSource)?.didBecomeActive()
-    }
-
-    open func willResignActive() {
-        (selectedChild as? LifecycleObservingDataSource)?.willResignActive()
     }
 
 }
