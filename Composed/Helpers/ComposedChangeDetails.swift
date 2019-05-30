@@ -2,13 +2,13 @@ import Foundation
 
 public struct ComposedChangeDetails {
 
-    private var _hasIncrementalChanges: Bool = true
-    public var hasIncrementalChanges: Bool {
-        get { return _hasIncrementalChanges }
-        set {
-            // once this has been set to false we don't allow updates
-            guard _hasIncrementalChanges else { return }
-            _hasIncrementalChanges = newValue
+    public var hasIncrementalChanges: Bool = true {
+        didSet {
+            let updatesAllowed = oldValue
+            if !updatesAllowed {
+                // if updates were previously disabled, we don't allow them to be re-enabled, so force back to false
+                hasIncrementalChanges = false
+            }
         }
     }
 
@@ -31,7 +31,7 @@ public struct ComposedChangeDetails {
     }
 
     public init(hasIncrementalChanges: Bool) {
-        _hasIncrementalChanges = hasIncrementalChanges
+        self.hasIncrementalChanges = hasIncrementalChanges
     }
 
 }

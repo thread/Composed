@@ -22,11 +22,11 @@ class PeopleArrayDataSource: ArrayDataSource<Person>, CollectionUIProvidingDataS
         self.title = title
     }
 
-    func sizingStrategy(in collectionView: UICollectionView) -> CollectionUISizingStrategy {
+    func sizingStrategy(for traitCollection: UITraitCollection, layoutSize: CGSize) -> CollectionUISizingStrategy {
         return ColumnSizingStrategy(columnCount: 1, sizingMode: .automatic(isUniform: false))
     }
 
-    func metrics(for section: Int) -> CollectionUISectionMetrics {
+    func metrics(for section: Int, traitCollection: UITraitCollection, layoutSize: CGSize) -> CollectionUISectionMetrics {
         return CollectionUISectionMetrics(insets: UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20), horizontalSpacing: 8, verticalSpacing: 8)
     }
 
@@ -50,16 +50,48 @@ class PeopleArrayDataSource: ArrayDataSource<Person>, CollectionUIProvidingDataS
 
 }
 
+extension PeopleArrayDataSource: SelectionHandlingDataSource {
+
+    var allowsMultipleSelection: Bool {
+        return false
+    }
+
+    func selectionHandler(forElementAt indexPath: IndexPath) -> (() -> Void)? {
+        return { print("Selected: \(self.selectedElements)") }
+    }
+
+    func deselectionHandler(forElementAt indexPath: IndexPath) -> (() -> Void)? {
+        return { print("Selected: \(self.selectedElements)") }
+    }
+
+}
+
+extension PeopleSectionedDataSource: SelectionHandlingDataSource {
+
+    var allowsMultipleSelection: Bool {
+        return true
+    }
+
+    func selectionHandler(forElementAt indexPath: IndexPath) -> (() -> Void)? {
+        return { print("Selected: \(self.selectedElements)") }
+    }
+
+    func deselectionHandler(forElementAt indexPath: IndexPath) -> (() -> Void)? {
+        return { print("Selected: \(self.selectedElements)") }
+    }
+
+}
+
 class PeopleSectionedDataSource: SectionedDataSource<Person>, CollectionUIProvidingDataSource {
 
     var title: String?
 
-    func sizingStrategy(in collectionView: UICollectionView) -> CollectionUISizingStrategy {
-        let columnCount = collectionView.traitCollection.horizontalSizeClass == .compact ? 2 : 4
+    func sizingStrategy(for traitCollection: UITraitCollection, layoutSize: CGSize) -> CollectionUISizingStrategy {
+        let columnCount = traitCollection.horizontalSizeClass == .compact ? 2 : 4
         return ColumnSizingStrategy(columnCount: columnCount, sizingMode: .automatic(isUniform: true))
     }
 
-    func metrics(for section: Int) -> CollectionUISectionMetrics {
+    func metrics(for section: Int, traitCollection: UITraitCollection, layoutSize: CGSize) -> CollectionUISectionMetrics {
         return CollectionUISectionMetrics(insets: UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20), horizontalSpacing: 8, verticalSpacing: 8)
     }
 

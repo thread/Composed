@@ -118,3 +118,21 @@ extension CollectionUIViewProvider {
         self.init(prototype: prototype(), dequeueMethod: dequeueSource, reuseIdentifier: reuseIdentifier, configure)
     }
 }
+
+public extension LifecycleObservingDataSource {
+    @available(*, deprecated, renamed: "didLoad")
+    func didLoad() { didLoad() }
+    @available(*, deprecated, renamed: "willUnload")
+    func willUnload() { willUnload() }
+}
+
+public extension SelectionHandlingDataSource {
+    @available(*, deprecated, renamed: "selectionHandler(forElementAt:)")
+    func shouldSelectElement(at indexPath: IndexPath) -> Bool { return false }
+    @available(*, deprecated, renamed: "selectionHandler(forElementAt:)")
+    func selectElement(at indexPath: IndexPath) { }
+    @available(*, deprecated, renamed: "deselectionHandler(forElementAt:)")
+    func shouldDeselectElement(at indexPath: IndexPath) -> Bool { return false }
+    @available(*, deprecated, renamed: "deselectionHandler(forElementAt:)")
+    func deselectElement(at indexPath: IndexPath) { return }
+}

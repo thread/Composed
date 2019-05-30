@@ -100,7 +100,7 @@ open class ComposedDataSource: AggregateDataSource {
             children
                 .lazy
                 .compactMap { $0 as? LifecycleObservingDataSource }
-                .forEach { $0.prepare() }
+                .forEach { $0.didLoad() }
 
             children
                 .lazy
@@ -143,7 +143,7 @@ open class ComposedDataSource: AggregateDataSource {
 
         children.lazy
             .compactMap { $0 as? LifecycleObservingDataSource }
-            .forEach { $0.invalidate() }
+            .forEach { $0.willUnload() }
 
         return removedSections
     }
@@ -173,18 +173,18 @@ open class ComposedDataSource: AggregateDataSource {
         }
     }
 
-    open func prepare() {
+    open func didLoad() {
         children
             .lazy
             .compactMap { $0 as? LifecycleObservingDataSource }
-            .forEach { $0.prepare() }
+            .forEach { $0.didLoad() }
     }
 
-    open func invalidate() {
+    open func willUnload() {
         children
             .lazy
             .compactMap { $0 as? LifecycleObservingDataSource }
-            .forEach { $0.invalidate() }
+            .forEach { $0.willUnload() }
     }
 
     open func didBecomeActive() {
@@ -268,22 +268,28 @@ private extension ComposedDataSource {
 
 }
 
+internal extension ComposedChangeDetails {
+    
+    init(other details: ComposedChangeDetails, mapping: ComposedMappings) {
+        hasIncrementalChanges = details.hasIncrementalChanges
+        insertedSections = IndexSet(details.insertedSections.map(mapping.globalSection(forLocal:)))
+        insertedIndexPaths = details.insertedIndexPaths.map(mapping.globalIndexPath(forLocal:))
+        removedSections = IndexSet(details.removedSections.map(mapping.globalSection(forLocal:)))
+        removedIndexPaths = details.removedIndexPaths.map(mapping.globalIndexPath(forLocal:))
+        updatedSections = IndexSet(details.updatedSections.map(mapping.globalSection(forLocal:)))
+        updatedIndexPaths = details.updatedIndexPaths.map(mapping.globalIndexPath(forLocal:))
+        movedSections = details.movedSections.map(mapping.globalSections(forLocal:))
+        movedIndexPaths = details.movedIndexPaths.map(mapping.globalIndexPaths(forLocal:))
+    }
+    
+}
+
 extension ComposedDataSource: DataSourceUpdateDelegate {
 
     public func dataSource(_ dataSource: DataSource, performUpdates changeDetails: ComposedChangeDetails) {
-        var details = ComposedChangeDetails(hasIncrementalChanges: changeDetails.hasIncrementalChanges)
-        let mapping = self.mapping(for: dataSource)
-
-        details.insertedSections = IndexSet(changeDetails.insertedSections.map(mapping.globalSection(forLocal:)))
-        details.insertedIndexPaths = changeDetails.insertedIndexPaths
-        details.removedSections = IndexSet(changeDetails.removedSections.map(mapping.globalSection(forLocal:)))
-        details.removedIndexPaths = changeDetails.removedIndexPaths
-        details.updatedSections = IndexSet(changeDetails.updatedSections.map(mapping.globalSection(forLocal:)))
-        details.updatedIndexPaths = changeDetails.updatedIndexPaths
-        details.movedSections = changeDetails.movedSections.map(mapping.globalSections(forLocal:))
-        details.movedIndexPaths = changeDetails.movedIndexPaths.map(mapping.globalIndexPaths(forLocal:))
-
         _invalidate()
+        let mapping = self.mapping(for: dataSource)
+        let details = ComposedChangeDetails(other: changeDetails, mapping: mapping)
         updateDelegate?.dataSource(self, performUpdates: details)
     }
 

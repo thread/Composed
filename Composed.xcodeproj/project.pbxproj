@@ -15,6 +15,8 @@
 		5402214B2195C4F800F0E173 /* Composed.h in Headers */ = {isa = PBXBuildFile; fileRef = 5402213B2195C4F700F0E173 /* Composed.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5402214E2195C4F800F0E173 /* Composed.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 540221392195C4F700F0E173 /* Composed.framework */; };
 		5402214F2195C4F800F0E173 /* Composed.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 540221392195C4F700F0E173 /* Composed.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		545667902296EFFE001246DC /* AllNewAndImproved.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5456678F2296EFFE001246DC /* AllNewAndImproved.swift */; };
+		545667922297061A001246DC /* SectionProviderDelegate+Spec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 545667912297061A001246DC /* SectionProviderDelegate+Spec.swift */; };
 		54645B5D2281A3AE00E53245 /* ColumnSizingStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54645B5C2281A3AE00E53245 /* ColumnSizingStrategy.swift */; };
 		54645B5F2281A3C100E53245 /* CarouselSizingStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54645B5E2281A3C100E53245 /* CarouselSizingStrategy.swift */; };
 		54645B612281A3FD00E53245 /* NoSizingStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54645B602281A3FD00E53245 /* NoSizingStrategy.swift */; };
@@ -81,6 +83,7 @@
 		54E5CA3D2283277600CCA628 /* Lifecycle+Spec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54E5CA3C2283277600CCA628 /* Lifecycle+Spec.swift */; };
 		54E5CA3F228327AC00CCA628 /* Wrapper+Spec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54E5CA3E228327AC00CCA628 /* Wrapper+Spec.swift */; };
 		D937381D22609C05001F29EB /* ArrayDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D937381C22609C05001F29EB /* ArrayDataSource.swift */; };
+		D93738212260C641001F29EB /* SingleElementDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D93738202260C641001F29EB /* SingleElementDataSource.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -137,6 +140,8 @@
 		540221392195C4F700F0E173 /* Composed.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Composed.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5402213B2195C4F700F0E173 /* Composed.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Composed.h; sourceTree = "<group>"; };
 		5402213C2195C4F700F0E173 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5456678F2296EFFE001246DC /* AllNewAndImproved.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllNewAndImproved.swift; sourceTree = "<group>"; };
+		545667912297061A001246DC /* SectionProviderDelegate+Spec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SectionProviderDelegate+Spec.swift"; sourceTree = "<group>"; };
 		54645B5C2281A3AE00E53245 /* ColumnSizingStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColumnSizingStrategy.swift; sourceTree = "<group>"; };
 		54645B5E2281A3C100E53245 /* CarouselSizingStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarouselSizingStrategy.swift; sourceTree = "<group>"; };
 		54645B602281A3FD00E53245 /* NoSizingStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoSizingStrategy.swift; sourceTree = "<group>"; };
@@ -202,6 +207,7 @@
 		54E5CA3C2283277600CCA628 /* Lifecycle+Spec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Lifecycle+Spec.swift"; sourceTree = "<group>"; };
 		54E5CA3E228327AC00CCA628 /* Wrapper+Spec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Wrapper+Spec.swift"; sourceTree = "<group>"; };
 		D937381C22609C05001F29EB /* ArrayDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayDataSource.swift; sourceTree = "<group>"; };
+		D93738202260C641001F29EB /* SingleElementDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleElementDataSource.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -302,6 +308,8 @@
 				54E5CA3A2283276B00CCA628 /* Complex+Spec.swift */,
 				54E5CA3C2283277600CCA628 /* Lifecycle+Spec.swift */,
 				54E5CA3E228327AC00CCA628 /* Wrapper+Spec.swift */,
+				5456678F2296EFFE001246DC /* AllNewAndImproved.swift */,
+				545667912297061A001246DC /* SectionProviderDelegate+Spec.swift */,
 			);
 			path = ComposedTests;
 			sourceTree = "<group>";
@@ -352,6 +360,7 @@
 				54A172FC225CC71A00A7D7FD /* BasicDataSource.swift */,
 				D937381C22609C05001F29EB /* ArrayDataSource.swift */,
 				54A172FD225CC71A00A7D7FD /* ComposedDataSource.swift */,
+				D93738202260C641001F29EB /* SingleElementDataSource.swift */,
 			);
 			path = DataSources;
 			sourceTree = "<group>";
@@ -584,6 +593,7 @@
 				54645B612281A3FD00E53245 /* NoSizingStrategy.swift in Sources */,
 				54E5CA272282FA3400CCA628 /* ComposedChangeDetails.swift in Sources */,
 				54A1733C225CC72900A7D7FD /* DataSourceCoordinator.swift in Sources */,
+				D93738212260C641001F29EB /* SingleElementDataSource.swift in Sources */,
 				54A17329225CC72900A7D7FD /* DataSource.swift in Sources */,
 				54A17324225CC72900A7D7FD /* AggregateDataSource.swift in Sources */,
 				54A17334225CC72900A7D7FD /* FlowLayout+Metrics.swift in Sources */,
@@ -622,6 +632,7 @@
 			files = (
 				54E5CA31228326E200CCA628 /* Empty+Spec.swift in Sources */,
 				54E5CA3D2283277600CCA628 /* Lifecycle+Spec.swift in Sources */,
+				545667922297061A001246DC /* SectionProviderDelegate+Spec.swift in Sources */,
 				54E5CA352283270C00CCA628 /* Basic+Spec.swift in Sources */,
 				54E5CA2D228326BB00CCA628 /* Composed+Spec.swift in Sources */,
 				54E5CA3B2283276B00CCA628 /* Complex+Spec.swift in Sources */,
@@ -629,6 +640,7 @@
 				54E5CA3F228327AC00CCA628 /* Wrapper+Spec.swift in Sources */,
 				54E5CA372283272800CCA628 /* Managed+Spec.swift in Sources */,
 				54645B952282F5D900E53245 /* Array+Spec.swift in Sources */,
+				545667902296EFFE001246DC /* AllNewAndImproved.swift in Sources */,
 				54E5CA2F228326CF00CCA628 /* Segmented+Spec.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

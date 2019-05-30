@@ -128,18 +128,18 @@ open class SegmentedDataSource: AggregateDataSource {
         return child.localSection(for: section)
     }
 
-    open func prepare() {
+    open func didLoad() {
         children
             .lazy
             .compactMap { $0 as? LifecycleObservingDataSource }
-            .forEach { $0.prepare() }
+            .forEach { $0.didLoad() }
     }
 
-    open func invalidate() {
+    open func willUnload() {
         children
             .lazy
             .compactMap { $0 as? LifecycleObservingDataSource }
-            .forEach { $0.invalidate() }
+            .forEach { $0.willUnload() }
     }
 
     open func didBecomeActive() {

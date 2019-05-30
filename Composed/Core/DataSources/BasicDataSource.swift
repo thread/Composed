@@ -35,8 +35,4 @@ open class BasicDataSource<Store>: CollectionDataSource where Store: DataStore {
         return (self, section)
     }
 
-    public func dataSourceFor(global indexPath: IndexPath) -> (dataSource: DataSource, localIndexPath: IndexPath) {
-        return (self, indexPath)
-    }
-
 }

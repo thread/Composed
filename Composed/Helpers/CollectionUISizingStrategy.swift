@@ -5,6 +5,7 @@ public struct CollectionUISizingContext {
     public let indexPath: IndexPath
     public let layoutSize: CGSize
     public let metrics: CollectionUISectionMetrics
+    public let traitCollection: UITraitCollection
 }
 
 public protocol CollectionUISizingStrategy {

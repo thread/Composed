@@ -61,12 +61,12 @@ final class Complex_Spec: QuickSpec {
                     let actual4 = outerComposed.localSection(for: 4)
                     let actual5 = outerComposed.localSection(for: 5)
 
-                    expect(DataSourceHashableWrapper(actual0.dataSource)).to(equal(DataSourceHashableWrapper(sectioned)))
-                    expect(DataSourceHashableWrapper(actual1.dataSource)).to(equal(DataSourceHashableWrapper(sectioned)))
-                    expect(DataSourceHashableWrapper(actual2.dataSource)).to(equal(DataSourceHashableWrapper(empty1)))
-                    expect(DataSourceHashableWrapper(actual3.dataSource)).to(equal(DataSourceHashableWrapper(list3)))
-                    expect(DataSourceHashableWrapper(actual4.dataSource)).to(equal(DataSourceHashableWrapper(countries)))
-                    expect(DataSourceHashableWrapper(actual5.dataSource)).to(equal(DataSourceHashableWrapper(empty2)))
+                    expect(actual0.dataSource) === sectioned
+                    expect(actual1.dataSource) === sectioned
+                    expect(actual2.dataSource) === empty1
+                    expect(actual3.dataSource) === list3
+                    expect(actual4.dataSource) === countries
+                    expect(actual5.dataSource) === empty2
                 }
             }
 
@@ -88,11 +88,11 @@ final class Complex_Spec: QuickSpec {
                     let actual3 = outerComposed.localSection(for: 3)
                     let actual4 = outerComposed.localSection(for: 4)
 
-                    expect(DataSourceHashableWrapper(actual0.dataSource)).to(equal(DataSourceHashableWrapper(sectioned)))
-                    expect(DataSourceHashableWrapper(actual1.dataSource)).to(equal(DataSourceHashableWrapper(sectioned)))
-                    expect(DataSourceHashableWrapper(actual2.dataSource)).to(equal(DataSourceHashableWrapper(list3)))
-                    expect(DataSourceHashableWrapper(actual3.dataSource)).to(equal(DataSourceHashableWrapper(countries)))
-                    expect(DataSourceHashableWrapper(actual4.dataSource)).to(equal(DataSourceHashableWrapper(empty2)))
+                    expect(actual0.dataSource) === sectioned
+                    expect(actual1.dataSource) === sectioned
+                    expect(actual2.dataSource) === list3
+                    expect(actual3.dataSource) === countries
+                    expect(actual4.dataSource) === empty2
                 }
             }
 
@@ -113,11 +113,11 @@ final class Complex_Spec: QuickSpec {
                     let actual3 = outerComposed.localSection(for: 3)
                     let actual4 = outerComposed.localSection(for: 4)
 
-                    expect(DataSourceHashableWrapper(actual0.dataSource)).to(equal(DataSourceHashableWrapper(sectioned)))
-                    expect(DataSourceHashableWrapper(actual1.dataSource)).to(equal(DataSourceHashableWrapper(sectioned)))
-                    expect(DataSourceHashableWrapper(actual2.dataSource)).to(equal(DataSourceHashableWrapper(list3)))
-                    expect(DataSourceHashableWrapper(actual3.dataSource)).to(equal(DataSourceHashableWrapper(countries)))
-                    expect(DataSourceHashableWrapper(actual4.dataSource)).to(equal(DataSourceHashableWrapper(empty2)))
+                    expect(actual0.dataSource) === sectioned
+                    expect(actual1.dataSource) === sectioned
+                    expect(actual2.dataSource) === list3
+                    expect(actual3.dataSource) === countries
+                    expect(actual4.dataSource) === empty2
                 }
             }
 
@@ -137,10 +137,10 @@ final class Complex_Spec: QuickSpec {
                     let actual2 = outerComposed.localSection(for: 2)
                     let actual3 = outerComposed.localSection(for: 3)
 
-                    expect(DataSourceHashableWrapper(actual0.dataSource)).to(equal(DataSourceHashableWrapper(sectioned)))
-                    expect(DataSourceHashableWrapper(actual1.dataSource)).to(equal(DataSourceHashableWrapper(sectioned)))
-                    expect(DataSourceHashableWrapper(actual2.dataSource)).to(equal(DataSourceHashableWrapper(countries)))
-                    expect(DataSourceHashableWrapper(actual3.dataSource)).to(equal(DataSourceHashableWrapper(empty2)))
+                    expect(actual0.dataSource) === sectioned
+                    expect(actual1.dataSource) === sectioned
+                    expect(actual2.dataSource) === countries
+                    expect(actual3.dataSource) === empty2
                 }
             }
 
@@ -174,13 +174,13 @@ final class Complex_Spec: QuickSpec {
                     let actual5 = outerComposed.localSection(for: 5)
                     let actual6 = outerComposed.localSection(for: 6)
 
-                    expect(DataSourceHashableWrapper(actual0.dataSource)).to(equal(DataSourceHashableWrapper(sectioned)))
-                    expect(DataSourceHashableWrapper(actual1.dataSource)).to(equal(DataSourceHashableWrapper(sectioned)))
-                    expect(DataSourceHashableWrapper(actual2.dataSource)).to(equal(DataSourceHashableWrapper(newList)))
-                    expect(DataSourceHashableWrapper(actual3.dataSource)).to(equal(DataSourceHashableWrapper(empty1)))
-                    expect(DataSourceHashableWrapper(actual4.dataSource)).to(equal(DataSourceHashableWrapper(list3)))
-                    expect(DataSourceHashableWrapper(actual5.dataSource)).to(equal(DataSourceHashableWrapper(countries)))
-                    expect(DataSourceHashableWrapper(actual6.dataSource)).to(equal(DataSourceHashableWrapper(empty2)))
+                    expect(actual0.dataSource) === sectioned
+                    expect(actual1.dataSource) === sectioned
+                    expect(actual2.dataSource) === newList
+                    expect(actual3.dataSource) === empty1
+                    expect(actual4.dataSource) === list3
+                    expect(actual5.dataSource) === countries
+                    expect(actual6.dataSource) === empty2
                 }
             }
 
@@ -205,12 +205,12 @@ final class Complex_Spec: QuickSpec {
                     let actual4 = outerComposed.localSection(for: 4)
                     let actual5 = outerComposed.localSection(for: 5)
 
-                    expect(DataSourceHashableWrapper(actual0.dataSource)).to(equal(DataSourceHashableWrapper(newList)))
-                    expect(DataSourceHashableWrapper(actual1.dataSource)).to(equal(DataSourceHashableWrapper(sectioned)))
-                    expect(DataSourceHashableWrapper(actual2.dataSource)).to(equal(DataSourceHashableWrapper(sectioned)))
-                    expect(DataSourceHashableWrapper(actual3.dataSource)).to(equal(DataSourceHashableWrapper(empty1)))
-                    expect(DataSourceHashableWrapper(actual4.dataSource)).to(equal(DataSourceHashableWrapper(list3)))
-                    expect(DataSourceHashableWrapper(actual5.dataSource)).to(equal(DataSourceHashableWrapper(countries)))
+                    expect(actual0.dataSource) === newList
+                    expect(actual1.dataSource) === sectioned
+                    expect(actual2.dataSource) === sectioned
+                    expect(actual3.dataSource) === empty1
+                    expect(actual4.dataSource) === list3
+                    expect(actual5.dataSource) === countries
                 }
             }
         }
