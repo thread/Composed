@@ -7,12 +7,15 @@ import UIKit
  contents of the embedded DataSource
  */
 open class EmbeddingDataSource: DataSource {
+    
+    public let sizeMode: CarouselSizingStrategy.SizingMode
 
-    internal let embedded: _EmbeddedDataSource
+    fileprivate let embedded: _EmbeddedDataSource
 
-    public init(child: CollectionUIProvidingDataSource) {
-        self.embedded = _EmbeddedDataSource(child: child)
+    public init(child: CollectionUIProvidingDataSource, sizeMode: CarouselSizingStrategy.SizingMode) {
+        self.embedded = _EmbeddedDataSource(child: child, sizeMode: sizeMode)
         child.updateDelegate = embedded
+        self.sizeMode = sizeMode
     }
 
     public weak var updateDelegate: DataSourceUpdateDelegate?
@@ -46,17 +49,25 @@ extension EmbeddingDataSource: CollectionUIProvidingDataSource {
     }
 
     public func sizingStrategy(for traitCollection: UITraitCollection, layoutSize: CGSize) -> CollectionUISizingStrategy {
-        return ColumnSizingStrategy(columnCount: 1, sizingMode: .automatic(isUniform: false))
+        return EmbeddingSizingStrategy(embeddedDataSource: embedded)
     }
 
     public func cellConfiguration(for indexPath: IndexPath) -> CollectionUIViewProvider {
-        return CollectionUIViewProvider(prototype: EmbeddedDataSourceCell.fromNib, dequeueMethod: .nib) { [unowned self] cell, _, _ in
+        return CollectionUIViewProvider(prototype: EmbeddedDataSourceCell.fromNib, dequeueMethod: .nib) { [weak self] cell, _, _ in
+            guard let self = self else {
+                assertionFailure("Configuration should be not be alive when data source has been deallocated")
+                return
+            }
             cell.prepare(dataSource: self.embedded)
         }
     }
 
     public func headerConfiguration(for section: Int) -> CollectionUIViewProvider? {
         return embedded.child.headerConfiguration(for: section)
+    }
+    
+    public func backgroundViewClass(for section: Int) -> UICollectionReusableView.Type? {
+        return embedded.child.backgroundViewClass(for: section)
     }
 
 }
@@ -77,13 +88,15 @@ extension EmbeddingDataSource: DataSourceUpdateDelegate {
 
 }
 
-internal class _EmbeddedDataSource: DataSource {
+private class _EmbeddedDataSource: DataSource {
 
     public let child: CollectionUIProvidingDataSource
+    public let sizeMode: CarouselSizingStrategy.SizingMode
     weak var updateDelegate: DataSourceUpdateDelegate?
 
-    public init(child: CollectionUIProvidingDataSource) {
+    public init(child: CollectionUIProvidingDataSource, sizeMode: CarouselSizingStrategy.SizingMode) {
         self.child = child
+        self.sizeMode = sizeMode
         child.updateDelegate = self
     }
 
@@ -100,13 +113,41 @@ internal class _EmbeddedDataSource: DataSource {
     }
 
     public func localSection(for section: Int) -> (dataSource: DataSource, localSection: Int) {
-        return (child, 0)
+        return (self, 0)
     }
 
     public func dataSourceFor(global indexPath: IndexPath) -> (dataSource: DataSource, localIndexPath: IndexPath) {
-        return (child, IndexPath(item: indexPath.item, section: 0))
+        return (self, IndexPath(item: indexPath.item, section: 0))
     }
 
+}
+
+extension _EmbeddedDataSource: CollectionUIProvidingDataSource {
+
+    func metrics(for section: Int, traitCollection: UITraitCollection, layoutSize: CGSize) -> CollectionUISectionMetrics {
+        return child.metrics(for: section, traitCollection: traitCollection, layoutSize: layoutSize)
+    }
+    
+    func cellConfiguration(for indexPath: IndexPath) -> CollectionUIViewProvider {
+        return child.cellConfiguration(for: indexPath)
+    }
+
+    func sizingStrategy(for traitCollection: UITraitCollection, layoutSize: CGSize) -> CollectionUISizingStrategy {
+        return CarouselSizingStrategy(sizingMode: sizeMode)
+    }
+    
+    func headerConfiguration(for section: Int) -> CollectionUIViewProvider? {
+        return nil
+    }
+    
+    func footerConfiguration(for section: Int) -> CollectionUIViewProvider? {
+        return nil
+    }
+    
+    func backgroundViewClass(for section: Int) -> UICollectionReusableView.Type? {
+        return child.backgroundViewClass(for: section)
+    }
+    
 }
 
 extension _EmbeddedDataSource: GlobalViewsProvidingDataSource {
@@ -129,4 +170,78 @@ extension _EmbeddedDataSource: DataSourceUpdateDelegate {
         return (self, local)
     }
 
+}
+
+public extension DataSource {
+    
+    var isEmbedded: Bool {
+        guard let delegate = updateDelegate else { return false }
+        return delegate is _EmbeddedDataSource
+    }
+
+}
+
+/**
+ A sizing strategy that is capable of sizing a cell that will contain
+ an embedded data source
+ */
+private class EmbeddingSizingStrategy: CollectionUISizingStrategy {
+    
+    private let embeddedDataSource: _EmbeddedDataSource
+    
+    private var cachedSize: CGSize?
+    
+    internal init(embeddedDataSource: _EmbeddedDataSource) {
+        self.embeddedDataSource = embeddedDataSource
+    }
+    
+    public func cachedSize(forElementAt indexPath: IndexPath) -> CGSize? {
+        return cachedSize
+    }
+    
+    open func size(forElementAt indexPath: IndexPath, context: CollectionUISizingContext, dataSource: DataSource) -> CGSize {
+        if let size = cachedSize { return size }
+        
+        let height: CGFloat
+        
+        switch embeddedDataSource.sizeMode {
+        case let .fixedHeight(fixedHeight):
+            height = fixedHeight
+        case let .fixedSize(size):
+            height = size.height
+        case .fixedWidth:
+            guard let cell = context.prototype as? EmbeddedDataSourceCell else {
+                return .zero
+            }
+
+            height = largestSizeOfChild(in: cell).height
+        case let .automatic(isUniform):
+            guard let cell = context.prototype as? EmbeddedDataSourceCell else {
+                return .zero
+            }
+            
+            if isUniform {
+                height = cell.wrapper.collectionView(cell.collectionView, layout: cell.collectionView.collectionViewLayout, sizeForItemAt: indexPath).height
+            } else {
+                height = largestSizeOfChild(in: cell).height
+            }
+        }
+        
+        let metrics = embeddedDataSource.metrics(for: 0, traitCollection: context.traitCollection, layoutSize: context.layoutSize)
+        let metricExtras = metrics.insets.left + metrics.insets.right
+        let size = CGSize(width: context.layoutSize.width, height: height + metricExtras)
+        cachedSize = size
+        return size
+    }
+    
+    private func largestSizeOfChild(in cell: EmbeddedDataSourceCell) -> CGSize {
+        let indexPaths = (0..<embeddedDataSource.numberOfElements(in: 0)).map { IndexPath(item: $0, section: 0) }
+        return indexPaths.reduce(into: CGSize.zero, { largestSize, indexPath in
+            let size = cell.wrapper.collectionView(cell.collectionView, layout: cell.collectionView.collectionViewLayout, sizeForItemAt: indexPath)
+            if size.height > largestSize.height {
+                largestSize = size
+            }
+        })
+    }
+    
 }

@@ -4,11 +4,11 @@ final class EmbeddedDataSourceCell: UICollectionViewCell, ReusableViewNibLoadabl
 
     @IBOutlet public private(set) var collectionView: UICollectionView!
 
-    private lazy var wrapper: DataSourceCoordinator = {
+    internal lazy var wrapper: DataSourceCoordinator = {
         return DataSourceCoordinator(collectionView: collectionView)
     }()
 
-    func prepare(dataSource: _EmbeddedDataSource) {
+    func prepare(dataSource: DataSource) {
         wrapper.replace(dataSource: dataSource)
     }
 

@@ -16,6 +16,11 @@ final class Countries: PeopleSectionedDataSource { }
 class PeopleArrayDataSource: ArrayDataSource<Person>, CollectionUIProvidingDataSource {
 
     var title: String?
+    
+    init(elements: [Person], title: String? = nil) {
+        super.init(store: ArrayDataStore(elements: elements))
+        self.title = title
+    }
 
     func sizingStrategy(for traitCollection: UITraitCollection, layoutSize: CGSize) -> CollectionUISizingStrategy {
         return ColumnSizingStrategy(columnCount: 1, sizingMode: .automatic(isUniform: false))
