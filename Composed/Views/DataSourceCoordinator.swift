@@ -213,7 +213,7 @@ public extension DataSourceCoordinator {
             return .zero
         }
 
-        headerConfigurations[section] = config
+//        headerConfigurations[section] = config
 
         let width = collectionView.bounds.width
         let target = CGSize(width: width, height: 0)
@@ -233,7 +233,7 @@ public extension DataSourceCoordinator {
             return .zero
         }
 
-        footerConfigurations[section] = config
+//        footerConfigurations[section] = config
 
         let width = collectionView.bounds.width
         let target = CGSize(width: width, height: 0)
@@ -475,21 +475,21 @@ private extension DataSourceCoordinator {
     }
 
     func metrics(for localSection: Int, globalSection: Int, in dataSource: CollectionUIProvidingDataSource) -> CollectionUISectionMetrics {
-        if let metrics = self.metrics[globalSection] { return metrics }
+//        if let metrics = self.metrics[globalSection] { return metrics }
         let metrics = dataSource.metrics(for: localSection, traitCollection: collectionView.traitCollection, layoutSize: collectionView.bounds.size)
         self.metrics[globalSection] = metrics
         return metrics
     }
 
     func sizingStrategy(for localSection: Int, globalSection: Int, in dataSource: CollectionUIProvidingDataSource) -> CollectionUISizingStrategy {
-        if let strategy = sizingStrategies[globalSection] { return strategy }
+//        if let strategy = sizingStrategies[globalSection] { return strategy }
         let strategy = dataSource.sizingStrategy(for: collectionView.traitCollection, layoutSize: collectionView.bounds.size)
         sizingStrategies[globalSection] = strategy
         return strategy
     }
 
     func cellConfiguration(for localIndexPath: IndexPath, globalIndexPath: IndexPath, dataSource: CollectionUIProvidingDataSource) -> CollectionUIViewProvider {
-        if let configuration = cellConfigurations[globalIndexPath] { return configuration }
+//        if let configuration = cellConfigurations[globalIndexPath] { return configuration }
         let configuration = dataSource.cellConfiguration(for: localIndexPath)
         cellConfigurations[globalIndexPath] = configuration
         return configuration
