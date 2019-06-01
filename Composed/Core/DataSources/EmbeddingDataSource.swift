@@ -13,7 +13,6 @@ open class EmbeddingDataSource: DataSource {
     fileprivate let embedded: _EmbeddedDataSource
     
     private var contentOffset: CGPoint = .zero
-    private var selectedIndexPaths: [IndexPath] = []
 
     public init(child: CollectionUIProvidingDataSource, sizeMode: CarouselSizingStrategy.SizingMode) {
         self.embedded = _EmbeddedDataSource(child: child, sizeMode: sizeMode)
@@ -66,7 +65,7 @@ extension EmbeddingDataSource: CollectionUIProvidingDataSource {
                 return
             }
             
-            cell.prepare(dataSource: self.embedded, contentOffset: self.contentOffset, selectedIndexPaths: self.selectedIndexPaths)
+            cell.prepare(dataSource: self.embedded, contentOffset: self.contentOffset)
             cell.delegate = self
         }
     }
@@ -83,9 +82,8 @@ extension EmbeddingDataSource: CollectionUIProvidingDataSource {
 
 extension EmbeddingDataSource: EmbeddedDataSourceCellDelegate {
     
-    func embeddedCell(_ cell: EmbeddedDataSourceCell, cacheValuesFor contentOffset: CGPoint, selectedIndexPaths: [IndexPath]) {
+    func embeddedCell(_ cell: EmbeddedDataSourceCell, cacheValuesFor contentOffset: CGPoint) {
         self.contentOffset = contentOffset
-        self.selectedIndexPaths = selectedIndexPaths
     }
     
 }

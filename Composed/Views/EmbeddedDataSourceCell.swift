@@ -1,7 +1,7 @@
 import UIKit
 
 protocol EmbeddedDataSourceCellDelegate: class {
-    func embeddedCell(_ cell: EmbeddedDataSourceCell, cacheValuesFor contentOffset: CGPoint, selectedIndexPaths: [IndexPath])
+    func embeddedCell(_ cell: EmbeddedDataSourceCell, cacheValuesFor contentOffset: CGPoint)
 }
 
 final class EmbeddedDataSourceCell: UICollectionViewCell, ReusableViewNibLoadable {
@@ -13,19 +13,16 @@ final class EmbeddedDataSourceCell: UICollectionViewCell, ReusableViewNibLoadabl
         return DataSourceCoordinator(collectionView: collectionView)
     }()
 
-    func prepare(dataSource: DataSource, contentOffset: CGPoint, selectedIndexPaths: [IndexPath]) {
+    func prepare(dataSource: DataSource, contentOffset: CGPoint) {
         wrapper.replace(dataSource: dataSource)
-        
         wrapper.collectionView.contentOffset = contentOffset
-        selectedIndexPaths.forEach {
-            wrapper.collectionView.selectItem(at: $0, animated: false, scrollPosition: [])
-        }
+        
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
         
-        delegate?.embeddedCell(self, cacheValuesFor: collectionView.contentOffset, selectedIndexPaths: collectionView.indexPathsForSelectedItems ?? [])
+        delegate?.embeddedCell(self, cacheValuesFor: collectionView.contentOffset)
         
         collectionView.dataSource = nil
         collectionView.delegate = nil
