@@ -88,7 +88,7 @@ extension EmbeddingDataSource: DataSourceUpdateDelegate {
 
 }
 
-private class _EmbeddedDataSource: DataSource {
+internal class _EmbeddedDataSource: DataSource {
 
     public let child: CollectionUIProvidingDataSource
     public let sizeMode: CarouselSizingStrategy.SizingMode
@@ -124,41 +124,77 @@ private class _EmbeddedDataSource: DataSource {
 
 extension _EmbeddedDataSource: CollectionUIProvidingDataSource {
 
-    func metrics(for section: Int, traitCollection: UITraitCollection, layoutSize: CGSize) -> CollectionUISectionMetrics {
+    public func metrics(for section: Int, traitCollection: UITraitCollection, layoutSize: CGSize) -> CollectionUISectionMetrics {
         return child.metrics(for: section, traitCollection: traitCollection, layoutSize: layoutSize)
     }
     
-    func cellConfiguration(for indexPath: IndexPath) -> CollectionUIViewProvider {
+    public func cellConfiguration(for indexPath: IndexPath) -> CollectionUIViewProvider {
         return child.cellConfiguration(for: indexPath)
     }
 
-    func sizingStrategy(for traitCollection: UITraitCollection, layoutSize: CGSize) -> CollectionUISizingStrategy {
+    public func sizingStrategy(for traitCollection: UITraitCollection, layoutSize: CGSize) -> CollectionUISizingStrategy {
         return CarouselSizingStrategy(sizingMode: sizeMode)
     }
     
-    func headerConfiguration(for section: Int) -> CollectionUIViewProvider? {
+    public func headerConfiguration(for section: Int) -> CollectionUIViewProvider? {
         return nil
     }
     
-    func footerConfiguration(for section: Int) -> CollectionUIViewProvider? {
+    public func footerConfiguration(for section: Int) -> CollectionUIViewProvider? {
         return nil
     }
     
-    func backgroundViewClass(for section: Int) -> UICollectionReusableView.Type? {
+    public func backgroundViewClass(for section: Int) -> UICollectionReusableView.Type? {
         return child.backgroundViewClass(for: section)
     }
     
 }
 
+extension _EmbeddedDataSource: SelectionHandlingDataSource {
+    
+    public var allowsMultipleSelection: Bool {
+        return (child as? SelectionHandlingDataSource)?.allowsMultipleSelection ?? false
+    }
+    
+    public func selectionHandler(forElementAt indexPath: IndexPath) -> (() -> Void)? {
+        return (child as? SelectionHandlingDataSource)?.selectionHandler(forElementAt: indexPath)
+    }
+    
+    public func deselectionHandler(forElementAt indexPath: IndexPath) -> (() -> Void)? {
+        return (child as? SelectionHandlingDataSource)?.deselectionHandler(forElementAt: indexPath)
+    }
+    
+    var selectedIndexPaths: [IndexPath] {
+        return (child as? SelectionHandlingDataSource)?.selectedIndexPaths ?? []
+    }
+
+}
+
+extension _EmbeddedDataSource: EditHandlingDataSource {
+    
+    public func supportsEditing(for indexPath: IndexPath) -> Bool {
+        return (child as? EditHandlingDataSource)?.supportsEditing(for: indexPath) ?? false
+    }
+    
+    public func setEditing(_ editing: Bool, animated: Bool) {
+        (child as? EditHandlingDataSource)?.setEditing(editing, animated: animated)
+    }
+    
+    public var isEditing: Bool {
+        return (child as? EditHandlingDataSource)?.isEditing ?? false
+    }
+    
+}
+
 extension _EmbeddedDataSource: GlobalViewsProvidingDataSource {
-    var placeholderView: UIView? {
+    public var placeholderView: UIView? {
         return (child as? GlobalViewsProvidingDataSource)?.placeholderView
     }
 }
 
 extension _EmbeddedDataSource: DataSourceUpdateDelegate {
 
-    func dataSource(_ dataSource: DataSource, performUpdates changeDetails: ComposedChangeDetails) {
+    public func dataSource(_ dataSource: DataSource, performUpdates changeDetails: ComposedChangeDetails) {
         updateDelegate?.dataSource(self, performUpdates: changeDetails)
     }
 

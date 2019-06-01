@@ -48,7 +48,7 @@ public extension DataSource {
     var rootDataSource: DataSource {
         var dataSource: DataSource = self
 
-        while !dataSource.isRoot, let parent = dataSource.updateDelegate as? DataSource {
+        while !dataSource.isRoot, let parent = dataSource.updateDelegate as? DataSource, !(parent is _EmbeddedDataSource) {
             dataSource = parent
         }
 

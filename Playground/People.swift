@@ -59,7 +59,7 @@ extension PeopleArrayDataSource: DataSourceLifecycle {
 extension PeopleArrayDataSource: SelectionHandlingDataSource {
 
     var allowsMultipleSelection: Bool {
-        return false
+        return true
     }
 
     func selectionHandler(forElementAt indexPath: IndexPath) -> (() -> Void)? {
