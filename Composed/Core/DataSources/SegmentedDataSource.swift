@@ -6,6 +6,8 @@ open class SegmentedDataSource: AggregateDataSource {
         guard let child = selectedChild else { return [] }
         if let aggregate = child as? AggregateDataSource {
             return [child] + aggregate.descendants
+        } else if let embed = child as? EmbeddingDataSource {
+            return embed.descendants
         } else {
             return [child]
         }

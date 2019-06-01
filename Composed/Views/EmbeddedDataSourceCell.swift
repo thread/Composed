@@ -11,6 +11,13 @@ final class EmbeddedDataSourceCell: UICollectionViewCell, ReusableViewNibLoadabl
     func prepare(dataSource: DataSource) {
         wrapper.replace(dataSource: dataSource)
     }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        collectionView.dataSource = nil
+        collectionView.delegate = nil
+        collectionView.reloadData()
+    }
 
     override func apply(_ layoutAttributes: UICollectionViewLayoutAttributes) {
         super.apply(layoutAttributes)

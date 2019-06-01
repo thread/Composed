@@ -39,6 +39,10 @@ open class EmbeddingDataSource: DataSource {
     public func dataSourceFor(global indexPath: IndexPath) -> (dataSource: DataSource, localIndexPath: IndexPath) {
         return (self, indexPath)
     }
+    
+    public var descendants: [DataSource] {
+        return embedded.descendants
+    }
 
 }
 
@@ -93,6 +97,10 @@ internal class _EmbeddedDataSource: DataSource {
     public let child: CollectionUIProvidingDataSource
     public let sizeMode: CarouselSizingStrategy.SizingMode
     weak var updateDelegate: DataSourceUpdateDelegate?
+    
+    public var descendants: [DataSource] {
+        return [child]
+    }
 
     public init(child: CollectionUIProvidingDataSource, sizeMode: CarouselSizingStrategy.SizingMode) {
         self.child = child

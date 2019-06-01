@@ -1,10 +1,6 @@
 import UIKit
 import Composed
 
-protocol DataSourceLifecycle {
-    func didBecomeVisible()
-}
-
 @UIApplicationMain
 final class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
@@ -62,7 +58,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         let list3 = Coworkers(elements: [
             Person(name: "Stuart", age: 30),
             Person(name: "Dan", age: 12)
-            ])
+        ], allowsMultipleSelection: false)
         
         let list4 = Websites(elements: [
             Person(name: "Youtube", age: 30),
@@ -111,7 +107,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
             Person(name: "Person 1", age: 1),
             Person(name: "Person 1", age: 1),
         ]
-        let composedEmbedded = ComposedDataSource(children: [
+        let composedEmbedded1 = ComposedDataSource(children: [
             EmbeddingDataSource(
                 child: Family(elements: variableSizedPeople, title: "Automatic (not uniform)"),
                 sizeMode: .automatic(isUniform: false)
@@ -121,16 +117,67 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 //                sizeMode: .fixedHeight(120)
 //            ),
             EmbeddingDataSource(
-                child: Family(elements: variableSizedPeople, title: "Fixed Width (250)"),
-                sizeMode: .fixedWidth(250)
+                child: Family(elements: variableSizedPeople, title: "Fixed Width (250)", allowsMultipleSelection: false),
+                sizeMode: .automatic(isUniform: false)
             ),
             EmbeddingDataSource(
                 child: Family(elements: fixedSizedPeople, title: "Automatic (uniform)"),
-                sizeMode: .automatic(isUniform: true)
+                sizeMode: .automatic(isUniform: false)
+            ),
+            EmbeddingDataSource(
+                child: Family(elements: variableSizedPeople, title: "Automatic (not uniform)", allowsMultipleSelection: false),
+                sizeMode: .automatic(isUniform: false)
+            ),
+            //            EmbeddingDataSource(
+            //                child: Family(elements: variableSizedPeople, title: "Fixed Height (120)"),
+            //                sizeMode: .fixedHeight(120)
+            //            ),
+            EmbeddingDataSource(
+                child: Family(elements: variableSizedPeople, title: "Fixed Width (250)"),
+                sizeMode: .automatic(isUniform: false)
+            ),
+            EmbeddingDataSource(
+                child: Family(elements: fixedSizedPeople, title: "Automatic (uniform)"),
+                sizeMode: .automatic(isUniform: false)
             ),
         ])
+        
+        let composedEmbedded2 = ComposedDataSource(children: [
+            EmbeddingDataSource(
+                child: Family(elements: variableSizedPeople, title: "Automatic (not uniform)"),
+                sizeMode: .automatic(isUniform: false)
+            ),
+            //            EmbeddingDataSource(
+            //                child: Family(elements: variableSizedPeople, title: "Fixed Height (120)"),
+            //                sizeMode: .fixedHeight(120)
+            //            ),
+            EmbeddingDataSource(
+                child: Family(elements: variableSizedPeople, title: "Fixed Width (250)"),
+                sizeMode: .automatic(isUniform: false)
+            ),
+            EmbeddingDataSource(
+                child: Family(elements: fixedSizedPeople, title: "Automatic (uniform)"),
+                sizeMode: .automatic(isUniform: false)
+            ),
+            EmbeddingDataSource(
+                child: Family(elements: variableSizedPeople, title: "Automatic (not uniform)"),
+                sizeMode: .automatic(isUniform: false)
+            ),
+            //            EmbeddingDataSource(
+            //                child: Family(elements: variableSizedPeople, title: "Fixed Height (120)"),
+            //                sizeMode: .fixedHeight(120)
+            //            ),
+            EmbeddingDataSource(
+                child: Family(elements: variableSizedPeople, title: "Fixed Width (250)"),
+                sizeMode: .automatic(isUniform: false)
+            ),
+            EmbeddingDataSource(
+                child: Family(elements: fixedSizedPeople, title: "Automatic (uniform)"),
+                sizeMode: .automatic(isUniform: false)
+            ),
+            ])
 
-        let controller = DataSourceViewController(dataSource: composedEmbedded)
+        let controller = DataSourceViewController(dataSource: ComposedDataSource(children: [composedEmbedded1, composedEmbedded2]))
         
         controller.navigationItem.largeTitleDisplayMode = .never
         controller.collectionView.backgroundColor = .white

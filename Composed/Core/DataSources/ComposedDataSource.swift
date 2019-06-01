@@ -8,6 +8,8 @@ open class ComposedDataSource: AggregateDataSource {
         for child in children {
             if let aggregate = child as? AggregateDataSource {
                 descendants.append(contentsOf: [child] + aggregate.descendants)
+            } else if let embed = child as? EmbeddingDataSource {
+                descendants.append(contentsOf: embed.descendants)
             } else {
                 descendants.append(child)
             }
