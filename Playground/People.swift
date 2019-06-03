@@ -114,7 +114,7 @@ class PeopleSectionedDataSource: SectionedDataSource<Person>, CollectionUIProvid
 final class ListDataSource: ComposedDataSource, GlobalViewsProvidingDataSource {
 
     var placeholderView: UIView? {
-        let view = UIActivityIndicatorView(style: .gray)
+        let view = UIActivityIndicatorView(style: .medium)
         view.startAnimating()
         return view
     }

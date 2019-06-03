@@ -193,6 +193,7 @@
 		54BAB1632214D05C0064CE51 /* GlobalFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalFooterView.swift; sourceTree = "<group>"; };
 		54BAB1652214D0630064CE51 /* GlobalFooterView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GlobalFooterView.xib; sourceTree = "<group>"; };
 		54D0A8A421F64AF600C65B72 /* HeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HeaderView.xib; sourceTree = "<group>"; };
+		54DA205822A5E688000A7A3A /* Playground.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Playground.entitlements; sourceTree = "<group>"; };
 		54E5CA262282FA3400CCA628 /* ComposedChangeDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposedChangeDetails.swift; sourceTree = "<group>"; };
 		54E5CA282282FF7D00CCA628 /* Deprecations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Deprecations.swift; sourceTree = "<group>"; };
 		54E5CA2C228326BB00CCA628 /* Composed+Spec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Composed+Spec.swift"; sourceTree = "<group>"; };
@@ -261,6 +262,7 @@
 		540221212195C44F00F0E173 /* Playground */ = {
 			isa = PBXGroup;
 			children = (
+				54DA205822A5E688000A7A3A /* Playground.entitlements */,
 				540221222195C44F00F0E173 /* AppDelegate.swift */,
 				54BAB15D221497FA0064CE51 /* GlobalHeaderView.swift */,
 				54BAB15F221498000064CE51 /* GlobalHeaderView.xib */,
@@ -797,7 +799,9 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Playground/Playground.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				DERIVE_UIKITFORMAC_PRODUCT_BUNDLE_IDENTIFIER = YES;
 				DEVELOPMENT_TEAM = V2CWYL9AN8;
 				INFOPLIST_FILE = Playground/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -806,6 +810,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.152percent.Playground;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_UIKITFORMAC = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -816,7 +821,9 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Playground/Playground.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				DERIVE_UIKITFORMAC_PRODUCT_BUNDLE_IDENTIFIER = YES;
 				DEVELOPMENT_TEAM = V2CWYL9AN8;
 				INFOPLIST_FILE = Playground/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -825,6 +832,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.152percent.Playground;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_UIKITFORMAC = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
