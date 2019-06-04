@@ -29,27 +29,9 @@ public extension CollectionUIProvidingDataSource {
     func headerConfiguration(for section: Int) -> CollectionUIViewProvider? { return nil }
     func footerConfiguration(for section: Int) -> CollectionUIViewProvider? { return nil }
     func backgroundViewClass(for section: Int) -> UICollectionReusableView.Type? { return nil }
-
-    func willBeginDisplay(ofCell cell: UICollectionViewCell, at indexPath: IndexPath) { }
-    func didEndDisplay(ofCell cell: UICollectionViewCell, at indexPath: IndexPath) { }
-
-    func willBeginDisplay() { }
-    func didEndDisplay() { }
 }
 
 extension DataSource where Self: CollectionUIProvidingDataSource {
-
-    public var indexPathsForVisibleElements: [IndexPath] {
-        return []
-    }
-
-    public var indexPathsForSelectedElements: [IndexPath] {
-        return []
-    }
-
-    public func resuableView(for indexPath: IndexPath, of kind: String? = nil) -> UICollectionReusableView? {
-        return nil
-    }
 
     internal var collectionView: UICollectionView? {
         if let wrapper = updateDelegate as? DataSourceCoordinator {

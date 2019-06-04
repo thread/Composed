@@ -71,8 +71,6 @@ open class CarouselSizingStrategy: CollectionUISizingStrategy {
             let targetSize = CGSize(width: 0, height: height)
             size = targetView.systemLayoutSizeFitting(targetSize, withHorizontalFittingPriority: .fittingSizeLevel, verticalFittingPriority: .required)
         case .automatic:
-//            let targetSize = CGSize(width: .max, height: 0)
-//            size = targetView.systemLayoutSizeFitting(targetSize, withHorizontalFittingPriority: .required, verticalFittingPriority: .fittingSizeLevel)
             size = targetView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
         }
 

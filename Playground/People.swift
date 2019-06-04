@@ -16,8 +16,10 @@ final class Countries: PeopleSectionedDataSource { }
 class PeopleArrayDataSource: ArrayDataSource<Person>, CollectionUIProvidingDataSource {
 
     var title: String?
+    var allowsMultipleSelection: Bool
     
-    init(elements: [Person], title: String? = nil) {
+    init(elements: [Person], title: String? = nil, allowsMultipleSelection: Bool = true) {
+        self.allowsMultipleSelection = allowsMultipleSelection
         super.init(store: ArrayDataStore(elements: elements))
         self.title = title
     }
@@ -44,23 +46,9 @@ class PeopleArrayDataSource: ArrayDataSource<Person>, CollectionUIProvidingDataS
         }
     }
 
-    func backgroundViewClass(for section: Int) -> UICollectionReusableView.Type? {
-        return BackgroundView.self
-    }
-
-}
-
-extension PeopleArrayDataSource: DataSourceLifecycle {
-    func didBecomeVisible() {
-        selectElement(at: IndexPath(item: 0, section: 0))
-    }
 }
 
 extension PeopleArrayDataSource: SelectionHandlingDataSource {
-
-    var allowsMultipleSelection: Bool {
-        return false
-    }
 
     func selectionHandler(forElementAt indexPath: IndexPath) -> (() -> Void)? {
         return { print("Selected: \(self.selectedElements)") }
@@ -121,10 +109,6 @@ class PeopleSectionedDataSource: SectionedDataSource<Person>, CollectionUIProvid
         }
     }
 
-    func backgroundViewClass(for section: Int) -> UICollectionReusableView.Type? {
-        return BackgroundView.self
-    }
-
 }
 
 final class ListDataSource: ComposedDataSource, GlobalViewsProvidingDataSource {
@@ -149,17 +133,31 @@ final class PersonCell: UICollectionViewCell, ReusableViewNibLoadable {
 
     @IBOutlet private weak var nameLabel: UILabel!
     @IBOutlet private weak var ageLabel: UILabel!
+    
+    override var isSelected: Bool {
+        didSet { invalidateSelection() }
+    }
+    
+    private func invalidateSelection() {
+        layer.add(CATransition(), forKey: nil)
+        nameLabel.textColor = isSelected ? .black : .gray
+        ageLabel.textColor = isSelected ? .darkGray : .lightGray
+    }
 
     override func awakeFromNib() {
         super.awakeFromNib()
 
+        backgroundView = UIView(frame: .zero)
+        backgroundView?.layer.cornerRadius = 6
+        backgroundView?.layer.borderWidth = 1
+        backgroundView?.layer.borderColor = UIColor(white: 0, alpha: 0.2).cgColor
+        
         selectedBackgroundView = UIView(frame: .zero)
         selectedBackgroundView?.layer.cornerRadius = 6
-        selectedBackgroundView?.layer.borderWidth = 1
-        selectedBackgroundView?.layer.borderColor = UIColor.lightGray.cgColor
-        selectedBackgroundView?.backgroundColor = UIColor(white: 0.88, alpha: 1)
-
-        backgroundColor = .clear
+        selectedBackgroundView?.layer.borderWidth = 2
+        selectedBackgroundView?.layer.borderColor = UIColor(white: 0, alpha: 1).cgColor
+        
+        invalidateSelection()
     }
 
     public func prepare(person: Person) {

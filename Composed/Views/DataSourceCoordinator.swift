@@ -384,7 +384,7 @@ public extension DataSourceCoordinator {
         guard let dataSource = dataSource else { return false }
         let (localDataSource, localSection) = dataSource.localSection(for: indexPath.section)
         let localIndexPath = IndexPath(item: indexPath.item, section: localSection)
-
+        
         guard let selectionDataSource = localDataSource as? SelectionHandlingDataSource,
             let handler = selectionDataSource.selectionHandler(forElementAt: localIndexPath) else { return false }
         selectionHandlers[indexPath] = SelectionContext(localDataSource: selectionDataSource, localIndexPath: localIndexPath, handler: handler)
