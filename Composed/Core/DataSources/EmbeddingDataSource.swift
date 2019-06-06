@@ -74,6 +74,10 @@ extension EmbeddingDataSource: CollectionUIProvidingDataSource {
     public func headerConfiguration(for section: Int) -> CollectionUIViewProvider? {
         return embedded.child.headerConfiguration(for: section)
     }
+
+    public func footerConfiguration(for section: Int) -> CollectionUIViewProvider? {
+        return embedded.child.footerConfiguration(for: section)
+    }
     
     public func backgroundViewClass(for section: Int) -> UICollectionReusableView.Type? {
         return embedded.child.backgroundViewClass(for: section)
