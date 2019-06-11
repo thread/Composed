@@ -119,16 +119,36 @@ open class FlowLayout: UICollectionViewFlowLayout {
                     return nil
             }
             
-            let metrics = self.metrics(forSection: indexPath.section)
             let bgAttributes = FlowLayoutAttributes(forSupplementaryViewOfKind: elementKind, with: indexPath)
             
-            let x = metrics.insets.left
-            let y = firstAttributes.frame.minY
-            let w = collectionView.bounds.width - (metrics.insets.left + metrics.insets.right)
-            let h = lastAttributes.frame.maxY - firstAttributes.frame.minY
+            var x: CGFloat = 0
+            var y: CGFloat = firstAttributes.frame.minY
+            var w: CGFloat = collectionView.bounds.width
+            var h: CGFloat = lastAttributes.frame.maxY - firstAttributes.frame.minY
+            
+            if let delegate = collectionView.delegate as? FlowLayoutDelegate,
+                let reference = delegate.backgroundViewLayoutReference?(collectionView: collectionView, forSectionAt: indexPath.section) {
+
+                switch reference {
+                case .fromBounds:
+                    let insets = metrics(forSection: indexPath.section).insets
+                    let headerHeight = layoutAttributesForSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, at: indexPath)?.size.height ?? 0
+                    let footerHeight = layoutAttributesForSupplementaryView(ofKind: UICollectionView.elementKindSectionFooter, at: indexPath)?.size.height ?? 0
+                    y -= headerHeight + insets.top
+                    h += headerHeight + footerHeight + insets.top + insets.bottom
+                case .fromBoundsExcludingHeadersAndFooters:
+                    let insets = metrics(forSection: indexPath.section).insets
+                    y -= insets.top
+                    h += insets.top + insets.bottom
+                case .fromSectionInsets:
+                    let insets = metrics(forSection: indexPath.section).insets
+                    x += insets.left
+                    w -= (insets.left + insets.right)
+                }
+            }
             
             bgAttributes.frame = CGRect(x: x, y: y, width: w, height: h)
-            bgAttributes.zIndex = -100
+            bgAttributes.zIndex = UICollectionView.backgroundZIndex
             
             return bgAttributes
         default:

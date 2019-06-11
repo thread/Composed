@@ -201,6 +201,11 @@ public extension DataSourceCoordinator {
         return type(of: config.prototype)
     }
     
+    func backgroundViewLayoutReference(collectionView: UICollectionView, forSectionAt section: Int) -> LayoutReference {
+        let (localDataSource, localSection) = localDataSourceAndSection(for: section)
+        return localDataSource.backgroundLayoutReference(for: localSection)
+    }
+    
     private func prepareBackgroundView(for section: Int) {
         let (localDataSource, localSection) = localDataSourceAndSection(for: section)
         if localDataSource.isEmbedded { return }

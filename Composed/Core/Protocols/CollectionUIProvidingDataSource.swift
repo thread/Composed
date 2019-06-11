@@ -23,12 +23,14 @@ public protocol CollectionUIProvidingDataSource: DataSource {
     func headerConfiguration(for section: Int) -> CollectionUIViewProvider?
     func footerConfiguration(for section: Int) -> CollectionUIViewProvider?
     func backgroundConfiguration(for section: Int) -> CollectionUIViewProvider?
+    func backgroundLayoutReference(for section: Int) -> LayoutReference
 }
 
 public extension CollectionUIProvidingDataSource {
     func headerConfiguration(for section: Int) -> CollectionUIViewProvider? { return nil }
     func footerConfiguration(for section: Int) -> CollectionUIViewProvider? { return nil }
     func backgroundConfiguration(for section: Int) -> CollectionUIViewProvider? { return nil }
+    func backgroundLayoutReference(for section: Int) -> LayoutReference { return .fromBoundsExcludingHeadersAndFooters }
 }
 
 extension DataSource where Self: CollectionUIProvidingDataSource {

@@ -27,6 +27,15 @@ public extension UICollectionView {
     @objc optional func backgroundViewClass(in collectionView: UICollectionView,
                                             forSectionAt section: Int) -> UICollectionReusableView.Type?
     
+    @objc optional func backgroundViewLayoutReference(collectionView: UICollectionView,
+                                                      forSectionAt section: Int) -> LayoutReference
+    
+}
+
+@objc public enum LayoutReference: Int {
+    case fromBoundsExcludingHeadersAndFooters
+    case fromBounds
+    case fromSectionInsets
 }
 
 public struct FlowLayoutSectionMetrics {

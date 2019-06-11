@@ -52,6 +52,10 @@ class PeopleArrayDataSource: ArrayDataSource<Person>, CollectionUIProvidingDataS
             view.backgroundColor = .red
         }
     }
+    
+    func backgroundLayoutReference(for section: Int) -> LayoutReference {
+        return .fromSectionInsets
+    }
 
 }
 
@@ -79,13 +83,6 @@ extension PeopleSectionedDataSource: SelectionHandlingDataSource {
 
     func deselectionHandler(forElementAt indexPath: IndexPath) -> (() -> Void)? {
         return { print("Selected: \(self.selectedElements)") }
-    }
-    
-    func backgroundConfiguration(for section: Int) -> CollectionUIViewProvider? {
-        return CollectionUIViewProvider(prototype: BackgroundView.fromNib, dequeueMethod: .nib) {
-            view, indexPath, context in
-            view.backgroundColor = .blue
-        }
     }
 
 }
@@ -122,6 +119,17 @@ class PeopleSectionedDataSource: SectionedDataSource<Person>, CollectionUIProvid
             }
         }
     }
+    
+    func backgroundConfiguration(for section: Int) -> CollectionUIViewProvider? {
+        return CollectionUIViewProvider(prototype: BackgroundView.fromNib, dequeueMethod: .nib) {
+            view, indexPath, context in
+            view.backgroundColor = .blue
+        }
+    }
+    
+    func backgroundLayoutReference(for section: Int) -> LayoutReference {
+        return section == 0 ? .fromBounds : .fromBoundsExcludingHeadersAndFooters
+    }
 
 }
 
@@ -133,13 +141,13 @@ final class ListDataSource: ComposedDataSource, GlobalViewsProvidingDataSource {
         return view
     }
 
-    func globalHeaderConfiguration() -> CollectionUIViewProvider? {
-        return CollectionUIViewProvider(prototype: GlobalHeaderView.fromNib, dequeueMethod: .nib) { _, _, _ in }
-    }
-
-    func globalFooterConfiguration() -> CollectionUIViewProvider? {
-        return CollectionUIViewProvider(prototype: GlobalFooterView.fromNib, dequeueMethod: .nib) { _, _, _ in }
-    }
+//    func globalHeaderConfiguration() -> CollectionUIViewProvider? {
+//        return CollectionUIViewProvider(prototype: GlobalHeaderView.fromNib, dequeueMethod: .nib) { _, _, _ in }
+//    }
+//
+//    func globalFooterConfiguration() -> CollectionUIViewProvider? {
+//        return CollectionUIViewProvider(prototype: GlobalFooterView.fromNib, dequeueMethod: .nib) { _, _, _ in }
+//    }
 
 }
 
@@ -186,7 +194,7 @@ final class HeaderView: DataSourceHeaderFooterView, ReusableViewNibLoadable {
     @IBOutlet private weak var titleLabel: UILabel!
 
     public func prepare(title: String?) {
-        backgroundColor = .lightGray
+        backgroundColor = UIColor.lightGray.withAlphaComponent(0.5)
         titleLabel.text = title
     }
 
@@ -197,7 +205,7 @@ final class FooterView: DataSourceHeaderFooterView, ReusableViewNibLoadable {
     @IBOutlet private weak var titleLabel: UILabel!
 
     public func prepare(title: String?) {
-        backgroundColor = .darkGray
+        backgroundColor = UIColor.darkGray.withAlphaComponent(0.5)
         titleLabel.text = title
     }
 
