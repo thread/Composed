@@ -45,6 +45,13 @@ class PeopleArrayDataSource: ArrayDataSource<Person>, CollectionUIProvidingDataS
             }
         }
     }
+    
+    func backgroundConfiguration(for section: Int) -> CollectionUIViewProvider? {
+        return CollectionUIViewProvider(prototype: BackgroundView.fromNib, dequeueMethod: .nib) {
+            view, _, _ in
+            view.backgroundColor = .red
+        }
+    }
 
 }
 
@@ -72,6 +79,13 @@ extension PeopleSectionedDataSource: SelectionHandlingDataSource {
 
     func deselectionHandler(forElementAt indexPath: IndexPath) -> (() -> Void)? {
         return { print("Selected: \(self.selectedElements)") }
+    }
+    
+    func backgroundConfiguration(for section: Int) -> CollectionUIViewProvider? {
+        return CollectionUIViewProvider(prototype: BackgroundView.fromNib, dequeueMethod: .nib) {
+            view, indexPath, context in
+            view.backgroundColor = .blue
+        }
     }
 
 }

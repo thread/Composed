@@ -79,8 +79,8 @@ extension EmbeddingDataSource: CollectionUIProvidingDataSource {
         return embedded.child.footerConfiguration(for: section)
     }
     
-    public func backgroundViewClass(for section: Int) -> UICollectionReusableView.Type? {
-        return embedded.child.backgroundViewClass(for: section)
+    public func backgroundConfiguration(for section: Int) -> CollectionUIViewProvider? {
+        return embedded.child.backgroundConfiguration(for: section)
     }
 
 }
@@ -170,8 +170,8 @@ extension _EmbeddedDataSource: CollectionUIProvidingDataSource {
         return nil
     }
     
-    public func backgroundViewClass(for section: Int) -> UICollectionReusableView.Type? {
-        return child.backgroundViewClass(for: section)
+    public func backgroundConfiguration(for section: Int) -> CollectionUIViewProvider? {
+        return nil
     }
     
 }

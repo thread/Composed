@@ -14,6 +14,7 @@ public final class DataSourceCoordinator: NSObject, UICollectionViewDataSource, 
     private var globalConfigurations: [String: CollectionUIViewProvider] = [:]
     private var headerConfigurations: [Int: CollectionUIViewProvider] = [:]
     private var footerConfigurations: [Int: CollectionUIViewProvider] = [:]
+    private var backgroundConfigurations: [Int: CollectionUIViewProvider] = [:]
     private var cellConfigurations: [IndexPath: CollectionUIViewProvider] = [:]
     private var metrics: [Int: CollectionUISectionMetrics] = [:]
     private var sizingStrategies: [Int: CollectionUISizingStrategy] = [:]
@@ -196,7 +197,27 @@ public extension DataSourceCoordinator {
 
     func backgroundViewClass(in collectionView: UICollectionView, forSectionAt section: Int) -> UICollectionReusableView.Type? {
         let (localDataSource, localSection) = localDataSourceAndSection(for: section)
-        return localDataSource.backgroundViewClass(for: localSection)
+        guard let config = localDataSource.backgroundConfiguration(for: localSection) else { return nil }
+        return type(of: config.prototype)
+    }
+    
+    private func prepareBackgroundView(for section: Int) {
+        let (localDataSource, localSection) = localDataSourceAndSection(for: section)
+        if localDataSource.isEmbedded { return }
+        
+        guard backgroundViewClass(in: collectionView, forSectionAt: section) != nil,
+            let config = localDataSource.backgroundConfiguration(for: localSection) else {
+            backgroundConfigurations[section] = nil
+            return
+        }
+        
+        let type = Swift.type(of: config.prototype)
+        switch config.dequeueMethod {
+        case .nib:
+            collectionView.register(nibType: type, reuseIdentifier: config.reuseIdentifier, kind: UICollectionView.elementKindBackground)
+        case .class:
+            collectionView.register(classType: type, reuseIdentifier: config.reuseIdentifier, kind: UICollectionView.elementKindBackground)
+        }
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
@@ -204,6 +225,8 @@ public extension DataSourceCoordinator {
         // Therefore its safe to say we should purge any caches we hold onto based on sections and lazily re-query them at a later time.
         sizingStrategies[section] = nil
         metrics[section] = nil
+        
+        prepareBackgroundView(for: section)
 
         let (localDataSource, localSection) = localDataSourceAndSection(for: section)
         if localDataSource.isEmbedded { return .zero }
@@ -239,6 +262,21 @@ public extension DataSourceCoordinator {
             target, withHorizontalFittingPriority: .required,
             verticalFittingPriority: .fittingSizeLevel)
     }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, at indexPath: IndexPath) {
+        let (localDataSource, localIndexPath) = localDataSourceAndIndexPath(for: indexPath)
+        switch elementKind {
+        case UICollectionView.elementKindBackground:
+            guard let config = localDataSource.backgroundConfiguration(for: localIndexPath.section) else { return }
+            config.configure(view, localIndexPath, .presentation)
+        default:
+            break
+        }
+        
+        if isEditing, let editable = localDataSource as? EditHandlingDataSource {
+            (view as? EditHandling)?.setEditing(editable.isEditing, animated: false)
+        }
+    }
 
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let configuration: CollectionUIViewProvider?
@@ -265,6 +303,12 @@ public extension DataSourceCoordinator {
             let (localDataSource, localIndexPath) = localDataSourceAndIndexPath(for: indexPath)
             configuration = footerConfigurations[indexPath.section]
                 ?? localDataSource.footerConfiguration(for: localIndexPath.section)
+            sectionDataSource = localDataSource
+            
+        case (UICollectionView.elementKindBackground, _):
+            let (localDataSource, localIndexPath) = localDataSourceAndIndexPath(for: indexPath)
+            configuration = backgroundConfigurations[indexPath.section]
+                ?? localDataSource.backgroundConfiguration(for: localIndexPath.section)
             sectionDataSource = localDataSource
 
         default:

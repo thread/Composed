@@ -22,13 +22,13 @@ public protocol CollectionUIProvidingDataSource: DataSource {
     func cellConfiguration(for indexPath: IndexPath) -> CollectionUIViewProvider
     func headerConfiguration(for section: Int) -> CollectionUIViewProvider?
     func footerConfiguration(for section: Int) -> CollectionUIViewProvider?
-    func backgroundViewClass(for section: Int) -> UICollectionReusableView.Type?
+    func backgroundConfiguration(for section: Int) -> CollectionUIViewProvider?
 }
 
 public extension CollectionUIProvidingDataSource {
     func headerConfiguration(for section: Int) -> CollectionUIViewProvider? { return nil }
     func footerConfiguration(for section: Int) -> CollectionUIViewProvider? { return nil }
-    func backgroundViewClass(for section: Int) -> UICollectionReusableView.Type? { return nil }
+    func backgroundConfiguration(for section: Int) -> CollectionUIViewProvider? { return nil }
 }
 
 extension DataSource where Self: CollectionUIProvidingDataSource {
