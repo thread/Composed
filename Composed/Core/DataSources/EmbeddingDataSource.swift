@@ -213,8 +213,8 @@ extension _EmbeddedDataSource: EditHandlingDataSource {
 }
 
 extension _EmbeddedDataSource: GlobalViewsProvidingDataSource {
-    public var placeholderView: UIView? {
-        return (child as? GlobalViewsProvidingDataSource)?.placeholderView
+    func placeholderConfiguration() -> CollectionUIViewProvider? {
+        return (child as? GlobalViewsProvidingDataSource)?.placeholderConfiguration()
     }
 }
 

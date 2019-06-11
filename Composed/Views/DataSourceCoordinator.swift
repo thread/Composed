@@ -167,9 +167,14 @@ public final class DataSourceCoordinator: NSObject, UICollectionViewDataSource, 
     }
 
     private func preparePlaceholderIfNeeded() {
-        collectionView.backgroundView = dataSource?.isEmpty == true
-            ? (dataSource as? GlobalViewsProvidingDataSource)?.placeholderView
-            : nil
+        guard dataSource?.isEmpty == true,
+            let config = (dataSource as? GlobalViewsProvidingDataSource)?.placeholderConfiguration() else {
+                collectionView.backgroundView = nil
+                return
+        }
+        
+        config.configure(config.prototype, IndexPath(item: 0, section: 0), .presentation)
+        collectionView.backgroundView = config.prototype
     }
 
 }
