@@ -16,6 +16,13 @@ final class Countries: PeopleSectionedDataSource { }
 class PeopleArrayDataSource: ArrayDataSource<Person>, CollectionUIProvidingDataSource {
 
     var title: String?
+    var allowsMultipleSelection: Bool
+    
+    init(elements: [Person], title: String? = nil, allowsMultipleSelection: Bool = true) {
+        self.allowsMultipleSelection = allowsMultipleSelection
+        super.init(store: ArrayDataStore(elements: elements))
+        self.title = title
+    }
 
     func sizingStrategy(for traitCollection: UITraitCollection, layoutSize: CGSize) -> CollectionUISizingStrategy {
         return ColumnSizingStrategy(columnCount: 1, sizingMode: .automatic(isUniform: false))
@@ -38,18 +45,21 @@ class PeopleArrayDataSource: ArrayDataSource<Person>, CollectionUIProvidingDataS
             }
         }
     }
-
-    func backgroundViewClass(for section: Int) -> UICollectionReusableView.Type? {
-        return BackgroundView.self
+    
+    func backgroundConfiguration(for section: Int) -> CollectionUIViewProvider? {
+        return CollectionUIViewProvider(prototype: BackgroundView.fromNib, dequeueMethod: .nib) {
+            view, _, _ in
+            view.backgroundColor = .red
+        }
+    }
+    
+    func backgroundLayoutReference(for section: Int) -> LayoutReference {
+        return .fromSectionInsets
     }
 
 }
 
 extension PeopleArrayDataSource: SelectionHandlingDataSource {
-
-    var allowsMultipleSelection: Bool {
-        return false
-    }
 
     func selectionHandler(forElementAt indexPath: IndexPath) -> (() -> Void)? {
         return { print("Selected: \(self.selectedElements)") }
@@ -109,28 +119,36 @@ class PeopleSectionedDataSource: SectionedDataSource<Person>, CollectionUIProvid
             }
         }
     }
-
-    func backgroundViewClass(for section: Int) -> UICollectionReusableView.Type? {
-        return BackgroundView.self
+    
+    func backgroundConfiguration(for section: Int) -> CollectionUIViewProvider? {
+        return CollectionUIViewProvider(prototype: BackgroundView.fromNib, dequeueMethod: .nib) {
+            view, indexPath, context in
+            view.backgroundColor = .blue
+        }
+    }
+    
+    func backgroundLayoutReference(for section: Int) -> LayoutReference {
+        return section == 0 ? .fromBounds : .fromBoundsExcludingHeadersAndFooters
     }
 
 }
 
 final class ListDataSource: ComposedDataSource, GlobalViewsProvidingDataSource {
 
-    var placeholderView: UIView? {
-        let view = UIActivityIndicatorView(style: .gray)
-        view.startAnimating()
-        return view
+    func placeholderConfiguration() -> CollectionUIViewProvider? {
+//        let view = UIActivityIndicatorView(style: .gray)
+//        view.startAnimating()
+//        return view
+        return nil
     }
 
-    func globalHeaderConfiguration() -> CollectionUIViewProvider? {
-        return CollectionUIViewProvider(prototype: GlobalHeaderView.fromNib, dequeueMethod: .nib) { _, _, _ in }
-    }
-
-    func globalFooterConfiguration() -> CollectionUIViewProvider? {
-        return CollectionUIViewProvider(prototype: GlobalFooterView.fromNib, dequeueMethod: .nib) { _, _, _ in }
-    }
+//    func globalHeaderConfiguration() -> CollectionUIViewProvider? {
+//        return CollectionUIViewProvider(prototype: GlobalHeaderView.fromNib, dequeueMethod: .nib) { _, _, _ in }
+//    }
+//
+//    func globalFooterConfiguration() -> CollectionUIViewProvider? {
+//        return CollectionUIViewProvider(prototype: GlobalFooterView.fromNib, dequeueMethod: .nib) { _, _, _ in }
+//    }
 
 }
 
@@ -138,17 +156,31 @@ final class PersonCell: UICollectionViewCell, ReusableViewNibLoadable {
 
     @IBOutlet private weak var nameLabel: UILabel!
     @IBOutlet private weak var ageLabel: UILabel!
+    
+    override var isSelected: Bool {
+        didSet { invalidateSelection() }
+    }
+    
+    private func invalidateSelection() {
+        layer.add(CATransition(), forKey: nil)
+        nameLabel.textColor = isSelected ? .black : .gray
+        ageLabel.textColor = isSelected ? .darkGray : .lightGray
+    }
 
     override func awakeFromNib() {
         super.awakeFromNib()
 
+        backgroundView = UIView(frame: .zero)
+        backgroundView?.layer.cornerRadius = 6
+        backgroundView?.layer.borderWidth = 1
+        backgroundView?.layer.borderColor = UIColor(white: 0, alpha: 0.2).cgColor
+        
         selectedBackgroundView = UIView(frame: .zero)
         selectedBackgroundView?.layer.cornerRadius = 6
-        selectedBackgroundView?.layer.borderWidth = 1
-        selectedBackgroundView?.layer.borderColor = UIColor.lightGray.cgColor
-        selectedBackgroundView?.backgroundColor = UIColor(white: 0.88, alpha: 1)
-
-        backgroundColor = .clear
+        selectedBackgroundView?.layer.borderWidth = 2
+        selectedBackgroundView?.layer.borderColor = UIColor(white: 0, alpha: 1).cgColor
+        
+        invalidateSelection()
     }
 
     public func prepare(person: Person) {
@@ -163,7 +195,7 @@ final class HeaderView: DataSourceHeaderFooterView, ReusableViewNibLoadable {
     @IBOutlet private weak var titleLabel: UILabel!
 
     public func prepare(title: String?) {
-        backgroundColor = .lightGray
+        backgroundColor = UIColor.lightGray.withAlphaComponent(0.5)
         titleLabel.text = title
     }
 
@@ -174,7 +206,7 @@ final class FooterView: DataSourceHeaderFooterView, ReusableViewNibLoadable {
     @IBOutlet private weak var titleLabel: UILabel!
 
     public func prepare(title: String?) {
-        backgroundColor = .darkGray
+        backgroundColor = UIColor.darkGray.withAlphaComponent(0.5)
         titleLabel.text = title
     }
 

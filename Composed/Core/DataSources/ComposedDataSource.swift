@@ -8,6 +8,8 @@ open class ComposedDataSource: AggregateDataSource {
         for child in children {
             if let aggregate = child as? AggregateDataSource {
                 descendants.append(contentsOf: [child] + aggregate.descendants)
+            } else if let embed = child as? EmbeddingDataSource {
+                descendants.append(contentsOf: embed.descendants)
             } else {
                 descendants.append(child)
             }
@@ -16,15 +18,7 @@ open class ComposedDataSource: AggregateDataSource {
         return descendants
     }
 
-    public weak var updateDelegate: DataSourceUpdateDelegate? {
-        didSet {
-            if updateDelegate == nil {
-                willResignActive()
-            } else {
-                if isActive { didBecomeActive() }
-            }
-        }
-    }
+    public weak var updateDelegate: DataSourceUpdateDelegate?
 
     public var children: [DataSource] {
         return mappings.map { $0.dataSource }
@@ -96,18 +90,6 @@ open class ComposedDataSource: AggregateDataSource {
 
         _invalidate()
 
-        if isActive {
-            children
-                .lazy
-                .compactMap { $0 as? LifecycleObservingDataSource }
-                .forEach { $0.didLoad() }
-
-            children
-                .lazy
-                .compactMap { $0 as? LifecycleObservingDataSource }
-                .forEach { $0.didBecomeActive() }
-        }
-
         return (0..<wrapper.dataSource.numberOfSections).map(mapping.globalSection(forLocal:))
     }
 
@@ -137,14 +119,6 @@ open class ComposedDataSource: AggregateDataSource {
 
         wrapper.dataSource.updateDelegate = nil
 
-        children.lazy
-            .compactMap { $0 as? LifecycleObservingDataSource }
-            .forEach { $0.willResignActive() }
-
-        children.lazy
-            .compactMap { $0 as? LifecycleObservingDataSource }
-            .forEach { $0.willUnload() }
-
         return removedSections
     }
 
@@ -171,34 +145,6 @@ open class ComposedDataSource: AggregateDataSource {
 
             _numberOfSections += mapping.numberOfSections
         }
-    }
-
-    open func didLoad() {
-        children
-            .lazy
-            .compactMap { $0 as? LifecycleObservingDataSource }
-            .forEach { $0.didLoad() }
-    }
-
-    open func willUnload() {
-        children
-            .lazy
-            .compactMap { $0 as? LifecycleObservingDataSource }
-            .forEach { $0.willUnload() }
-    }
-
-    open func didBecomeActive() {
-        children
-            .lazy
-            .compactMap { $0 as? LifecycleObservingDataSource }
-            .forEach { $0.didBecomeActive() }
-    }
-
-    open func willResignActive() {
-        children
-            .lazy
-            .compactMap { $0 as? LifecycleObservingDataSource }
-            .forEach { $0.willResignActive() }
     }
 
 }
@@ -287,10 +233,20 @@ internal extension ComposedChangeDetails {
 extension ComposedDataSource: DataSourceUpdateDelegate {
 
     public func dataSource(_ dataSource: DataSource, performUpdates changeDetails: ComposedChangeDetails) {
-        _invalidate()
         let mapping = self.mapping(for: dataSource)
+        
+        if !changeDetails.insertedSections.isEmpty {
+            // if we're inserting sections we need to invalidate BEFORE the update
+            _invalidate()
+        }
+
         let details = ComposedChangeDetails(other: changeDetails, mapping: mapping)
         updateDelegate?.dataSource(self, performUpdates: details)
+
+        if !changeDetails.removedSections.isEmpty {
+            // if we're removing sections we need to invalidate AFTER the update
+            _invalidate()
+        }
     }
 
     public final func dataSource(_ dataSource: DataSource, invalidateWith context: DataSourceInvalidationContext) {

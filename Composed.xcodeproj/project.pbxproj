@@ -29,6 +29,7 @@
 		54645B912282F58100E53245 /* Composed.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 540221392195C4F700F0E173 /* Composed.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		54645B952282F5D900E53245 /* Array+Spec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54645B942282F5BA00E53245 /* Array+Spec.swift */; };
 		546AA49521D5178900588DE4 /* PersonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 546AA49421D5178900588DE4 /* PersonCell.xib */; };
+		548A133022B0103A00B2880D /* BackgroundView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 548A132F22B0103A00B2880D /* BackgroundView.xib */; };
 		548A8B6E2214EEBE00C0A276 /* FooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 548A8B6D2214EEBE00C0A276 /* FooterView.xib */; };
 		548A8B702214FA2800C0A276 /* BackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 548A8B6F2214FA2800C0A276 /* BackgroundView.swift */; };
 		54A1731B225CC72900A7D7FD /* SectionedDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A172F9225CC71A00A7D7FD /* SectionedDataSource.swift */; };
@@ -43,7 +44,6 @@
 		54A17324225CC72900A7D7FD /* AggregateDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A17304225CC71A00A7D7FD /* AggregateDataSource.swift */; };
 		54A17325225CC72900A7D7FD /* CollectionDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A17305225CC71A00A7D7FD /* CollectionDataSource.swift */; };
 		54A17326225CC72900A7D7FD /* DataSource+Handlers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A17306225CC71A00A7D7FD /* DataSource+Handlers.swift */; };
-		54A17327225CC72900A7D7FD /* LifecycleObservingDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A17307225CC71A00A7D7FD /* LifecycleObservingDataSource.swift */; };
 		54A17328225CC72900A7D7FD /* GlobalViewsProvidingDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A17308225CC71A00A7D7FD /* GlobalViewsProvidingDataSource.swift */; };
 		54A17329225CC72900A7D7FD /* DataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A17309225CC71A00A7D7FD /* DataSource.swift */; };
 		54A1732A225CC72900A7D7FD /* CollectionUIProvidingDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A1730A225CC71A00A7D7FD /* CollectionUIProvidingDataSource.swift */; };
@@ -153,6 +153,7 @@
 		54645B942282F5BA00E53245 /* Array+Spec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Spec.swift"; sourceTree = "<group>"; };
 		546865242204E3CA00E79B56 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		546AA49421D5178900588DE4 /* PersonCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PersonCell.xib; sourceTree = "<group>"; };
+		548A132F22B0103A00B2880D /* BackgroundView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BackgroundView.xib; sourceTree = "<group>"; };
 		548A8B6D2214EEBE00C0A276 /* FooterView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FooterView.xib; sourceTree = "<group>"; };
 		548A8B6F2214FA2800C0A276 /* BackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundView.swift; sourceTree = "<group>"; };
 		54A172F2225CC71900A7D7FD /* DataSourceChangeSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSourceChangeSet.swift; sourceTree = "<group>"; };
@@ -172,7 +173,6 @@
 		54A17304225CC71A00A7D7FD /* AggregateDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AggregateDataSource.swift; sourceTree = "<group>"; };
 		54A17305225CC71A00A7D7FD /* CollectionDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionDataSource.swift; sourceTree = "<group>"; };
 		54A17306225CC71A00A7D7FD /* DataSource+Handlers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DataSource+Handlers.swift"; sourceTree = "<group>"; };
-		54A17307225CC71A00A7D7FD /* LifecycleObservingDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LifecycleObservingDataSource.swift; sourceTree = "<group>"; };
 		54A17308225CC71A00A7D7FD /* GlobalViewsProvidingDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalViewsProvidingDataSource.swift; sourceTree = "<group>"; };
 		54A17309225CC71A00A7D7FD /* DataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSource.swift; sourceTree = "<group>"; };
 		54A1730A225CC71A00A7D7FD /* CollectionUIProvidingDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionUIProvidingDataSource.swift; sourceTree = "<group>"; };
@@ -273,6 +273,7 @@
 				54D0A8A421F64AF600C65B72 /* HeaderView.xib */,
 				548A8B6D2214EEBE00C0A276 /* FooterView.xib */,
 				548A8B6F2214FA2800C0A276 /* BackgroundView.swift */,
+				548A132F22B0103A00B2880D /* BackgroundView.xib */,
 				540221262195C45000F0E173 /* Main.storyboard */,
 				540221292195C45100F0E173 /* Assets.xcassets */,
 				5402212B2195C45100F0E173 /* LaunchScreen.storyboard */,
@@ -384,7 +385,6 @@
 				54A17305225CC71A00A7D7FD /* CollectionDataSource.swift */,
 				54A17304225CC71A00A7D7FD /* AggregateDataSource.swift */,
 				54A17306225CC71A00A7D7FD /* DataSource+Handlers.swift */,
-				54A17307225CC71A00A7D7FD /* LifecycleObservingDataSource.swift */,
 				54A17308225CC71A00A7D7FD /* GlobalViewsProvidingDataSource.swift */,
 				54A1730A225CC71A00A7D7FD /* CollectionUIProvidingDataSource.swift */,
 			);
@@ -541,6 +541,7 @@
 				54D0A8A521F64AF600C65B72 /* HeaderView.xib in Resources */,
 				5402212A2195C45100F0E173 /* Assets.xcassets in Resources */,
 				546AA49521D5178900588DE4 /* PersonCell.xib in Resources */,
+				548A133022B0103A00B2880D /* BackgroundView.xib in Resources */,
 				54BAB1662214D0630064CE51 /* GlobalFooterView.xib in Resources */,
 				54BAB160221498000064CE51 /* GlobalHeaderView.xib in Resources */,
 				540221282195C45000F0E173 /* Main.storyboard in Resources */,
@@ -608,7 +609,6 @@
 				54A1731C225CC72900A7D7FD /* SegmentedDataSource.swift in Sources */,
 				54A17339225CC72900A7D7FD /* DataSourceViewController.swift in Sources */,
 				54A1732D225CC72900A7D7FD /* ComposedMappings.swift in Sources */,
-				54A17327225CC72900A7D7FD /* LifecycleObservingDataSource.swift in Sources */,
 				54A17321225CC72900A7D7FD /* ManagedDataStore.swift in Sources */,
 				54E5CA292282FF7D00CCA628 /* Deprecations.swift in Sources */,
 				54A1732C225CC72900A7D7FD /* DataSourceHashableWrapper.swift in Sources */,

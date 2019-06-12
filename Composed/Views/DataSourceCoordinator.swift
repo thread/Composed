@@ -14,6 +14,7 @@ public final class DataSourceCoordinator: NSObject, UICollectionViewDataSource, 
     private var globalConfigurations: [String: CollectionUIViewProvider] = [:]
     private var headerConfigurations: [Int: CollectionUIViewProvider] = [:]
     private var footerConfigurations: [Int: CollectionUIViewProvider] = [:]
+    private var backgroundConfigurations: [Int: CollectionUIViewProvider] = [:]
     private var cellConfigurations: [IndexPath: CollectionUIViewProvider] = [:]
     private var metrics: [Int: CollectionUISectionMetrics] = [:]
     private var sizingStrategies: [Int: CollectionUISizingStrategy] = [:]
@@ -166,9 +167,14 @@ public final class DataSourceCoordinator: NSObject, UICollectionViewDataSource, 
     }
 
     private func preparePlaceholderIfNeeded() {
-        collectionView.backgroundView = dataSource?.isEmpty == true
-            ? (dataSource as? GlobalViewsProvidingDataSource)?.placeholderView
-            : nil
+        guard dataSource?.isEmpty == true,
+            let config = (dataSource as? GlobalViewsProvidingDataSource)?.placeholderConfiguration() else {
+                collectionView.backgroundView = nil
+                return
+        }
+        
+        config.configure(config.prototype, IndexPath(item: 0, section: 0), .presentation)
+        collectionView.backgroundView = config.prototype
     }
 
 }
@@ -196,7 +202,32 @@ public extension DataSourceCoordinator {
 
     func backgroundViewClass(in collectionView: UICollectionView, forSectionAt section: Int) -> UICollectionReusableView.Type? {
         let (localDataSource, localSection) = localDataSourceAndSection(for: section)
-        return localDataSource.backgroundViewClass(for: localSection)
+        guard let config = localDataSource.backgroundConfiguration(for: localSection) else { return nil }
+        return type(of: config.prototype)
+    }
+    
+    func backgroundViewLayoutReference(collectionView: UICollectionView, forSectionAt section: Int) -> LayoutReference {
+        let (localDataSource, localSection) = localDataSourceAndSection(for: section)
+        return localDataSource.backgroundLayoutReference(for: localSection)
+    }
+    
+    private func prepareBackgroundView(for section: Int) {
+        let (localDataSource, localSection) = localDataSourceAndSection(for: section)
+        if localDataSource.isEmbedded { return }
+        
+        guard backgroundViewClass(in: collectionView, forSectionAt: section) != nil,
+            let config = localDataSource.backgroundConfiguration(for: localSection) else {
+            backgroundConfigurations[section] = nil
+            return
+        }
+        
+        let type = Swift.type(of: config.prototype)
+        switch config.dequeueMethod {
+        case .nib:
+            collectionView.register(nibType: type, reuseIdentifier: config.reuseIdentifier, kind: UICollectionView.elementKindBackground)
+        case .class:
+            collectionView.register(classType: type, reuseIdentifier: config.reuseIdentifier, kind: UICollectionView.elementKindBackground)
+        }
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
@@ -204,6 +235,8 @@ public extension DataSourceCoordinator {
         // Therefore its safe to say we should purge any caches we hold onto based on sections and lazily re-query them at a later time.
         sizingStrategies[section] = nil
         metrics[section] = nil
+        
+        prepareBackgroundView(for: section)
 
         let (localDataSource, localSection) = localDataSourceAndSection(for: section)
         if localDataSource.isEmbedded { return .zero }
@@ -212,8 +245,6 @@ public extension DataSourceCoordinator {
             headerConfigurations[section] = nil
             return .zero
         }
-
-        headerConfigurations[section] = config
 
         let width = collectionView.bounds.width
         let target = CGSize(width: width, height: 0)
@@ -233,8 +264,6 @@ public extension DataSourceCoordinator {
             return .zero
         }
 
-        footerConfigurations[section] = config
-
         let width = collectionView.bounds.width
         let target = CGSize(width: width, height: 0)
 
@@ -242,6 +271,21 @@ public extension DataSourceCoordinator {
         return config.prototype.systemLayoutSizeFitting(
             target, withHorizontalFittingPriority: .required,
             verticalFittingPriority: .fittingSizeLevel)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, at indexPath: IndexPath) {
+        let (localDataSource, localIndexPath) = localDataSourceAndIndexPath(for: indexPath)
+        switch elementKind {
+        case UICollectionView.elementKindBackground:
+            guard let config = localDataSource.backgroundConfiguration(for: localIndexPath.section) else { return }
+            config.configure(view, localIndexPath, .presentation)
+        default:
+            break
+        }
+        
+        if isEditing, let editable = localDataSource as? EditHandlingDataSource {
+            (view as? EditHandling)?.setEditing(editable.isEditing, animated: false)
+        }
     }
 
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -269,6 +313,12 @@ public extension DataSourceCoordinator {
             let (localDataSource, localIndexPath) = localDataSourceAndIndexPath(for: indexPath)
             configuration = footerConfigurations[indexPath.section]
                 ?? localDataSource.footerConfiguration(for: localIndexPath.section)
+            sectionDataSource = localDataSource
+            
+        case (UICollectionView.elementKindBackground, _):
+            let (localDataSource, localIndexPath) = localDataSourceAndIndexPath(for: indexPath)
+            configuration = backgroundConfigurations[indexPath.section]
+                ?? localDataSource.backgroundConfiguration(for: localIndexPath.section)
             sectionDataSource = localDataSource
 
         default:
@@ -343,23 +393,6 @@ public extension DataSourceCoordinator {
         let (localDataSource, localIndexPath) = localDataSourceAndIndexPath(for: indexPath)
         let layoutSize = CGSize(width: collectionView.safeAreaLayoutGuide.layoutFrame.width, height: collectionView.bounds.height)
 
-        if let embedding = localDataSource as? EmbeddingDataSource {
-            let dataSource = embedding.embedded.child
-            let strategy = dataSource.sizingStrategy(for: collectionView.traitCollection, layoutSize: collectionView.bounds.size)
-            let metrics = dataSource.metrics(for: 0, traitCollection: collectionView.traitCollection, layoutSize: collectionView.bounds.size)
-            let cellConfig = dataSource.cellConfiguration(for: IndexPath(item: 0, section: 0))
-
-            let layoutSize = CGSize(width: collectionView.bounds.width, height: collectionView.bounds.height)
-            let context = CollectionUISizingContext(prototype: cellConfig.prototype,
-                                                    indexPath: IndexPath(item: 0, section: 0),
-                                                    layoutSize: layoutSize,
-                                                    metrics: metrics,
-                                                    traitCollection: collectionView.traitCollection)
-
-            let size = strategy.size(forElementAt: IndexPath(item: 0, section: 0), context: context, dataSource: dataSource)
-            return CGSize(width: layoutSize.width, height: size.height + metrics.insets.top + metrics.insets.bottom)
-        }
-
         let metrics = self.metrics(for: localIndexPath.section, globalSection: indexPath.section, in: localDataSource)
         let strategy = sizingStrategy(for: localIndexPath.section, globalSection: indexPath.section, in: localDataSource)
 
@@ -405,7 +438,7 @@ public extension DataSourceCoordinator {
         guard let dataSource = dataSource else { return false }
         let (localDataSource, localSection) = dataSource.localSection(for: indexPath.section)
         let localIndexPath = IndexPath(item: indexPath.item, section: localSection)
-
+        
         guard let selectionDataSource = localDataSource as? SelectionHandlingDataSource,
             let handler = selectionDataSource.selectionHandler(forElementAt: localIndexPath) else { return false }
         selectionHandlers[indexPath] = SelectionContext(localDataSource: selectionDataSource, localIndexPath: localIndexPath, handler: handler)
@@ -475,21 +508,18 @@ private extension DataSourceCoordinator {
     }
 
     func metrics(for localSection: Int, globalSection: Int, in dataSource: CollectionUIProvidingDataSource) -> CollectionUISectionMetrics {
-        if let metrics = self.metrics[globalSection] { return metrics }
         let metrics = dataSource.metrics(for: localSection, traitCollection: collectionView.traitCollection, layoutSize: collectionView.bounds.size)
         self.metrics[globalSection] = metrics
         return metrics
     }
 
     func sizingStrategy(for localSection: Int, globalSection: Int, in dataSource: CollectionUIProvidingDataSource) -> CollectionUISizingStrategy {
-        if let strategy = sizingStrategies[globalSection] { return strategy }
         let strategy = dataSource.sizingStrategy(for: collectionView.traitCollection, layoutSize: collectionView.bounds.size)
         sizingStrategies[globalSection] = strategy
         return strategy
     }
 
     func cellConfiguration(for localIndexPath: IndexPath, globalIndexPath: IndexPath, dataSource: CollectionUIProvidingDataSource) -> CollectionUIViewProvider {
-        if let configuration = cellConfigurations[globalIndexPath] { return configuration }
         let configuration = dataSource.cellConfiguration(for: localIndexPath)
         cellConfigurations[globalIndexPath] = configuration
         return configuration
@@ -529,13 +559,6 @@ private extension UICollectionView {
 }
 
 extension DataSourceCoordinator: DataSourceUpdateDelegate {
-
-    private func lifecycleObservers(for sections: IndexSet, in dataSource: DataSource) -> [LifecycleObservingDataSource] {
-        return sections
-            .lazy
-            .map { dataSource.localSection(for: $0) }
-            .compactMap { $0.dataSource as? LifecycleObservingDataSource }
-    }
 
     public func dataSource(_ dataSource: DataSource, performUpdates changeDetails: ComposedChangeDetails) {
         var changeDetails = changeDetails

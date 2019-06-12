@@ -14,6 +14,8 @@ public protocol SelectionHandlingDataSource: DataSource {
     var selectedIndexPaths: [IndexPath] { get }
     func selectionHandler(forElementAt indexPath: IndexPath) -> (() -> Void)?
     func deselectionHandler(forElementAt indexPath: IndexPath) -> (() -> Void)?
+    func selectElement(at indexPath: IndexPath)
+    func deselectElement(at indexPath: IndexPath)
 }
 
 extension SelectionHandlingDataSource where Self: CollectionUIProvidingDataSource {

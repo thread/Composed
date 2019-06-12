@@ -41,11 +41,6 @@ public extension DataSource {
             .allSatisfy { numberOfElements(in: $0) == 0 }
     }
 
-    var isEmbedded: Bool {
-        guard let delegate = updateDelegate else { return false }
-        return delegate is _EmbeddedDataSource
-    }
-
     var isRoot: Bool {
         return !(updateDelegate is DataSource)
     }
@@ -53,7 +48,7 @@ public extension DataSource {
     var rootDataSource: DataSource {
         var dataSource: DataSource = self
 
-        while !dataSource.isRoot, let parent = dataSource.updateDelegate as? DataSource {
+        while !dataSource.isRoot, let parent = dataSource.updateDelegate as? DataSource, !(parent is _EmbeddedDataSource) {
             dataSource = parent
         }
 

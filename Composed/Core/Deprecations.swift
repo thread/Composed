@@ -55,7 +55,7 @@ public extension DataSourceUpdateDelegate {
     func dataSource(_ dataSource: DataSource, performBatchUpdates updates: () -> Void, completion: ((Bool) -> Void)?) { fatalError() }
     @available(swift, obsoleted: 1.0, message: "This is no longer required and has been removed entirely. Calling this method results in a fatalError")
     func dataSource(_ dataSource: DataSource, globalFor local: IndexPath) -> (dataSource: DataSource, globalIndexPath: IndexPath) { fatalError() }
-    @available(*, deprecated, renamed: "dataSource(_:sectionFor:)", message: "Method has been named. Calling this method will now result in a fatalError")
+    @available(*, deprecated, renamed: "dataSource(_:sectionFor:)")
     func dataSource(_ dataSource: DataSource, globalFor local: Int) -> (dataSource: DataSource, globalSection: Int) {
         return self.dataSource(dataSource, sectionFor: local)
     }
@@ -92,8 +92,8 @@ public typealias DataSourceUIEditingView = EditHandling
 public typealias DataSourceUIEditing = EditHandlingDataSource
 @available(*, deprecated, renamed: "SelectionHandlingDataSource")
 public typealias DataSourceSelecting = SelectionHandlingDataSource
-@available(*, deprecated, renamed: "LifecycleObservingDataSource")
-public typealias DataSourceLifecycleObserving = LifecycleObservingDataSource
+@available(swift, obsoleted: 1.0, message: "Lifecycle support is no longer provided")
+public protocol LifecycleObservingDataSource { }
 @available(*, deprecated, renamed: "GlobalProvidingDataSource")
 public typealias DataSourceUIGlobalProviding = GlobalViewsProvidingDataSource
 @available(*, deprecated, renamed: "GlobalViewsProvidingDataSource")
@@ -119,20 +119,9 @@ extension CollectionUIViewProvider {
     }
 }
 
-public extension LifecycleObservingDataSource {
-    @available(*, deprecated, renamed: "didLoad")
-    func didLoad() { didLoad() }
-    @available(*, deprecated, renamed: "willUnload")
-    func willUnload() { willUnload() }
-}
-
 public extension SelectionHandlingDataSource {
     @available(*, deprecated, renamed: "selectionHandler(forElementAt:)")
     func shouldSelectElement(at indexPath: IndexPath) -> Bool { return false }
-    @available(*, deprecated, renamed: "selectionHandler(forElementAt:)")
-    func selectElement(at indexPath: IndexPath) { }
     @available(*, deprecated, renamed: "deselectionHandler(forElementAt:)")
     func shouldDeselectElement(at indexPath: IndexPath) -> Bool { return false }
-    @available(*, deprecated, renamed: "deselectionHandler(forElementAt:)")
-    func deselectElement(at indexPath: IndexPath) { return }
 }

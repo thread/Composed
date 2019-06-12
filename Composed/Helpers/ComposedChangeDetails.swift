@@ -2,6 +2,13 @@ import Foundation
 
 public struct ComposedChangeDetails {
 
+    public var hasSectionChanges: Bool {
+        return !insertedSections.isEmpty
+            || !updatedSections.isEmpty
+            || !removedSections.isEmpty
+            || !movedSections.isEmpty
+    }
+
     public var hasIncrementalChanges: Bool = true {
         didSet {
             let updatesAllowed = oldValue
