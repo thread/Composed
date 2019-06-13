@@ -68,22 +68,26 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         let sectioned = FamilyAndFriends(contentsOf: [
             list1.store.elements,
             list2.store.elements
-            ])
+        ])
+
+        sectioned.title = "Family & Friends"
         
         let innerComposed = ComposedDataSource(children: [list3])
         
         let countries = Countries(elements: countryNames)
-        
-        let segmented = SegmentedDataSource(children: [innerComposed, list1])
-        let composed = ComposedDataSource(children: [sectioned, segmented, countries, list4])
-        
         countries.title = "Countries"
-        
+
+        let segmented = SegmentedDataSource(children: [innerComposed, list1])
+        let composed = ListDataSource(children: [sectioned, segmented, countries, list4])
+
         let layout = FlowLayout()
         layout.globalFooter.prefersFollowContent = true
+        layout.globalHeader.pinsToBounds = true
+        layout.globalHeader.pinsToContent = true
         let controller = DataSourceViewController(dataSource: composed, layout: layout)
         
-        controller.navigationItem.largeTitleDisplayMode = .never
+//        controller.navigationItem.largeTitleDisplayMode = .never
+        controller.title = "Vertical"
         controller.collectionView.backgroundColor = .white
         
         return controller
@@ -177,7 +181,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
             ),
             ])
 
-        let controller = DataSourceViewController(dataSource: ComposedDataSource(children: [composedEmbedded1, composedEmbedded2]))
+        let controller = DataSourceViewController(dataSource: ListDataSource(children: [composedEmbedded1, composedEmbedded2]))
         
         controller.navigationItem.largeTitleDisplayMode = .never
         controller.collectionView.backgroundColor = .white
@@ -261,7 +265,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         layout.globalFooter.prefersFollowContent = true
         let controller = DataSourceViewController(dataSource: composed, layout: layout)
         
-        controller.navigationItem.largeTitleDisplayMode = .never
+//        controller.navigationItem.largeTitleDisplayMode = .never
         controller.collectionView.backgroundColor = .white
         
         return controller

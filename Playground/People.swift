@@ -46,16 +46,16 @@ class PeopleArrayDataSource: ArrayDataSource<Person>, CollectionUIProvidingDataS
         }
     }
     
-    func backgroundConfiguration(for section: Int) -> CollectionUIViewProvider? {
-        return CollectionUIViewProvider(prototype: BackgroundView.fromNib, dequeueMethod: .nib) {
-            view, _, _ in
-            view.backgroundColor = .red
-        }
-    }
-    
-    func backgroundLayoutReference(for section: Int) -> LayoutReference {
-        return .fromSectionInsets
-    }
+//    func backgroundConfiguration(for section: Int) -> CollectionUIViewProvider? {
+//        return CollectionUIViewProvider(prototype: BackgroundView.fromNib, dequeueMethod: .nib) {
+//            view, _, _ in
+//            view.backgroundColor = .red
+//        }
+//    }
+//
+//    func backgroundLayoutReference(for section: Int) -> LayoutReference {
+//        return .fromSectionInsets
+//    }
 
 }
 
@@ -120,16 +120,16 @@ class PeopleSectionedDataSource: SectionedDataSource<Person>, CollectionUIProvid
         }
     }
     
-    func backgroundConfiguration(for section: Int) -> CollectionUIViewProvider? {
-        return CollectionUIViewProvider(prototype: BackgroundView.fromNib, dequeueMethod: .nib) {
-            view, indexPath, context in
-            view.backgroundColor = .blue
-        }
-    }
-    
-    func backgroundLayoutReference(for section: Int) -> LayoutReference {
-        return section == 0 ? .fromBounds : .fromBoundsExcludingHeadersAndFooters
-    }
+//    func backgroundConfiguration(for section: Int) -> CollectionUIViewProvider? {
+//        return CollectionUIViewProvider(prototype: BackgroundView.fromNib, dequeueMethod: .nib) {
+//            view, indexPath, context in
+//            view.backgroundColor = .blue
+//        }
+//    }
+//
+//    func backgroundLayoutReference(for section: Int) -> LayoutReference {
+//        return section == 0 ? .fromBounds : .fromBoundsExcludingHeadersAndFooters
+//    }
 
 }
 
@@ -142,9 +142,9 @@ final class ListDataSource: ComposedDataSource, GlobalViewsProvidingDataSource {
         return nil
     }
 
-//    func globalHeaderConfiguration() -> CollectionUIViewProvider? {
-//        return CollectionUIViewProvider(prototype: GlobalHeaderView.fromNib, dequeueMethod: .nib) { _, _, _ in }
-//    }
+    func globalHeaderConfiguration() -> CollectionUIViewProvider? {
+        return CollectionUIViewProvider(prototype: GlobalHeaderView.fromNib, dequeueMethod: .nib) { _, _, _ in }
+    }
 //
 //    func globalFooterConfiguration() -> CollectionUIViewProvider? {
 //        return CollectionUIViewProvider(prototype: GlobalFooterView.fromNib, dequeueMethod: .nib) { _, _, _ in }
