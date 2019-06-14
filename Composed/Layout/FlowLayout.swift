@@ -41,7 +41,6 @@ open class FlowLayout: UICollectionViewFlowLayout {
 
     open override func prepare() {
         super.prepare()
-        guard let collectionView = collectionView else { return }
 
         if cachedGlobalHeaderSize == .zero {
             cachedGlobalHeaderSize = sizeForGlobalHeader
@@ -53,16 +52,20 @@ open class FlowLayout: UICollectionViewFlowLayout {
     }
 
     open override func invalidateLayout(with context: UICollectionViewLayoutInvalidationContext) {
-        super.invalidateLayout(with: context)
-        guard let context = context as? FlowLayoutInvalidationContext else { return }
+        guard let invalidateContext = context as? FlowLayoutInvalidationContext else {
+            super.invalidateLayout(with: context)
+            return
+        }
 
-        if context.invalidateGlobalHeader {
+        if invalidateContext.invalidateGlobalHeader {
             cachedGlobalHeaderSize = .zero
         }
 
-        if context.invalidateGlobalFooter {
+        if invalidateContext.invalidateGlobalFooter {
             cachedGlobalFooterSize = .zero
         }
+        
+        super.invalidateLayout(with: invalidateContext)
     }
 
     open override var collectionViewContentSize: CGSize {
