@@ -58,11 +58,11 @@ open class FlowLayout: UICollectionViewFlowLayout {
         }
 
         if invalidateContext.invalidateGlobalHeader {
-            cachedGlobalHeaderSize = .zero
+            cachedGlobalHeaderSize = sizeForGlobalHeader
         }
 
         if invalidateContext.invalidateGlobalFooter {
-            cachedGlobalFooterSize = .zero
+            cachedGlobalFooterSize = sizeForGlobalFooter
         }
         
         super.invalidateLayout(with: invalidateContext)
