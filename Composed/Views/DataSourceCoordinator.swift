@@ -290,36 +290,42 @@ public extension DataSourceCoordinator {
 
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let configuration: CollectionUIViewProvider?
-        let sectionDataSource: DataSource?
+        let sectionDataSource: DataSource
+        let indexPathRelativeToSectionDataSource: IndexPath
 
         switch (kind, dataSource) {
         case let (UICollectionView.elementKindGlobalHeader, dataSource as GlobalViewsProvidingDataSource):
             configuration = globalConfigurations[kind]
                 ?? dataSource.globalHeaderConfiguration()
             sectionDataSource = dataSource
+            indexPathRelativeToSectionDataSource = indexPath
 
         case let (UICollectionView.elementKindGlobalFooter, dataSource as GlobalViewsProvidingDataSource):
             configuration = globalConfigurations[kind]
                 ?? dataSource.globalFooterConfiguration()
             sectionDataSource = dataSource
+            indexPathRelativeToSectionDataSource = indexPath
 
         case (UICollectionView.elementKindSectionHeader, _):
             let (localDataSource, localIndexPath) = localDataSourceAndIndexPath(for: indexPath)
             configuration = headerConfigurations[indexPath.section]
                 ?? localDataSource.headerConfiguration(for: localIndexPath.section)
             sectionDataSource = localDataSource
+            indexPathRelativeToSectionDataSource = localIndexPath
 
         case (UICollectionView.elementKindSectionFooter, _):
             let (localDataSource, localIndexPath) = localDataSourceAndIndexPath(for: indexPath)
             configuration = footerConfigurations[indexPath.section]
                 ?? localDataSource.footerConfiguration(for: localIndexPath.section)
             sectionDataSource = localDataSource
-            
+            indexPathRelativeToSectionDataSource = localIndexPath
+
         case (UICollectionView.elementKindBackground, _):
             let (localDataSource, localIndexPath) = localDataSourceAndIndexPath(for: indexPath)
             configuration = backgroundConfigurations[indexPath.section]
                 ?? localDataSource.backgroundConfiguration(for: localIndexPath.section)
             sectionDataSource = localDataSource
+            indexPathRelativeToSectionDataSource = localIndexPath
 
         default:
             fatalError("Unsupported supplementary view. Only global and section header/footer views are supported.")
@@ -338,7 +344,7 @@ public extension DataSourceCoordinator {
         }
 
         let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: config.reuseIdentifier, for: indexPath)
-        configuration?.configure(view, indexPath, .presentation)
+        configuration?.configure(view, indexPathRelativeToSectionDataSource, .presentation)
 
         if isEditing, let editable = sectionDataSource as? EditHandlingDataSource {
             (view as? EditHandling)?.setEditing(editable.isEditing, animated: false)
