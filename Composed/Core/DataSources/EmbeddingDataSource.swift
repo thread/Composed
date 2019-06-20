@@ -14,10 +14,12 @@ open class EmbeddingDataSource: DataSource {
     
     private var contentOffset: CGPoint = .zero
     private var selectedIndexPaths: [IndexPath] = []
+    private let sectionMetrics: CollectionUISectionMetrics
 
-    public init(child: CollectionUIProvidingDataSource, sizeMode: CarouselSizingStrategy.SizingMode) {
+    public init(child: CollectionUIProvidingDataSource, sizeMode: CarouselSizingStrategy.SizingMode, sectionMetrics: CollectionUISectionMetrics = .zero) {
         self.embedded = _EmbeddedDataSource(child: child, sizeMode: sizeMode)
         child.updateDelegate = embedded
+        self.sectionMetrics = sectionMetrics
         self.sizeMode = sizeMode
     }
 
@@ -52,7 +54,7 @@ open class EmbeddingDataSource: DataSource {
 extension EmbeddingDataSource: CollectionUIProvidingDataSource {
 
     public func metrics(for section: Int, traitCollection: UITraitCollection, layoutSize: CGSize) -> CollectionUISectionMetrics {
-        return .zero
+        return sectionMetrics
     }
 
     public func sizingStrategy(for traitCollection: UITraitCollection, layoutSize: CGSize) -> CollectionUISizingStrategy {
@@ -81,6 +83,10 @@ extension EmbeddingDataSource: CollectionUIProvidingDataSource {
     
     public func backgroundConfiguration(for section: Int) -> CollectionUIViewProvider? {
         return embedded.child.backgroundConfiguration(for: section)
+    }
+
+    public func backgroundLayoutReference(for section: Int) -> LayoutReference {
+        return embedded.child.backgroundLayoutReference(for: section)
     }
 
 }
@@ -290,7 +296,7 @@ private class EmbeddingSizingStrategy: CollectionUISizingStrategy {
         }
         
         let metrics = embeddedDataSource.metrics(for: 0, traitCollection: context.traitCollection, layoutSize: context.layoutSize)
-        let metricExtras = metrics.insets.left + metrics.insets.right
+        let metricExtras = metrics.insets.top + metrics.insets.bottom
         let size = CGSize(width: context.layoutSize.width, height: height + metricExtras)
         cachedSize = size
         return size
