@@ -1,29 +1,51 @@
 import UIKit
 
-public final class CollectionViewSectionProviderCoordinator: NSObject, UICollectionViewDataSource, SectionProviderMapperDelegate {
+public final class CollectionViewSectionProviderCoordinator: NSObject, UICollectionViewDataSource, SectionProviderMappingDelegate {
     
-    private let mapper: SectionProviderMapper
+    private let mapper: SectionProviderMapping
     private let collectionView: UICollectionView
     
     public init(collectionView: UICollectionView, sectionProvider: SectionProvider) {
         self.collectionView = collectionView
-        mapper = SectionProviderMapper(globalProvider: sectionProvider)
+        mapper = SectionProviderMapping(provider: sectionProvider)
         
         super.init()
         
         collectionView.dataSource = self
     }
     
-    // MARK: - SectionProviderMapperDelegate
-    
-    public func sectionProviderMapper(_ sectionProviderMapper: SectionProviderMapper, didInsertSections sections: IndexSet) {
+    // MARK: - SectionProviderMappingDelegate
+
+    public func mapping(_ mapping: SectionProviderMapping, didInsertSections sections: IndexSet) {
         collectionView.insertSections(sections)
     }
-    
-    public func sectionProviderMapper(_ sectionProviderMapper: SectionProviderMapper, didInsertElementsAt indexPaths: [IndexPath]) {
+
+    public func mapping(_ mapping: SectionProviderMapping, didInsertElementsAt indexPaths: [IndexPath]) {
         collectionView.insertItems(at: indexPaths)
     }
-    
+
+    public func mapping(_ mapping: SectionProviderMapping, didRemoveSections sections: IndexSet) {
+        collectionView.deleteSections(sections)
+    }
+
+    public func mapping(_ mapping: SectionProviderMapping, didRemoveElementsAt indexPaths: [IndexPath]) {
+        collectionView.deleteItems(at: indexPaths)
+    }
+
+    public func mapping(_ mapping: SectionProviderMapping, didUpdateSections sections: IndexSet) {
+        collectionView.reloadSections(sections)
+    }
+
+    public func mapping(_ mapping: SectionProviderMapping, didUpdateElementsAt indexPaths: [IndexPath]) {
+        collectionView.reloadItems(at: indexPaths)
+    }
+
+    public func mapping(_ mapping: SectionProviderMapping, didMoveElementsAt moves: [(IndexPath, IndexPath)]) {
+        moves.forEach {
+            collectionView.moveItem(at: $0.0, to: $0.1)
+        }
+    }
+
     // MARK: - UICollectionViewDataSource
     
     public func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -54,7 +76,7 @@ public final class CollectionViewSectionProviderCoordinator: NSObject, UICollect
     }
     
     private func collectionUIConfigurationProvider(for section: Int) -> CollectionUIConfiguration? {
-        return (mapper.globalProvider.sections[section] as? CollectionUIConfigurationProvider)?.collectionUIConfiguration
+        return (mapper.provider.sections[section] as? CollectionUIConfigurationProvider)?.collectionUIConfiguration
     }
     
 }

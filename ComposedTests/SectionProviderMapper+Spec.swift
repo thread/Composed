@@ -3,19 +3,19 @@ import Nimble
 
 @testable import Composed
 
-final class SectionProviderMapper_Spec: QuickSpec {
+final class SectionProviderMapping_Spec: QuickSpec {
 
     override func spec() {
-        describe("SectionProviderMapper") {
+        describe("SectionProviderMapping") {
             context("with a composed section provider") {
                 var global: ComposedSectionProvider!
-                var mapper: SectionProviderMapper!
-                var delegate: MockSectionProviderMapperDelegate!
+                var mapper: SectionProviderMapping!
+                var delegate: MockSectionProviderMappingDelegate!
                 
                 beforeEach {
                     global = ComposedSectionProvider()
-                    mapper = SectionProviderMapper(globalProvider: global)
-                    delegate = MockSectionProviderMapperDelegate()
+                    mapper = SectionProviderMapping(globalProvider: global)
+                    delegate = MockSectionProviderMappingDelegate()
                     mapper.delegate = delegate
                 }
                 
@@ -31,7 +31,7 @@ final class SectionProviderMapper_Spec: QuickSpec {
                         global.append(child)
                     }
 
-                    it("should call the sectionProviderMapper(_:didInsertSections:) delegate function") {
+                    it("should call the SectionProviderMapping(_:didInsertSections:) delegate function") {
                         expect(delegate.didInsertSections).toNot(beNil())
                     }
                     
@@ -108,18 +108,18 @@ final class SectionProviderMapper_Spec: QuickSpec {
 
 }
 
-final class MockSectionProviderMapperDelegate: SectionProviderMapperDelegate {
+final class MockSectionProviderMappingDelegate: SectionProviderMappingDelegate {
     
-    var didInsertSections: (sectionProviderMapper: SectionProviderMapper, sections: IndexSet)?
+    var didInsertSections: (SectionProviderMapping: SectionProviderMapping, sections: IndexSet)?
     
-    var didInsertElements: (section: SectionProviderMapper, indexPaths: [IndexPath])?
+    var didInsertElements: (section: SectionProviderMapping, indexPaths: [IndexPath])?
     
-    func sectionProviderMapper(_ sectionProviderMapper: SectionProviderMapper, didInsertSections sections: IndexSet) {
-        didInsertSections = (sectionProviderMapper, sections)
+    func SectionProviderMapping(_ SectionProviderMapping: SectionProviderMapping, didInsertSections sections: IndexSet) {
+        didInsertSections = (SectionProviderMapping, sections)
     }
     
-    func sectionProviderMapper(_ sectionProviderMapper: SectionProviderMapper, didInsertElementsAt indexPaths: [IndexPath]) {
-        didInsertElements = (sectionProviderMapper, indexPaths)
+    func SectionProviderMapping(_ SectionProviderMapping: SectionProviderMapping, didInsertElementsAt indexPaths: [IndexPath]) {
+        didInsertElements = (SectionProviderMapping, indexPaths)
     }
 
 }

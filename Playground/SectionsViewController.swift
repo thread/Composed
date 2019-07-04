@@ -19,6 +19,7 @@ final class SectionsViewController: UICollectionViewController {
         let sectionProvider = ComposedSectionProvider()
         sectionProvider.append(personSection)
         coordinator = CollectionViewSectionProviderCoordinator(collectionView: collectionView, sectionProvider: sectionProvider)
+        collectionView.alwaysBounceVertical = true
     }
     
 }

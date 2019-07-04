@@ -87,7 +87,7 @@
 		D941140B2297F30D00077F90 /* SectionProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = D941140A2297F30D00077F90 /* SectionProvider.swift */; };
 		D941140D2297F40500077F90 /* ComposedSectionProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = D941140C2297F40500077F90 /* ComposedSectionProvider.swift */; };
 		D941140F2297F4FA00077F90 /* ArraySection.swift in Sources */ = {isa = PBXBuildFile; fileRef = D941140E2297F4FA00077F90 /* ArraySection.swift */; };
-		D94114112297F86100077F90 /* SectionProviderMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D94114102297F86100077F90 /* SectionProviderMapper.swift */; };
+		D94114112297F86100077F90 /* SectionProviderMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = D94114102297F86100077F90 /* SectionProviderMapping.swift */; };
 		D9D7DCBD22981094001DA4D9 /* SectionProviderMapper+Spec.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9D7DCBC22981094001DA4D9 /* SectionProviderMapper+Spec.swift */; };
 		D9D7DCBF22985C44001DA4D9 /* CollectionViewSectionProviderCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9D7DCBE22985C44001DA4D9 /* CollectionViewSectionProviderCoordinator.swift */; };
 		D9D7DCC122985F04001DA4D9 /* SectionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9D7DCC022985F04001DA4D9 /* SectionsViewController.swift */; };
@@ -221,7 +221,7 @@
 		D941140A2297F30D00077F90 /* SectionProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionProvider.swift; sourceTree = "<group>"; };
 		D941140C2297F40500077F90 /* ComposedSectionProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposedSectionProvider.swift; sourceTree = "<group>"; };
 		D941140E2297F4FA00077F90 /* ArraySection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArraySection.swift; sourceTree = "<group>"; };
-		D94114102297F86100077F90 /* SectionProviderMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionProviderMapper.swift; sourceTree = "<group>"; };
+		D94114102297F86100077F90 /* SectionProviderMapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionProviderMapping.swift; sourceTree = "<group>"; };
 		D9D7DCBC22981094001DA4D9 /* SectionProviderMapper+Spec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SectionProviderMapper+Spec.swift"; sourceTree = "<group>"; };
 		D9D7DCBE22985C44001DA4D9 /* CollectionViewSectionProviderCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewSectionProviderCoordinator.swift; sourceTree = "<group>"; };
 		D9D7DCC022985F04001DA4D9 /* SectionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionsViewController.swift; sourceTree = "<group>"; };
@@ -448,7 +448,7 @@
 				D941140A2297F30D00077F90 /* SectionProvider.swift */,
 				D941140C2297F40500077F90 /* ComposedSectionProvider.swift */,
 				D941140E2297F4FA00077F90 /* ArraySection.swift */,
-				D94114102297F86100077F90 /* SectionProviderMapper.swift */,
+				D94114102297F86100077F90 /* SectionProviderMapping.swift */,
 				D9D7DCBE22985C44001DA4D9 /* CollectionViewSectionProviderCoordinator.swift */,
 				D9D7DCC222986942001DA4D9 /* UI */,
 			);
@@ -638,7 +638,7 @@
 				54A1733D225CC72900A7D7FD /* DataSourceInvalidationContext.swift in Sources */,
 				54A1731B225CC72900A7D7FD /* SectionedDataSource.swift in Sources */,
 				54A1733A225CC72900A7D7FD /* EmbeddedDataSourceCell.swift in Sources */,
-				D94114112297F86100077F90 /* SectionProviderMapper.swift in Sources */,
+				D94114112297F86100077F90 /* SectionProviderMapping.swift in Sources */,
 				54645B612281A3FD00E53245 /* NoSizingStrategy.swift in Sources */,
 				54E5CA272282FA3400CCA628 /* ComposedChangeDetails.swift in Sources */,
 				54A1733C225CC72900A7D7FD /* DataSourceCoordinator.swift in Sources */,
