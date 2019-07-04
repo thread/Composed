@@ -19,7 +19,7 @@ public extension CollectionDataSource {
 
 extension CollectionDataSource where Store.Element: Equatable {
 
-    func indexPath(of element: Store.Element) -> IndexPath? {
+    public func indexPath(of element: Store.Element) -> IndexPath? {
         return indexPath { other in
             guard let other = other as? Store.Element else { return false }
             return other == element
