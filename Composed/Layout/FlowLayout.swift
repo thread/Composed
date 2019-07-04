@@ -145,6 +145,10 @@ open class FlowLayout: UICollectionViewFlowLayout {
                     h += insets.top + insets.bottom
                 case .fromSectionInsets:
                     let insets = metrics(forSection: indexPath.section).insets
+                    let headerHeight = layoutAttributesForSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, at: indexPath)?.size.height ?? 0
+                    let footerHeight = layoutAttributesForSupplementaryView(ofKind: UICollectionView.elementKindSectionFooter, at: indexPath)?.size.height ?? 0
+                    y -= headerHeight
+                    h += headerHeight + footerHeight
                     x += insets.left
                     w -= (insets.left + insets.right)
                 }
