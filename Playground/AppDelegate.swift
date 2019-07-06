@@ -86,9 +86,18 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         layout.globalHeader.pinsToContent = true
         let controller = DataSourceViewController(dataSource: composed, layout: layout)
         
-//        controller.navigationItem.largeTitleDisplayMode = .never
+        controller.navigationItem.largeTitleDisplayMode = .never
         controller.title = "Vertical"
         controller.collectionView.backgroundColor = .white
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            let context = FlowLayoutInvalidationContext()
+            context.invalidateGlobalHeader = true
+            
+            controller.collectionView.performBatchUpdates({
+                controller.collectionView.collectionViewLayout.invalidateLayout(with: context)
+            }, completion: nil)
+        }
         
         return controller
     }

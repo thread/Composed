@@ -163,7 +163,9 @@ public final class DataSourceCoordinator: NSObject, UICollectionViewDataSource, 
             metrics.removeAll()
         }
 
-        collectionView.collectionViewLayout.invalidateLayout(with: layoutContext)
+        collectionView.performBatchUpdates({
+            collectionView.collectionViewLayout.invalidateLayout(with: layoutContext)
+        }, completion: nil)
     }
 
     private func preparePlaceholderIfNeeded() {
@@ -577,6 +579,8 @@ extension DataSourceCoordinator: DataSourceUpdateDelegate {
             collectionView.reloadData()
             return
         }
+        
+        let newAndOldSectionIndexes = changeDetails.removedSections.union(changeDetails.insertedSections)
 
         collectionView.performBatchUpdates({
             collectionView.deleteSections(changeDetails.removedSections)
@@ -587,14 +591,20 @@ extension DataSourceCoordinator: DataSourceUpdateDelegate {
                 collectionView.moveSection(source, toSection: target)
             }
 
-            collectionView.deleteItems(at: changeDetails.removedIndexPaths)
-            collectionView.insertItems(at: changeDetails.insertedIndexPaths)
-            collectionView.reloadItems(at: changeDetails.updatedIndexPaths)
+            // we need to filter out item level updates that will implicitly be handled by the section updates above
+            // otherwise UICollectionView results in odd animations and this often leads to 'ghost' layers in the hierarchy
+            let deleted = changeDetails.removedIndexPaths.filter { !newAndOldSectionIndexes.contains($0.section) }
+            let inserted = changeDetails.insertedIndexPaths.filter { !newAndOldSectionIndexes.contains($0.section) }
+                
+            collectionView.deleteItems(at: deleted)
+            collectionView.insertItems(at: inserted)
 
             changeDetails.enumerateMovedIndexPaths { source, target in
                 collectionView.moveItem(at: source, to: target)
             }
-        }, completion: nil)
+        }, completion: { _ in
+            self.collectionView.reloadItems(at: changeDetails.updatedIndexPaths)
+        })
     }
 
     public func dataSource(_ dataSource: DataSource, invalidateWith context: DataSourceInvalidationContext) {

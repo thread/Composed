@@ -51,7 +51,7 @@
 		54A1732C225CC72900A7D7FD /* DataSourceHashableWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A172F3225CC71900A7D7FD /* DataSourceHashableWrapper.swift */; };
 		54A1732D225CC72900A7D7FD /* ComposedMappings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A172F4225CC71900A7D7FD /* ComposedMappings.swift */; };
 		54A1732E225CC72900A7D7FD /* CollectionUISizingStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A172F5225CC71900A7D7FD /* CollectionUISizingStrategy.swift */; };
-		54A1732F225CC72900A7D7FD /* NibLoadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A172F6225CC71900A7D7FD /* NibLoadable.swift */; };
+		54A1732F225CC72900A7D7FD /* ReusableViewNibLoadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A172F6225CC71900A7D7FD /* ReusableViewNibLoadable.swift */; };
 		54A17330225CC72900A7D7FD /* FlowLayoutInvalidationContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A1730C225CC71A00A7D7FD /* FlowLayoutInvalidationContext.swift */; };
 		54A17331225CC72900A7D7FD /* FlowLayout+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A1730D225CC71A00A7D7FD /* FlowLayout+Helpers.swift */; };
 		54A17332225CC72900A7D7FD /* FlowLayoutAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A1730E225CC71A00A7D7FD /* FlowLayoutAttributes.swift */; };
@@ -160,7 +160,7 @@
 		54A172F3225CC71900A7D7FD /* DataSourceHashableWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSourceHashableWrapper.swift; sourceTree = "<group>"; };
 		54A172F4225CC71900A7D7FD /* ComposedMappings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposedMappings.swift; sourceTree = "<group>"; };
 		54A172F5225CC71900A7D7FD /* CollectionUISizingStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionUISizingStrategy.swift; sourceTree = "<group>"; };
-		54A172F6225CC71900A7D7FD /* NibLoadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NibLoadable.swift; sourceTree = "<group>"; };
+		54A172F6225CC71900A7D7FD /* ReusableViewNibLoadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReusableViewNibLoadable.swift; sourceTree = "<group>"; };
 		54A172F9225CC71A00A7D7FD /* SectionedDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionedDataSource.swift; sourceTree = "<group>"; };
 		54A172FA225CC71A00A7D7FD /* SegmentedDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedDataSource.swift; sourceTree = "<group>"; };
 		54A172FB225CC71A00A7D7FD /* EmbeddingDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmbeddingDataSource.swift; sourceTree = "<group>"; };
@@ -336,7 +336,7 @@
 				54645B602281A3FD00E53245 /* NoSizingStrategy.swift */,
 				54645B5C2281A3AE00E53245 /* ColumnSizingStrategy.swift */,
 				54645B5E2281A3C100E53245 /* CarouselSizingStrategy.swift */,
-				54A172F6225CC71900A7D7FD /* NibLoadable.swift */,
+				54A172F6225CC71900A7D7FD /* ReusableViewNibLoadable.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -604,7 +604,7 @@
 				54A17322225CC72900A7D7FD /* DataStore.swift in Sources */,
 				54A1731E225CC72900A7D7FD /* BasicDataSource.swift in Sources */,
 				54A1732A225CC72900A7D7FD /* CollectionUIProvidingDataSource.swift in Sources */,
-				54A1732F225CC72900A7D7FD /* NibLoadable.swift in Sources */,
+				54A1732F225CC72900A7D7FD /* ReusableViewNibLoadable.swift in Sources */,
 				54A17338225CC72900A7D7FD /* Snap.swift in Sources */,
 				54A1731C225CC72900A7D7FD /* SegmentedDataSource.swift in Sources */,
 				54A17339225CC72900A7D7FD /* DataSourceViewController.swift in Sources */,

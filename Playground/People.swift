@@ -142,7 +142,10 @@ final class ListDataSource: ComposedDataSource, GlobalViewsProvidingDataSource {
         return nil
     }
 
+    private var toggle: Bool = true
     func globalHeaderConfiguration() -> CollectionUIViewProvider? {
+        toggle.toggle()
+        guard toggle else { return nil }
         return CollectionUIViewProvider(prototype: GlobalHeaderView.fromNib, dequeueMethod: .nib) { _, _, _ in }
     }
 //

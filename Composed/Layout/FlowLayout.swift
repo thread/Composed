@@ -38,31 +38,128 @@ open class FlowLayout: UICollectionViewFlowLayout {
 
     private var cachedGlobalHeaderSize: CGSize = .zero
     private var cachedGlobalFooterSize: CGSize = .zero
+    
+    private var globalHeaderAttributes: FlowLayoutAttributes?
+    private var globalFooterAttributes: FlowLayoutAttributes?
 
     open override func prepare() {
         super.prepare()
 
-        if cachedGlobalHeaderSize == .zero {
+//        if cachedGlobalHeaderSize != .zero {
             cachedGlobalHeaderSize = sizeForGlobalHeader
-        }
+            globalHeaderAttributes = FlowLayoutAttributes(forSupplementaryViewOfKind: UICollectionView.elementKindGlobalHeader, with: UICollectionView.globalElementIndexPath)
+        
+            globalHeaderAttributes?.size = cachedGlobalHeaderSize
+            globalHeaderAttributes?.zIndex = UICollectionView.globalHeaderZIndex
+            globalHeaderAttributes?.frame = CGRect(origin: .zero, size: cachedGlobalHeaderSize)
+//        }
 
-        if cachedGlobalFooterSize == .zero {
-            cachedGlobalFooterSize = sizeForGlobalFooter
+//        if cachedGlobalFooterSize != .zero {
+//            cachedGlobalFooterSize = sizeForGlobalFooter
+//            globalFooterAttributes = FlowLayoutAttributes(forSupplementaryViewOfKind: UICollectionView.elementKindGlobalFooter, with: UICollectionView.globalElementIndexPath)
+//            globalFooterAttributes?.size = cachedGlobalFooterSize
+//            globalFooterAttributes?.zIndex = UICollectionView.globalFooterZIndex
+//        }
+    }
+    
+    open override func prepare(forCollectionViewUpdates updateItems: [UICollectionViewUpdateItem]) {
+        super.prepare(forCollectionViewUpdates: updateItems)
+    }
+    
+    open override func indexPathsToInsertForSupplementaryView(ofKind elementKind: String) -> [IndexPath] {
+        var indexPaths = super.indexPathsToInsertForSupplementaryView(ofKind: elementKind)
+        
+        if elementKind == UICollectionView.elementKindGlobalHeader, globalHeaderUpdate == .insert {
+            indexPaths.append(UICollectionView.globalElementIndexPath)
         }
+        
+        if elementKind == UICollectionView.elementKindGlobalFooter, globalFooterUpdate == .insert {
+            indexPaths.append(UICollectionView.globalElementIndexPath)
+        }
+        
+        return indexPaths
+    }
+    
+    open override func indexPathsToDeleteForSupplementaryView(ofKind elementKind: String) -> [IndexPath] {
+        var indexPaths = super.indexPathsToDeleteForSupplementaryView(ofKind: elementKind)
+        
+        if elementKind == UICollectionView.elementKindGlobalHeader, globalHeaderUpdate == .delete {
+            indexPaths.append(UICollectionView.globalElementIndexPath)
+        }
+        
+        if elementKind == UICollectionView.elementKindGlobalFooter, globalFooterUpdate == .delete {
+            indexPaths.append(UICollectionView.globalElementIndexPath)
+        }
+        
+        return indexPaths
     }
 
+    open override func initialLayoutAttributesForAppearingSupplementaryElement(ofKind elementKind: String, at elementIndexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
+        switch elementKind {
+        case UICollectionView.elementKindGlobalHeader:
+            let attributes = layoutAttributesForSupplementaryView(ofKind: elementKind, at: elementIndexPath)
+//            attributes?.alpha = 0
+            attributes?.transform = CGAffineTransform(translationX: 0, y: -(attributes?.size.height ?? 0))
+            return attributes
+        default:
+            return super.initialLayoutAttributesForAppearingSupplementaryElement(ofKind: elementKind, at: elementIndexPath)
+        }
+    }
+    
+    open override func finalLayoutAttributesForDisappearingSupplementaryElement(ofKind elementKind: String, at elementIndexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
+        switch elementKind {
+        case UICollectionView.elementKindGlobalHeader:
+            let attributes = layoutAttributesForSupplementaryView(ofKind: elementKind, at: elementIndexPath)
+            attributes?.alpha = 0
+            attributes?.transform = CGAffineTransform(translationX: 0, y: attributes?.size.height ?? 0)
+            return attributes
+        default:
+            return super.finalLayoutAttributesForDisappearingSupplementaryElement(ofKind: elementKind, at: elementIndexPath)
+        }
+    }
+    
+    open override func finalizeCollectionViewUpdates() {
+        super.finalizeCollectionViewUpdates()
+        
+        globalHeaderUpdate = .none
+        globalFooterUpdate = .none
+    }
+    
+    private var globalHeaderUpdate: UICollectionViewUpdateItem.Action = .none
+    private var globalFooterUpdate: UICollectionViewUpdateItem.Action = .none
+    
     open override func invalidateLayout(with context: UICollectionViewLayoutInvalidationContext) {
         guard let invalidateContext = context as? FlowLayoutInvalidationContext else {
             super.invalidateLayout(with: context)
             return
         }
-
+        
         if invalidateContext.invalidateGlobalHeader {
-            cachedGlobalHeaderSize = sizeForGlobalHeader
+            let newSize = sizeForGlobalHeader
+            
+            if cachedGlobalHeaderSize == .zero && newSize != .zero {
+                globalHeaderUpdate = .insert
+            } else if cachedGlobalHeaderSize != .zero && newSize == .zero {
+                globalHeaderUpdate = .delete
+            } else {
+                globalHeaderUpdate = .none
+            }
+            
+            cachedGlobalHeaderSize = newSize
         }
 
         if invalidateContext.invalidateGlobalFooter {
-            cachedGlobalFooterSize = sizeForGlobalFooter
+            let newSize = sizeForGlobalFooter
+
+            if cachedGlobalFooterSize == .zero && newSize != .zero {
+                globalFooterUpdate = .insert
+            } else if cachedGlobalFooterSize != .zero && newSize == .zero {
+                globalFooterUpdate = .delete
+            } else {
+                globalFooterUpdate = .none
+            }
+            
+            cachedGlobalFooterSize = newSize
         }
         
         super.invalidateLayout(with: invalidateContext)
@@ -94,23 +191,26 @@ open class FlowLayout: UICollectionViewFlowLayout {
     }
 
     open override func layoutAttributesForSupplementaryView(ofKind elementKind: String, at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
-        let originalAttributes = super.layoutAttributesForSupplementaryView(ofKind: elementKind, at: indexPath)?.copy() as? UICollectionViewLayoutAttributes
         guard let collectionView = collectionView else { return nil }
+        let originalAttributes = super.layoutAttributesForSupplementaryView(ofKind: elementKind, at: indexPath)?.copy() as? UICollectionViewLayoutAttributes
 
         switch elementKind {
         case UICollectionView.elementKindGlobalHeader:
-            guard requiresLayout else { return originalAttributes }
-            let attributes = FlowLayoutAttributes(forSupplementaryViewOfKind: elementKind, with: indexPath)
+            guard let attributes = globalHeaderAttributes else { return nil }
+//            guard requiresLayout else { return originalAttributes }
+//            let attributes = FlowLayoutAttributes(forSupplementaryViewOfKind: elementKind, with: indexPath)
             attributes.frame = CGRect(origin: .zero, size: cachedGlobalHeaderSize)
-            (attributes.frame, attributes.zIndex) = adjusted(frame: attributes.frame, zIndex: attributes.zIndex, for: attributes.representedElementKind)
-            attributes.zIndex = 300
+//            (attributes.frame, attributes.zIndex) = adjusted(frame: attributes.frame, zIndex: attributes.zIndex, for: attributes.representedElementKind)
+            
             return attributes
+//            return attributes
         case UICollectionView.elementKindGlobalFooter:
-            guard requiresLayout else { return originalAttributes }
-            let attributes = FlowLayoutAttributes(forSupplementaryViewOfKind: elementKind, with: indexPath)
-            attributes.frame = CGRect(origin: .zero, size: cachedGlobalFooterSize)
-            (attributes.frame, attributes.zIndex) = adjusted(frame: attributes.frame, zIndex: attributes.zIndex, for: attributes.representedElementKind)
-            return attributes
+            return nil
+//            guard requiresLayout else { return originalAttributes }
+//            let attributes = FlowLayoutAttributes(forSupplementaryViewOfKind: elementKind, with: indexPath)
+//            attributes.frame = CGRect(origin: .zero, size: cachedGlobalFooterSize)
+//            (attributes.frame, attributes.zIndex) = adjusted(frame: attributes.frame, zIndex: attributes.zIndex, for: attributes.representedElementKind)
+//            return attributes
         case UICollectionView.elementKindBackground:
             let firstIndex = 0
             let numberOfItems = collectionView.dataSource?.collectionView(collectionView, numberOfItemsInSection: indexPath.section) ?? 0
@@ -218,17 +318,25 @@ open class FlowLayout: UICollectionViewFlowLayout {
 
             appendBackgroundViews()
 
-            if cachedGlobalHeaderSize.height > 0,
-                let header = layoutAttributesForSupplementaryView(ofKind: UICollectionView.elementKindGlobalHeader,
-                                                                  at: UICollectionView.globalElementIndexPath) {
-                attributes?.append(header)
+            if let attr = globalHeaderAttributes {
+                attributes?.append(attr)
             }
-
-            if cachedGlobalFooterSize.height > 0,
-                let footer = layoutAttributesForSupplementaryView(ofKind: UICollectionView.elementKindGlobalFooter,
-                                                                  at: UICollectionView.globalElementIndexPath) {
-                attributes?.append(footer)
+            
+            if let attr = globalFooterAttributes {
+                attributes?.append(attr)
             }
+            
+//            if cachedGlobalHeaderSize.height > 0,
+//                let header = layoutAttributesForSupplementaryView(ofKind: UICollectionView.elementKindGlobalHeader,
+//                                                                  at: UICollectionView.globalElementIndexPath) {
+//                attributes?.append(header)
+//            }
+//
+//            if cachedGlobalFooterSize.height > 0,
+//                let footer = layoutAttributesForSupplementaryView(ofKind: UICollectionView.elementKindGlobalFooter,
+//                                                                  at: UICollectionView.globalElementIndexPath) {
+//                attributes?.append(footer)
+//            }
         }
 
         return attributes

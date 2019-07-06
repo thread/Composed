@@ -14,7 +14,7 @@ public final class FlowLayoutInvalidationContext: UICollectionViewFlowLayoutInva
             // we don't want to enable setting this to false once its true
             guard newValue else { return }
             _invalidateGlobalHeader = newValue
-            invalidateSupplementaryElements(ofKind: UICollectionView.elementKindGlobalHeader, at: [UICollectionView.globalElementIndexPath])
+            invalidateFlowLayoutDelegateMetrics = true
         }
     }
 
@@ -27,7 +27,7 @@ public final class FlowLayoutInvalidationContext: UICollectionViewFlowLayoutInva
             // we don't want to enable setting this to false once its true
             guard newValue else { return }
             _invalidateGlobalFooter = newValue
-            invalidateSupplementaryElements(ofKind: UICollectionView.elementKindGlobalFooter, at: [UICollectionView.globalElementIndexPath])
+            invalidateFlowLayoutDelegateMetrics = true
         }
     }
 
