@@ -199,6 +199,7 @@ open class FlowLayout: UICollectionViewFlowLayout {
         
         let attributes = cachedBackgroundAttributes.values
             .filter({ $0.frame.intersects(collectionView?.bounds ?? rect) })
+        print(attributes)
         
         originalAttributes.append(contentsOf: attributes)
         
