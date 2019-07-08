@@ -149,6 +149,9 @@ public extension FlowLayout {
     case fromSectionInsets
 }
 
-public extension FlowLayoutDelegate {
-    
+public extension CollectionUIProvidingDataSource {
+    @available(*, deprecated, message: "This function no longer exists. Please configure these properties on the CollectionUIBackgroundProvider")
+    func backgroundLayoutReference(for section: Int) -> LayoutReference { fatalError() }
+    @available(*, deprecated, message: "Please use the new backgroundConfiguration(for:) that returns a CollectionUIBackgroundProvider")
+    func backgroundConfiguration(for section: Int) -> CollectionUIViewProvider? { fatalError() }
 }
