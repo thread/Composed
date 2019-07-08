@@ -1,4 +1,5 @@
 import UIKit
+import FlowLayout
 
 /// This coordinator provides the glue between a UICollectionView and a DataSource. Typically you would retain this on your UIViewController or use the provided DataSourceViewController which does this for you. This class handles all the coordination and updates as well as UICollectionView dataSource and delegate handling, ensuring relevant calls on your dataSource's performed.
 public final class DataSourceCoordinator: NSObject, UICollectionViewDataSource, FlowLayoutDelegate {

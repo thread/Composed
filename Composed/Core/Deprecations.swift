@@ -126,19 +126,6 @@ public extension SelectionHandlingDataSource {
     func shouldDeselectElement(at indexPath: IndexPath) -> Bool { return false }
 }
 
-public extension FlowLayout {
-    @available(*, deprecated, renamed: "globalHeaderConfiguration")
-    var globalHeader: GlobalElementConfiguration {
-        get { return globalHeaderConfiguration }
-        set { globalHeaderConfiguration = newValue }
-    }
-    @available(*, deprecated, renamed: "globalFooterConfiguration")
-    var globalFooter: GlobalElementConfiguration {
-        get { return globalFooterConfiguration }
-        set { globalFooterConfiguration  = newValue }
-    }
-}
-
 @available(*, deprecated, renamed: "LayoutBackgroundStyle")
 @objc public enum LayoutReference : Int {
     @available(*, deprecated, renamed: "innerBounds")
