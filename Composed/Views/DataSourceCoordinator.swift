@@ -14,7 +14,7 @@ public final class DataSourceCoordinator: NSObject, UICollectionViewDataSource, 
     private var globalConfigurations: [String: CollectionUIViewProvider] = [:]
     private var headerConfigurations: [Int: CollectionUIViewProvider] = [:]
     private var footerConfigurations: [Int: CollectionUIViewProvider] = [:]
-    private var backgroundConfigurations: [Int: CollectionUIViewProvider] = [:]
+    private var backgroundConfigurations: [Int: CollectionUIBackgroundProvider] = [:]
     private var cellConfigurations: [IndexPath: CollectionUIViewProvider] = [:]
     private var metrics: [Int: CollectionUISectionMetrics] = [:]
     private var sizingStrategies: [Int: CollectionUISizingStrategy] = [:]
@@ -201,26 +201,14 @@ public extension DataSourceCoordinator {
 }
 
 public extension DataSourceCoordinator {
-
-    func backgroundViewClass(in collectionView: UICollectionView, forSectionAt section: Int) -> UICollectionReusableView.Type? {
-        let (localDataSource, localSection) = localDataSourceAndSection(for: section)
-        guard let config = localDataSource.backgroundConfiguration(for: localSection) else { return nil }
-        return type(of: config.prototype)
-    }
     
-    func backgroundViewLayoutReference(collectionView: UICollectionView, forSectionAt section: Int) -> LayoutReference {
+    func backgroundLayoutStyle(in collectionView: UICollectionView, forSectionAt section: Int) -> BackgroundLayoutStyle {
         let (localDataSource, localSection) = localDataSourceAndSection(for: section)
-        return localDataSource.backgroundLayoutReference(for: localSection)
-    }
-    
-    private func prepareBackgroundView(for section: Int) {
-        let (localDataSource, localSection) = localDataSourceAndSection(for: section)
-        if localDataSource.isEmbedded { return }
         
-        guard backgroundViewClass(in: collectionView, forSectionAt: section) != nil,
-            let config = localDataSource.backgroundConfiguration(for: localSection) else {
-            backgroundConfigurations[section] = nil
-            return
+        guard !localDataSource.isEmbedded,
+            let config = backgroundConfigurations[section] ?? localDataSource.backgroundConfiguration(for: localSection) else {
+                backgroundConfigurations[section] = nil
+                return .none
         }
         
         let type = Swift.type(of: config.prototype)
@@ -230,6 +218,22 @@ public extension DataSourceCoordinator {
         case .class:
             collectionView.register(classType: type, reuseIdentifier: config.reuseIdentifier, kind: UICollectionView.elementKindBackground)
         }
+        
+        backgroundConfigurations[section] = config
+        return config.style
+    }
+    
+    func backgroundLayoutInsets(in collectionView: UICollectionView, forSectionAt section: Int) -> UIEdgeInsets {
+        let (localDataSource, localSection) = localDataSourceAndSection(for: section)
+        
+        guard !localDataSource.isEmbedded,
+            let config = backgroundConfigurations[section] ?? localDataSource.backgroundConfiguration(for: localSection) else {
+                backgroundConfigurations[section] = nil
+                return .zero
+        }
+        
+        backgroundConfigurations[section] = config
+        return config.insets
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
@@ -237,8 +241,6 @@ public extension DataSourceCoordinator {
         // Therefore its safe to say we should purge any caches we hold onto based on sections and lazily re-query them at a later time.
         sizingStrategies[section] = nil
         metrics[section] = nil
-        
-        prepareBackgroundView(for: section)
 
         let (localDataSource, localSection) = localDataSourceAndSection(for: section)
         if localDataSource.isEmbedded { return .zero }

@@ -58,7 +58,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         let list3 = Coworkers(elements: [
             Person(name: "Stuart", age: 30),
             Person(name: "Dan", age: 12)
-        ], allowsMultipleSelection: false)
+        ], title: "Coworkers", allowsMultipleSelection: false)
         
         let list4 = Websites(elements: [
             Person(name: "Youtube", age: 30),
@@ -81,23 +81,23 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         let composed = ListDataSource(children: [sectioned, segmented, countries, list4])
 
         let layout = FlowLayout()
-        layout.globalFooter.prefersFollowContent = true
-        layout.globalHeader.pinsToBounds = true
-        layout.globalHeader.pinsToContent = true
+//        layout.globalFooterConfiguration.prefersFollowContent = true
+        layout.globalHeaderConfiguration.pinsToBounds = false
+//        layout.globalHeaderConfiguration.pinsToContent = true
         let controller = DataSourceViewController(dataSource: composed, layout: layout)
         
         controller.navigationItem.largeTitleDisplayMode = .never
         controller.title = "Vertical"
         controller.collectionView.backgroundColor = .white
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            let context = FlowLayoutInvalidationContext()
-            context.invalidateGlobalHeader = true
-            
-            controller.collectionView.performBatchUpdates({
-                controller.collectionView.collectionViewLayout.invalidateLayout(with: context)
-            }, completion: nil)
-        }
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+//            let context = FlowLayoutInvalidationContext()
+//            context.invalidateGlobalHeader = true
+//
+//            controller.collectionView.performBatchUpdates({
+//                controller.collectionView.collectionViewLayout.invalidateLayout(with: context)
+//            }, completion: nil)
+//        }
         
         return controller
     }
@@ -271,7 +271,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         countries.title = "Countries"
         
         let layout = FlowLayout()
-        layout.globalFooter.prefersFollowContent = true
+        layout.globalFooterConfiguration.prefersFollowContent = true
         let controller = DataSourceViewController(dataSource: composed, layout: layout)
         
 //        controller.navigationItem.largeTitleDisplayMode = .never

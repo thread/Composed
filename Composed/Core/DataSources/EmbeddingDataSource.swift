@@ -81,12 +81,8 @@ extension EmbeddingDataSource: CollectionUIProvidingDataSource {
         return embedded.child.footerConfiguration(for: section)
     }
     
-    public func backgroundConfiguration(for section: Int) -> CollectionUIViewProvider? {
+    public func backgroundConfiguration(for section: Int) -> CollectionUIBackgroundProvider? {
         return embedded.child.backgroundConfiguration(for: section)
-    }
-
-    public func backgroundLayoutReference(for section: Int) -> LayoutReference {
-        return embedded.child.backgroundLayoutReference(for: section)
     }
 
 }
@@ -176,7 +172,7 @@ extension _EmbeddedDataSource: CollectionUIProvidingDataSource {
         return nil
     }
     
-    public func backgroundConfiguration(for section: Int) -> CollectionUIViewProvider? {
+    public func backgroundConfiguration(for section: Int) -> CollectionUIBackgroundProvider? {
         return nil
     }
     

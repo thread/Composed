@@ -1,7 +1,7 @@
 import UIKit
 
 /// Defines a provider for a view, prototype and configuration handler. Cells, headers and footers can all be configured with this provider
-public final class CollectionUIViewProvider {
+public class CollectionUIViewProvider {
 
     /// The method to use when dequeuing a view from a UICollectionView
     ///
@@ -21,7 +21,7 @@ public final class CollectionUIViewProvider {
 
     public typealias ViewType = UICollectionReusableView
 
-    public let dequeueMethod: DequeueMethod
+    public var dequeueMethod: DequeueMethod
     public let configure: (UICollectionReusableView, IndexPath, Context) -> Void
 
     private let prototypeProvider: () -> UICollectionReusableView
@@ -34,7 +34,7 @@ public final class CollectionUIViewProvider {
         return view
     }
 
-    public private(set) lazy var reuseIdentifier: String = {
+    public lazy var reuseIdentifier: String = {
         return prototype.reuseIdentifier ?? type(of: prototype).reuseIdentifier
     }()
 
@@ -52,4 +52,11 @@ public final class CollectionUIViewProvider {
         }
     }
 
+}
+
+public final class CollectionUIBackgroundProvider: CollectionUIViewProvider {
+    
+    public var insets: UIEdgeInsets = .zero
+    public var style: BackgroundLayoutStyle = .innerBounds
+    
 }

@@ -46,16 +46,18 @@ class PeopleArrayDataSource: ArrayDataSource<Person>, CollectionUIProvidingDataS
         }
     }
     
-//    func backgroundConfiguration(for section: Int) -> CollectionUIViewProvider? {
-//        return CollectionUIViewProvider(prototype: BackgroundView.fromNib, dequeueMethod: .nib) {
-//            view, _, _ in
-//            view.backgroundColor = .red
-//        }
-//    }
-//
-//    func backgroundLayoutReference(for section: Int) -> LayoutReference {
-//        return .fromSectionInsets
-//    }
+    func backgroundConfiguration(for section: Int) -> CollectionUIBackgroundProvider? {
+        let config = CollectionUIBackgroundProvider(prototype: BackgroundView.fromNib, dequeueMethod: .nib) {
+            view, _, _ in
+            view.backgroundColor = UIColor(white: 0, alpha: 0.05)
+            view.layer.cornerRadius = 12
+        }
+        
+        config.insets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        config.style = .outerBounds
+        
+        return config
+    }
 
 }
 
@@ -119,17 +121,19 @@ class PeopleSectionedDataSource: SectionedDataSource<Person>, CollectionUIProvid
             }
         }
     }
-    
-//    func backgroundConfiguration(for section: Int) -> CollectionUIViewProvider? {
-//        return CollectionUIViewProvider(prototype: BackgroundView.fromNib, dequeueMethod: .nib) {
-//            view, indexPath, context in
-//            view.backgroundColor = .blue
-//        }
-//    }
-//
-//    func backgroundLayoutReference(for section: Int) -> LayoutReference {
-//        return section == 0 ? .fromBounds : .fromBoundsExcludingHeadersAndFooters
-//    }
+   
+    func backgroundConfiguration(for section: Int) -> CollectionUIBackgroundProvider? {
+        let config = CollectionUIBackgroundProvider(prototype: BackgroundView.fromNib, dequeueMethod: .nib) {
+            view, indexPath, context in
+            view.backgroundColor = UIColor(white: 0, alpha: 0.05)
+            view.layer.cornerRadius = 12
+        }
+        
+        config.insets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        config.style = .innerBounds
+        
+        return config
+    }
 
 }
 
@@ -148,10 +152,9 @@ final class ListDataSource: ComposedDataSource, GlobalViewsProvidingDataSource {
         guard toggle else { return nil }
         return CollectionUIViewProvider(prototype: GlobalHeaderView.fromNib, dequeueMethod: .nib) { _, _, _ in }
     }
-//
-//    func globalFooterConfiguration() -> CollectionUIViewProvider? {
-//        return CollectionUIViewProvider(prototype: GlobalFooterView.fromNib, dequeueMethod: .nib) { _, _, _ in }
-//    }
+    func globalFooterConfiguration() -> CollectionUIViewProvider? {
+        return CollectionUIViewProvider(prototype: GlobalFooterView.fromNib, dequeueMethod: .nib) { _, _, _ in }
+    }
 
 }
 
@@ -198,7 +201,7 @@ final class HeaderView: DataSourceHeaderFooterView, ReusableViewNibLoadable {
     @IBOutlet private weak var titleLabel: UILabel!
 
     public func prepare(title: String?) {
-        backgroundColor = UIColor.lightGray.withAlphaComponent(0.5)
+//        backgroundColor = UIColor.lightGray.withAlphaComponent(0.5)
         titleLabel.text = title
     }
 
@@ -209,7 +212,7 @@ final class FooterView: DataSourceHeaderFooterView, ReusableViewNibLoadable {
     @IBOutlet private weak var titleLabel: UILabel!
 
     public func prepare(title: String?) {
-        backgroundColor = UIColor.darkGray.withAlphaComponent(0.5)
+//        backgroundColor = UIColor.darkGray.withAlphaComponent(0.5)
         titleLabel.text = title
     }
 

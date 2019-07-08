@@ -124,16 +124,3 @@ open class DataSourceViewController: UIViewController {
     }
 
 }
-
-/**
- 
- 
- 
- Selection in EmbeddingDataSource's needs to be implemented
- When a EmbeddingDataSource is reused, it crashes!
- 
- Might need to expand the sample code to include more carousels with both single and multiple selection support.
- 
- 
- 
- */

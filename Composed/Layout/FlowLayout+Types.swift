@@ -1,59 +1,28 @@
 import UIKit
 
-public extension UICollectionView {
-    static let elementKindBackground = "DataSourceBackgroundView"
-    static let elementKindGlobalHeader = "DataSourceGlobalHeader"
-    static let elementKindGlobalFooter = "DataSourceGlobalFooter"
-    static let globalElementIndexPath = IndexPath(item: 0, section: 0)
-    
-    static let backgroundZIndex: Int = -100
-    static let globalHeaderZIndex: Int = 400
-    static let globalFooterZIndex: Int = 300
-    static let sectionHeaderZIndex: Int = 200
-    static let sectionFooterZIndex: Int = 100
+@objc public enum BackgroundLayoutStyle: Int {
+    /// No background will be shown
+    case none
+    /// A background will be added within the section's bounds including the header and footer areas
+    case outerBounds
+    /// A background will be added within the section's bounds excluding the header and footer areas
+    case innerBounds
 }
 
-@objc public protocol FlowLayoutDelegate: UICollectionViewDelegateFlowLayout {
+/// Represents a set of preferences for configuring a global element's behaviour in a `Composed.FlowLayout`
+public struct GlobalElementConfiguration {
     
-    /// Returns the height for the global header. Return 0 to hide the global header
-    @objc optional func heightForGlobalHeader(in collectionView: UICollectionView,
-                                              layout collectionViewLayout: UICollectionViewLayout) -> CGFloat
+    /// If true, the global element will remain pinned to the collectionView's bounds
+    public var pinsToBounds: Bool = true
+    /// If true, the global element will remain pinned to the collectionView's content
+    public var pinsToContent: Bool = false
+    /// If true, the global element will remain pinned to the collectionView's bounds, unless the content forces the element off-screen.
+    public var prefersFollowContent: Bool = false
+    /// The inset to use betweent his element and the associated section. Useful for creating additional spacing, similar to sectionInsets
+    public var inset: CGFloat = 0
+    /// If true, the global element will respect any safeAreaInsets. If false, the element will be positioned relative to the bounds
+    public var layoutFromSafeArea: Bool = true
     
-    /// Returns the height for the global header. Return 0 to hide the global header
-    @objc optional func heightForGlobalFooter(in collectionView: UICollectionView,
-                                              layout collectionViewLayout: UICollectionViewLayout) -> CGFloat
-    
-    /// Returns the class to use for providing a 'grouped' backgroundView behind the items for the specified section
-    @objc optional func backgroundViewClass(in collectionView: UICollectionView,
-                                            forSectionAt section: Int) -> UICollectionReusableView.Type?
-    
-    @objc optional func backgroundViewLayoutReference(collectionView: UICollectionView,
-                                                      forSectionAt section: Int) -> LayoutReference
-    
-}
-
-@objc public enum LayoutReference: Int {
-    case fromBoundsExcludingHeadersAndFooters
-    case fromBounds
-    case fromSectionInsets
-}
-
-public struct FlowLayoutSectionMetrics {
-    
-    public var headerHeight: CGFloat
-    public var footerHeight: CGFloat
-    public var insets: UIEdgeInsets = .zero
-    public var horizontalSpacing: CGFloat = 0
-    public var verticalSpacing: CGFloat = 0
-    
-    public static let zero = FlowLayoutSectionMetrics(headerHeight: 0, footerHeight: 0, insets: .zero, horizontalSpacing: 0, verticalSpacing: 0)
-    
-    public init(headerHeight: CGFloat, footerHeight: CGFloat, insets: UIEdgeInsets, horizontalSpacing: CGFloat, verticalSpacing: CGFloat) {
-        self.headerHeight = headerHeight
-        self.footerHeight = footerHeight
-        self.insets = insets
-        self.horizontalSpacing = horizontalSpacing
-        self.verticalSpacing = verticalSpacing
-    }
+    internal init() { }
     
 }

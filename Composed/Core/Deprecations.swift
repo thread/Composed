@@ -125,3 +125,30 @@ public extension SelectionHandlingDataSource {
     @available(*, deprecated, renamed: "deselectionHandler(forElementAt:)")
     func shouldDeselectElement(at indexPath: IndexPath) -> Bool { return false }
 }
+
+public extension FlowLayout {
+    @available(*, deprecated, renamed: "globalHeaderConfiguration")
+    var globalHeader: GlobalElementConfiguration {
+        get { return globalHeaderConfiguration }
+        set { globalHeaderConfiguration = newValue }
+    }
+    @available(*, deprecated, renamed: "globalFooterConfiguration")
+    var globalFooter: GlobalElementConfiguration {
+        get { return globalFooterConfiguration }
+        set { globalFooterConfiguration  = newValue }
+    }
+}
+
+@available(*, deprecated, renamed: "LayoutBackgroundStyle")
+@objc public enum LayoutReference : Int {
+    @available(*, deprecated, renamed: "innerBounds")
+    case fromBoundsExcludingHeadersAndFooters
+    @available(*, deprecated, renamed: "outerBounds")
+    case fromBounds
+    @available(*, deprecated, message: "The enum no longer provides automatic insets. Instead use the dedicated delegate function backgroundLayoutInsets(for:)")
+    case fromSectionInsets
+}
+
+public extension FlowLayoutDelegate {
+    
+}
