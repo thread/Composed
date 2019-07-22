@@ -320,9 +320,9 @@ public extension DataSourceCoordinator {
     }
 
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let configuration: CollectionUIViewProvider?
-        let sectionDataSource: DataSource
-        let indexPathRelativeToSectionDataSource: IndexPath
+        var configuration: CollectionUIViewProvider?
+        var sectionDataSource: DataSource
+        var indexPathRelativeToSectionDataSource: IndexPath
 
         #if canImport(FlowLayout)
         switch (kind, dataSource) {

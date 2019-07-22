@@ -2,15 +2,6 @@
   "object": {
     "pins": [
       {
-        "package": "FlowLayout",
-        "repositoryURL": "https://github.com/shaps80/FlowLayout.git",
-        "state": {
-          "branch": null,
-          "revision": "80f352c29f9dcaeddcb3ebbf92ef33941d07a9a6",
-          "version": "1.0.3"
-        }
-      },
-      {
         "package": "Nimble",
         "repositoryURL": "https://github.com/Quick/Nimble.git",
         "state": {

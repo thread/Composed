@@ -13,14 +13,13 @@ let package = Package(
             targets: ["Composed"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/shaps80/FlowLayout.git", from: "1.0.3"),
         .package(url: "https://github.com/Quick/Quick.git", from: "2.1.0"),
         .package(url: "https://github.com/Quick/Nimble.git", from: "8.0.2"),
     ],
     targets: [
         .target(
             name: "Composed",
-            dependencies: ["FlowLayout"],
+            dependencies: [],
             path: "Sources"),
         .testTarget(
             name: "ComposedTests",
