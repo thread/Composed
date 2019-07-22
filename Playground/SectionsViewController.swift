@@ -1,7 +1,7 @@
 import UIKit
 import Composed
 
-final class SectionsViewController: UICollectionViewController {
+final class SectionsViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
   
     private var coordinator: CollectionViewSectionProviderCoordinator!
     
@@ -16,10 +16,28 @@ final class SectionsViewController: UICollectionViewController {
             Person(name: "Joseph Duffy", age: 29),
             Person(name: "Joseph Duffy", age: 30),
         ])
+
         let sectionProvider = ComposedSectionProvider()
         sectionProvider.append(personSection)
-        coordinator = CollectionViewSectionProviderCoordinator(collectionView: collectionView, sectionProvider: sectionProvider)
+        sectionProvider.append(personSection)
+
         collectionView.alwaysBounceVertical = true
+
+        let layout = FlowLayout()
+        layout.sectionInset = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
+        collectionView.collectionViewLayout = layout
+
+        coordinator = CollectionViewSectionProviderCoordinator(collectionView: collectionView, sectionProvider: sectionProvider)
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            personSection.append(element: Person(name: "Shaps", age: 39))
+        }
+    }
+
+    let cell = PersonCell.fromNib
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let target = CGSize(width: collectionView.bounds.width - 40, height: 0)
+        return cell.contentView.systemLayoutSizeFitting(target, withHorizontalFittingPriority: .required, verticalFittingPriority: .fittingSizeLevel)
     }
     
 }
