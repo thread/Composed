@@ -20,9 +20,11 @@ let package = Package(
     targets: [
         .target(
             name: "Composed",
-            dependencies: ["FlowLayout"]),
+            dependencies: ["FlowLayout"],
+            path: "Sources"),
         .testTarget(
             name: "ComposedTests",
-            dependencies: ["Composed", "Quick", "Nimble"]),
+            dependencies: ["Composed", "Quick", "Nimble"],
+            path: "Tests"),
     ]
 )
