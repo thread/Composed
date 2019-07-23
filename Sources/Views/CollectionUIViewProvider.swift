@@ -15,6 +15,8 @@ public class CollectionUIViewProvider {
         case nib
         /// Load from a class
         case `class`
+        /// Load from a storyboard
+        case storyboard
     }
 
     public enum Context {

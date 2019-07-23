@@ -240,6 +240,8 @@ public extension DataSourceCoordinator {
             collectionView.register(nibType: type, reuseIdentifier: config.reuseIdentifier, kind: UICollectionView.elementKindBackground)
         case .class:
             collectionView.register(classType: type, reuseIdentifier: config.reuseIdentifier, kind: UICollectionView.elementKindBackground)
+        case .storyboard:
+            fatalError("Configuring a background to load via a storyboard is not supported. Please use either the `nib` or `class` methods.")
         }
         
         backgroundConfigurations[section] = config
@@ -377,6 +379,8 @@ public extension DataSourceCoordinator {
             collectionView.register(nibType: type, reuseIdentifier: config.reuseIdentifier, kind: kind)
         case .class:
             collectionView.register(classType: type, reuseIdentifier: config.reuseIdentifier, kind: kind)
+        case .storyboard:
+            fatalError("Configuring a header, footer or global element to load via a storyboard is not supported. Please use either the `nib` or `class` methods.")
         }
 
         let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: config.reuseIdentifier, for: indexPath)
@@ -470,6 +474,8 @@ public extension DataSourceCoordinator {
             collectionView.register(nibType: type, reuseIdentifier: config.reuseIdentifier)
         case .class:
             collectionView.register(classType: type, reuseIdentifier: config.reuseIdentifier)
+        case .storyboard:
+            break // storyboard's auto-register their cells
         }
 
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: config.reuseIdentifier, for: indexPath)
