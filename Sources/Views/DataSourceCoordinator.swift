@@ -225,7 +225,7 @@ public extension DataSourceCoordinator {
 public extension DataSourceCoordinator {
 
     #if canImport(FlowLayout)
-    func backgroundLayoutStyle(in collectionView: UICollectionView, forSectionAt section: Int) -> BackgroundLayoutStyle {
+    func backgroundLayoutStyle(in collectionView: UICollectionView, forSectionAt section: Int) -> BackgroundLayoutRegion {
         let (localDataSource, localSection) = localDataSourceAndSection(for: section)
         
         guard !localDataSource.isEmbedded,
@@ -326,31 +326,6 @@ public extension DataSourceCoordinator {
         var sectionDataSource: DataSource
         var indexPathRelativeToSectionDataSource: IndexPath
 
-        #if canImport(FlowLayout)
-        switch (kind, dataSource) {
-        case let (UICollectionView.elementKindGlobalHeader, dataSource as GlobalViewsProvidingDataSource):
-            configuration = globalConfigurations[kind]
-                ?? dataSource.globalHeaderConfiguration()
-            sectionDataSource = dataSource
-            indexPathRelativeToSectionDataSource = indexPath
-
-        case let (UICollectionView.elementKindGlobalFooter, dataSource as GlobalViewsProvidingDataSource):
-            configuration = globalConfigurations[kind]
-                ?? dataSource.globalFooterConfiguration()
-            sectionDataSource = dataSource
-            indexPathRelativeToSectionDataSource = indexPath
-
-        case (UICollectionView.elementKindBackground, _):
-            let (localDataSource, localIndexPath) = localDataSourceAndIndexPath(for: indexPath)
-            configuration = backgroundConfigurations[indexPath.section]
-                ?? localDataSource.backgroundConfiguration(for: localIndexPath.section)
-            sectionDataSource = localDataSource
-            indexPathRelativeToSectionDataSource = localIndexPath
-        default:
-            break
-        }
-        #endif
-
         switch (kind, dataSource) {
         case (UICollectionView.elementKindSectionHeader, _):
             let (localDataSource, localIndexPath) = localDataSourceAndIndexPath(for: indexPath)
@@ -366,7 +341,30 @@ public extension DataSourceCoordinator {
             sectionDataSource = localDataSource
             indexPathRelativeToSectionDataSource = localIndexPath
         default:
-            fatalError("Unsupported supplementary view. Only global and section header/footer views are supported.")
+            #if canImport(FlowLayout)
+            switch (kind, dataSource) {
+            case let (UICollectionView.elementKindGlobalHeader, dataSource as GlobalViewsProvidingDataSource):
+                configuration = globalConfigurations[kind]
+                    ?? dataSource.globalHeaderConfiguration()
+                sectionDataSource = dataSource
+                indexPathRelativeToSectionDataSource = indexPath
+
+            case let (UICollectionView.elementKindGlobalFooter, dataSource as GlobalViewsProvidingDataSource):
+                configuration = globalConfigurations[kind]
+                    ?? dataSource.globalFooterConfiguration()
+                sectionDataSource = dataSource
+                indexPathRelativeToSectionDataSource = indexPath
+
+            case (UICollectionView.elementKindBackground, _):
+                let (localDataSource, localIndexPath) = localDataSourceAndIndexPath(for: indexPath)
+                configuration = backgroundConfigurations[indexPath.section]
+                    ?? localDataSource.backgroundConfiguration(for: localIndexPath.section)
+                sectionDataSource = localDataSource
+                indexPathRelativeToSectionDataSource = localIndexPath
+            default:
+                fatalError("Unsupported supplementary view kind: \(kind) at indexPath: \(indexPath). Only global and section header/footer views are supported.")
+            }
+            #endif
         }
 
         guard let config = configuration else {

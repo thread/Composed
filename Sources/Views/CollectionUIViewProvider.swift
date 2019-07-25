@@ -64,7 +64,7 @@ public final class CollectionUIBackgroundProvider: CollectionUIViewProvider {
     public var insets: UIEdgeInsets = .zero
 
     #if canImport(FlowLayout)
-    public var style: BackgroundLayoutStyle = .innerBounds
+    public var style: BackgroundLayoutRegion = .innerBounds
     #endif
     
 }
