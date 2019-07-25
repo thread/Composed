@@ -208,7 +208,7 @@ public extension DataSourceCoordinator {
 
 public extension DataSourceCoordinator {
 
-    func backgroundLayoutRegion(in collectionView: UICollectionView, forSectionAt section: Int) -> BackgroundLayoutStyle {
+    func backgroundLayoutStyle(in collectionView: UICollectionView, forSectionAt section: Int) -> BackgroundLayoutStyle {
         let (localDataSource, localSection) = localDataSourceAndSection(for: section)
         
         guard !localDataSource.isEmbedded,
