@@ -40,7 +40,7 @@ open class DataSourceViewController: UIViewController {
     /// - Parameters:
     ///   - dataSource: The dataSource to associate with this controller
     ///   - layout: The layout to associate with this controller, defaults to `UICollectionViewFlowLayout()`
-    public init(dataSource: DataSource?, layout: UICollectionViewLayout = UICollectionViewFlowLayout()) {
+    public init(dataSource: DataSource?, layout: UICollectionViewLayout = FlowLayout()) {
         let collectionView = type(of: self).collectionViewClass.init(frame: .zero, collectionViewLayout: layout)
         self.wrapper = DataSourceCoordinator(collectionView: collectionView, dataSource: dataSource)
         self.layout = layout
