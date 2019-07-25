@@ -1,8 +1,5 @@
 import UIKit
-
-#if canImport(FlowLayout)
 import FlowLayout
-#endif
 
 /// Provides a convenience controller for working with DataSource's.
 ///
@@ -19,15 +16,9 @@ open class DataSourceViewController: UIViewController {
     }
 
     /// Override to provide a different subclass for your collectionViewLayout
-    #if canImport(FlowLayout)
     open class var layoutClass: UICollectionViewLayout.Type {
         return FlowLayout.self
     }
-    #else
-    open class var layoutClass: UICollectionViewLayout.Type {
-        return UICollectionViewFlowLayout.self
-    }
-    #endif
 
     /// The associated collectionView used by this controller
     public var collectionView: UICollectionView {

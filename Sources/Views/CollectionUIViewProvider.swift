@@ -1,7 +1,5 @@
 import UIKit
-#if canImport(FlowLayout)
 import FlowLayout
-#endif
 
 /// Defines a provider for a view, prototype and configuration handler. Cells, headers and footers can all be configured with this provider
 public class CollectionUIViewProvider {
@@ -62,9 +60,6 @@ public class CollectionUIViewProvider {
 public final class CollectionUIBackgroundProvider: CollectionUIViewProvider {
     
     public var insets: UIEdgeInsets = .zero
-
-    #if canImport(FlowLayout)
     public var region: BackgroundLayoutStyle = .innerBounds
-    #endif
     
 }
