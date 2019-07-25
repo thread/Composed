@@ -245,7 +245,7 @@ public extension DataSourceCoordinator {
         }
         
         backgroundConfigurations[section] = config
-        return config.style
+        return config.region
     }
     
     func backgroundLayoutInsets(in collectionView: UICollectionView, forSectionAt section: Int) -> UIEdgeInsets {
