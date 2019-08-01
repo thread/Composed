@@ -1,6 +1,6 @@
 import UIKit
-
 import FlowLayout
+
 extension DataSourceCoordinator: FlowLayoutDelegate { }
 
 /// This coordinator provides the glue between a UICollectionView and a DataSource. Typically you would retain this on your UIViewController or use the provided DataSourceViewController which does this for you. This class handles all the coordination and updates as well as UICollectionView dataSource and delegate handling, ensuring relevant calls on your dataSource's performed.
@@ -208,7 +208,7 @@ public extension DataSourceCoordinator {
 
 public extension DataSourceCoordinator {
 
-    func backgroundLayoutStyle(in collectionView: UICollectionView, forSectionAt section: Int) -> BackgroundLayoutStyle {
+    func backgroundLayoutRegion(in collectionView: UICollectionView, forSectionAt section: Int) -> BackgroundLayoutRegion {
         let (localDataSource, localSection) = localDataSourceAndSection(for: section)
         
         guard !localDataSource.isEmbedded,

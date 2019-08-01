@@ -43,7 +43,7 @@
 		5420772C22E644AB00F8F9C0 /* ComposedChangeDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5420770922E644AB00F8F9C0 /* ComposedChangeDetails.swift */; };
 		5420772D22E644AB00F8F9C0 /* ReusableViewNibLoadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5420770A22E644AB00F8F9C0 /* ReusableViewNibLoadable.swift */; };
 		5420772E22E644AB00F8F9C0 /* ColumnSizingStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5420770B22E644AB00F8F9C0 /* ColumnSizingStrategy.swift */; };
-		54DEBB3022E9C6C40043C8AA /* FlowLayout.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54DEBB2F22E9C6C40043C8AA /* FlowLayout.framework */; };
+		54F1133E22F354130062138C /* FlowLayout.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54DEBB2F22E9C6C40043C8AA /* FlowLayout.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -85,7 +85,6 @@
 		5420770922E644AB00F8F9C0 /* ComposedChangeDetails.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposedChangeDetails.swift; sourceTree = "<group>"; };
 		5420770A22E644AB00F8F9C0 /* ReusableViewNibLoadable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReusableViewNibLoadable.swift; sourceTree = "<group>"; };
 		5420770B22E644AB00F8F9C0 /* ColumnSizingStrategy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColumnSizingStrategy.swift; sourceTree = "<group>"; };
-		54DEBB2D22E9C6B30043C8AA /* Composed.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Composed.framework; path = ../../../../System/Volumes/Data/Users/shaps/Projects/Composed/Carthage/Build/iOS/Composed.framework; sourceTree = "<group>"; };
 		54DEBB2F22E9C6C40043C8AA /* FlowLayout.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FlowLayout.framework; path = ../../../../System/Volumes/Data/Users/shaps/Projects/Composed/Carthage/Build/iOS/FlowLayout.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -94,7 +93,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				54DEBB3022E9C6C40043C8AA /* FlowLayout.framework in Frameworks */,
+				54F1133E22F354130062138C /* FlowLayout.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -222,7 +221,6 @@
 			isa = PBXGroup;
 			children = (
 				54DEBB2F22E9C6C40043C8AA /* FlowLayout.framework */,
-				54DEBB2D22E9C6B30043C8AA /* Composed.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
