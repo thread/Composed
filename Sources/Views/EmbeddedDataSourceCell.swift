@@ -4,15 +4,36 @@ protocol EmbeddedDataSourceCellDelegate: class {
     func embeddedCell(_ cell: EmbeddedDataSourceCell, cacheValuesFor contentOffset: CGPoint, selectedIndexPaths: [IndexPath])
 }
 
-final class EmbeddedDataSourceCell: UICollectionViewCell, ReusableViewNibLoadable {
+final class EmbeddedDataSourceCell: UICollectionViewCell {
 
-    @IBOutlet public private(set) var collectionView: UICollectionView!
+    public private(set) var collectionView: UICollectionView
     internal weak var delegate: EmbeddedDataSourceCellDelegate?
 
     internal lazy var wrapper: DataSourceCoordinator = {
         return DataSourceCoordinator(collectionView: collectionView)
     }()
-
+    
+    override init(frame: CGRect) {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        
+        super.init(frame: frame)
+        
+        addSubview(collectionView)
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        addConstraints([
+            collectionView.topAnchor.constraint(equalTo: topAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            collectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
+        ])
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     func prepare(dataSource: DataSource, contentOffset: CGPoint, selectedIndexPaths: [IndexPath]) {
         wrapper.replace(dataSource: dataSource)
         wrapper.collectionView.contentOffset = contentOffset

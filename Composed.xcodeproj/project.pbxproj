@@ -27,7 +27,6 @@
 		5420771C22E644AB00F8F9C0 /* CollectionUIProvidingDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 542076F722E644AB00F8F9C0 /* CollectionUIProvidingDataSource.swift */; };
 		5420771D22E644AB00F8F9C0 /* GlobalViewsProvidingDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 542076F822E644AB00F8F9C0 /* GlobalViewsProvidingDataSource.swift */; };
 		5420771E22E644AB00F8F9C0 /* DataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 542076F922E644AB00F8F9C0 /* DataSource.swift */; };
-		5420771F22E644AB00F8F9C0 /* EmbeddedDataSourceCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 542076FB22E644AB00F8F9C0 /* EmbeddedDataSourceCell.xib */; };
 		5420772022E644AB00F8F9C0 /* DataSourceHeaderFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 542076FC22E644AB00F8F9C0 /* DataSourceHeaderFooterView.swift */; };
 		5420772122E644AB00F8F9C0 /* DataSourceCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 542076FD22E644AB00F8F9C0 /* DataSourceCoordinator.swift */; };
 		5420772222E644AB00F8F9C0 /* DataSourceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 542076FE22E644AB00F8F9C0 /* DataSourceViewController.swift */; };
@@ -69,7 +68,6 @@
 		542076F722E644AB00F8F9C0 /* CollectionUIProvidingDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionUIProvidingDataSource.swift; sourceTree = "<group>"; };
 		542076F822E644AB00F8F9C0 /* GlobalViewsProvidingDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlobalViewsProvidingDataSource.swift; sourceTree = "<group>"; };
 		542076F922E644AB00F8F9C0 /* DataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSource.swift; sourceTree = "<group>"; };
-		542076FB22E644AB00F8F9C0 /* EmbeddedDataSourceCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EmbeddedDataSourceCell.xib; sourceTree = "<group>"; };
 		542076FC22E644AB00F8F9C0 /* DataSourceHeaderFooterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSourceHeaderFooterView.swift; sourceTree = "<group>"; };
 		542076FD22E644AB00F8F9C0 /* DataSourceCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSourceCoordinator.swift; sourceTree = "<group>"; };
 		542076FE22E644AB00F8F9C0 /* DataSourceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSourceViewController.swift; sourceTree = "<group>"; };
@@ -181,7 +179,6 @@
 		542076FA22E644AB00F8F9C0 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				542076FB22E644AB00F8F9C0 /* EmbeddedDataSourceCell.xib */,
 				542076FD22E644AB00F8F9C0 /* DataSourceCoordinator.swift */,
 				542076FC22E644AB00F8F9C0 /* DataSourceHeaderFooterView.swift */,
 				542076FE22E644AB00F8F9C0 /* DataSourceViewController.swift */,
@@ -293,7 +290,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5420771F22E644AB00F8F9C0 /* EmbeddedDataSourceCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -381,7 +377,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = V2CWYL9AN8;
+				DEVELOPMENT_TEAM = XD2B49EJ3F;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -412,7 +408,7 @@
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.152percent.Composed;
+				PRODUCT_BUNDLE_IDENTIFIER = com.thread.Composed;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -462,7 +458,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = V2CWYL9AN8;
+				DEVELOPMENT_TEAM = XD2B49EJ3F;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -486,7 +482,7 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.152percent.Composed;
+				PRODUCT_BUNDLE_IDENTIFIER = com.thread.Composed;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
