@@ -60,6 +60,6 @@ public class CollectionUIViewProvider {
 public final class CollectionUIBackgroundProvider: CollectionUIViewProvider {
     
     public var insets: UIEdgeInsets = .zero
-    public var region: BackgroundLayoutRegion = .innerBounds
+    public var region: BackgroundLayoutStyle = .innerBounds
     
 }
